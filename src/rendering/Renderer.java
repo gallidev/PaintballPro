@@ -1,7 +1,6 @@
 package rendering;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,8 +31,8 @@ public class Renderer extends Application
 		Scene scene = new Scene(view);
 		primaryStage.setScene(scene);
 
-		Image gravel = new Image(loader.getResourceAsStream("assets/gravel.png"));
-		for(int i = 0; i < 16; i++)
+		Asset gravel = new Asset(loader.getResourceAsStream("assets/gravel.png"), AssetType.Floor);
+		for(int i = 0; i < 15; i++)
 		{
 			graphics.drawImage(gravel, i * 64, 256);
 		}
