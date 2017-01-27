@@ -53,7 +53,6 @@ public class Display extends JPanel{
 		for(int i=0; i<bullets.size(); i++){
 			g2.setColor(Color.RED);
 			g2.fillOval((int)bullets.get(i).x, (int)bullets.get(i).y, 4, 4);
-			bullets.get(i).moveInDirection();
 		}
 		repaint();
 	}

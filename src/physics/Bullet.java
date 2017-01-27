@@ -2,7 +2,7 @@ package physics;
 
 public class Bullet {
 	private double angle;
-	private float speed = 2f;
+	private float speed = 6f;
 	public double x;
 	public double y;
 

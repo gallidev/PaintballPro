@@ -48,6 +48,9 @@ public class Player implements MouseMotionListener, MouseListener{
 		if(game.getKeyManager().shoot){
 			shoot();
 		}
+		for(int i = 0; i < firedBullets.size(); i++){
+			firedBullets.get(i).moveInDirection();
+		}
 	}
 
 	@Override
