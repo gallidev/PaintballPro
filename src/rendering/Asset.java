@@ -1,8 +1,6 @@
 package rendering;
 import javafx.scene.image.Image;
 
-import java.io.InputStream;
-
 enum AssetType
 {
 	Wall,
@@ -14,16 +12,14 @@ enum AssetType
 
 class Asset extends Image
 {
-	private AssetType type;
+	AssetType type;
+	int x, y;
 
-	Asset(InputStream is, AssetType type)
+	Asset(String url, AssetType type, int x, int y)
 	{
-		super(is);
+		super(url);
 		this.type = type;
-	}
-
-	public AssetType getType()
-	{
-		return type;
+		this.x = x;
+		this.y = y;
 	}
 }
