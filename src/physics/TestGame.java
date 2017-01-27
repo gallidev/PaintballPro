@@ -3,6 +3,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+/*
+ * If you get an input error when running this, you need to add the resources folder to your build path
+ * In Eclipse this is done by selecting the project folder  "c1", clicking on the Project menu at the top,
+ * Project -> Properties -> Java Build Path -> Libraries -> Add Class Folder -> 
+ * Under c1, tick the box next to the resources folder -> Press ok then Apply
+ */
+
 public class TestGame implements Runnable {
 	
 	private Display display;
