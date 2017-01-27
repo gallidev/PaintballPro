@@ -72,7 +72,9 @@ public class Player implements MouseMotionListener, MouseListener{
 	}
 	
 	public void shoot(){
-		Bullet bullet = new Bullet(x + playerImage.getWidth(null)/2, y, angle);
+		double bulletX = x + (playerImage.getWidth(null)/2);
+		double bulletY = y + (playerImage.getHeight(null)/2);
+		Bullet bullet = new Bullet(bulletX, bulletY, angle);
 		firedBullets.add(bullet);
 	}
 	
