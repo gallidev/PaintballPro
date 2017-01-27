@@ -51,7 +51,7 @@ public class Display extends JPanel{
 		g2.drawImage(playerImage, at, null);
 		ArrayList<Bullet> bullets = (ArrayList<Bullet>) player.getBullets();
 		for(int i=0; i<bullets.size(); i++){
-			g2.setColor(Color.YELLOW);
+			g2.setColor(Color.RED);
 			g2.fillOval((int)bullets.get(i).x, (int)bullets.get(i).y, 4, 4);
 			bullets.get(i).moveInDirection();
 		}
