@@ -53,17 +53,13 @@ class CameraControl
 			public void handle(long now)
 			{
 				if(up)
-					if(root.getTranslateY() + 4 <= 0)
-						root.setTranslateY(root.getTranslateY() + 4);
+					root.setTranslateY(root.getTranslateY() + 4);
 				if(down)
-					if(root.getTranslateY() - 4 >= -544)
-						root.setTranslateY(root.getTranslateY() - 4);
+					root.setTranslateY(root.getTranslateY() - 4);
 				if(left)
-					if(root.getTranslateX() + 4 <= 0)
-						root.setTranslateX(root.getTranslateX() + 4);
+					root.setTranslateX(root.getTranslateX() + 4);
 				if(right)
-					if(root.getTranslateX() - 4 >= -384)
-						root.setTranslateX(root.getTranslateX() - 4);
+					root.setTranslateX(root.getTranslateX() - 4);
 			}
 		}.start();
 	}

@@ -9,9 +9,11 @@ class Asset extends ImageView
 
 	Asset(String url, AssetType type, int x, int y)
 	{
-		super(url);
+		super(new Image(url, 64, 64, true, true));
 		this.type = type;
 		this.x = x;
 		this.y = y;
+		this.setTranslateX(x);
+		this.setTranslateY(y);
 	}
 }
