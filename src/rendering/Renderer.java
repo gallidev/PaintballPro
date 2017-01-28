@@ -4,12 +4,9 @@ import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.ImageView;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.util.Random;
 
 public class Renderer extends Application
 {
@@ -19,25 +16,26 @@ public class Renderer extends Application
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception
+	public void start(Stage stage) throws Exception
 	{
-		Canvas canvas = new Canvas(1024, 1024);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		Group root = new Group(canvas);
+		Group root = new Group();
 		Scene scene = new Scene(root, 640, 480);
 		scene.setCursor(Cursor.CROSSHAIR);
-		primaryStage.setScene(scene);
+		stage.setScene(scene);
 
-		Random random = new Random();
-		for(int i = 0; i < 15; i++)
+		Group wall = new Group();
+		for(int i = 1; i < 4; i++)
 		{
-			int x = random.nextInt(15), y = random.nextInt(15);
-			Asset gravel = new Asset("assets/gravel.png", AssetType.Floor, x * 64, y * 64);
-			graphics.drawImage(gravel, x * 64, y * 64);
+			Asset gravel = new Asset("assets/gravel.png", AssetType.Floor, i * 64, 64);
+			gravel.setTranslateX(gravel.x);
+			gravel.setTranslateY(gravel.y);
+			wall.getChildren().add(gravel);
 		}
+		wall.setEffect(new DropShadow(15, 0, 5, Color.BLACK));
+		root.getChildren().add(wall);
 
-		primaryStage.setTitle("Paintball Pro");
-		primaryStage.show();
+		stage.setTitle("Paintball Pro");
+		stage.show();
 
 		new CameraControl(scene, root);
 	}
