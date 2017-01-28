@@ -5,23 +5,22 @@ import javafx.scene.input.KeyEvent;
 
 public class KeyPressListener implements EventHandler<KeyEvent>{
 	
-	private TestGame game;
+	private Player player;
 	
-	public KeyPressListener(TestGame game){
-		this.game = game;
+	public KeyPressListener(Player player){
+		this.player = player;
 	}
 	@Override
     public void handle(KeyEvent event) {
 		switch (event.getCode()) {
-        case UP:    game.up = true; break;
-        case DOWN:  game.down = true; break;
-        case LEFT:  game.left  = true; break;
-        case RIGHT: game.right  = true; break;
-        case W:     game.up = true; break;
-        case S:     game.down = true; break;
-        case A:     game.left  = true; break;
-        case D:     game.right  = true; break;
-        case SPACE: game.shoot = true; break;
+        case UP:    player.setUp(true); break;
+        case DOWN:  player.setDown(true); break;
+        case LEFT:  player.setLeft(true); break;
+        case RIGHT: player.setRight(true); break;
+        case W:     player.setUp(true); break;
+        case S:     player.setDown(true); break;
+        case A:     player.setLeft(true); break;
+        case D:     player.setRight(true); break;
 		default:
 			break;
     }

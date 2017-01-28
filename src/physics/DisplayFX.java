@@ -9,8 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,10 +16,7 @@ import javafx.stage.Stage;
 
 public class DisplayFX extends Application
 {
-	private TestGame game;
 	private Player player;
-	private Image playerImage;
-	private double lastAngle = 0.0;
 	
 	public static void main(String[] args)
 	{
@@ -37,15 +32,18 @@ public class DisplayFX extends Application
 		scene.setCursor(Cursor.CROSSHAIR);
 		stage.setTitle("Paintball Pro");
 		
-		game = new TestGame();
-		player = game.getPlayer();
-		playerImage = player.getImage();
+		player = new Player(100, 100);
 		
-		scene.setOnKeyPressed(new KeyPressListener(game));
-		scene.setOnKeyReleased(new KeyReleaseListener(game));
-		scene.setOnMouseMoved(new MouseListener(game));
-		scene.setOnMouseDragged(new MouseListener(game));
-		scene.setOnMousePressed(new MouseListener(game));
+		KeyPressListener kp = new KeyPressListener(player);
+		KeyReleaseListener kl = new KeyReleaseListener(player);
+		MouseListener ml = new MouseListener(player);
+		
+		scene.setOnKeyPressed(kp);
+		scene.setOnKeyReleased(kl);
+		scene.setOnMouseMoved(ml);
+		scene.setOnMouseDragged(ml);
+		scene.setOnMousePressed(ml);
+		scene.setOnMouseReleased(ml);
 		Pane pane = new Pane();
 		
 		
@@ -55,37 +53,24 @@ public class DisplayFX extends Application
             public void handle(long now) {
             	GraphicsContext gc = canvas.getGraphicsContext2D();
         		player.tick();
-        		double deltax = (player.getMX() - 10) - player.x;
-        		double deltay = player.y - (player.getMY() - 10) ;
-        		double deltaz = Math.sqrt(deltax * deltax + deltay * deltay);
-        		double angle = lastAngle;
-        		if (deltaz > 5){
-        			angle = Math.atan2(deltax, deltay);
-        		}
         		
-        		player.setAngle(angle);
-        		lastAngle = angle;
-        		
-        		ImageView iv = new ImageView(playerImage);
-        		iv.setRotate(Math.toDegrees(angle));
-        		iv.setSmooth(true);
-        		iv.setTranslateX(player.x);
-        		iv.setTranslateY(player.y);
         		HBox box = new HBox();
-        		box.getChildren().add(iv);
+        		box.getChildren().add(player);
         		pane.getChildren().clear();
         		pane.getChildren().add(box);
         		
         		gc.setFill(Color.WHITE);
                 gc.fillRect(0, 0, 1024, 1024); //TEMP
+                
         		ArrayList<Bullet> bullets = (ArrayList<Bullet>) player.getBullets();
         		for(int i=0; i<bullets.size(); i++){
         			gc.setFill(Color.RED);
-        			gc.fillOval((int)bullets.get(i).x, (int)bullets.get(i).y, 4, 4);
+        			gc.fillOval((int)bullets.get(i).getX(), (int)bullets.get(i).getY(), 4, 4);
         		}
             }
 
         };
+        
         gameLoop.start();
         
         root.getChildren().add(pane);

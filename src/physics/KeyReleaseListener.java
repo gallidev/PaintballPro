@@ -5,23 +5,22 @@ import javafx.scene.input.KeyEvent;
 
 public class KeyReleaseListener implements EventHandler<KeyEvent>{
 	
-	private TestGame game;
+	private Player player;
 	
-	public KeyReleaseListener(TestGame game){
-		this.game = game;
+	public KeyReleaseListener(Player player){
+		this.player = player;
 	}
 	@Override
     public void handle(KeyEvent event) {
 		switch (event.getCode()) {
-        case UP:    game.up = false; break;
-        case DOWN:  game.down = false; break;
-        case LEFT:  game.left  = false; break;
-        case RIGHT: game.right  = false; break;
-        case W:     game.up = false; break;
-        case S:     game.down = false; break;
-        case A:     game.left  = false; break;
-        case D:     game.right  = false; break;
-        case SPACE: game.shoot = false; break;
+        case UP:    player.setUp(false); break;
+        case DOWN:  player.setDown(false); break;
+        case LEFT:  player.setLeft(false); break;
+        case RIGHT: player.setRight(false); break;
+        case W:     player.setUp(false); break;
+        case S:     player.setDown(false); break;
+        case A:     player.setLeft(false); break;
+        case D:     player.setRight(false); break;
 		default:
 			break;
     }

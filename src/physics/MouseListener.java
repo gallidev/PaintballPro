@@ -1,20 +1,19 @@
 package physics;
 
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 public class MouseListener implements EventHandler<MouseEvent>{
 	
-	private TestGame game;
+	private Player player;
 	
-	public MouseListener(TestGame game){
-		this.game = game;
+	public MouseListener(Player player){
+		this.player = player;
 	}
 	@Override
     public void handle(MouseEvent event) {
-		game.mx = event.getX();
-		game.my = event.getY();
-		game.shoot = event.isPrimaryButtonDown();
+		player.setMX(event.getX());
+		player.setMY(event.getY());
+		player.setShoot(event.isPrimaryButtonDown());
     }
 }
