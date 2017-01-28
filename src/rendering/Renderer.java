@@ -1,12 +1,12 @@
 package rendering;
 
 import javafx.application.Application;
-import javafx.event.Event;
+import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.util.Random;
@@ -23,14 +23,9 @@ public class Renderer extends Application
 	{
 		Canvas canvas = new Canvas(1024, 1024);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
-
-		ScrollPane view = new ScrollPane(canvas);
-		view.setPrefWidth(640);
-		view.setPrefHeight(480);
-		view.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		view.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		view.addEventFilter(ScrollEvent.ANY, Event::consume); //disable mouse wheel scrolling
-		Scene scene = new Scene(view);
+		Group root = new Group(canvas);
+		Scene scene = new Scene(root, 640, 480);
+		scene.setCursor(Cursor.CROSSHAIR);
 		primaryStage.setScene(scene);
 
 		Random random = new Random();
@@ -42,9 +37,8 @@ public class Renderer extends Application
 		}
 
 		primaryStage.setTitle("Paintball Pro");
-		primaryStage.setResizable(false);
 		primaryStage.show();
 
-		new CameraControl(scene, view);
+		new CameraControl(scene, root);
 	}
 }
