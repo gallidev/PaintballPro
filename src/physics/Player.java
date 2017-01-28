@@ -1,15 +1,10 @@
 package physics;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
+import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player implements MouseMotionListener, MouseListener{
+public class Player {
 	
-	private BufferedImage testImage;
 	private Image playerImage;
 	private TestGame game;
 	public float x, y, mx, my;
@@ -23,47 +18,33 @@ public class Player implements MouseMotionListener, MouseListener{
 		this.my = y;
 		this.game = game;
 		angle = 0.0;
-		testImage = ImageLoader.loadImage("/assets/arrow.png");
-		playerImage =  testImage.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+		playerImage = new Image("assets/arrow.png", 25, 25, false, false);
 	}
 
 	public void tick() {
-		if(game.getKeyManager().up){
+		if(game.up){
 			y -= 1.5 * Math.cos(angle);
 			x += 1.5 * Math.sin(angle);
 		}			
 		
-		if(game.getKeyManager().down){
+		if(game.down){
 			y += 0.8 * Math.cos(angle);
 			x -= 0.8 * Math.sin(angle);
 		}			
-		if(game.getKeyManager().left){
+		if(game.left){
 			y -= 0.8 * Math.cos(angle - Math.PI/2);
 			x += 0.8 * Math.sin(angle - Math.PI/2);
 		}			
-		if(game.getKeyManager().right){
+		if(game.right){
 			y -= 0.8 * Math.cos(angle + Math.PI/2);
 			x += 0.8 * Math.sin(angle + Math.PI/2);
 		}
-		if(game.getKeyManager().shoot){
+		if(game.shoot){
 			shoot();
 		}
 		for(int i = 0; i < firedBullets.size(); i++){
 			firedBullets.get(i).moveInDirection();
 		}
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		//Shoot
-		mx = e.getX();
-		my = e.getY();
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		mx = e.getX();
-		my = e.getY();
 	}
 	
 	public Image getImage(){
@@ -75,8 +56,8 @@ public class Player implements MouseMotionListener, MouseListener{
 	}
 	
 	public void shoot(){
-		double bulletX = x + (playerImage.getWidth(null)/2);
-		double bulletY = y + (playerImage.getHeight(null)/2);
+		double bulletX = x + (playerImage.getWidth()/2);
+		double bulletY = y + (playerImage.getHeight()/2);
 		Bullet bullet = new Bullet(bulletX, bulletY, angle);
 		firedBullets.add(bullet);
 	}
@@ -84,33 +65,13 @@ public class Player implements MouseMotionListener, MouseListener{
 	public List<Bullet> getBullets(){
 		return this.firedBullets;
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		shoot();
+	
+	public double getMX(){
+		return game.mx;
+	}
+	
+	public double getMY(){
+		return game.my;
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }
