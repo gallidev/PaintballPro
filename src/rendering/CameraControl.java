@@ -1,14 +1,14 @@
 package rendering;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 
 class CameraControl
 {
 	private boolean up = false, down = false, left = false, right = false;
 
-	CameraControl(Scene scene, ScrollPane view)
+	CameraControl(Scene scene, Group root)
 	{
 		scene.setOnKeyPressed(event ->
 		{
@@ -48,20 +48,19 @@ class CameraControl
 			}
 		});
 
-		AnimationTimer timer = new AnimationTimer() {
+		new AnimationTimer() {
 			@Override
 			public void handle(long now)
 			{
 				if(up)
-					view.setVvalue(view.getVvalue() - 0.01);
+					root.setTranslateY(root.getTranslateY() + 4);
 				if(down)
-					view.setVvalue(view.getVvalue() + 0.01);
+					root.setTranslateY(root.getTranslateY() - 4);
 				if(left)
-					view.setHvalue(view.getHvalue() - 0.01);
+					root.setTranslateX(root.getTranslateX() + 4);
 				if(right)
-					view.setHvalue(view.getHvalue() + 0.01);
+					root.setTranslateX(root.getTranslateX() - 4);
 			}
-		};
-		timer.start();
+		}.start();
 	}
 }

@@ -1,50 +1,41 @@
 package rendering;
 
-import javafx.application.Application;
-import javafx.event.Event;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
-import javafx.stage.Stage;
+import physics.KeyPressListener;
+import physics.KeyReleaseListener;
+import physics.MouseListener;
+import physics.Player;
 
-import java.util.Random;
-
-public class Renderer extends Application
+public class Renderer extends Scene
 {
-	public static void main(String[] args)
+	private static Group view = new Group();
+
+	public Renderer()
 	{
-		launch(args);
-	}
+		super(view, 800, 600);
+		Player player = new Player(72, 72);
+		view.getChildren().add(player);
 
-	@Override
-	public void start(Stage primaryStage) throws Exception
-	{
-		Canvas canvas = new Canvas(1024, 1024);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		KeyPressListener keyPressListener = new KeyPressListener(player);
+		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
+		MouseListener mouseListener = new MouseListener(player);
 
-		ScrollPane view = new ScrollPane(canvas);
-		view.setPrefWidth(640);
-		view.setPrefHeight(480);
-		view.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		view.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		view.addEventFilter(ScrollEvent.ANY, Event::consume); //disable mouse wheel scrolling
-		Scene scene = new Scene(view);
-		primaryStage.setScene(scene);
+		setOnKeyPressed(keyPressListener);
+		setOnKeyReleased(keyReleaseListener);
+		setOnMouseDragged(mouseListener);
+		setOnMouseMoved(mouseListener);
+		setOnMousePressed(mouseListener);
+		setOnMouseReleased(mouseListener);
 
-		Random random = new Random();
-		for(int i = 0; i < 15; i++)
+		new AnimationTimer()
 		{
-			int x = random.nextInt(15), y = random.nextInt(15);
-			Asset gravel = new Asset("assets/gravel.png", AssetType.Floor, x * 64, y * 64);
-			graphics.drawImage(gravel, x * 64, y * 64);
-		}
-
-		primaryStage.setTitle("Paintball Pro");
-		primaryStage.setResizable(false);
-		primaryStage.show();
-
-		new CameraControl(scene, view);
+			@Override
+			public void handle(long now)
+			{
+				player.tick();
+			}
+		}.start();
 	}
 }
