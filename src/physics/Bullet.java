@@ -1,6 +1,9 @@
 package physics;
 
-public class Bullet {
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
+public class Bullet extends Circle{
 	
 	private double angle;
 	private float speed = 6f;
@@ -10,11 +13,17 @@ public class Bullet {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
+		setCenterX(x);
+		setCenterY(y);
+		setRadius(3);
+		setFill(Color.RED);
 	}
 
 	public void moveInDirection() {
 		y -= speed * Math.cos(angle);
 		x += speed * Math.sin(angle);
+		setCenterX(x);
+		setCenterY(y);
 	}
 	
 	public double getX(){

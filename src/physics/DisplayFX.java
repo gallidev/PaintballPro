@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class DisplayFX extends Application
@@ -32,7 +33,7 @@ public class DisplayFX extends Application
 		scene.setCursor(Cursor.CROSSHAIR);
 		stage.setTitle("Paintball Pro");
 		
-		player = new Player(100, 100);
+		player = new Player(72, 72);
 		
 		KeyPressListener kp = new KeyPressListener(player);
 		KeyReleaseListener kl = new KeyReleaseListener(player);
@@ -45,27 +46,20 @@ public class DisplayFX extends Application
 		scene.setOnMousePressed(ml);
 		scene.setOnMouseReleased(ml);
 		Pane pane = new Pane();
+		pane.getChildren().add(player);
+		Pane bulletPane = new Pane();
 		
 		
 		AnimationTimer gameLoop = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
-            	GraphicsContext gc = canvas.getGraphicsContext2D();
         		player.tick();
         		
-        		HBox box = new HBox();
-        		box.getChildren().add(player);
-        		pane.getChildren().clear();
-        		pane.getChildren().add(box);
-        		
-        		gc.setFill(Color.WHITE);
-                gc.fillRect(0, 0, 1024, 1024); //TEMP
-                
+                bulletPane.getChildren().clear();
         		ArrayList<Bullet> bullets = (ArrayList<Bullet>) player.getBullets();
         		for(int i=0; i<bullets.size(); i++){
-        			gc.setFill(Color.RED);
-        			gc.fillOval((int)bullets.get(i).getX(), (int)bullets.get(i).getY(), 4, 4);
+            		bulletPane.getChildren().add(bullets.get(i));
         		}
             }
 
@@ -74,6 +68,7 @@ public class DisplayFX extends Application
         gameLoop.start();
         
         root.getChildren().add(pane);
+        root.getChildren().add(bulletPane);
         stage.setScene(scene);
 		
 		stage.show();
