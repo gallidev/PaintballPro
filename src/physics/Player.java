@@ -20,7 +20,7 @@ public class Player extends ImageView{
 		this.mx = x;
 		this.my = y;
 		angle = 0.0;
-		playerImage = new Image("assets/arrow.png", 25, 25, false, false);
+		playerImage = new Image("assets/player.png", 30, 64, true, true);
 		setImage(playerImage);
 		setSmooth(true);
 	}
