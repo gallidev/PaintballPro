@@ -15,6 +15,8 @@ public class Bullet extends Circle{
 		this.angle = angle;
 		setCenterX(x);
 		setCenterY(y);
+		//setTranslateX(x);
+		//setTranslateY(y);
 		setRadius(3);
 		setFill(Color.RED);
 	}

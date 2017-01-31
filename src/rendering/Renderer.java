@@ -15,7 +15,9 @@ public class Renderer extends Scene
 	public Renderer()
 	{
 		super(view, 800, 600);
-		Player player = new Player(72, 72);
+		// true: moves respective to mouse position
+		//false: moves respective to global position
+		Player player = new Player(72, 72, true);
 		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);

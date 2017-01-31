@@ -8,11 +8,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class DisplayFX extends Application
@@ -33,7 +30,10 @@ public class DisplayFX extends Application
 		scene.setCursor(Cursor.CROSSHAIR);
 		stage.setTitle("Paintball Pro");
 		
-		player = new Player(72, 72);
+		
+		// true: moves respective to mouse position
+		//false: moves respective to global position
+		player = new Player(72, 72, true); 
 		
 		KeyPressListener kp = new KeyPressListener(player);
 		KeyReleaseListener kl = new KeyReleaseListener(player);
@@ -47,8 +47,6 @@ public class DisplayFX extends Application
 		scene.setOnMouseReleased(ml);
 		Pane pane = new Pane();
 		pane.getChildren().add(player);
-		Pane bulletPane = new Pane();
-		
 		
 		AnimationTimer gameLoop = new AnimationTimer() {
 
@@ -56,21 +54,19 @@ public class DisplayFX extends Application
             public void handle(long now) {
         		player.tick();
         		
-                bulletPane.getChildren().clear();
+        		Pane bulletPane = new Pane();
         		ArrayList<Bullet> bullets = (ArrayList<Bullet>) player.getBullets();
         		for(int i=0; i<bullets.size(); i++){
             		bulletPane.getChildren().add(bullets.get(i));
         		}
+        		root.getChildren().add(bulletPane);
             }
-
         };
         
         gameLoop.start();
         
         root.getChildren().add(pane);
-        root.getChildren().add(bulletPane);
         stage.setScene(scene);
-		
 		stage.show();
 	}
 }
