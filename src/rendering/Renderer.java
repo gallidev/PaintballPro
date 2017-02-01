@@ -3,10 +3,9 @@ package rendering;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import physics.KeyPressListener;
-import physics.KeyReleaseListener;
-import physics.MouseListener;
-import physics.Player;
+import physics.*;
+
+import java.util.Random;
 
 public class Renderer extends Scene
 {
@@ -15,9 +14,15 @@ public class Renderer extends Scene
 	public Renderer()
 	{
 		super(view, 800, 600);
-		// true: moves respective to mouse position
-		//false: moves respective to global position
-		Player player = new Player(72, 72, true);
+
+		Random random = new Random();
+		for(int i = 0; i < 15; i++)
+		{
+			int x = random.nextInt(15), y = random.nextInt(15);
+			Asset dirt = new Asset("assets/dirt.png", AssetType.Floor, x * 64, y * 64);
+			view.getChildren().add(dirt);
+		}
+		Player player = new Player(0, 0, false);
 		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
@@ -37,6 +42,18 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				player.tick();
+				view.setTranslateX(-player.getLayoutX() + 370);
+				view.setTranslateY(-player.getLayoutY() + 236);
+				for(Bullet pellet : player.getBullets())
+				{
+					if(!view.getChildren().contains(pellet))
+						view.getChildren().add(pellet);
+					else
+					{
+						pellet.setX(pellet.getX());
+						pellet.setY(pellet.getY());
+					}
+				}
 			}
 		}.start();
 	}
