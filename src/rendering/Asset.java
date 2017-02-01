@@ -13,7 +13,7 @@ class Asset extends ImageView
 		this.type = type;
 		this.x = x;
 		this.y = y;
-		this.setTranslateX(x);
-		this.setTranslateY(y);
+		this.setX(x);
+		this.setY(y);
 	}
 }

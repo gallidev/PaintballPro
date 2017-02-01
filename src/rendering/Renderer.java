@@ -5,23 +5,16 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import physics.*;
 
-import java.util.Random;
-
 public class Renderer extends Scene
 {
-	private static Group view = new Group();
+	static Group view = new Group();
 
 	public Renderer()
 	{
 		super(view, 800, 600);
 
-		Random random = new Random();
-		for(int i = 0; i < 15; i++)
-		{
-			int x = random.nextInt(15), y = random.nextInt(15);
-			Asset dirt = new Asset("assets/dirt.png", AssetType.Floor, x * 64, y * 64);
-			view.getChildren().add(dirt);
-		}
+		new Map("maps/elimination.json");
+
 		Player player = new Player(0, 0, false);
 		view.getChildren().add(player);
 
@@ -42,8 +35,8 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				player.tick();
-				view.setTranslateX(-player.getLayoutX() + 370);
-				view.setTranslateY(-player.getLayoutY() + 236);
+				view.setLayoutX(370 - player.getLayoutX());
+				view.setLayoutY(236 - player.getLayoutY());
 				for(Bullet pellet : player.getBullets())
 				{
 					if(!view.getChildren().contains(pellet))
