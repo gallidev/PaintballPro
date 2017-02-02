@@ -1,21 +1,21 @@
-package networking;
+package networkingOld;
 
 
 /**
- * Periodically updates the information in the lobby table - the current client(s) connected.
+ * Periodically updates the information in the score table - the current client(s) connected scores.
  */
-public class LobbyCheckThread extends Thread {
+public class ScoreCheckThread extends Thread {
 	
-	private ClientLobby lobby;
+	private ScoreBoard scoreboard;
 	private boolean is_running = true;
 	
 	/**
-	 * Initializes passed ClientLobby variable.
-	 * @param lobby Class representing the list of clients connected to the Server.
+	 * Constructor - sets passed ScoreBoard variable.
+	 * @param scoreboard
 	 */
-	public LobbyCheckThread(ClientLobby lobby)
+	public ScoreCheckThread(ScoreBoard scoreboard)
 	{
-		this.lobby = lobby;
+		this.scoreboard = scoreboard;
 	}
 	
 	/**
@@ -34,17 +34,16 @@ public class LobbyCheckThread extends Thread {
 		//Does not stop until client quits... this stops everything and therefore also this thread.
 		while(is_running)
 		{
-			//Update the table of clients currently connected to the server.
-			lobby.updateText();
+			//Update the table of scores for the clients currently connected to the server.
+			scoreboard.updateText();
 			
 			try {
 				//Update every 30 seconds, if lots of clients this reduces the amount of time and processing it regularly takes.
 				Thread.sleep(30000);
 			} catch (InterruptedException e) {
-				//System.err.println("Interrupted while sleeping");
+				//System.err.println("Interrupted while sleeping.");
 				return;
 			}
 		}
 	}
-	
 }

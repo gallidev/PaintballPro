@@ -1,4 +1,4 @@
-package networking;
+package networkingNew;
 
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.net.Socket;
 /**
  * Class to wait for a specific input in the command line of the server and act accordingly.
  */
-public class ServerListener extends Thread {
+public class ServerExitListener extends Thread {
 	
 	private BufferedReader myClient;
 	private ArrayList<Socket> sockets;
@@ -18,7 +18,7 @@ public class ServerListener extends Thread {
 	 * Constructs the class, assigning passed variables and creating a new array to store sockets.
 	 * @param c Reader of string input on the command line of Server.
 	 */
-	public ServerListener(BufferedReader c) {
+	public ServerExitListener(BufferedReader c) {
 		myClient = c;
 		sockets = new ArrayList<Socket>();
 	}

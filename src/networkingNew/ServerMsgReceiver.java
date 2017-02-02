@@ -1,4 +1,4 @@
-package networking;
+package networkingNew;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ import java.util.ArrayList;
 /**
  * Class to get messages from client, process and put appropriate message for a client.
  */
-public class ServerReceiver extends Thread {
+public class ServerMsgReceiver extends Thread {
 	
 	private int myClientsID;
 	private BufferedReader myClient;
 	private ClientTable clientTable;
-	private ServerSender sender;
+	private ServerMsgSender sender;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -24,7 +24,7 @@ public class ServerReceiver extends Thread {
 	 * @param table Table storing client information.
 	 * @param sender Sender class for sending messages to the client.
 	 */
-	public ServerReceiver(int clientID, BufferedReader reader, ClientTable table, ServerSender sender) {
+	public ServerMsgReceiver(int clientID, BufferedReader reader, ClientTable table, ServerMsgSender sender) {
 		myClientsID = clientID;
 		myClient = reader;
 		clientTable = table;
