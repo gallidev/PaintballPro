@@ -1,19 +1,34 @@
 package rendering;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import physics.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class Renderer extends Scene
 {
-	static Group view = new Group();
+	private static Group view = new Group();
 
 	public Renderer()
 	{
 		super(view, 800, 600);
 
-		new Map("maps/elimination.json");
+		Gson gson = new Gson();
+		try
+		{
+			Map map = gson.fromJson(new FileReader("res/maps/elimination.json"), Map.class);
+			for(Asset wall : map.getWalls())
+				view.getChildren().add(wall);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 
 		Player player = new Player(0, 0, false);
 		view.getChildren().add(player);
@@ -35,8 +50,8 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				player.tick();
-				view.setLayoutX(370 - player.getLayoutX());
-				view.setLayoutY(236 - player.getLayoutY());
+				view.setLayoutX((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX());
+				view.setLayoutY((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY());
 				for(Bullet pellet : player.getBullets())
 				{
 					if(!view.getChildren().contains(pellet))

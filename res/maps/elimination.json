@@ -1,7 +1,5 @@
 {
 	"name": "Elimination",
-	"width": 16,
-	"height": 16,
 	"walls": [
 		{ "material": "dirt", "x": 0, "y": 0 },
 		{ "material": "dirt", "x": 1, "y": 0 },
