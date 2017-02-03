@@ -1,10 +1,11 @@
 package rendering;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import physics.*;
 
 import java.io.FileNotFoundException;
@@ -23,14 +24,19 @@ public class Renderer extends Scene
 		{
 			Map map = gson.fromJson(new FileReader("res/maps/elimination.json"), Map.class);
 			for(Asset wall : map.getWalls())
-				view.getChildren().add(wall);
+			{
+				wall.image = new ImageView(new Image("assets/" + wall.material + ".png", 64, 64, true, true));
+				wall.image.setX(wall.x * 64);
+				wall.image.setY(wall.y * 64);
+				view.getChildren().add(wall.image);
+			}
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
 
-		Player player = new Player(0, 0, false);
+		Player player = new Player(0, 0, false, this);
 		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);

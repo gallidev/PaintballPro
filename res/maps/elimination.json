@@ -1,8 +1,8 @@
 {
 	"name": "Elimination",
 	"walls": [
-		{ "material": "dirt", "x": 0, "y": 0 },
-		{ "material": "dirt", "x": 1, "y": 0 },
-		{ "material": "dirt", "x": 2, "y": 0 }
+		{ "material": "sand_brick", "x": 0, "y": 0 },
+		{ "material": "sand_brick", "x": 1, "y": 0 },
+		{ "material": "sand_brick", "x": 2, "y": 0 }
 	]
 }
