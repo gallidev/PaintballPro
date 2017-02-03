@@ -1,9 +1,7 @@
 package physics;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
@@ -19,15 +17,16 @@ public class Player extends ImageView{
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private boolean controlScheme;
 	private Rotate rotation;
-	private Canvas canvas;
+	private Scene scene;
 
 	//temporarily added canvas to draw a line showing players path
-	public Player(float x, float y, boolean controlScheme){
+	public Player(float x, float y, boolean controlScheme, Scene scene){
 		this.x = x;
 		this.y = y;
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
+		this.scene = scene;
 		angle = 0.0;
 		playerImage = new Image("assets/player.png", 30, 64, true, true);
 		setImage(playerImage);
@@ -35,9 +34,6 @@ public class Player extends ImageView{
 		setSmooth(true);
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 		this.getTransforms().add(rotation);
-		this.canvas = canvas;
-		//rotation.setPivotX(85 * playerImage.getWidth()/118);
-		//rotation.setPivotY(185 * playerImage.getHeight()/255);
 		rotation.setPivotX(playerImage.getWidth()/2);
 		rotation.setPivotY(playerImage.getHeight()/2);
 	}
@@ -84,10 +80,12 @@ public class Player extends ImageView{
 			firedBullets.get(i).moveInDirection();
 		}
 		
-		//double deltax = (mx) - (x + 50 * playerImage.getWidth()/118);
-		//double deltay = (y + 185 * playerImage.getHeight()/255) - (my);
-		double deltax = (mx) - (x + playerImage.getWidth()/2);
-		double deltay = (y + playerImage.getHeight()/2) - (my);
+		
+		//double deltax = (mx) - (x + playerImage.getWidth()/2);
+		//double deltay = (y + playerImage.getHeight()/2) - (my);
+		
+		double deltax = mx - scene.getWidth()/2;
+		double deltay = scene.getHeight()/2 - my;
 		angle = Math.atan2(deltax, deltay);
 		
 		setAngle(angle);

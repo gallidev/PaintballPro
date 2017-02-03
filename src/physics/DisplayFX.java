@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -24,6 +23,7 @@ public class DisplayFX extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
+		//Root contains objects added to the scene
 		Group root = new Group();
 		Scene scene = new Scene(root, 640, 480, Color.WHITE);
 		scene.setCursor(Cursor.CROSSHAIR);
@@ -33,7 +33,7 @@ public class DisplayFX extends Application
 		
 		// true: moves respective to mouse position
 		//false: moves respective to global position
-		player = new Player(72, 72, true); 
+		player = new Player(72, 72, true, scene); 
 		
 		KeyPressListener kp = new KeyPressListener(player);
 		KeyReleaseListener kl = new KeyReleaseListener(player);
@@ -45,9 +45,10 @@ public class DisplayFX extends Application
 		scene.setOnMouseDragged(ml);
 		scene.setOnMousePressed(ml);
 		scene.setOnMouseReleased(ml);
-		Pane pane = new Pane();
-		pane.getChildren().add(player);
-		root.getChildren().add(pane);
+		
+		//Adds player to root
+		
+		root.getChildren().add(player);
 		
 		AnimationTimer gameLoop = new AnimationTimer() {
 
