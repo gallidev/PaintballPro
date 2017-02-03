@@ -7,6 +7,9 @@ import javafx.scene.transform.Rotate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  The player, represented by an ImageView
+ */
 public class Player extends ImageView{
 	
 	private Image playerImage;
@@ -19,7 +22,13 @@ public class Player extends ImageView{
 	private Rotate rotation;
 	private Scene scene;
 
-	//temporarily added canvas to draw a line showing players path
+	/**
+	 * Create a new player at the set location, and adds the rotation property to the player
+	 * @param x The x-coordinate of the player with respect to the map
+	 * @param y The y-coordinate of the player with respect to the map
+	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
+	 * @param scene The scene in which the player will be displayed
+	 */
 	public Player(float x, float y, boolean controlScheme, Scene scene){
 		this.x = x;
 		this.y = y;
@@ -30,14 +39,17 @@ public class Player extends ImageView{
 		angle = 0.0;
 		playerImage = new Image("assets/player.png", 30, 64, true, true);
 		setImage(playerImage);
-		
 		setSmooth(true);
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
-		this.getTransforms().add(rotation);
+	    getTransforms().add(rotation);
 		rotation.setPivotX(playerImage.getWidth()/2);
 		rotation.setPivotY(playerImage.getHeight()/2);
 	}
 
+	/**
+	 * Tick is called every frame
+	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed
+	 */
 	public void tick() {
 		if(controlScheme){
 			if(up){
@@ -76,32 +88,39 @@ public class Player extends ImageView{
 		if(shoot){
 			shoot();
 		}
+		
+		//Updates the location of the bullets
 		for(int i = 0; i < firedBullets.size(); i++){
 			firedBullets.get(i).moveInDirection();
 		}
 		
-		
-		//double deltax = (mx) - (x + playerImage.getWidth()/2);
-		//double deltay = (y + playerImage.getHeight()/2) - (my);
-		
+		//Calculates the angle the player is facing with respect to the mouse
 		double deltax = mx - scene.getWidth()/2;
 		double deltay = scene.getHeight()/2 - my;
 		angle = Math.atan2(deltax, deltay);
-		
 		setAngle(angle);
 		rotation.setAngle(Math.toDegrees(angle));
 		
+		//Moves player in target direction
 		setLayoutX(x);
 		setLayoutY(y);
 	}
 	
+	/**
+	 * Creates a bullet at the player's location that travels in the direction the player is facing.
+	 * The bullet is added to the arraylist "firedBullets"
+	 * It is called every time the player presses the left mouse button
+	 */
 	public void shoot(){
 		double bulletX = x + playerImage.getWidth()/2;
-		double bulletY = y + playerImage.getHeight()/2; //185
+		double bulletY = y + playerImage.getHeight()/2;
 		
 		Bullet bullet = new Bullet(bulletX, bulletY, angle);
 		firedBullets.add(bullet);
 	}
+	
+	//Getters and setters below this point
+	//-----------------------------------------------------------------------------
 	
 	public List<Bullet> getBullets(){
 		return this.firedBullets;
