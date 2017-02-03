@@ -35,7 +35,7 @@ public class ServerMsgSender extends Thread {
 	}
 	
 	/**
-	 * Sets the variable is_running to false. Will stop the thread from running its loop in run().
+	 * Sets the global variable is_running to false. Will stop the thread from running its loop in run().
 	 */
 	public void stopThread()
 	{
@@ -43,7 +43,7 @@ public class ServerMsgSender extends Thread {
 	}
 
 	/**
-	 * The main method running in this class, runs when the class is started after initialization.
+	 * The main method running in this class, runs when the class is started after initialisation.
 	 */
 	public void run() {
 		while (m_running) {

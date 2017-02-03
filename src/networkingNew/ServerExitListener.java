@@ -28,11 +28,10 @@ public class ServerExitListener extends Thread {
 	 */
 	public void run() {
 		try {
-			String response;
 			//Doesn't need to stop.
 			while (true) {
 				//If client types 'Exit' onto server command line...
-				if((response = myClient.readLine()).compareTo("Exit") == 0)
+				if(myClient.readLine().compareTo("Exit") == 0)
 				{
 					//Cycle through all sockets...
 					for(int i = 0; i < sockets.size(); i++)
@@ -55,6 +54,12 @@ public class ServerExitListener extends Thread {
 				else
 				{
 					System.out.println("Unrecognised command... type 'Exit' to stop the Server and connected Clients.");
+				}
+				//Give other things a chance to run.
+				try {
+					sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}

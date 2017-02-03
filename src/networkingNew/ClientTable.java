@@ -9,6 +9,7 @@ import java.util.concurrent.*;
  */
 public class ClientTable {
 	//Structures storing relevant data.
+	
 	//Each client has a message queue.
 	private ConcurrentMap<Integer,MessageQueue> queueTable  = new ConcurrentHashMap<Integer,MessageQueue>();
 	//Each client has a status relating to whether or not they are in a game.
