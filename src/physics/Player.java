@@ -1,6 +1,9 @@
 package physics;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
@@ -12,11 +15,13 @@ public class Player extends ImageView{
 	private double x, y;
 	private double mx, my;
 	private boolean up, down, left, right, shoot;
-	private double angle, lastAngle;
-	private List<Bullet> firedBullets = new ArrayList<Bullet>();
+	private double angle;
+	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private boolean controlScheme;
 	private Rotate rotation;
+	private Canvas canvas;
 
+	//temporarily added canvas to draw a line showing players path
 	public Player(float x, float y, boolean controlScheme){
 		this.x = x;
 		this.y = y;
@@ -26,9 +31,15 @@ public class Player extends ImageView{
 		angle = 0.0;
 		playerImage = new Image("assets/player.png", 30, 64, true, true);
 		setImage(playerImage);
+		
 		setSmooth(true);
-		rotation = new Rotate(Math.toDegrees(angle), x, y, 0, Rotate.Z_AXIS);
+		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 		this.getTransforms().add(rotation);
+		this.canvas = canvas;
+		//rotation.setPivotX(85 * playerImage.getWidth()/118);
+		//rotation.setPivotY(185 * playerImage.getHeight()/255);
+		rotation.setPivotX(playerImage.getWidth()/2);
+		rotation.setPivotY(playerImage.getHeight()/2);
 	}
 
 	public void tick() {
@@ -73,19 +84,13 @@ public class Player extends ImageView{
 			firedBullets.get(i).moveInDirection();
 		}
 		
-		double deltax = (mx - 10) - x;
-		double deltay = y - (my - 10);
-		double deltaz = Math.sqrt(deltax * deltax + deltay * deltay);
-		double angle = lastAngle;
-		if (deltaz > 5){
-			angle = Math.atan2(deltax, deltay);
-		}
+		//double deltax = (mx) - (x + 50 * playerImage.getWidth()/118);
+		//double deltay = (y + 185 * playerImage.getHeight()/255) - (my);
+		double deltax = (mx) - (x + playerImage.getWidth()/2);
+		double deltay = (y + playerImage.getHeight()/2) - (my);
 		angle = Math.atan2(deltax, deltay);
 		
 		setAngle(angle);
-		lastAngle = angle;
-		rotation.setPivotX(50 * playerImage.getWidth()/118);
-		rotation.setPivotY(185 * playerImage.getHeight()/255);
 		rotation.setAngle(Math.toDegrees(angle));
 		
 		setLayoutX(x);
@@ -93,8 +98,8 @@ public class Player extends ImageView{
 	}
 	
 	public void shoot(){
-		double bulletX = x + (playerImage.getWidth()/2);
-		double bulletY = y + (playerImage.getHeight()/2);
+		double bulletX = x + playerImage.getWidth()/2;
+		double bulletY = y + playerImage.getHeight()/2; //185
 		
 		Bullet bullet = new Bullet(bulletX, bulletY, angle);
 		firedBullets.add(bullet);
