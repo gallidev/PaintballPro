@@ -24,11 +24,11 @@ public class DisplayFX extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		Canvas canvas = new Canvas(1024, 1024);
-		Group root = new Group(canvas);
+		Group root = new Group();
 		Scene scene = new Scene(root, 640, 480, Color.WHITE);
 		scene.setCursor(Cursor.CROSSHAIR);
 		stage.setTitle("Paintball Pro");
+		
 		
 		
 		// true: moves respective to mouse position
@@ -47,6 +47,7 @@ public class DisplayFX extends Application
 		scene.setOnMouseReleased(ml);
 		Pane pane = new Pane();
 		pane.getChildren().add(player);
+		root.getChildren().add(pane);
 		
 		AnimationTimer gameLoop = new AnimationTimer() {
 
@@ -65,7 +66,6 @@ public class DisplayFX extends Application
         
         gameLoop.start();
         
-        root.getChildren().add(pane);
         stage.setScene(scene);
 		stage.show();
 	}
