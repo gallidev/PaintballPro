@@ -12,7 +12,6 @@ public class Game extends Application
 	{
 		stage.setScene(new Renderer());
 		stage.setTitle("Paintball Pro");
-		stage.setResizable(false);
 		stage.show();
 	}
 

@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import physics.*;
 
 import java.io.FileNotFoundException;
@@ -14,11 +15,19 @@ import java.io.FileReader;
 
 public class Renderer extends Scene
 {
-	private static Group view = new Group();
+	private static Pane view = new Pane();
+	private double scale = 1;
 
 	public Renderer()
 	{
-		super(view, 800, 600);
+		super(view, 1024, 576);
+		//16:9 aspect ratio
+		widthProperty().addListener(observable ->
+		{
+			scale = getWidth() / 1024;
+			view.setScaleX(scale);
+			view.setScaleY((getWidth() * 0.5625) / 576);
+		});
 
 		Gson gson = new Gson();
 		try
@@ -57,8 +66,8 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				player.tick();
-				view.setLayoutX((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX());
-				view.setLayoutY((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY());
+				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
+				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 				for(Bullet pellet : player.getBullets())
 				{
 					if(!view.getChildren().contains(pellet))
