@@ -1,5 +1,6 @@
 package rendering;
 
+// if you get a "import com.google cannot be resolved" error, make sure gson-2.8.0.jar (in res) is added to Referenced Libraries in build path.
 import com.google.gson.Gson;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
