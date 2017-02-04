@@ -10,18 +10,39 @@ import java.io.FileReader;
 
 import static rendering.Renderer.view;
 
+@SuppressWarnings("MismatchedReadAndWriteOfArray")
 class Map
 {
-	String name;
-	@SuppressWarnings("MismatchedReadAndWriteOfArray")
+	private String name;
 	private Wall[] walls;
+	private Floor[] floors;
+	private Prop[] props;
 
-	static void load(String url)
+	static Map load(String url)
 	{
 		Gson gson = new Gson();
+		Map map = null;
 		try
 		{
-			Map map = gson.fromJson(new FileReader(url), Map.class);
+			map = gson.fromJson(new FileReader(url), Map.class);
+
+			for(Floor floor : map.floors)
+			{
+				floor.tiles = new Group();
+				for(int i = 0; i < floor.width; i++)
+				{
+					for(int j = 0; j < floor.height; j++)
+					{
+						ImageView tile = new ImageView(new Image("assets/" + floor.material + ".png", 64, 64, true, true));
+						tile.setX((i + floor.x) * 64);
+						tile.setY((j + floor.y) * 64);
+						floor.tiles.getChildren().add(tile);
+					}
+				}
+				view.getChildren().add(floor.tiles);
+			}
+
+			//Wall orientation: true for horizontal, false for vertical
 			for(Wall wall : map.walls)
 			{
 				wall.blocks = new Group();
@@ -34,10 +55,20 @@ class Map
 				}
 				view.getChildren().add(wall.blocks);
 			}
+
+			for(Prop prop : map.props)
+			{
+				prop.image = new ImageView(new Image("assets/" + prop.material + ".png", 64, 64, true, true));
+				prop.image.setX(prop.x * 64);
+				prop.image.setY(prop.y * 64);
+				view.getChildren().add(prop.image);
+			}
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
+
+		return map;
 	}
 }

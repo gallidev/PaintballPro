@@ -13,6 +13,7 @@ import java.util.List;
 public class Player extends ImageView{
 	
 	private Image playerImage;
+	private final double playerHeadX = 12.5, playerHeadY = 47.5;
 	private double x, y;
 	private double mx, my;
 	private boolean up, down, left, right, shoot;
@@ -39,11 +40,10 @@ public class Player extends ImageView{
 		angle = 0.0;
 		playerImage = new Image("assets/player.png", 30, 64, true, true);
 		setImage(playerImage);
-		setSmooth(true);
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
-		rotation.setPivotX(playerImage.getWidth()/2);
-		rotation.setPivotY(playerImage.getHeight()/2);
+		rotation.setPivotX(playerHeadX);
+		rotation.setPivotY(playerHeadY);
 	}
 
 	/**
@@ -98,7 +98,6 @@ public class Player extends ImageView{
 		double deltax = mx - scene.getWidth()/2;
 		double deltay = scene.getHeight()/2 - my;
 		angle = Math.atan2(deltax, deltay);
-		setAngle(angle);
 		rotation.setAngle(Math.toDegrees(angle));
 		
 		//Moves player in target direction
@@ -113,14 +112,14 @@ public class Player extends ImageView{
 	 */
 	public void shoot(){
 		
-		double x1 = (83 * playerImage.getWidth()/120) - playerImage.getWidth()/2;
-		double y1 = (12 * playerImage.getHeight()/255) - playerImage.getHeight()/2;
+		double x1 = (83 * playerImage.getWidth()/120) - playerHeadX;
+		double y1 = (12 * playerImage.getHeight()/255) - playerHeadY;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 
-		double bulletX = x + x2 + playerImage.getWidth()/2;
-		double bulletY = y + y2 + playerImage.getHeight()/2;
+		double bulletX = x + x2 + playerHeadX;
+		double bulletY = y + y2 + playerHeadY;
 		
 		Bullet bullet = new Bullet(bulletX, bulletY, angle);
 		firedBullets.add(bullet);

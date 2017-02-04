@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import physics.*;
 
 public class Renderer extends Scene
@@ -15,6 +16,9 @@ public class Renderer extends Scene
 	public Renderer()
 	{
 		super(view, 1024, 576);
+		super.setFill(Color.BLACK);
+		setCursor(Cursor.CROSSHAIR);
+
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
 		{
@@ -23,15 +27,15 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		Map.load("res/maps/elimination.json");
+		Map map = Map.load("res/maps/elimination.json");
 
-		Player player = new Player(0, 0, false, this);
+		Player player = new Player(0, 64, false, this);
 		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
 		MouseListener mouseListener = new MouseListener(player);
-		setCursor(Cursor.CROSSHAIR);
+
 
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);
@@ -49,15 +53,8 @@ public class Renderer extends Scene
 				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 				for(Bullet pellet : player.getBullets())
-				{
 					if(!view.getChildren().contains(pellet))
 						view.getChildren().add(pellet);
-					else
-					{
-						pellet.setX(pellet.getX());
-						pellet.setY(pellet.getY());
-					}
-				}
 			}
 		}.start();
 	}

@@ -1,6 +1,12 @@
 {
 	"name": "Elimination",
+	"floors": [
+		{ "material": "sand", "width": 5, "height": 4, "x": 0, "y": 1}
+	],
 	"walls": [
 		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 0, "y": 0}
+	],
+	"props": [
+		{ "material": "crate", "x": 4, "y": 3 }
 	]
 }
