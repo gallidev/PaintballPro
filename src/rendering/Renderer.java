@@ -2,6 +2,7 @@ package rendering;
 
 // if you get a "import com.google cannot be resolved" error, make sure gson-2.8.0.jar (in res) is added to Referenced Libraries in build path
 import javafx.animation.AnimationTimer;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import physics.*;
@@ -30,6 +31,7 @@ public class Renderer extends Scene
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
 		MouseListener mouseListener = new MouseListener(player);
+		setCursor(Cursor.CROSSHAIR);
 
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);

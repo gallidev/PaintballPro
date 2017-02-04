@@ -112,8 +112,15 @@ public class Player extends ImageView{
 	 * It is called every time the player presses the left mouse button
 	 */
 	public void shoot(){
-		double bulletX = x + playerImage.getWidth()/2;
-		double bulletY = y + playerImage.getHeight()/2;
+		
+		double x1 = (83 * playerImage.getWidth()/120) - playerImage.getWidth()/2;
+		double y1 = (12 * playerImage.getHeight()/255) - playerImage.getHeight()/2;
+
+		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+
+		double bulletX = x + x2 + playerImage.getWidth()/2;
+		double bulletY = y + y2 + playerImage.getHeight()/2;
 		
 		Bullet bullet = new Bullet(bulletX, bulletY, angle);
 		firedBullets.add(bullet);
