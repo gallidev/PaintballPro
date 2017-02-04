@@ -10,6 +10,10 @@ import java.io.FileReader;
 
 import static rendering.Renderer.view;
 
+/**
+ * A representation of a game map. All information is deserialised into this class from a JSON map file. All assets are placed in a grid format, where each space on a grid is 64x64 pixels. A map does not have a fixed size, therefore it should be treated as being infinite.<br>
+ * Each map object stores its name, an array of walls, floor tile groups and props.
+ */
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 class Map
 {
@@ -18,13 +22,17 @@ class Map
 	private Floor[] floors;
 	private Prop[] props;
 
+	/**
+	 * Read a map file, extract map information and render all assets onto the scene.
+	 * @param url File location of a map to load
+	 * @return Instance of a loaded map
+	 */
 	static Map load(String url)
 	{
-		Gson gson = new Gson();
 		Map map = null;
 		try
 		{
-			map = gson.fromJson(new FileReader(url), Map.class);
+			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
 			for(Floor floor : map.floors)
 			{

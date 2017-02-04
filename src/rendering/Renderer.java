@@ -8,12 +8,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import physics.*;
 
+/**
+ * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
+ * @author Artur Komoter
+ */
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
 	private double scale = 1;
 
-	public Renderer()
+	/**
+	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
+	 * @param map Name of the selected map
+	 */
+	public Renderer(String map)
 	{
 		super(view, 1024, 576);
 		super.setFill(Color.BLACK);
@@ -27,7 +35,7 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		Map map = Map.load("res/maps/elimination.json");
+		Map.load("res/maps/" + map + ".json");
 
 		Player player = new Player(0, 64, false, this);
 		view.getChildren().add(player);
@@ -35,7 +43,6 @@ public class Renderer extends Scene
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
 		MouseListener mouseListener = new MouseListener(player);
-
 
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);

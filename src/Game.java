@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.scene.Cursor;
 import javafx.stage.Stage;
 import rendering.Renderer;
 
@@ -10,7 +9,7 @@ public class Game extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		stage.setScene(new Renderer());
+		stage.setScene(new Renderer("elimination"));
 		stage.setTitle("Paintball Pro");
 		stage.show();
 	}
