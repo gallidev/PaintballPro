@@ -14,6 +14,8 @@ public class LobbyTable {
 	
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
 	
+	// Must check if max player number is reached before trying to add new players.
+	
 	//Each open lobby is stored here.
 	private ConcurrentMap<Integer,Lobby> lobbyList = new ConcurrentHashMap<Integer,Lobby>();
 
