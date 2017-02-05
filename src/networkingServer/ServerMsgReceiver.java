@@ -1,7 +1,11 @@
-package networkingNew;
+package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import networkingClient.ClientTable;
+import networkingSharedStuff.Message;
+import networkingSharedStuff.MessageQueue;
 
 
 // Gets messages from client and puts them in a queue, for another

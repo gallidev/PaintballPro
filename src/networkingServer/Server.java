@@ -1,4 +1,4 @@
-package networkingNew;
+package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,6 +6,10 @@ import java.io.PrintStream;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import networkingClient.ClientTable;
+import networkingSharedStuff.Message;
+import networkingSharedStuff.MessageQueue;
 
 /**
  * Class to represent a running server that connects to multiple clients via sockets.
