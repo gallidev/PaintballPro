@@ -1,4 +1,4 @@
-package networkingClient;
+package networkingServer;
 
 
 import java.util.ArrayList;

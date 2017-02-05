@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import networkingClient.ClientTable;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 

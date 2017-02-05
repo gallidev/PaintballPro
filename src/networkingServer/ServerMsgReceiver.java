@@ -3,7 +3,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import networkingClient.ClientTable;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 
