@@ -21,8 +21,9 @@ public class Lobby {
 	private int currPlayerRedNum;
 	private ConcurrentMap<Integer,Player> blueTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 1
 	private ConcurrentMap<Integer,Player> redTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 2
+	private int id;
 	
-	public Lobby(int PassedGameType, int PassedMaxPlayers)
+	public Lobby(int myid, int PassedGameType)
 	{
 		inGameStatus = false;
 		GameType = PassedGameType;
@@ -30,22 +31,24 @@ public class Lobby {
 		MaxPlayersReached = false;
 		currPlayerBlueNum = 0;
 		currPlayerRedNum = 0;
+		id = myid;
 	}
 
+	public int getID()
+	{
+		return id;
+	}
+	
 	public boolean getInGameStatus() {
 		return inGameStatus;
 	}
 
-	public void setInGameStatus(boolean inGameStatus) {
-		this.inGameStatus = inGameStatus;
+	public void switchGameStatus() {
+		this.inGameStatus = !this.inGameStatus;
 	}
 
 	public int getGameType() {
 		return GameType;
-	}
-
-	public int getMaxPlayers() {
-		return MaxPlayers;
 	}
 
 	public boolean isMaxPlayersReached() {
@@ -58,9 +61,10 @@ public class Lobby {
 
 	// add player to team
 	// NOTE - check somewhere else if max players is reached.
-	public void addPlayer(Player playerToAdd)
+	public void addPlayer(Player playerToAdd, int specific)
 	{
-		if(currPlayerBlueNum >= (MaxPlayers/2))
+		// Specific - 0 = random, 1 = blue, 2 = red;
+		if(currPlayerBlueNum >= (MaxPlayers/2) && (specific == 0 || specific == 2))
 		{	
 			redTeam.put(currPlayerRedNum, playerToAdd);
 			currPlayerRedNum++;
@@ -92,10 +96,11 @@ public class Lobby {
 					{
 						blueTeam.replace(i-1, blueTeam.get(i));
 						blueTeam.remove(i);
+						removed = true;
+						currPlayerBlueNum--;
+						break;
 					}
 				}
-				removed = true;
-				break;
 			}
 			counter++;
 		}
@@ -113,10 +118,11 @@ public class Lobby {
 						{
 							redTeam.replace(i-1, redTeam.get(i));
 							redTeam.remove(i);
+							currPlayerRedNum--;
+							removed = true;
+							break;
 						}
 					}
-					removed = true;
-					break;
 				}
 				counter++;
 			}
@@ -124,6 +130,38 @@ public class Lobby {
 	}
 	
 	// switch player's team
+	public void switchTeam(Player playerToSwitch)
+	{
+		boolean switched = false;
+		for(Player player : blueTeam.values())
+		{
+			if(player.getID() == playerToSwitch.getID())
+			{
+				if(currPlayerRedNum < (MaxPlayers/2))
+				{
+					removePlayer(playerToSwitch);
+					addPlayer(playerToSwitch,2);
+					switched = true;
+					break;
+				}
+			}
+		}
+		if(!switched)
+		{
+			for(Player player : redTeam.values())
+			{
+				if(player.getID() == playerToSwitch.getID())
+				{
+					if(currPlayerBlueNum < (MaxPlayers/2))
+					{
+						removePlayer(playerToSwitch);
+						addPlayer(playerToSwitch,1);
+						switched = true;
+						break;
+					}
+				}
+			}
+		}
 	
-	
+	}
 }

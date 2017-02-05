@@ -44,102 +44,32 @@ public class LobbyTable {
 		lobbyList.remove(lobbyID);
 	}
 	
-	/**
-	 * Set the 'in game' status of the client to true.
-	 * @param player1 ID of client game Player 1.
-	 * @param player2 ID of client game Player 2.
-	 */
-	public synchronized void setGame(int player1, int player2)
+	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
+	public synchronized int addPlayerToLobby(Player player, int gameMode)
 	{
-		inGameStatus.replace(player1, true);
-		inGameStatus.replace(player2, true);
+		boolean addedToGame = false;
+		int lobbyAllocated = 0;
+		for(Lobby lobby : lobbyList.values())
+		{
+			if(lobby.getGameType() == gameMode && !lobby.isMaxPlayersReached())
+			{	
+				lobby.addPlayer(player, 0); // 0 indicated add at next available place.
+				lobbyAllocated = lobby.getID();
+				addedToGame = true;
+				break;
+			}
+			
+		}
+		if(!addedToGame) // all lobbies of that type are full, make a new one.
+		{
+			Lobby newLobby = new Lobby(id,gameMode);
+			newLobby.addPlayer(player, 0);
+			lobbyAllocated = newLobby.getID();
+			lobbyList.put(id, newLobby);
+			id++;
+		}
+		return lobbyAllocated;
 	}
 	
-	/**
-	 * Set the 'in game' status of the client to false.
-	 * @param player1 ID of client game Player 1.
-	 * @param player2 ID of client game Player 2.
-	 */
-	public synchronized void unsetGame(int player1, int player2)
-	{
-		inGameStatus.replace(player1, false);
-		inGameStatus.replace(player2, false);
-	}
-
-	/**
-	 * Increment the score of the winning client in a game.
-	 * @param clientID The ID of the client who won the game.
-	 */
-	public void wonGame(int clientID)
-	{
-		Scores.replace(clientID,((this.getScore(clientID))+1));  
-	}
-
-	/**
-	 * Get the score of a client.
-	 * @param clientID The id of the client to get the score of.
-	 * @return The score of the passed client.
-	 */
-	public int getScore(int clientID)
-	{
-		return Scores.get(clientID);
-	}
-
-	/**
-	 * Returns all of the scores stored in the table score data structure.
-	 * @return ArrayList of all scores.
-	 */
-	public ArrayList<Integer> getScores()
-	{
-		ArrayList<Integer> scores = new ArrayList<>();
-		//Cycle through all score values and add to an ArrayList.
-		for (int key : queueTable.keySet()) {
-			scores.add(Scores.get(key));
-		}
-		return scores;
-	}
-
-	/**
-	 * Get the nickname of the client with a particular ID.
-	 * @param id The id of the client to get the nickname for.
-	 * @return The nickname of a particular client.
-	 */
-	public String getNickname(int id)
-	{
-		return (id + " " + Nicknames.get(id));
-	}
-
-	/**
-	 * Get the game status of a particular client.
-	 * @param clientID The id of the client.
-	 * @return The game status of the client.
-	 */
-	public boolean gameStatus(int clientID)
-	{
-		return inGameStatus.get(clientID); 
-	}
-
-	/**
-	 * Retrieves the nicknames of the clients stored.
-	 * @return ArrayList of the nicknames of the client(s) stored.
-	 */
-	public ArrayList<String> getNicknames()
-	{
-		ArrayList<String> nicknames = new ArrayList<>();
-		//Cycle through all rows in the Map and get their values.
-		for (int key : queueTable.keySet()) {
-			nicknames.add(key+":"+Nicknames.get(key));
-		}
-		return nicknames;
-	}
-
-	/**
-	 * Get the message queue of a client. 
-	 * @param clientID The id of the client to get the message id for.
-	 * @return The message queue of the client.
-	 */
-	public MessageQueue getQueue(int clientID) {
-		//Null if not in the table.
-		return queueTable.get(clientID);
-	}
+	
 }
