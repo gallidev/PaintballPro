@@ -15,13 +15,14 @@ import physics.*;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
+	private static Map map;
 	private double scale = 1;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
-	 * @param map Name of the selected map
+	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String map)
+	public Renderer(String mapName)
 	{
 		super(view, 1024, 576);
 		super.setFill(Color.BLACK);
@@ -35,7 +36,7 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		Map.load("res/maps/" + map + ".json");
+		map = Map.load("res/maps/" + map + ".json");
 
 		Player player = new Player(0, 64, false, this);
 		view.getChildren().add(player);
@@ -64,5 +65,10 @@ public class Renderer extends Scene
 						view.getChildren().add(pellet);
 			}
 		}.start();
+	}
+
+	public static Map getMap()
+	{
+		return map;
 	}
 }
