@@ -61,8 +61,14 @@ public class Renderer extends Scene
 				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 				for(Bullet pellet : player.getBullets())
-					if(!view.getChildren().contains(pellet))
-						view.getChildren().add(pellet);
+					if(pellet.getActive()){
+						if(!view.getChildren().contains(pellet))
+							view.getChildren().add(pellet);
+					} else {
+						if(view.getChildren().contains(pellet)){
+							view.getChildren().remove((pellet));
+						}
+					}
 			}
 		}.start();
 	}
