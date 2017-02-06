@@ -22,6 +22,9 @@ public class Server {
 
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();
+		
+		// Create a new lobby instance.
+		LobbyTable gameLobbies = new LobbyTable();
 
 		// Open a server socket:
 		ServerSocket serverSocket = null;
@@ -95,7 +98,7 @@ public class Server {
 						sender.start();
 		
 						// We create and start a new thread to read from the client:
-						ServerMsgReceiver reciever = new ServerMsgReceiver(clientID, fromClient, clientTable,sender);
+						ServerMsgReceiver reciever = new ServerMsgReceiver(clientID, fromClient, clientTable,sender, gameLobbies);
 						reciever.start();
 		
 						//For debugging

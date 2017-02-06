@@ -19,6 +19,7 @@ public class ServerMsgReceiver extends Thread {
 	private BufferedReader myClient;
 	private ClientTable clientTable;
 	private ServerMsgSender sender;
+	private LobbyTable gameLobby;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -27,11 +28,12 @@ public class ServerMsgReceiver extends Thread {
 	 * @param table Table storing client information.
 	 * @param sender Sender class for sending messages to the client.
 	 */
-	public ServerMsgReceiver(int clientID, BufferedReader reader, ClientTable table, ServerMsgSender sender) {
+	public ServerMsgReceiver(int clientID, BufferedReader reader, ClientTable table, ServerMsgSender sender, LobbyTable passedGameLobby) {
 		myClientsID = clientID;
 		myClient = reader;
 		clientTable = table;
 		this.sender = sender;
+		gameLobby = passedGameLobby;
 	}
 	
 	/**
@@ -46,6 +48,11 @@ public class ServerMsgReceiver extends Thread {
 				//If text isnt null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 					
+					if(text.contains("Play:Mode:"))
+					{
+						int gameMode = Integer.parseInt(text.substring(10));
+						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode);
+					}
 					//If the client wants the currently connected client nicknames.
 					if(text.contains("Retrieve Lobby List"))
 					{

@@ -27,21 +27,29 @@ public class LobbyTable {
 	 * @param nickname The nickname of the Client.
 	 * @return The id of the client that has just been added to the table.
 	 */
-	public synchronized int add(Lobby lobbyToAdd) 
+	private synchronized int add(Lobby lobbyToAdd) 
 	{
 		lobbyList.put(id, lobbyToAdd);
 		id++; //Increment current id value for next client to connect.
 
-		return (id-1); //Return this client's id value.
+		return (id-1); //Return this lobby id value.
 	}
 	
 	/**
 	 * Remove client information from the data structures.
 	 * @param clientID The id of the client to remove from the tables.
 	 */
+	
+	// run a thread to check if a lobby has 0 players, if it does, remove it.
 	public synchronized void removeLobby(int lobbyID)
 	{
 		lobbyList.remove(lobbyID);
+	}
+	
+	public synchronized void removePlayer(Player playerToRemove)
+	{
+		Lobby allocatedLobby = lobbyList.get(playerToRemove.getAllocatedLobby());
+		allocatedLobby.removePlayer(playerToRemove);
 	}
 	
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
@@ -68,8 +76,7 @@ public class LobbyTable {
 			lobbyList.put(id, newLobby);
 			id++;
 		}
+		player.setAllocatedLobby(lobbyAllocated);
 		return lobbyAllocated;
 	}
-	
-	
 }

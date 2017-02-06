@@ -20,7 +20,9 @@ public class ClientTable {
 	private ConcurrentMap<Integer,Integer> Scores = new ConcurrentHashMap<Integer,Integer>();
 	//Each client has a nickname.
 	private ConcurrentMap<Integer, String> Nicknames = new ConcurrentHashMap<Integer, String>();
-
+	//Each client has a Player object..
+	private ConcurrentMap<Integer, Player> playerInstances = new ConcurrentHashMap<Integer, Player>();
+	
 	//Each user will have an incrementing unique id - allows multiple people with the same nickname.
 	private int id = 1;
 
@@ -35,9 +37,16 @@ public class ClientTable {
 		inGameStatus.put(id, false); //Set initial in-game status as false.
 		Scores.put(id, 0); //Set score as 0.
 		Nicknames.put(id, nickname); //Set given nickname.
+		Player player = new Player(id);
+		playerInstances.put(id,player);
 		id++; //Increment current id value for next client to connect.
 
 		return (id-1); //Return this client's id value.
+	}
+	
+	public synchronized Player getPlayer(int clientID)
+	{
+		return playerInstances.get(clientID);
 	}
 	
 	/**
@@ -50,6 +59,7 @@ public class ClientTable {
 		inGameStatus.remove(clientID);
 		Scores.remove(clientID);
 		Nicknames.remove(clientID);
+		playerInstances.remove(clientID);
 	}
 	
 	/**

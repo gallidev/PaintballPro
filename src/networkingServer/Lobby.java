@@ -16,7 +16,6 @@ public class Lobby {
 	private boolean inGameStatus;
 	private int GameType;
 	private int MaxPlayers;
-	private boolean MaxPlayersReached;
 	private int currPlayerBlueNum;
 	private int currPlayerRedNum;
 	private ConcurrentMap<Integer,Player> blueTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 1
@@ -28,7 +27,6 @@ public class Lobby {
 		inGameStatus = false;
 		GameType = PassedGameType;
 		MaxPlayers = 8;
-		MaxPlayersReached = false;
 		currPlayerBlueNum = 0;
 		currPlayerRedNum = 0;
 		id = myid;
@@ -74,10 +72,6 @@ public class Lobby {
 			blueTeam.put(currPlayerBlueNum, playerToAdd);
 			currPlayerBlueNum++;
 		}
-		if(isMaxPlayersReached())
-			MaxPlayersReached = true;
-		else
-			MaxPlayersReached = false;
 	}
 	
 	// remove player from team and alter everyone's respective positions in the lobby to accomodate.
