@@ -141,27 +141,43 @@ public class Player extends ImageView{
 		
 		//Player collision detection
 		
-		//Wall collision
-		ArrayList<Group> walls = map.getWalls();
-		for(Group wall : walls){
-			//For use of getBoundsInLocal see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html
-			if(getBoundsInLocal().intersects(wall.getBoundsInParent())) {
-				//find out where wall is
-				double wallX = wall.getLayoutX();
-				double wallY = wall.getLayoutY();
-				double wallWidth = wall.getBoundsInParent().getWidth();
-				double wallHeight = wall.getBoundsInParent().getHeight();
-				if(wallX > x){
-					//stop playing from clipping into the wall (prevent rotation into the wall?)
-					if(wallY < y + playerImage.getHeight()) right = false; //can't go right
-					if(wallY + wallHeight > y) right = false;//can't go right
-					if(wallY > y + playerImage.getHeight()) down = false;//can't go down
-					if(wallY + wallHeight < y) up = false;//can't go up
+				//Object collision
+				ArrayList<ImageView> props = map.getProps();
+				for(ImageView prop : props){
+					if(getBoundsInParent().intersects(prop.getBoundsInParent())) {
+						double propX = prop.getX();
+						double propY = prop.getY();
+						double propWidth = prop.getImage().getWidth();
+						double propHeight = prop.getImage().getHeight();
+						if(propX >= x + playerImage.getWidth()/2){
+							if(propY < y + playerImage.getHeight()) {
+								x -= 1; //can't go right
+							}
+							if(propY + propHeight > y) {
+								x -= 1; //can't go right
+							}
+						}
+						if(propX + propWidth/2 < x - playerImage.getWidth()/2){
+							if(propY < y + playerImage.getHeight()) {
+								x += 1; //can't go left
+							}
+							if(propY + propHeight > y) {
+								x += 1; //can't go left
+							}
+						}
+						if(propY >= (y + playerImage.getHeight()/2)){
+							y -= 2; //can't go down
+						}
+						if(propY <= y){
+							y += 2; //can't go up
+						}
+					}
+					for(Bullet bullet : firedBullets){
+						if(bullet.getBoundsInParent().intersects(prop.getBoundsInParent())){
+							bullet.setActive(false);
+						}
+					}
 				}
-				//repeat with left, top and bottom
-			    //up/down/left/right = false
-			}
-		}
 		
 		
 		

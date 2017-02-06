@@ -9,8 +9,9 @@ import javafx.scene.shape.Circle;
 public class Bullet extends Circle{
 	
 	private double angle;
-	private float speed = 30f;
+	private float speed = 10f;
 	private double x, y;
+	private boolean active;
 
 	/**
 	 * Create a bullet at the given global coordinates with the given global angle
@@ -22,6 +23,7 @@ public class Bullet extends Circle{
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
+		active = true;
 		setCenterX(x);
 		setCenterY(y);
 		setRadius(3);
@@ -54,5 +56,13 @@ public class Bullet extends Circle{
 	
 	public void setY(double y){
 		this.y = y;
+	}
+	
+	public boolean getActive(){
+		return this.active;
+	}
+	
+	public void setActive(boolean b){
+		this.active = b;
 	}
 }
