@@ -23,8 +23,8 @@ public class Player extends ImageView{
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private boolean controlScheme;
 	private Rotate rotation;
-	private Scene scene;
-	private static Map map;
+	private Renderer scene;
+	private Map map;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -33,7 +33,7 @@ public class Player extends ImageView{
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene The scene in which the player will be displayed
 	 */
-	public Player(float x, float y, boolean controlScheme, Scene scene){
+	public Player(float x, float y, boolean controlScheme, Renderer scene){
 		this.x = x;
 		this.y = y;
 		this.mx = x;
@@ -47,7 +47,7 @@ public class Player extends ImageView{
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
-		Map map = rendering.Renderer.getMap();
+		map = scene.getMap();
 	}
 
 	/**
@@ -129,10 +129,10 @@ public class Player extends ImageView{
 				double wallWidth = wall.getBoundsInParent().getWidth();
 				double wallHeight = wall.getBoundsInParent().getHeight();
 				if(wallX > x){
-					if(wallY < y + height) //can't go right
-					if(wallY + wallHeight > y) //can't go right
-					if(wallY > y + height) //can't go down
-					if(wallY + wallHeight < y) //can't go up
+					if(wallY < y + playerImage.getHeight()) right = false; //can't go right
+					if(wallY + wallHeight > y) right = false;//can't go right
+					if(wallY > y + playerImage.getHeight()) down = false;//can't go down
+					if(wallY + wallHeight < y) up = false;//can't go up
 				}
 			    //up/down/left/right = false
 			}
