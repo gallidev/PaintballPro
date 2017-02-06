@@ -1,20 +1,19 @@
 package logic;
 
-import javax.swing.Timer;
-
 public class TeamMatchMode extends GameMode {
 	
-	//private Timer gameTimer;
+	private RoundTimer timer;
+	private static final long gameTime = 180; //in seconds
 	
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
-		//gameTimer = new Timer(arg0, arg1);
-		//gameTimer.start();
+		timer = new RoundTimer(gameTime);
+		timer.startTimer();
 	}
 
 	@Override
 	public boolean isGameFinished() {
-		return !gameTimer.isRunning();
+		return timer.isTimeElapsed();
 	}
 	
 	//Doesn't consider ties!!

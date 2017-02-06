@@ -60,6 +60,8 @@ public class Player extends ImageView{
 	 * @param x The x coordinate of the player.
 	 * @param y the y coordinate of the player.
 	 * @param nickname The player's nickname.
+	 * 
+	 * @ atp575
 	 */
 	public Player(double x, double y, String nickname) {
 		super();
