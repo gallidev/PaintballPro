@@ -1,4 +1,5 @@
 package physics;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -95,8 +96,17 @@ public class Player extends ImageView{
 		}
 		
 		//Calculates the angle the player is facing with respect to the mouse
-		double deltax = mx - scene.getWidth()/2;
-		double deltay = scene.getHeight()/2 - my;
+		Point2D temp = this.localToScene(playerHeadX, (playerHeadY));
+		double x1 = temp.getX();
+		double y1 = temp.getY();
+		
+		double deltax = mx - x1;
+		double deltay = y1 - my;
+		
+		
+		
+		//double deltax = mx - scene.getWidth()/2;
+		//double deltay = scene.getHeight()/2 - my;
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 		
