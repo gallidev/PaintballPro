@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import static rendering.Renderer.view;
 
@@ -78,5 +79,21 @@ class Map
 		}
 
 		return map;
+	}
+
+	public ArrayList<Group> getWalls()
+	{
+		ArrayList<Group> blocks = new ArrayList<>();
+		for(Wall wall : walls)
+			blocks.add(wall.blocks);
+		return blocks;
+	}
+
+	public ArrayList<ImageView> getProps()
+	{
+		ArrayList<ImageView> props = new ArrayList<>();
+		for(Prop prop : this.props)
+			props.add(prop.image);
+		return props;
 	}
 }
