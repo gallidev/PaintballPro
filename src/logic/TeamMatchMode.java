@@ -1,6 +1,7 @@
 package logic;
 
 public class TeamMatchMode extends GameMode {
+	
 
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
@@ -12,11 +13,15 @@ public class TeamMatchMode extends GameMode {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	//Doesn't consider ties!!
 	@Override
 	public Team whoWon() {
-		// TODO Auto-generated method stub
-		return null;
+		if (super.getFirstTeam().getScore() > super.getSecondTeam().getScore())
+			return super.getFirstTeam();
+		else 
+			return super.getSecondTeam();
+		
 	}
 
 }

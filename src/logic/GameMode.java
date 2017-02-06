@@ -17,8 +17,6 @@ public abstract class GameMode {
 		return t1;
 	}
 
-
-
 	public void setFirstTeam(Team t1) {
 		this.t1 = t1;
 	}
@@ -29,18 +27,8 @@ public abstract class GameMode {
 		return t2;
 	}
 
-
-
 	public void setSecondTeam(Team t2) {
 		this.t2 = t2;
-	}
-
-	public void updatePlayLocation(int newXCoord, int newYCoord){
-		
-	}
-	
-	public void updateScore(int newScore, Team t){
-		
 	}
 	
 	public void fire(){
