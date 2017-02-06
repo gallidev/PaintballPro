@@ -39,22 +39,15 @@ public class Team {
 		membersNo++;
 	}
 	
-	
-	//!!!!Override equals
-	/**
+	 /**
 	 * Change one of the team player's location.
 	 * @param p The player to be moved.
 	 * @param newXCoord The new x coordinate of the player.
 	 * @param newYCoord The new y coordinate of the player.
 	 */
 	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-		for (int i = 0; i < membersNo; i++)
-			if (members[i].equals(p)){
-				members[i].setXCoord = newXCoord;
-				members[i].setYCoord = newYCoord;
-
-			}
-				
+		p.setXCoordinate(newXCoord);
+		p.setYCoordinate(newYCoord);
 	}
 	
 	/* Getters and setters */

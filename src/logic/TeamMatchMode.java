@@ -1,17 +1,20 @@
 package logic;
 
+import javax.swing.Timer;
+
 public class TeamMatchMode extends GameMode {
 	
-
+	//private Timer gameTimer;
+	
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
-		// TODO Auto-generated constructor stub
+		//gameTimer = new Timer(arg0, arg1);
+		//gameTimer.start();
 	}
 
 	@Override
 	public boolean isGameFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return !gameTimer.isRunning();
 	}
 	
 	//Doesn't consider ties!!
