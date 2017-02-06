@@ -9,7 +9,7 @@ import javafx.scene.shape.Circle;
 public class Bullet extends Circle{
 	
 	private double angle;
-	private float speed = 6f;
+	private float speed = 30f;
 	private double x, y;
 
 	/**

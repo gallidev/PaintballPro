@@ -1,10 +1,11 @@
 package physics;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
-
+import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Player extends ImageView{
 	private boolean controlScheme;
 	private Rotate rotation;
 	private Scene scene;
+	private static Map map;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -45,6 +47,7 @@ public class Player extends ImageView{
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
+		Map map = rendering.Renderer.getMap();
 	}
 
 	/**
@@ -96,7 +99,7 @@ public class Player extends ImageView{
 		}
 		
 		//Calculates the angle the player is facing with respect to the mouse
-		Point2D temp = this.localToScene(playerHeadX, (playerHeadY));
+		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
 		double x1 = temp.getX();
 		double y1 = temp.getY();
 		
@@ -113,6 +116,31 @@ public class Player extends ImageView{
 		//Moves player in target direction
 		setLayoutX(x);
 		setLayoutY(y);
+		
+		//Player collision detection
+		
+		//Wall collision
+		ArrayList<Group> walls = map.getWalls();
+		for(Group wall : walls){
+			if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
+				//find out where wall is
+				double wallX = wall.getLayoutX();
+				double wallY = wall.getLayoutY();
+				double wallWidth = wall.getBoundsInParent().getWidth();
+				double wallHeight = wall.getBoundsInParent().getHeight();
+				if(wallX > x){
+					if(wallY < y + height) //can't go right
+					if(wallY + wallHeight > y) //can't go right
+					if(wallY > y + height) //can't go down
+					if(wallY + wallHeight < y) //can't go up
+				}
+			    //up/down/left/right = false
+			}
+		}
+		
+		
+		
+		
 	}
 	
 	/**

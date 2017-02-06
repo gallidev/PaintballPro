@@ -16,7 +16,7 @@ import static rendering.Renderer.view;
  * Each map object stores its name, an array of walls, floor tile groups and props.
  */
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
-class Map
+public class Map
 {
 	private String name;
 	private Wall[] walls;
