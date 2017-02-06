@@ -36,7 +36,7 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		map = Map.load("res/maps/" + map + ".json");
+		map = Map.load("res/maps/" + mapName + ".json");
 
 		Player player = new Player(0, 64, false, this);
 		view.getChildren().add(player);
