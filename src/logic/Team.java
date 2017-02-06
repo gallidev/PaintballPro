@@ -22,6 +22,43 @@ public class Team {
 		score = 0;
 	}
 	
+	/**
+	 * Increments the score of the team with a given number of points
+	 * @param additionalScore The new points gained by the team
+	 */
+	public void incrementScore(int additionalScore){
+		score += additionalScore;
+	}
+	
+	/**
+	 * Adds another player to the team and increments the number of team players.
+	 * @param p The new team player.
+	 */
+	public void addMember(Player p){
+		members[membersNo] = p;
+		membersNo++;
+	}
+	
+	
+	//!!!!Override equals
+	/**
+	 * Change one of the team player's location.
+	 * @param p The player to be moved.
+	 * @param newXCoord The new x coordinate of the player.
+	 * @param newYCoord The new y coordinate of the player.
+	 */
+	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
+		for (int i = 0; i < membersNo; i++)
+			if (members[i].equals(p)){
+				members[i].setXCoord = newXCoord;
+				members[i].setYCoord = newYCoord;
+
+			}
+				
+	}
+	
+	/* Getters and setters */
+	
 	public int getMembersNo() {
 		return membersNo;
 	}
@@ -34,29 +71,10 @@ public class Team {
 		score = newScore;
 	}
 	
-	public void incrementScore(int additionalScore){
-		score += additionalScore;
-	}
 
 	public Player[] getMembers(){
 		return members;
 	}
 	
-	public void addMember(Player p){
-		members[membersNo] = p;
-		membersNo++;
-	}
-	
-	
-	//!!!!Override equals
-	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-		for (int i = 0; i < membersNo; i++)
-			if (members[i].equals(p)){
-				members[i].setXCoord = newXCoord;
-				members[i].setYCoord = newYCoord;
-
-			}
-				
-	}
 	
 }

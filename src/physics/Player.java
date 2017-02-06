@@ -22,6 +22,7 @@ public class Player extends ImageView{
 	private boolean controlScheme;
 	private Rotate rotation;
 	private Scene scene;
+	private String nickname;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -29,6 +30,8 @@ public class Player extends ImageView{
 	 * @param y The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene The scene in which the player will be displayed
+	 * 
+	 * @author atp575
 	 */
 	public Player(float x, float y, boolean controlScheme, Scene scene){
 		this.x = x;
@@ -45,6 +48,21 @@ public class Player extends ImageView{
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 	}
+	
+	/**
+	 * Constructor needed for the game logic.
+	 * @param x The x coordinate of the player.
+	 * @param y the y coordinate of the player.
+	 * @param nickname The player's nickname.
+	 */
+	public Player(double x, double y, String nickname) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.nickname = nickname;
+	}
+
+
 
 	/**
 	 * Tick is called every frame
@@ -174,6 +192,16 @@ public class Player extends ImageView{
 	
 	public void setShoot(boolean shoot){
 		this.shoot = shoot;
+	}
+
+	/** @author atp575**/
+	public void setXCoordinate(double x) {
+		this.x = x;
+	}
+
+	/** @author atp575**/
+	public void setYCoordinate(double y) {
+		this.y = y;
 	}
 
 }

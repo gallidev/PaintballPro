@@ -14,7 +14,6 @@ public abstract class GameObject {
 		yCoord = y;
 	}
 
-
 	public void setXCoord(int xCoord) {
 		this.xCoord = xCoord;
 	}
