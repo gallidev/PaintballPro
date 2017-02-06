@@ -122,18 +122,21 @@ public class Player extends ImageView{
 		//Wall collision
 		ArrayList<Group> walls = map.getWalls();
 		for(Group wall : walls){
-			if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
+			//For use of getBoundsInLocal see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html
+			if(getBoundsInLocal().intersects(wall.getBoundsInParent())) {
 				//find out where wall is
 				double wallX = wall.getLayoutX();
 				double wallY = wall.getLayoutY();
 				double wallWidth = wall.getBoundsInParent().getWidth();
 				double wallHeight = wall.getBoundsInParent().getHeight();
 				if(wallX > x){
+					//stop playing from clipping into the wall (prevent rotation into the wall?)
 					if(wallY < y + playerImage.getHeight()) right = false; //can't go right
 					if(wallY + wallHeight > y) right = false;//can't go right
 					if(wallY > y + playerImage.getHeight()) down = false;//can't go down
 					if(wallY + wallHeight < y) up = false;//can't go up
 				}
+				//repeat with left, top and bottom
 			    //up/down/left/right = false
 			}
 		}
