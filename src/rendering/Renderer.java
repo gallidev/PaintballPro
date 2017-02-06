@@ -15,7 +15,7 @@ import physics.*;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	private static Map map;
+	private Map map;
 	private double scale = 1;
 
 	/**
@@ -67,7 +67,7 @@ public class Renderer extends Scene
 		}.start();
 	}
 
-	public static Map getMap()
+	public Map getMap()
 	{
 		return map;
 	}

@@ -1,10 +1,11 @@
 package physics;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
-
+import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class Player extends ImageView{
 	
+
 	private Image playerImage;
 	private final double playerHeadX = 12.5, playerHeadY = 47.5;
 	private double x, y;
@@ -22,8 +24,10 @@ public class Player extends ImageView{
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private boolean controlScheme;
 	private Rotate rotation;
-	private Scene scene;
+	private Renderer scene;
+	private Map map;
 	private String nickname;
+
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -34,7 +38,7 @@ public class Player extends ImageView{
 	 * 
 	 * @author atp575
 	 */
-	public Player(float x, float y, boolean controlScheme, Scene scene){
+	public Player(float x, float y, boolean controlScheme, Renderer scene){
 		this.x = x;
 		this.y = y;
 		this.mx = x;
@@ -48,6 +52,7 @@ public class Player extends ImageView{
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
+		map = scene.getMap();
 	}
 	
 	/**
@@ -114,7 +119,7 @@ public class Player extends ImageView{
 		}
 		
 		//Calculates the angle the player is facing with respect to the mouse
-		Point2D temp = this.localToScene(playerHeadX, (playerHeadY));
+		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
 		double x1 = temp.getX();
 		double y1 = temp.getY();
 		
@@ -131,6 +136,34 @@ public class Player extends ImageView{
 		//Moves player in target direction
 		setLayoutX(x);
 		setLayoutY(y);
+		
+		//Player collision detection
+		
+		//Wall collision
+		ArrayList<Group> walls = map.getWalls();
+		for(Group wall : walls){
+			//For use of getBoundsInLocal see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html
+			if(getBoundsInLocal().intersects(wall.getBoundsInParent())) {
+				//find out where wall is
+				double wallX = wall.getLayoutX();
+				double wallY = wall.getLayoutY();
+				double wallWidth = wall.getBoundsInParent().getWidth();
+				double wallHeight = wall.getBoundsInParent().getHeight();
+				if(wallX > x){
+					//stop playing from clipping into the wall (prevent rotation into the wall?)
+					if(wallY < y + playerImage.getHeight()) right = false; //can't go right
+					if(wallY + wallHeight > y) right = false;//can't go right
+					if(wallY > y + playerImage.getHeight()) down = false;//can't go down
+					if(wallY + wallHeight < y) up = false;//can't go up
+				}
+				//repeat with left, top and bottom
+			    //up/down/left/right = false
+			}
+		}
+		
+		
+		
+		
 	}
 	
 	/**
