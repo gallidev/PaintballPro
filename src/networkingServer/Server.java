@@ -90,7 +90,7 @@ public class Server {
 						// For debugging:
 						System.out.println(clientName + " connected");
 		
-						// We add the client to the table. Returns a unique client id.
+						// We add the client to the table. Returns a unique client id
 						clientID = clientTable.add(clientName);
 		
 						// We create and start a new thread to write to the client:

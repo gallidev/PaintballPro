@@ -10,7 +10,7 @@ import networkingSharedStuff.MessageQueue;
  * Class to store important client-related information used by Client and Server.
  */
 public class ClientTable {
-	//Structures storing relevant data.
+	//Structures storing relevant data
 	
 	//Each client has a message queue.
 	private ConcurrentMap<Integer,MessageQueue> queueTable  = new ConcurrentHashMap<Integer,MessageQueue>();

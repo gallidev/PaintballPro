@@ -74,7 +74,7 @@ public class Lobby {
 		}
 	}
 	
-	// remove player from team and alter everyone's respective positions in the lobby to accomodate.
+	// remove player from team and alter everyone's respective positions in the lobby to accomodate
 	public void removePlayer(Player playerToRemove)
 	{
 		boolean removed = false;

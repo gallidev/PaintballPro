@@ -40,7 +40,7 @@ public class LobbyTable {
 	 * @param clientID The id of the client to remove from the tables.
 	 */
 	
-	// run a thread to check if a lobby has 0 players, if it does, remove it.
+	// run a thread to check if a lobby has 0 players, if it does, remove it
 	public synchronized void removeLobby(int lobbyID)
 	{
 		lobbyList.remove(lobbyID);
