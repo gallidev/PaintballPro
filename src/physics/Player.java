@@ -36,7 +36,6 @@ public class Player extends ImageView{
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene The scene in which the player will be displayed
 	 * 
-	 * @author atp575
 	 */
 	public Player(float x, float y, boolean controlScheme, Renderer scene){
 		this.x = x;
@@ -69,8 +68,6 @@ public class Player extends ImageView{
 		this.y = y;
 		this.nickname = nickname;
 	}
-
-
 
 	/**
 	 * Tick is called every frame
