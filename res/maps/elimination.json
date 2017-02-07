@@ -1,12 +1,41 @@
 {
 	"name": "Elimination",
+	"spawns": [
+		{"x": 2, "y": 7, "team": true},
+		{"x": 3, "y": 7, "team": true},
+		{"x": 2, "y": 8, "team": true},
+		{"x": 3, "y": 8, "team": true}
+	],
 	"floors": [
-		{ "material": "sand", "width": 5, "height": 4, "x": 0, "y": 1}
+		{ "material": "sand", "width": 4, "height": 4, "x": 1, "y": 6}
 	],
 	"walls": [
-		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 0, "y": 0}
+		{ "material": "sand_brick", "orientation": false, "length": 4, "x": 0, "y": 6},
+		{ "material": "sand_brick", "orientation": true, "length": 3, "x": 0, "y": 5},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 0, "y": 10},
+		{ "material": "sand_brick", "orientation": false, "length": 4, "x": 5, "y": 7},
+		{ "material": "sand_brick", "orientation": false, "length": 3, "x": 2, "y": 3},
+		{ "material": "sand_brick", "orientation": true, "length": 7, "x": 2, "y": 2},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 4, "y": 11},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 8, "y": 12},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 12, "y": 13},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 8, "y": 1},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 12, "y": 0},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 16, "y": 1},
+		{ "material": "sand_brick", "orientation": true, "length": 6, "x": 20, "y": 2},
+		{ "material": "sand_brick", "orientation": false, "length": 3, "x": 26, "y": 2},
+		{ "material": "sand_brick", "orientation": true, "length": 3, "x": 26, "y": 5},
+		{ "material": "sand_brick", "orientation": false, "length": 4, "x": 28, "y": 6},
+		{ "material": "sand_brick", "orientation": true, "length": 6, "x": 23, "y": 10},
+		{ "material": "sand_brick", "orientation": false, "length": 3, "x": 23, "y": 7},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 20, "y": 11},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 16, "y": 12},
+		{ "material": "sand_brick", "orientation": true, "length": 5, "x": 12, "y": 13}
+
 	],
 	"props": [
-		{ "material": "crate", "x": 4, "y": 3 }
+		{ "material": "crate", "x": 3, "y": 3 },
+		{ "material": "crate", "x": 5, "y": 6 },
+		{ "material": "crate", "x": 23, "y": 6 }
 	]
 }

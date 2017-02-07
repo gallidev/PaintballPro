@@ -23,6 +23,7 @@ public class Map
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
+	Spawn[] spawns;
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
