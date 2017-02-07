@@ -1,6 +1,7 @@
 package rendering;
 
 // if you get a "import com.google cannot be resolved" error, make sure gson-2.8.0.jar (in res) is added to Referenced Libraries in build path
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import physics.*;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
+ *
  * @author Artur Komoter
  */
 public class Renderer extends Scene
@@ -20,6 +22,7 @@ public class Renderer extends Scene
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
+	 *
 	 * @param mapName Name of the selected map
 	 */
 	public Renderer(String mapName)
@@ -61,14 +64,13 @@ public class Renderer extends Scene
 				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 				for(Bullet pellet : player.getBullets())
-					if(pellet.getActive()){
+					if(pellet.getActive())
+					{
 						if(!view.getChildren().contains(pellet))
 							view.getChildren().add(pellet);
-					} else {
-						if(view.getChildren().contains(pellet)){
-							view.getChildren().remove((pellet));
-						}
 					}
+					else if(view.getChildren().contains(pellet))
+						view.getChildren().remove((pellet));
 			}
 		}.start();
 	}

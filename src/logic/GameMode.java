@@ -21,11 +21,8 @@ public abstract class GameMode {
 		this.t2 = t2;
 	}
 	
-	public void fire(){
-		//new bullet
-		//get the bullet direction
-		//see if there is any player on that trajectory
-		//update team score if there is
+	public void shoot(){
+	
 	}
 	
 	/**

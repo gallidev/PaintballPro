@@ -75,3 +75,6 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+
+# Game Preferences
+preferences.json

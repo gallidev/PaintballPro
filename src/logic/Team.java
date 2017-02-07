@@ -68,6 +68,10 @@ public class Team {
 	public Player[] getMembers(){
 		return members;
 	}
+
+	public void setMembers(Player[] team1Players) {
+		this.members = team1Players;
+	}
 	
 	
 }
