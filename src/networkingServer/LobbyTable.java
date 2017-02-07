@@ -53,7 +53,7 @@ public class LobbyTable {
 	}
 	
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	public synchronized int addPlayerToLobby(Player player, int gameMode)
+	public synchronized void addPlayerToLobby(Player player, int gameMode)
 	{
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
@@ -77,6 +77,10 @@ public class LobbyTable {
 			id++;
 		}
 		player.setAllocatedLobby(lobbyAllocated);
-		return lobbyAllocated;
+	}
+	
+	public synchronized void switchTeams(Player player)
+	{
+		lobbyList.get(player.getAllocatedLobby()).switchTeam(player);
 	}
 }

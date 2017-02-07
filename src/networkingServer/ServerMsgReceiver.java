@@ -52,8 +52,19 @@ public class ServerMsgReceiver extends Thread {
 					{
 						int gameMode = Integer.parseInt(text.substring(10));
 						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode);
-						//
 					}
+					if(text.contains("SwitchTeam"))
+					{
+						gameLobby.switchTeams(clientTable.getPlayer(myClientsID));
+					}
+					if(text.contains("Username:"))
+					{
+						String username = text.substring(9, text.length());
+						clientTable.getPlayer(myClientsID).setUsername(username);
+					}
+					
+					
+					
 					//If the client wants the currently connected client nicknames.
 					if(text.contains("Retrieve Lobby List"))
 					{
