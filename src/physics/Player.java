@@ -27,6 +27,8 @@ public class Player extends ImageView{
 	private Renderer scene;
 	private Map map;
 	private String nickname;
+	private long shootTime;
+	private static long shootDelay = 500;
 
 
 	/**
@@ -108,8 +110,9 @@ public class Player extends ImageView{
 			}
 		}
 		
-		if(shoot){
+		if(shoot && shootTime < System.currentTimeMillis() - shootDelay){
 			shoot();
+			shootTime = System.currentTimeMillis();
 		}
 		
 		//Updates the location of the bullets
@@ -171,6 +174,45 @@ public class Player extends ImageView{
 					}
 					for(Bullet bullet : firedBullets){
 						if(bullet.getBoundsInParent().intersects(prop.getBoundsInParent())){
+							bullet.setActive(false);
+						}
+					}
+				}
+				
+				//Wall collision
+				ArrayList<ImageView> walls = map.getWalls();
+				for(ImageView wall : walls){
+					if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
+						double propX = wall.getX();
+						double propY = wall.getY();
+						double propWidth = wall.getImage().getWidth();
+						double propHeight = wall.getImage().getHeight();
+						if(propX >= x + playerImage.getWidth()/2){
+							if(propY < y + playerImage.getHeight()) {
+								x -= 1; //can't go right
+							}
+							if(propY + propHeight > y) {
+								x -= 1; //can't go right
+							}
+						}
+						if(propX + propWidth/2 < x - playerImage.getWidth()/2){
+							if(propY < y + playerImage.getHeight()) {
+								x += 1; //can't go left
+							}
+							if(propY + propHeight > y) {
+								x += 1; //can't go left
+							}
+						}
+						if(propY >= (y + playerImage.getHeight()/2)){
+							y -= 2; //can't go down
+						}
+						if(propY <= y){
+							y += 2; //can't go up
+						}
+					}
+				
+					for(Bullet bullet : firedBullets){
+						if(bullet.getBoundsInParent().intersects(wall.getBoundsInParent())){
 							bullet.setActive(false);
 						}
 					}
