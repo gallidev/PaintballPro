@@ -1,0 +1,25 @@
+Networking Protocols
+--------------------
+We work using strings between the client and the server. This document outlines the protocols for particular events that may occur during the game.
+--------------------
+
+---------------------------------------	|-------------------------------------
+				ACTION					|				PROTOCOL
+---------------------------------------	|-------------------------------------
+				IN-GAME					|/////////////////////////////////////
+---------------------------------------	|-------------------------------------
+New co-ordinates when a player moves.	|
+Angle of player changes.				|
+Player gets shot.						|
+Bullets firing.							|
+---------------------------------------	|-------------------------------------
+				GAME STATUS				|/////////////////////////////////////
+---------------------------------------	|-------------------------------------
+Win/Loose a game.						|
+Change in game points.					|
+Game duration.							|
+---------------------------------------	|-------------------------------------
+			CLIENT ACTIONS				|/////////////////////////////////////
+----------------------------------------|-------------------------------------
+Join a lobby for a particular game.		|
+Switch teams.							|
