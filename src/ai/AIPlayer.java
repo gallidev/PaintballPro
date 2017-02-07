@@ -57,133 +57,128 @@ public class AIPlayer extends GameObject{
 	 */
 	@Override
 	public void tick() {
-		if(up){
-			y -= 2;
-		}	
-		if(down){
-			y += 2;
-		}			
-		if(left){
-			x -= 2;
-			angle = Math.toRadians(-90);
-		}			
-		if(right){
-			x += 2;
-			angle = Math.toRadians(90);
-		}
+		updatePosition();
+		updateShooting();
+		updateBullets();
+		updateAngle();
+		handlePropCollision();
+		handleWallCollision();
+	}
+	
+	private void updatePosition(){
+		if(up) y -= 2;
+		if(down) y += 2;			
+		if(left) x -= 2;		
+		if(right) x += 2;
 		
+		setLayoutX(x);
+		setLayoutY(y);
+	}
+	
+	private void updateShooting(){
 		if(shoot && shootTime < System.currentTimeMillis() - shootDelay){
 			shoot();
 			shootTime = System.currentTimeMillis();
 		}
-		
-		//Updates the location of the bullets
+	}
+	
+	//Updates the location of the bullets
+	private void updateBullets(){
 		for(int i = 0; i < firedBullets.size(); i++){
 			firedBullets.get(i).moveInDirection();
 		}
-		
-		//Calculates the angle the player is facing with respect to the target coordinates	
+	}
+	
+	//Calculates the angle the player is facing with respect to the mouse
+	private void updateAngle(){
+//		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
+//		double x1 = temp.getX();
+//		double y1 = temp.getY();
+//				
+//		double deltax = mx - x1;
+//		double deltay = y1 - my;
+//				
+//		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
-		
-		//Moves player in target direction
-		setLayoutX(x);
-		setLayoutY(y);
-		
-		//Player collision detection
-		
-				//Object collision
-				ArrayList<ImageView> props = map.getProps();
-				for(ImageView prop : props){
-					if(getBoundsInParent().intersects(prop.getBoundsInParent())) {
-						double propX = prop.getX();
-						double propY = prop.getY();
-						double propWidth = prop.getImage().getWidth();
-						double propHeight = prop.getImage().getHeight();
-						if(propX >= x + image.getWidth()/2){
-							if(propY < y + image.getHeight()) {
-								right = false;
-								left = true;
-								x -= 1; //can't go right
-							}
-							if(propY + propHeight > y) {
-								right = false;
-								left = true;
-								x -= 1; //can't go right
-							}
-						}
-						if(propX + propWidth/2 < x - image.getWidth()/2){
-							if(propY < y + image.getHeight()) {
-								right = true;
-								left = false;
-								x += 1; //can't go left
-							}
-							if(propY + propHeight > y) {
-								right = true;
-								left = false;
-								x += 1; //can't go left
-							}
-						}
-						if(propY >= (y + image.getHeight()/2)){
-							y -= 2; //can't go down
-						}
-						if(propY <= y){
-							y += 2; //can't go up
-						}
-					}
-					for(Bullet bullet : firedBullets){
-						if(bullet.getBoundsInParent().intersects(prop.getBoundsInParent())){
-							bullet.setActive(false);
-						}
+	}
+	
+	private void handlePropCollision(){
+		ArrayList<ImageView> props = map.getProps();
+		for(ImageView prop : props){
+			if(getBoundsInParent().intersects(prop.getBoundsInParent())) {
+				double propX = prop.getX();
+				double propY = prop.getY();
+				double propWidth = prop.getImage().getWidth();
+				double propHeight = prop.getImage().getHeight();
+				if(propX >= x + image.getWidth()/2){
+					if(propY < y + image.getHeight() || propY + propHeight > y) {
+						x -= 2; //can't go right
 					}
 				}
-				
-				//Wall collision
-				ArrayList<ImageView> walls = map.getWalls();
-				for(ImageView wall : walls){
-					if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
-						double wallX = wall.getX();
-						double wallY = wall.getY();
-						double wallWidth = wall.getImage().getWidth();
-						double wallHeight = wall.getImage().getHeight();
-						if(wallX >= x + image.getWidth()/2){
-							if(wallY < y + image.getHeight()) {
-								right = false;
-								left = true;
-								x -= 1; //can't go right
-							}
-							if(wallY + wallHeight > y) {
-								right = false;
-								left = true;
-								x -= 1; //can't go right
-							}
-						}
-						if(wallX + wallWidth/2 < x - image.getWidth()/2){
-							if(wallY < y + image.getHeight()) {
-								right = true;
-								left = false;
-								x += 1; //can't go left
-							}
-							if(wallY + wallHeight > y) {
-								right = true;
-								left = false;
-								x += 1; //can't go left
-							}
-						}
-						if(wallY >= (y + image.getHeight()/2)){
-							y -= 2; //can't go down
-						}
-						if(wallY <= y){
-							y += 2; //can't go up
-						}
-					}
-				
-					for(Bullet bullet : firedBullets){
-						if(bullet.getBoundsInParent().intersects(wall.getBoundsInParent())){
-							bullet.setActive(false);
-						}
+				if(propX + propWidth/2 < x - image.getWidth()/2){
+					if(propY < y + image.getHeight() || propY + propHeight > y) {
+						x += 2; //can't go left
 					}
 				}
+				if(propY >= (y + image.getHeight()/2)){
+					y -= 2; //can't go down
+				}
+				if(propY <= y){
+					y += 2; //can't go up
+				}
+			}
+			for(Bullet bullet : firedBullets){
+				if(bullet.getBoundsInParent().intersects(prop.getBoundsInParent())){
+					bullet.setActive(false);
+				}
+			}
+		}
+	}
+	
+	private void handleWallCollision(){
+		ArrayList<ImageView> walls = map.getWalls();
+		for(ImageView wall : walls){
+			if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
+				double wallX = wall.getX();
+				double wallY = wall.getY();
+				double wallWidth = wall.getImage().getWidth();
+				double wallHeight = wall.getImage().getHeight();
+				if(wallX >= x + image.getWidth()/2){
+					if(wallY < y + image.getHeight() || wallY + wallHeight > y) {
+						x -= 2; //can't go right
+						right = false;
+						left = true;
+						angle = Math.toRadians(-90);
+					}
+				}
+				if(wallX + wallWidth/2 < x - image.getWidth()/2){
+					if(wallY < y + image.getHeight() || wallY + wallHeight > y) {
+						x += 2; //can't go left
+						right = true;
+						left = false;
+						angle = Math.toRadians(90);
+					}
+				}
+				if(wallY >= (y + image.getHeight()/2)){
+					y -= 2; //can't go down
+					//up = true;
+					//down = false;
+					//angle = Math.toRadians(0);
+				}
+				if(wallY <= y){
+					y += 2; //can't go up
+					//up = false;
+					//down = true;
+					//angle = Math.toRadians(180);
+				}
+			}
 		
+			for(Bullet bullet : firedBullets){
+				if(bullet.getBoundsInParent().intersects(wall.getBoundsInParent())){
+					bullet.setActive(false);
+				}
+			}
+		}
 	}
 	
 	/**
