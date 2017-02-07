@@ -1,26 +1,23 @@
-package physics;
+package ai;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
+import physics.Bullet;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 import enums.Teams;
 
-/**
- *  The player, represented by an ImageView
- */
-public class Player extends GameObject{
+
+public class AIPlayer extends GameObject{
 	
 	private final double playerHeadX = 12.5, playerHeadY = 47.5;
 	private static long shootDelay = 500;
-	private double mx, my;
 	private boolean up, down, left, right, shoot;
 	private double angle;
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	private boolean controlScheme;
 	private Rotate rotation;
 	private Map map;
 	private String nickname;
@@ -28,27 +25,17 @@ public class Player extends GameObject{
 	private Teams team;
 
 
-	/**
-	 * Create a new player at the set location, and adds the rotation property to the player
-	 * @param x The x-coordinate of the player with respect to the map
-	 * @param y The y-coordinate of the player with respect to the map
-	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
-	 * @param scene The scene in which the player will be displayed
-	 * 
-	 */
-	public Player(double x, double y, String nickname, boolean controlScheme, Renderer scene, Teams team, Image image){
+	public AIPlayer(double x, double y, String nickname, Renderer scene, Teams team, Image image){
 		super(x, y, image);
-		this.mx = x;
-		this.my = y;
-		this.controlScheme = controlScheme;
 		this.team = team;
 		this.nickname = nickname;
-		angle = 0.0;
+		angle = Math.toRadians(90);
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		map = scene.getMap();
+		right = true;
 	}
 	
 	/**
@@ -59,7 +46,7 @@ public class Player extends GameObject{
 	 * 
 	 * @ atp575
 	 */
-	public Player(double x, double y, String nickname, Image image) {
+	public AIPlayer(double x, double y, String nickname, Image image) {
 		super(x, y, image);
 		this.nickname = nickname;
 	}
@@ -70,38 +57,19 @@ public class Player extends GameObject{
 	 */
 	@Override
 	public void tick() {
-		if(controlScheme){
-			if(up){
-				y -= 2 * Math.cos(angle);
-				x += 2 * Math.sin(angle);
-			}			
-			
-			if(down){
-				y += 2 * Math.cos(angle);
-				x -= 2 * Math.sin(angle);
-			}			
-			if(left){
-				y -= 2 * Math.cos(angle - Math.PI/2);
-				x += 2 * Math.sin(angle - Math.PI/2);
-			}			
-			if(right){
-				y -= 2 * Math.cos(angle + Math.PI/2);
-				x += 2 * Math.sin(angle + Math.PI/2);
-			}
-		}
-		else{
-			if(up){
-				y -= 2;
-			}	
-			if(down){
-				y += 2;
-			}			
-			if(left){
-				x -= 2;
-			}			
-			if(right){
-				x += 2;
-			}
+		if(up){
+			y -= 2;
+		}	
+		if(down){
+			y += 2;
+		}			
+		if(left){
+			x -= 2;
+			angle = Math.toRadians(-90);
+		}			
+		if(right){
+			x += 2;
+			angle = Math.toRadians(90);
 		}
 		
 		if(shoot && shootTime < System.currentTimeMillis() - shootDelay){
@@ -114,15 +82,7 @@ public class Player extends GameObject{
 			firedBullets.get(i).moveInDirection();
 		}
 		
-		//Calculates the angle the player is facing with respect to the mouse
-		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
-		double x1 = temp.getX();
-		double y1 = temp.getY();
-		
-		double deltax = mx - x1;
-		double deltay = y1 - my;
-		
-		angle = Math.atan2(deltax, deltay);
+		//Calculates the angle the player is facing with respect to the target coordinates	
 		rotation.setAngle(Math.toDegrees(angle));
 		
 		//Moves player in target direction
@@ -141,17 +101,25 @@ public class Player extends GameObject{
 						double propHeight = prop.getImage().getHeight();
 						if(propX >= x + image.getWidth()/2){
 							if(propY < y + image.getHeight()) {
+								right = false;
+								left = true;
 								x -= 1; //can't go right
 							}
 							if(propY + propHeight > y) {
+								right = false;
+								left = true;
 								x -= 1; //can't go right
 							}
 						}
 						if(propX + propWidth/2 < x - image.getWidth()/2){
 							if(propY < y + image.getHeight()) {
+								right = true;
+								left = false;
 								x += 1; //can't go left
 							}
 							if(propY + propHeight > y) {
+								right = true;
+								left = false;
 								x += 1; //can't go left
 							}
 						}
@@ -173,30 +141,38 @@ public class Player extends GameObject{
 				ArrayList<ImageView> walls = map.getWalls();
 				for(ImageView wall : walls){
 					if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
-						double propX = wall.getX();
-						double propY = wall.getY();
-						double propWidth = wall.getImage().getWidth();
-						double propHeight = wall.getImage().getHeight();
-						if(propX >= x + image.getWidth()/2){
-							if(propY < y + image.getHeight()) {
+						double wallX = wall.getX();
+						double wallY = wall.getY();
+						double wallWidth = wall.getImage().getWidth();
+						double wallHeight = wall.getImage().getHeight();
+						if(wallX >= x + image.getWidth()/2){
+							if(wallY < y + image.getHeight()) {
+								right = false;
+								left = true;
 								x -= 1; //can't go right
 							}
-							if(propY + propHeight > y) {
+							if(wallY + wallHeight > y) {
+								right = false;
+								left = true;
 								x -= 1; //can't go right
 							}
 						}
-						if(propX + propWidth/2 < x - image.getWidth()/2){
-							if(propY < y + image.getHeight()) {
+						if(wallX + wallWidth/2 < x - image.getWidth()/2){
+							if(wallY < y + image.getHeight()) {
+								right = true;
+								left = false;
 								x += 1; //can't go left
 							}
-							if(propY + propHeight > y) {
+							if(wallY + wallHeight > y) {
+								right = true;
+								left = false;
 								x += 1; //can't go left
 							}
 						}
-						if(propY >= (y + image.getHeight()/2)){
+						if(wallY >= (y + image.getHeight()/2)){
 							y -= 2; //can't go down
 						}
-						if(propY <= y){
+						if(wallY <= y){
 							y += 2; //can't go up
 						}
 					}
@@ -243,22 +219,6 @@ public class Player extends GameObject{
 	
 	public void setAngle(double angle){
 		this.angle = angle;
-	}
-	
-	public double getMX(){
-		return this.mx;
-	}
-	
-	public void setMX(double mx){
-		this.mx = mx;
-	}
-	
-	public double getMY(){
-		return this.my;
-	}
-	
-	public void setMY(double my){
-		this.my = my;
 	}
 	
 	public void setUp(boolean up){

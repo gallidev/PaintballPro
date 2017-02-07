@@ -2,6 +2,7 @@ package rendering;
 
 import java.util.ArrayList;
 
+import ai.AIPlayer;
 import enums.Teams;
 
 // if you get a "import com.google cannot be resolved" error, make sure gson-2.8.0.jar (in res) is added to Referenced Libraries in build path
@@ -49,6 +50,9 @@ public class Renderer extends Scene
 		Image playerImage = new Image("assets/player.png", 30, 64, true, true);
 		Player player = new Player(map.spawns[0].x * 64, map.spawns[0].y * 64, "Bob",  false, this, Teams.RED, playerImage);
 		view.getChildren().add(player);
+		
+		AIPlayer ai = new AIPlayer(map.spawns[1].x * 64, map.spawns[1].y * 64, "Bob",  this, Teams.BLUE, playerImage);
+		view.getChildren().add(ai);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
@@ -67,6 +71,7 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				player.tick();
+				ai.tick();
 				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 				for(Bullet pellet : player.getBullets())

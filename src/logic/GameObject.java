@@ -8,22 +8,22 @@ public abstract class GameObject extends ImageView {
 	protected Image image;
 	
 	public GameObject(double x, double y, Image image) {
+		super(image);
 		this.x = x;
 		this.y = y;
 		this.image = image;
-	}
-	
-	public void setLocation(double x, double y){
-		this.x = x;
-		this.y = y;
+		setLayoutX(x);
+		setLayoutY(y);
 	}
 
 	public void setXCoord(double x) {
 		this.x = x;
+		setLayoutX(x);
 	}
 
 	public void setYCoord(double y) {
 		this.y = y;
+		setLayoutY(y);
 	}
 	
 	public double getXCoord(){
@@ -35,10 +35,6 @@ public abstract class GameObject extends ImageView {
 	}
 	
 	public abstract void tick();
-	
-	
-	
-	
-	
+		
 	
 }
