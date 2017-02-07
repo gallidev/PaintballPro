@@ -2,6 +2,7 @@ package rendering;
 
 import com.google.gson.Gson;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -77,15 +78,15 @@ public class Map
 		{
 			e.printStackTrace();
 		}
-
 		return map;
 	}
 
-	public ArrayList<Group> getWalls()
+	public ArrayList<ImageView> getWalls()
 	{
-		ArrayList<Group> blocks = new ArrayList<>();
+		ArrayList<ImageView> blocks = new ArrayList<>();
 		for(Wall wall : walls)
-			blocks.add(wall.blocks);
+			for(Node block : wall.blocks.getChildren())
+				blocks.add((ImageView)block);
 		return blocks;
 	}
 
