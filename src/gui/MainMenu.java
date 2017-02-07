@@ -4,14 +4,19 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Main Menu scene class
+ */
 public class MainMenu {
-	// TODO: implement main menu scene
 
-
+	/**
+	 * Return a main menu scene for a given GUI manager
+	 * @param m GUI manager to use
+	 * @return main menu scene
+	 */
 	public static Scene getScene(GUIManager m) {
-		// TODO Auto-generated method stub
-		System.out.println("Setting");
 		
+		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Single player", new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		        System.out.println("ActionEvent: " + event);
@@ -27,8 +32,10 @@ public class MainMenu {
 		    }     
 		})};
 		
+		// Turn the collection of button options into a GridPane to be displayed
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
 		
+		// Create the scene and return it
 		return new Scene(grid, m.width, m.height);
 	}
 }
