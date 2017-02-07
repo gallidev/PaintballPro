@@ -1,5 +1,7 @@
 package rendering;
 
+import enums.Teams;
+
 // if you get a "import com.google cannot be resolved" error, make sure gson-2.8.0.jar (in res) is added to Referenced Libraries in build path
 
 import javafx.animation.AnimationTimer;
@@ -41,7 +43,7 @@ public class Renderer extends Scene
 
 		map = Map.load("res/maps/" + mapName + ".json");
 
-		Player player = new Player(0, 64, false, this);
+		Player player = new Player(0, 64, false, this, Teams.RED);
 		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
