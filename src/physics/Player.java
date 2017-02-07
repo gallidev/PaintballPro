@@ -176,9 +176,6 @@ public class Player extends ImageView{
 					}
 				}
 		
-		
-		
-		
 	}
 	
 	/**
