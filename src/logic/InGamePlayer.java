@@ -1,5 +1,7 @@
 package logic;
 
+import javafx.scene.image.Image;
+
 /**
  * Class to represent the client version of a player in the game. Stores just
  * general information about the player, which is necessary for the client
@@ -16,8 +18,8 @@ public class InGamePlayer extends GameObject {
 	 * @param xCoord The x coordinate fo the player.
 	 * @param yCoord xCoord The x coordinate fo the player.
 	 */
-	public InGamePlayer(String nickname, int xCoord, int yCoord) {
-		super(xCoord, yCoord);
+	public InGamePlayer(String nickname, int xCoord, int yCoord, Image image) {
+		super(xCoord, yCoord, image);
 		this.nickname = nickname;
 	}
 
@@ -27,6 +29,12 @@ public class InGamePlayer extends GameObject {
 	 */
 	public String getNickname() {
 		return nickname;
+	}
+
+	@Override
+	public void tick() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

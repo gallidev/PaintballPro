@@ -5,21 +5,20 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
+import logic.GameObject;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import enums.Teams;
 
 /**
  *  The player, represented by an ImageView
  */
-public class Player extends ImageView{
+public class Player extends GameObject{
 	
 
 	private Image playerImage;
 	private final double playerHeadX = 12.5, playerHeadY = 47.5;
-	private double x, y;
 	private double mx, my;
 	private boolean up, down, left, right, shoot;
 	private double angle;
@@ -42,16 +41,16 @@ public class Player extends ImageView{
 	 * @param scene The scene in which the player will be displayed
 	 * 
 	 */
-	public Player(float x, float y, boolean controlScheme, Renderer scene, Teams team){
-		this.x = x;
-		this.y = y;
+	public Player(double x, double y, String nickname, boolean controlScheme, Renderer scene, Teams team, Image image){
+		super(x, y, image);
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
 		this.scene = scene;
 		this.team = team;
+		this.nickname = nickname;
 		angle = 0.0;
-		playerImage = new Image("assets/player.png", 30, 64, true, true);
+		playerImage = image;
 		setImage(playerImage);
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
@@ -68,10 +67,8 @@ public class Player extends ImageView{
 	 * 
 	 * @ atp575
 	 */
-	public Player(double x, double y, String nickname) {
-		super();
-		this.x = x;
-		this.y = y;
+	public Player(double x, double y, String nickname, Image image) {
+		super(x, y, image);
 		this.nickname = nickname;
 	}
 
@@ -289,16 +286,6 @@ public class Player extends ImageView{
 	
 	public void setShoot(boolean shoot){
 		this.shoot = shoot;
-	}
-
-	/** @author atp575**/
-	public void setXCoordinate(double x) {
-		this.x = x;
-	}
-
-	/** @author atp575**/
-	public void setYCoordinate(double y) {
-		this.y = y;
 	}
 
 }

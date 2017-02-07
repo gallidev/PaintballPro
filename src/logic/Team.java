@@ -46,8 +46,8 @@ public class Team {
 	 * @param newYCoord The new y coordinate of the player.
 	 */
 	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-		p.setXCoordinate(newXCoord);
-		p.setYCoordinate(newYCoord);
+		p.setXCoord(newXCoord);
+		p.setYCoord(newYCoord);
 	}
 	
 	/* Getters and setters */
