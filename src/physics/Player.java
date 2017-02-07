@@ -9,6 +9,8 @@ import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import enums.Teams;
+
 /**
  *  The player, represented by an ImageView
  */
@@ -29,6 +31,7 @@ public class Player extends ImageView{
 	private String nickname;
 	private long shootTime;
 	private static long shootDelay = 500;
+	private Teams team;
 
 
 	/**
@@ -39,13 +42,14 @@ public class Player extends ImageView{
 	 * @param scene The scene in which the player will be displayed
 	 * 
 	 */
-	public Player(float x, float y, boolean controlScheme, Renderer scene){
+	public Player(float x, float y, boolean controlScheme, Renderer scene, Teams team){
 		this.x = x;
 		this.y = y;
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
 		this.scene = scene;
+		this.team = team;
 		angle = 0.0;
 		playerImage = new Image("assets/player.png", 30, 64, true, true);
 		setImage(playerImage);
@@ -128,10 +132,6 @@ public class Player extends ImageView{
 		double deltax = mx - x1;
 		double deltay = y1 - my;
 		
-		
-		
-		//double deltax = mx - scene.getWidth()/2;
-		//double deltay = scene.getHeight()/2 - my;
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 		
@@ -236,7 +236,7 @@ public class Player extends ImageView{
 		double bulletX = x + x2 + playerHeadX;
 		double bulletY = y + y2 + playerHeadY;
 		
-		Bullet bullet = new Bullet(bulletX, bulletY, angle);
+		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
 		firedBullets.add(bullet);
 	}
 	

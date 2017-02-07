@@ -1,5 +1,6 @@
 package physics;
 
+import enums.Teams;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -19,7 +20,7 @@ public class Bullet extends Circle{
 	 * @param y The y-coordinate of the bullet
 	 * @param angle The angle at which the bullet will travel
 	 */
-	public Bullet(double x, double y, double angle) {
+	public Bullet(double x, double y, double angle, Teams team) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
@@ -27,7 +28,12 @@ public class Bullet extends Circle{
 		setCenterX(x);
 		setCenterY(y);
 		setRadius(3);
-		setFill(Color.RED);
+		if(team == Teams.RED){
+			setFill(Color.RED);
+		} else {
+			setFill(Color.BLUE);
+		}
+		
 	}
 
 	/**
