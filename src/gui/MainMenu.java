@@ -19,10 +19,12 @@ public class MainMenu {
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Single player", new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
+		    	m.transitionTo("Singleplayer", null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		}), new MenuOption("Multiplayer", new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
+		    	m.transitionTo("Multiplayer", null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		}), new MenuOption("Settings", new EventHandler<ActionEvent>() {

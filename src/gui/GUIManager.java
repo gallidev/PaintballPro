@@ -1,5 +1,6 @@
 package gui;
 
+import enums.GameLocation;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -44,6 +45,12 @@ public class GUIManager extends Application {
 				break;
 			case "Settings":
 				s.setScene(SettingsMenu.getScene(this));
+				break;
+			case "Multiplayer":
+				s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
+				break;
+			case "Singleplayer":
+				s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 				break;
 		}
 	}
