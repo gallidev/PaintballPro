@@ -8,6 +8,8 @@ public class Player {
 	public Player(int id)
 	{
 		this.ID = id;
+		this.allocatedLobby = -1;
+		this.username = "USER"+id;
 	}
 	
 	public int getID() {

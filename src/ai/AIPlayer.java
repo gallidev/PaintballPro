@@ -1,55 +1,43 @@
-package physics;
-import javafx.geometry.Bounds;
+package ai;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
+import physics.Bullet;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 import enums.Teams;
 
-/**
- *  The player, represented by an ImageView
- */
-public class Player extends GameObject{
+
+public class AIPlayer extends GameObject{
 	
 	private final double playerHeadX = 12.5, playerHeadY = 47.5;
 	private static long shootDelay = 250;
-	private double mx, my;
 	private boolean up, down, left, right, shoot;
 	private double angle;
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	private boolean controlScheme;
 	private Rotate rotation;
 	private Map map;
 	private String nickname;
 	private long shootTime;
 	private Teams team;
+	private RandomBehaviour rb;
 
 
-	/**
-	 * Create a new player at the set location, and adds the rotation property to the player
-	 * @param x The x-coordinate of the player with respect to the map
-	 * @param y The y-coordinate of the player with respect to the map
-	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
-	 * @param scene The scene in which the player will be displayed
-	 * 
-	 */
-	public Player(double x, double y, String nickname, boolean controlScheme, Renderer scene, Teams team, Image image){
+	public AIPlayer(double x, double y, String nickname, Renderer scene, Teams team, Image image){
 		super(x, y, image);
-		this.mx = x;
-		this.my = y;
-		this.controlScheme = controlScheme;
 		this.team = team;
 		this.nickname = nickname;
-		angle = 0.0;
+		angle = Math.toRadians(90);
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		map = scene.getMap();
+		right = true;
+		rb = new RandomBehaviour(this);
 	}
 	
 	/**
@@ -60,7 +48,7 @@ public class Player extends GameObject{
 	 * 
 	 * @ atp575
 	 */
-	public Player(double x, double y, String nickname, Image image) {
+	public AIPlayer(double x, double y, String nickname, Image image) {
 		super(x, y, image);
 		this.nickname = nickname;
 	}
@@ -71,38 +59,19 @@ public class Player extends GameObject{
 	 */
 	@Override
 	public void tick() {
+		rb.tick();
+		updateAngle();
 		updatePosition();
 		updateShooting();
-		updateBullets();
-		updateAngle();
+		updateBullets();		
 		handlePropCollision();
-		handleWallCollision();	
+		handleWallCollision();
+		
 	}
-
+	
 	private void updatePosition(){
-		if(controlScheme){
-			if(up){
-				y -= 2 * Math.cos(angle);
-				x += 2 * Math.sin(angle);
-			}	
-			if(down){
-				y += 2 * Math.cos(angle);
-				x -= 2 * Math.sin(angle);
-			}			
-			if(left){
-				y -= 2 * Math.cos(angle - Math.PI/2);
-				x += 2 * Math.sin(angle - Math.PI/2);
-			}			
-			if(right){
-				y -= 2 * Math.cos(angle + Math.PI/2);
-				x += 2 * Math.sin(angle + Math.PI/2);
-			}
-		} else {
-			if(up) y -= 2;
-			if(down) y += 2;			
-			if(left) x -= 2;		
-			if(right) x += 2;
-		}
+		y -= 2 * Math.cos(angle);
+		x += 2 * Math.sin(angle);
 		
 		setLayoutX(x);
 		setLayoutY(y);
@@ -124,14 +93,6 @@ public class Player extends GameObject{
 	
 	//Calculates the angle the player is facing with respect to the mouse
 	private void updateAngle(){
-		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
-		double x1 = temp.getX();
-		double y1 = temp.getY();
-				
-		double deltax = mx - x1;
-		double deltay = y1 - my;
-				
-		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 	
@@ -163,15 +124,16 @@ public class Player extends GameObject{
 				}
 				if(propAngle > 135 || propAngle < -135){
 					y -= 2; //can't go down
-				}
 				if(propAngle > -45 && propAngle < 45 ){
 					y += 2; //can't go up
 				}
+				angle += Math.toRadians(180);
 			}
 			for(Bullet bullet : firedBullets){
 				if(bullet.getBoundsInParent().intersects(prop.getBoundsInParent())){
 					bullet.setActive(false);
 				}
+			}
 			}
 		}
 	}
@@ -208,6 +170,7 @@ public class Player extends GameObject{
 				if(wallAngle > -45 && wallAngle < 45 ){
 					y += 2; //can't go up
 				}
+				angle += Math.toRadians(180);
 			}
 		
 			for(Bullet bullet : firedBullets){
@@ -238,6 +201,9 @@ public class Player extends GameObject{
 		firedBullets.add(bullet);
 	}
 	
+	//Getters and setters below this point
+	//-----------------------------------------------------------------------------
+	
 	public List<Bullet> getBullets(){
 		return this.firedBullets;
 	}
@@ -248,22 +214,6 @@ public class Player extends GameObject{
 	
 	public void setAngle(double angle){
 		this.angle = angle;
-	}
-	
-	public double getMX(){
-		return this.mx;
-	}
-	
-	public void setMX(double mx){
-		this.mx = mx;
-	}
-	
-	public double getMY(){
-		return this.my;
-	}
-	
-	public void setMY(double my){
-		this.my = my;
 	}
 	
 	public void setUp(boolean up){

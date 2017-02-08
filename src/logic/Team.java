@@ -47,6 +47,10 @@ public class Team {
 		for (Player p : teamPlayers)
 			addMember(p);
 	}
+	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
+		p.setXCoord(newXCoord);
+		p.setYCoord(newYCoord);
+	}
 	
 	// Probably not needed here.
 //	 /**

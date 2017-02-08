@@ -79,6 +79,11 @@ public class LobbyTable {
 		player.setAllocatedLobby(lobbyAllocated);
 	}
 	
+	public synchronized Lobby getLobby(int lobbyId)
+	{
+		return lobbyList.get(lobbyId);
+	}
+	
 	public synchronized void switchTeams(Player player)
 	{
 		lobbyList.get(player.getAllocatedLobby()).switchTeam(player);
