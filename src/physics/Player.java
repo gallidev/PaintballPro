@@ -143,20 +143,28 @@ public class Player extends GameObject{
 				double propY = prop.getY();
 				double propWidth = prop.getImage().getWidth();
 				double propHeight = prop.getImage().getHeight();
-				if(propX >= x + image.getWidth()/2){
-					if(propY < y + image.getHeight() || propY + propHeight > y) {
-						x -= 2; //can't go right
-					}
+				
+				//find angle between center of player and center of the prop
+				double propCenterX = propX + (propWidth/2);
+				double propCenterY = propY + (propHeight/2);
+				double playerCenterX = x + image.getWidth()/2;
+				double playerCenterY = y + image.getHeight()/2;
+				double deltax = propCenterX - playerCenterX;
+				double deltay = playerCenterY - propCenterY;
+						
+				double tempAngle = Math.atan2(deltax, deltay);
+				double propAngle = Math.toDegrees(tempAngle);
+				
+				if(propAngle >= 45 && propAngle <= 135){
+					x -= 2; //can't go right
 				}
-				if(propX + propWidth/2 < x - image.getWidth()/2){
-					if(propY < y + image.getHeight() || propY + propHeight > y) {
-						x += 2; //can't go left
-					}
+				if(propAngle >= -135 && propAngle <= -45 ){
+					x += 2; //can't go left
 				}
-				if(propY >= (y + image.getHeight()/2)){
+				if(propAngle > 135 || propAngle < -135){
 					y -= 2; //can't go down
 				}
-				if(propY <= y){
+				if(propAngle > -45 && propAngle < 45 ){
 					y += 2; //can't go up
 				}
 			}
@@ -176,25 +184,29 @@ public class Player extends GameObject{
 				double wallY = wall.getY();
 				double wallWidth = wall.getImage().getWidth();
 				double wallHeight = wall.getImage().getHeight();
-				if(wallX >= x + image.getWidth()/2){
-					if(wallY < y + image.getHeight() || wallY + wallHeight > y) {
-						x -= 2; //can't go right
-						System.out.println("Right");
-					}
+				
+				//find angle between center of player and center of wall
+				double wallCenterX = wallX + (wallWidth/2);
+				double wallCenterY = wallY + (wallHeight/2);
+				double playerCenterX = x + image.getWidth()/2;
+				double playerCenterY = y + image.getHeight()/2;
+				double deltax = wallCenterX - playerCenterX;
+				double deltay = playerCenterY - wallCenterY;
+						
+				double tempAngle = Math.atan2(deltax, deltay);
+				double wallAngle = Math.toDegrees(tempAngle);
+				
+				if(wallAngle >= 45 && wallAngle <= 135){
+					x -= 2; //can't go right
 				}
-				if(wallX + wallWidth/2 < x - image.getWidth()/2){
-					if(wallY < y + image.getHeight() || wallY + wallHeight > y) {
-						x += 2; //can't go left
-						System.out.println("Left");
-					}
+				if(wallAngle >= -135 && wallAngle <= -45 ){
+					x += 2; //can't go left
 				}
-				if(wallY >= (y + image.getHeight()/2)){
+				if(wallAngle > 135 || wallAngle < -135){
 					y -= 2; //can't go down
-					System.out.println("Down");
 				}
-				if(wallY <= y){
+				if(wallAngle > -45 && wallAngle < 45 ){
 					y += 2; //can't go up
-					System.out.println("Up");
 				}
 			}
 		
