@@ -1,6 +1,7 @@
 package rendering;
 
 import com.google.gson.Gson;
+import enums.Teams;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -27,6 +28,7 @@ public class Map
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
+	 *
 	 * @param url File location of a map to load
 	 * @return Instance of a loaded map
 	 */
@@ -75,7 +77,7 @@ public class Map
 				view.getChildren().add(prop.image);
 			}
 		}
-		catch (FileNotFoundException e)
+		catch(FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
@@ -87,7 +89,7 @@ public class Map
 		ArrayList<ImageView> blocks = new ArrayList<>();
 		for(Wall wall : walls)
 			for(Node block : wall.blocks.getChildren())
-				blocks.add((ImageView)block);
+				blocks.add((ImageView) block);
 		return blocks;
 	}
 
