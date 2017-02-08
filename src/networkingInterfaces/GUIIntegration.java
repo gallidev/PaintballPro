@@ -4,10 +4,17 @@ import networkingClient.Client;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 
-// We start the client here from the GUI. 
+// We start the client here from the GUI/game interface. 
 public class GUIIntegration {
 
 	public static void main(String[] args) {
+		
+		/*
+		 * We assume before running the Client code that we have:
+		 * nickname - the nickname of the player.
+		 * portNumber - the port number to connect to on server.
+		 * machName - the machine name of the client device.
+		 */
 		
 		String nickname = ""; // We ask the user what their nickname is.
 		int portNumber = 0; // The server is on a particular port.
@@ -36,6 +43,12 @@ public class GUIIntegration {
 		/* 
 		 * We can use the receiver class to match for things sent by the server
 		 * and update things/act accordingly by running particular functions.
+		 * #### NOTE ####
+		 * Still need to write the frame for the receive protocols, however 
+		 * i do not write the methods in them, that is up to the GUI to decide
+		 * what happens with the information received - e.g. list of players
+		 * in Red and Blue teams.
+		 * ###############
 		 */
 	}
 
