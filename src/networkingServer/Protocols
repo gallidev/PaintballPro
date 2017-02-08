@@ -30,6 +30,8 @@ Set username							|Set:Username:<username>
 Get Red team lobby usernames.			 Get:Red
 Get Blue team lobby usernames.			 Get:Blue
 Get username.							 Get:Nickname
+Exit system								 Exit:Client
+Exit game								 Exit:Game
 ---------------------------------------	|-------------------------------------	|
 			SERVER ACTIONS				|/////////////////////////////////////	|
 ----------------------------------------|-------------------------------------	|
