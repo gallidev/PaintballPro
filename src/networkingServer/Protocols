@@ -23,4 +23,10 @@ Game duration.							|
 ----------------------------------------|-------------------------------------	|
 Join a lobby for a particular game.		|Play:Mode:<game mode>					 1 = TM, 2 = KoTH, 3 = CTF, 4 = ESC
 Switch teams.							|SwitchTeam								 Changes from Red->Blue or Blue->Red
-Set nickname/username					|Username:<username>
+Set nickname/username					|Set:Username:<username>
+---------------------------------------	|-------------------------------------	|
+			CLIENT REQUESTS				|/////////////////////////////////////	|
+----------------------------------------|-------------------------------------	|
+Get Red team lobby nicknames.			 Get:Red
+Get Blue team lobby nicknames.			 Get:Blue
+Get nickname.							 Get:Nickname

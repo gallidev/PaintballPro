@@ -48,20 +48,44 @@ public class ServerMsgReceiver extends Thread {
 				//If text isnt null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 					
+					// UI Client Actions.
+					// ------------------
+					// When user specifies a game mode to play, add them to a lobby.
 					if(text.contains("Play:Mode:"))
 					{
 						int gameMode = Integer.parseInt(text.substring(10));
 						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode);
 					}
+					// When user attempts to switch teams, try to switch.
 					if(text.contains("SwitchTeam"))
 					{
 						gameLobby.switchTeams(clientTable.getPlayer(myClientsID));
 					}
-					if(text.contains("Username:"))
+					// When user tries to change their username.
+					if(text.contains("Set:Username:"))
 					{
-						String username = text.substring(9, text.length());
+						String username = text.substring(13, text.length());
 						clientTable.getPlayer(myClientsID).setUsername(username);
 					}
+					
+					// UI Client Requests
+					// ------------------
+					// Get nicknames of people currently in red team of lobby.
+					if(text.contains("Get:Red"))
+					{
+						
+					}
+					// Get nicknames of people currently in blue team of lobby.
+					if(text.contains("Get:Blue"))
+					{
+						
+					}					
+					// Get the client's currently set nickname.
+					if(text.contains("Get:Nickname"))
+					{
+						
+					}
+					
 					
 					
 					
