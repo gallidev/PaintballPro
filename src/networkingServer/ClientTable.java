@@ -18,8 +18,6 @@ public class ClientTable {
 	private ConcurrentMap<Integer,Boolean> inGameStatus = new ConcurrentHashMap<Integer,Boolean>();
 	//Each client has a game score.
 	private ConcurrentMap<Integer,Integer> Scores = new ConcurrentHashMap<Integer,Integer>();
-	//Each client has a nickname.
-	private ConcurrentMap<Integer, String> Nicknames = new ConcurrentHashMap<Integer, String>();
 	//Each client has a Player object..
 	private ConcurrentMap<Integer, Player> playerInstances = new ConcurrentHashMap<Integer, Player>();
 	
@@ -36,8 +34,8 @@ public class ClientTable {
 		queueTable.put(id, new MessageQueue()); //Make a new queue for the client.
 		inGameStatus.put(id, false); //Set initial in-game status as false.
 		Scores.put(id, 0); //Set score as 0.
-		Nicknames.put(id, nickname); //Set given nickname.
 		Player player = new Player(id);
+		player.setUsername(nickname);
 		playerInstances.put(id,player);
 		id++; //Increment current id value for next client to connect.
 
@@ -58,7 +56,6 @@ public class ClientTable {
 		queueTable.remove(clientID);
 		inGameStatus.remove(clientID);
 		Scores.remove(clientID);
-		Nicknames.remove(clientID);
 		playerInstances.remove(clientID);
 	}
 	
@@ -118,16 +115,6 @@ public class ClientTable {
 	}
 
 	/**
-	 * Get the nickname of the client with a particular ID.
-	 * @param id The id of the client to get the nickname for.
-	 * @return The nickname of a particular client.
-	 */
-	public String getNickname(int id)
-	{
-		return (id + " " + Nicknames.get(id));
-	}
-
-	/**
 	 * Get the game status of a particular client.
 	 * @param clientID The id of the client.
 	 * @return The game status of the client.
@@ -135,20 +122,6 @@ public class ClientTable {
 	public boolean gameStatus(int clientID)
 	{
 		return inGameStatus.get(clientID); 
-	}
-
-	/**
-	 * Retrieves the nicknames of the clients stored.
-	 * @return ArrayList of the nicknames of the client(s) stored.
-	 */
-	public ArrayList<String> getNicknames()
-	{
-		ArrayList<String> nicknames = new ArrayList<>();
-		//Cycle through all rows in the Map and get their values.
-		for (int key : queueTable.keySet()) {
-			nicknames.add(key+":"+Nicknames.get(key));
-		}
-		return nicknames;
 	}
 
 	/**

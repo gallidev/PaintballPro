@@ -1,85 +1,66 @@
 package networkingClient;
-
-
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import networkingSharedStuff.Message;
+import networkingSharedStuff.MessageQueue;
+
+
+// Gets messages from client and puts them in a queue, for another
+// thread to forward to the appropriate client.
+
 /**
- * Class to retrieve message from the other clients via the server (from ServerSender thread).
+ * Class to get messages from client, process and put appropriate message for a client.
  */
 public class ClientReceiver extends Thread {
-
-	private BufferedReader server;
-	public ArrayList<String> messages;
+	
+	private int clientID;
+	private BufferedReader fromServer;
 	private ClientSender sender;
-	private boolean m_running = true;
-
+	private MessageQueue myMsgQueue;
+	private Message msg;
+	
 	/**
-	 * Constructs the class, setting variables used.
-	 * @param server Stream information from the server.
-	 * @param sender The client thread to send messages to the server.
+	 * Construct the class, setting passed variables to local objects.
+	 * @param clientID The ID of the client.
+	 * @param reader Input stream reader for data.
+	 * @param table Table storing client information.
+	 * @param sender Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(BufferedReader server, ClientSender sender) {
-		this.server = server;
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue)
+	{
+		clientID = Cid;
+		fromServer = reader;
 		this.sender = sender;
+		myMsgQueue = msgQueue;
 	}
-
-	/**
-	 * Remove messages from the message ArrayList which stores retrieved messages.
-	 * @param start Start index of message removal.
-	 * @param finish End index of message removal.
-	 */
-	public void removeMessages(int start,int finish)
-	{
-		for(int i = finish; i >= start; i--)
-		{
-			messages.remove(i);
-		}
-	}
-
-	/**
-	 * Sets the variable is_running to false. Will stop the thread from running its loop in run().
-	 */
-	public void stopThread()
-	{
-		m_running = false;
-	}
-
+	
 	/**
 	 * The main method running in this class, runs when the class is started after initialization.
 	 */
 	public void run() {
-		// Print to the user whatever we get from the server:
 		try {
-			messages = new ArrayList<String>();
-			while (m_running) {
-				String s = server.readLine();
-				if (s != null)
-				{
-					if (s.compareTo("Exit:Client") != 0)
-					{
-						messages.add(s);
-					}
-					else
-					{
-						System.out.println("Got exit message");
-						//stopThread();
-						return;
-					}
+			while (true) {
+				//Get input from the client read stream.
+				String text = fromServer.readLine();
+				
+				//If text isn't null and does not read "Exit:Client" do...
+				if(text != null && text.compareTo("Exit:Client") != 0){
+					
+					//    Protocols
+					
 				}
-				else 
+				else // if the client wants to exit the system. 
 				{
-					server.close(); // Probably no point.
-					throw new IOException("Got null from server"); // Caught below.
+					sender.stopThread();
+					return;
 				}
 			}
 		}
 		catch (IOException e) {
-			System.out.println("Everything has stopped on server.");
-			sender.sendMessage("Exit:Client");
+			//If there is something wrong... exit cleanly.
+			sender.stopThread();
 			return;
 		}
 	}
