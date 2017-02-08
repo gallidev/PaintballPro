@@ -96,7 +96,7 @@ public class ServerMsgReceiver extends Thread {
 					}
 					
 					// Server Actions
-					// --------------
+					// ---------------
 					// Send a message to all clients in the game.
 					if(text.contains("SendToAll:"))
 					{
