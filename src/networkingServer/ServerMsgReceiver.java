@@ -20,6 +20,8 @@ public class ServerMsgReceiver extends Thread {
 	private ClientTable clientTable;
 	private ServerMsgSender sender;
 	private LobbyTable gameLobby;
+	private MessageQueue myMsgQueue;
+	private Message msg;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -34,6 +36,7 @@ public class ServerMsgReceiver extends Thread {
 		clientTable = table;
 		this.sender = sender;
 		gameLobby = passedGameLobby;
+		myMsgQueue = clientTable.getQueue(myClientsID);
 	}
 	
 	/**
@@ -70,20 +73,34 @@ public class ServerMsgReceiver extends Thread {
 					
 					// UI Client Requests
 					// ------------------
-					// Get nicknames of people currently in red team of lobby.
+					// Team 1 for blue, 2 for red.
+					// Get usernames of people currently in red team of lobby.
 					if(text.contains("Get:Red"))
 					{
-						
+						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+						String redMems = lobby.getTeam(2);
+						myMsgQueue.offer(new Message("Ret:Red:"+redMems));
 					}
-					// Get nicknames of people currently in blue team of lobby.
+					// Get usernames of people currently in blue team of lobby.
 					if(text.contains("Get:Blue"))
 					{
-						
+						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+						String blueMems = lobby.getTeam(1);
+						myMsgQueue.offer(new Message("Ret:Blue:"+blueMems));
 					}					
-					// Get the client's currently set nickname.
-					if(text.contains("Get:Nickname"))
+					// Get the client's currently set username.
+					if(text.contains("Get:Username"))
 					{
-						
+						String clientUsername = clientTable.getPlayer(myClientsID).getUsername();
+						myMsgQueue.offer(new Message("Ret:Username:"+clientUsername));
+					}
+					
+					// Server Actions
+					// --------------
+					// Send a message to all clients in the game.
+					if(text.contains("SendToAll:"))
+					{
+						sendToAll(text);
 					}
 					
 					
@@ -160,6 +177,17 @@ public class ServerMsgReceiver extends Thread {
 			sender.stopThread();
 			
 			return;
+		}
+	}
+	
+	
+	private void sendToAll(String text)
+	{
+		Player[] gamePlayers = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby()).getPlayers();
+		for(Player player : gamePlayers)
+		{
+			MessageQueue queue = clientTable.getQueue(player.getID());
+			queue.offer(new Message(text));
 		}
 	}
 	

@@ -8,10 +8,10 @@ We work using strings between the client and the server. This document outlines 
 ---------------------------------------	|-------------------------------------	|-------------------------------------
 				IN-GAME					|/////////////////////////////////////	|/////////////////////////////////////
 ---------------------------------------	|-------------------------------------	|-------------------------------------
-New co-ordinates when a player moves.	|Move:<x>:<y>										
+New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>										
 Angle of player changes.				|
 Player gets shot.						|
-Bullets firing.							|Bulltet:<x>:<y>:<angle>:<team>
+Bullets firing.							|SendToAll:Bulltet:<x>:<y>:<angle>:<team>
 ---------------------------------------	|-------------------------------------	|
 				GAME STATUS				|/////////////////////////////////////	|
 ---------------------------------------	|-------------------------------------	|
@@ -23,10 +23,14 @@ Game duration.							|
 ----------------------------------------|-------------------------------------	|
 Join a lobby for a particular game.		|Play:Mode:<game mode>					 1 = TM, 2 = KoTH, 3 = CTF, 4 = ESC
 Switch teams.							|SwitchTeam								 Changes from Red->Blue or Blue->Red
-Set nickname/username					|Set:Username:<username>
+Set username							|Set:Username:<username>
 ---------------------------------------	|-------------------------------------	|
 			CLIENT REQUESTS				|/////////////////////////////////////	|
 ----------------------------------------|-------------------------------------	|
-Get Red team lobby nicknames.			 Get:Red
-Get Blue team lobby nicknames.			 Get:Blue
-Get nickname.							 Get:Nickname
+Get Red team lobby usernames.			 Get:Red
+Get Blue team lobby usernames.			 Get:Blue
+Get username.							 Get:Nickname
+---------------------------------------	|-------------------------------------	|
+			SERVER ACTIONS				|/////////////////////////////////////	|
+----------------------------------------|-------------------------------------	|
+Send to all clients in the game.		|SendToAll:<message>

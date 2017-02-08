@@ -156,6 +156,42 @@ public class Lobby {
 				}
 			}
 		}
+	}
 	
+	public String getTeam(int teamNum) // 1 for blue, 2 for red.
+	{
+		String retStr = "";
+		if(teamNum == 1)
+		{
+			for(Player player : blueTeam.values())
+			{
+				retStr = retStr + player.getUsername() + "-";
+			}
+		}
+		else
+		{
+			for(Player player : redTeam.values())
+			{
+				retStr = retStr + player.getUsername() + "-";
+			}
+		}
+		return retStr.substring(0, retStr.length()-1);
+	}
+	
+	public Player[] getPlayers()
+	{
+		Player[] playArr = new Player[getCurrPlayerTotal()];
+		int index = 0;
+		for(Player player : blueTeam.values())
+		{
+			playArr[index] = player;
+			index++;
+		}
+		for(Player player : redTeam.values())
+		{
+			playArr[index] = player;
+			index++;
+		}
+		return playArr;
 	}
 }
