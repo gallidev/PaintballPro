@@ -1,7 +1,7 @@
 package logic;
 
 /**
- * Abstraction of all possible game modes. Contains the basic functionality that is needed in all the game modes .
+ * Abstraction of all possible game modes. Contains the basic functionality that is needed in all the game modes.
  * @author Alexandra Paduraru
  *
  */
@@ -11,7 +11,7 @@ public abstract class GameMode {
 	private Team t2;
 	
 	/**
-	 * Creates a new game and initialises the two teams playing.
+	 * Creates a new game and initialises the two teams which are playing.
 	 * @param t1 The first game team.
 	 * @param t2 The second game team.
 	 */
@@ -23,6 +23,8 @@ public abstract class GameMode {
 	
 	public void shoot(){
 	
+		
+		//respawn the player that was hit
 	}
 	
 	/**

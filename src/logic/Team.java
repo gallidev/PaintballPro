@@ -39,16 +39,26 @@ public class Team {
 		membersNo++;
 	}
 	
-	 /**
-	 * Change one of the team player's location.
-	 * @param p The player to be moved.
-	 * @param newXCoord The new x coordinate of the player.
-	 * @param newYCoord The new y coordinate of the player.
+	/**
+	 * Adds players as a member of the team.
+	 * @param teamPlayers The array of players to team.
 	 */
-	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-		p.setXCoordinate(newXCoord);
-		p.setYCoordinate(newYCoord);
+	public void setMembers(Player[] teamPlayers) {
+		for (Player p : teamPlayers)
+			addMember(p);
 	}
+	
+	// Probably not needed here.
+//	 /**
+//	 * Change one of the team player's location.
+//	 * @param p The player to be moved.
+//	 * @param newXCoord The new x coordinate of the player.
+//	 * @param newYCoord The new y coordinate of the player.
+//	 */
+//	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
+//		p.setXCoordinate(newXCoord);
+//		p.setYCoordinate(newYCoord);
+//	}
 	
 	/* Getters and setters */
 	
@@ -69,9 +79,5 @@ public class Team {
 		return members;
 	}
 
-	public void setMembers(Player[] team1Players) {
-		this.members = team1Players;
-	}
-	
 	
 }
