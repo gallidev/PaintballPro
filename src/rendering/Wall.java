@@ -20,5 +20,4 @@ class Wall
 	String material;
 	boolean orientation;
 	int length, x, y;
-	transient Group blocks;
 }
