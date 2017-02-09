@@ -20,13 +20,14 @@ public abstract class GeneralPlayer extends GameObject{
 
 	protected final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected static long shootDelay = 250;
-	protected boolean up, down, left, right, shoot;
+	protected static long spawnDelay = 3000;
+	protected boolean up, down, left, right, shoot, eliminated;
 	protected double angle;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
 	protected Map map;
 	protected String nickname;
-	protected long shootTime;
+	protected long shootTimer, spawnTimer;
 	protected Teams team;
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
@@ -47,6 +48,7 @@ public abstract class GeneralPlayer extends GameObject{
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		map = scene.getMap();
+		eliminated = false;
 	}
 
 	/**
@@ -76,9 +78,9 @@ public abstract class GeneralPlayer extends GameObject{
 	protected abstract void updatePosition();
 
 	protected void updateShooting(){
-		if(shoot && shootTime < System.currentTimeMillis() - shootDelay){
+		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
 			shoot();
-			shootTime = System.currentTimeMillis();
+			shootTimer = System.currentTimeMillis();
 		}
 	}
 
@@ -183,14 +185,24 @@ public abstract class GeneralPlayer extends GameObject{
 
 			for(Bullet bullet : enemy.getBullets()){
 				if(bullet.isActive() && getBoundsInParent().intersects(bullet.getBoundsInParent())){
-					x = map.getSpawns()[0].x * 64;
-					y = map.getSpawns()[0].y * 64;
-					bullet.setActive(false);
+					spawnTimer = System.currentTimeMillis();
+					eliminated = true;
+					this.setVisible(false);
 					return;
 				}
 			}
 		}
 
+	}
+	
+	protected void checkSpawn() {
+		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
+			x = map.getSpawns()[0].x * 64;
+			y = map.getSpawns()[0].y * 64;
+			eliminated = false;
+			this.setVisible(true);
+		};
+		
 	}
 
 

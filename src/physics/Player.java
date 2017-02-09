@@ -43,10 +43,14 @@ public class Player extends GeneralPlayer{
 	 */
 	@Override
 	public void tick() {
-		updatePosition();
-		updateShooting();
+		if(!eliminated){
+			updatePosition();
+			updateShooting();
+			updateAngle();
+		} else {
+			checkSpawn();
+		}
 		updateBullets();
-		updateAngle();
 		handlePropCollision();
 		handleWallCollision();
 		handleBulletCollision();

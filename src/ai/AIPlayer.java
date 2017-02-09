@@ -31,9 +31,13 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	public void tick() {
 		rb.tick();
-		updateAngle();
-		updatePosition();
-		updateShooting();
+		if(!eliminated){
+			updateAngle();
+			updatePosition();
+			updateShooting();
+		} else {
+			checkSpawn();
+		}
 		updateBullets();
 		handlePropCollision();
 		handleWallCollision();
