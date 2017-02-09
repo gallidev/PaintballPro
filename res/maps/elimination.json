@@ -6,25 +6,21 @@
 		{"name": "crate"}
 	],
 	"spawns": [
-		{"x": 2, "y": 7, "team": "Teams.RED"},
-		{"x": 2, "y": 8, "team": "Teams.RED"},
-		{"x": 3, "y": 7, "team": "Teams.RED"},
-		{"x": 3, "y": 8, "team": "Teams.RED"},
-		{"x": 25, "y": 7, "team": "Teams.BLUE"},
-		{"x": 25, "y": 8, "team": "Teams.BLUE"},
-		{"x": 26, "y": 7, "team": "Teams.BLUE"},
-		{"x": 26, "y": 8, "team": "Teams.BLUE"}
+		{"x": 2, "y": 7, "team": "RED"},
+		{"x": 2, "y": 8, "team": "RED"},
+		{"x": 3, "y": 7, "team": "RED"},
+		{"x": 3, "y": 8, "team": "RED"},
+		{"x": 25, "y": 7, "team": "BLUE"},
+		{"x": 25, "y": 8, "team": "BLUE"},
+		{"x": 26, "y": 7, "team": "BLUE"},
+		{"x": 26, "y": 8, "team": "BLUE"}
 	],
 	"floors": [
-		{ "material": "sand", "width": 4, "height": 4, "x": 1, "y": 6},
-		{ "material": "sand", "width": 3, "height": 3, "x": 3, "y": 3},
-		{ "material": "sand", "width": 3, "height": 8, "x": 6, "y": 3},
-		{ "material": "sand", "width": 4, "height": 10, "x": 9, "y": 2},
-		{ "material": "sand", "width": 3, "height": 12, "x": 13, "y": 1},
-		{ "material": "sand", "width": 4, "height": 10, "x": 16, "y": 2},
-		{ "material": "sand", "width": 3, "height": 8, "x": 20, "y": 3},
-		{ "material": "sand", "width": 3, "height": 3, "x": 23, "y": 3},
-		{ "material": "sand", "width": 4, "height": 4, "x": 24, "y": 6}
+		{ "material": "sand", "width": 2, "height": 4, "x": 1, "y": 6},
+		{ "material": "sand", "width": 6, "height": 8, "x": 3, "y": 3},
+		{ "material": "sand", "width": 11, "height": 12, "x": 9, "y": 1},
+		{ "material": "sand", "width": 6, "height": 8, "x": 20, "y": 3},
+		{ "material": "sand", "width": 2, "height": 4, "x": 26, "y": 6}
 	],
 	"walls": [
 		{ "material": "sand_brick", "orientation": false, "length": 4, "x": 0, "y": 6},

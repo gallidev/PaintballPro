@@ -55,6 +55,7 @@ public class Map
 			{
 				for(int i = 0; i < floor.width; i++)
 				{
+					floorLoop:
 					for(int j = 0; j < floor.height; j++)
 					{
 						ImageView tile = new ImageView(map.getMaterialImage(floor.material));
@@ -62,14 +63,22 @@ public class Map
 						tile.setY((j + floor.y) * 64);
 						for(Spawn spawn : map.spawns)
 						{
-							if(spawn.x == i && spawn.y == j)
+							if(spawn.x == i + floor.x && spawn.y == j + floor.y)
+							{
 								map.spawnGroup[spawn.team == Teams.RED ? 0 : 1].getChildren().add(tile);
+								continue floorLoop;
+							}
 						}
 						map.floorGroup.getChildren().add(tile);
 					}
 				}
 			}
+			map.spawnGroup[0].setEffect(new DropShadow(32, 0, 0, Color.RED));
+			map.spawnGroup[1].setEffect(new DropShadow(32, 0, 0, Color.BLUE));
+			map.floorGroup.setCache(true);
 			view.getChildren().add(map.floorGroup);
+			view.getChildren().add(map.spawnGroup[0]);
+			view.getChildren().add(map.spawnGroup[1]);
 
 			Light.Distant light = new Light.Distant();
 			light.setAzimuth(145.0);
