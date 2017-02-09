@@ -202,8 +202,10 @@ public abstract class GeneralPlayer extends GameObject{
 	
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
-			x = map.getSpawns()[0].x * 64;
-			y = map.getSpawns()[0].y * 64;
+			int i = 0;
+			if(team == Teams.BLUE) i = 4;
+			x = map.getSpawns()[i].x * 64;
+			y = map.getSpawns()[i].y * 64;
 			eliminated = false;
 			invincible = true;
 			spawnTimer = System.currentTimeMillis();
