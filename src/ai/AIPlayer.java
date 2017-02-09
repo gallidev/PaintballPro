@@ -40,14 +40,13 @@ public class AIPlayer extends GeneralPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
-		handlePropCollision();
-		handleWallCollision();
+		handlePropWallCollision();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
 			checkInvincibility();
 		}
-		
+
 	}
 
 	@Override

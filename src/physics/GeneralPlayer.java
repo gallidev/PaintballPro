@@ -3,6 +3,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
@@ -98,14 +99,15 @@ public abstract class GeneralPlayer extends GameObject{
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
 
-	protected void handlePropCollision(){
-		ArrayList<ImageView> props = map.getProps();
-		for(ImageView prop : props){
-			if(bounds.intersects(prop.getBoundsInParent())) {
-				double propX = prop.getX();
-				double propY = prop.getY();
-				double propWidth = prop.getImage().getWidth();
-				double propHeight = prop.getImage().getHeight();
+	protected void handlePropWallCollision(){
+		ArrayList<ImageView> propsWalls = map.getProps();
+		propsWalls.addAll(map.getWalls());
+		for(ImageView propWall : propsWalls){
+			if(bounds.intersects(propWall.getBoundsInParent())) {
+				double propX = propWall.getX();
+				double propY = propWall.getY();
+				double propWidth = propWall.getImage().getWidth();
+				double propHeight = propWall.getImage().getHeight();
 
 				//find angle between center of player and center of the prop
 				double propCenterX = propX + (propWidth/2);
@@ -132,54 +134,13 @@ public abstract class GeneralPlayer extends GameObject{
 				}
 			}
 			for(Bullet bullet : firedBullets){
-				if(bullet.getBoundsInParent().intersects(prop.getBoundsInParent())){
+				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
 					bullet.setActive(false);
 				}
 			}
 		}
 	}
 
-	protected void handleWallCollision(){
-		ArrayList<ImageView> walls = map.getWalls();
-		for(ImageView wall : walls){
-			if(bounds.intersects(wall.getBoundsInParent())) {
-				double wallX = wall.getX();
-				double wallY = wall.getY();
-				double wallWidth = wall.getImage().getWidth();
-				double wallHeight = wall.getImage().getHeight();
-
-				//find angle between center of player and center of wall
-				double wallCenterX = wallX + (wallWidth/2);
-				double wallCenterY = wallY + (wallHeight/2);
-				double playerCenterX = x + image.getWidth()/2;
-				double playerCenterY = y + image.getHeight()/2;
-				double deltax = wallCenterX - playerCenterX;
-				double deltay = playerCenterY - wallCenterY;
-
-				double tempAngle = Math.atan2(deltax, deltay);
-				double wallAngle = Math.toDegrees(tempAngle);
-
-				if(wallAngle >= 45 && wallAngle <= 135){
-					x -= movementSpeed; //can't go right
-				}
-				if(wallAngle >= -135 && wallAngle <= -45 ){
-					x += movementSpeed; //can't go left
-				}
-				if(wallAngle > 135 || wallAngle < -135){
-					y -= movementSpeed; //can't go down
-				}
-				if(wallAngle > -45 && wallAngle < 45 ){
-					y += movementSpeed; //can't go up
-				}
-			}
-
-			for(Bullet bullet : firedBullets){
-				if(bullet.getBoundsInParent().intersects(wall.getBoundsInParent())){
-					bullet.setActive(false);
-				}
-			}
-		}
-	}
 	/**
 	 * handles the bullet collisions from enemies, if the player has been shot then it goes to the respawn point
 	 */
@@ -199,7 +160,7 @@ public abstract class GeneralPlayer extends GameObject{
 		}
 
 	}
-	
+
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
@@ -213,11 +174,11 @@ public abstract class GeneralPlayer extends GameObject{
 			setVisible(true);
 		}
 	}
-	
+
 	protected void checkInvincibility() {
 		//Invincible animation
 		if(spawnTimer + spawnDelay > System.currentTimeMillis()){
-			if(System.currentTimeMillis() >= spawnTimer + spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay/8)  
+			if(System.currentTimeMillis() >= spawnTimer + spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay/8)
 				setVisible(false);
 			if(System.currentTimeMillis() >= spawnTimer + 2* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 3* spawnDelay/8)
 				setVisible(true);
@@ -231,14 +192,14 @@ public abstract class GeneralPlayer extends GameObject{
 				setVisible(true);
 			if(System.currentTimeMillis() >= spawnTimer + 7* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 8* spawnDelay/8)
 				setVisible(false);
-			
+
 		} else {
 			invincible = false;
 			setVisible(true);
-			
+
 		}
 	}
-	
+
 	//Consists of 5 points around player
 	protected void updatePlayerBounds(){
 		//Point1
@@ -283,8 +244,9 @@ public abstract class GeneralPlayer extends GameObject{
 			    boundx3, boundy3,
 			    boundx4, boundy4,
 			    boundx5, boundy5});
+
 	}
-	
+
 
 
 	/**

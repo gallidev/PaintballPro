@@ -52,8 +52,7 @@ public class Player extends GeneralPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
-		handlePropCollision();
-		handleWallCollision();
+		handlePropWallCollision();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
