@@ -47,16 +47,17 @@ public class Renderer extends Scene
 
 		map = Map.load("res/maps/" + mapName + ".json");
 
-		Image playerImage = new Image("assets/player.png", 30, 64, true, true);
-		Player player = new Player(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, "Me", false, this, Teams.RED, playerImage);
+		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
+		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
+		Player player = new Player(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, "Me", false, this, Teams.RED, redPlayerImage);
 		view.getChildren().add(player);
 		players.add(player);
 
-		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, "Bot1", this, Teams.BLUE, playerImage);
+		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, "Bot1", this, Teams.BLUE, bluePlayerImage);
 		view.getChildren().add(ai);
 		players.add(ai);
 
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, "Bot2", this, Teams.BLUE, playerImage);
+		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, "Bot2", this, Teams.BLUE, bluePlayerImage);
 		view.getChildren().add(ai2);
 		players.add(ai2);
 
