@@ -52,11 +52,11 @@ public class Renderer extends Scene
 		view.getChildren().add(player);
 		players.add(player);
 
-		AIPlayer ai = new AIPlayer(map.getSpawns()[1].x * 64, map.getSpawns()[1].y * 64, "Bot1", this, Teams.BLUE, playerImage);
+		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, "Bot1", this, Teams.BLUE, playerImage);
 		view.getChildren().add(ai);
 		players.add(ai);
 
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[2].x * 64, map.getSpawns()[2].y * 64, "Bot2", this, Teams.BLUE, playerImage);
+		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, "Bot2", this, Teams.BLUE, playerImage);
 		view.getChildren().add(ai2);
 		players.add(ai2);
 

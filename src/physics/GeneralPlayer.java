@@ -20,7 +20,8 @@ import rendering.Spawn;
 public abstract class GeneralPlayer extends GameObject{
 
 	protected final double playerHeadX = 12.5, playerHeadY = 47.5;
-	protected static long shootDelay = 250;
+	protected final double movementSpeed = 2;
+	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
 	protected boolean up, down, left, right, shoot, eliminated, invincible;
 	protected double angle;
@@ -118,16 +119,16 @@ public abstract class GeneralPlayer extends GameObject{
 				double propAngle = Math.toDegrees(tempAngle);
 
 				if(propAngle >= 45 && propAngle <= 135){
-					x -= 2; //can't go right
+					x -= movementSpeed; //can't go right
 				}
 				if(propAngle >= -135 && propAngle <= -45 ){
-					x += 2; //can't go left
+					x += movementSpeed; //can't go left
 				}
 				if(propAngle > 135 || propAngle < -135){
-					y -= 2; //can't go down
+					y -= movementSpeed; //can't go down
 				}
 				if(propAngle > -45 && propAngle < 45 ){
-					y += 2; //can't go up
+					y += movementSpeed; //can't go up
 				}
 			}
 			for(Bullet bullet : firedBullets){
@@ -159,16 +160,16 @@ public abstract class GeneralPlayer extends GameObject{
 				double wallAngle = Math.toDegrees(tempAngle);
 
 				if(wallAngle >= 45 && wallAngle <= 135){
-					x -= 2; //can't go right
+					x -= movementSpeed; //can't go right
 				}
 				if(wallAngle >= -135 && wallAngle <= -45 ){
-					x += 2; //can't go left
+					x += movementSpeed; //can't go left
 				}
 				if(wallAngle > 135 || wallAngle < -135){
-					y -= 2; //can't go down
+					y -= movementSpeed; //can't go down
 				}
 				if(wallAngle > -45 && wallAngle < 45 ){
-					y += 2; //can't go up
+					y += movementSpeed; //can't go up
 				}
 			}
 
@@ -237,7 +238,7 @@ public abstract class GeneralPlayer extends GameObject{
 	}
 	
 	//Consists of 5 points around player
-	protected void updateBounds(){
+	protected void updatePlayerBounds(){
 		//Point1
 		double x1 = (83 * image.getWidth()/120) - playerHeadX;
 		double y1 = (5 * image.getHeight()/255) - playerHeadY;

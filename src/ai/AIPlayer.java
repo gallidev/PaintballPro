@@ -35,10 +35,10 @@ public class AIPlayer extends GeneralPlayer{
 			updateAngle();
 			updatePosition();
 			updateShooting();
-			updateBounds();
 		} else {
 			checkSpawn();
 		}
+		updatePlayerBounds();
 		updateBullets();
 		handlePropCollision();
 		handleWallCollision();

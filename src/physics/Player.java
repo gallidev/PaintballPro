@@ -47,10 +47,10 @@ public class Player extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
-			updateBounds();
 		} else {
 			checkSpawn();
 		}
+		updatePlayerBounds();
 		updateBullets();
 		handlePropCollision();
 		handleWallCollision();
@@ -64,26 +64,26 @@ public class Player extends GeneralPlayer{
 	protected void updatePosition(){
 		if(controlScheme){
 			if(up){
-				y -= 2 * Math.cos(angle);
-				x += 2 * Math.sin(angle);
+				y -= movementSpeed * Math.cos(angle);
+				x += movementSpeed * Math.sin(angle);
 			}
 			if(down){
-				y += 2 * Math.cos(angle);
-				x -= 2 * Math.sin(angle);
+				y += movementSpeed * Math.cos(angle);
+				x -= movementSpeed * Math.sin(angle);
 			}
 			if(left){
-				y -= 2 * Math.cos(angle - Math.PI/2);
-				x += 2 * Math.sin(angle - Math.PI/2);
+				y -= movementSpeed * Math.cos(angle - Math.PI/2);
+				x += movementSpeed * Math.sin(angle - Math.PI/2);
 			}
 			if(right){
-				y -= 2 * Math.cos(angle + Math.PI/2);
-				x += 2 * Math.sin(angle + Math.PI/2);
+				y -= movementSpeed * Math.cos(angle + Math.PI/2);
+				x += movementSpeed * Math.sin(angle + Math.PI/2);
 			}
 		} else {
-			if(up) y -= 2;
-			if(down) y += 2;
-			if(left) x -= 2;
-			if(right) x += 2;
+			if(up) y -= movementSpeed;
+			if(down) y += movementSpeed;
+			if(left) x -= movementSpeed;
+			if(right) x += movementSpeed;
 		}
 
 		setLayoutX(x);
