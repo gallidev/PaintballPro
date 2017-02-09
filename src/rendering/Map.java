@@ -1,10 +1,10 @@
 package rendering;
 
 import com.google.gson.Gson; //add gson-2.8.0.jar to the project libraries!
-import javafx.scene.CacheHint;
+import enums.Teams;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
@@ -31,7 +31,7 @@ public class Map
 	private Prop[] props;
 	private Spawn[] spawns;
 
-	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
+	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group(), spawnGroup[] = new Group[2];
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -47,10 +47,10 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
 			for(Material material : map.materials)
-			{
 				material.image = new Image("assets/" + material.name + ".png", 64, 64, true, true);
-			}
 
+			map.spawnGroup[0] = new Group();
+			map.spawnGroup[1] = new Group();
 			for(Floor floor : map.floors)
 			{
 				for(int i = 0; i < floor.width; i++)
@@ -60,17 +60,29 @@ public class Map
 						ImageView tile = new ImageView(map.getMaterialImage(floor.material));
 						tile.setX((i + floor.x) * 64);
 						tile.setY((j + floor.y) * 64);
+						for(Spawn spawn : map.spawns)
+						{
+							if(spawn.x == i && spawn.y == j)
+								map.spawnGroup[spawn.team == Teams.RED ? 0 : 1].getChildren().add(tile);
+						}
 						map.floorGroup.getChildren().add(tile);
 					}
 				}
 			}
-			map.floorGroup.setCache(true);
-
-			InnerShadow floorShadow = new InnerShadow(40, Color.BLACK);
-			floorShadow.setChoke(0.4);
-
-			map.floorGroup.setEffect(floorShadow);
 			view.getChildren().add(map.floorGroup);
+
+			Light.Distant light = new Light.Distant();
+			light.setAzimuth(145.0);
+			light.setElevation(40);
+
+			Lighting propLighting = new Lighting();
+			propLighting.setLight(light);
+			propLighting.setSurfaceScale(3.0);
+
+			DropShadow propShadow = new DropShadow(16, 0, 0, Color.BLACK);
+			propShadow.setSpread(0.5);
+			propShadow.setHeight(64);
+			propShadow.setInput(propLighting);
 
 			for(Prop prop : map.props)
 			{
@@ -79,15 +91,18 @@ public class Map
 				image.setY(prop.y * 64);
 				map.propGroup.getChildren().add(image);
 			}
+			map.propGroup.setCache(true);
+			map.propGroup.setEffect(propShadow);
 			view.getChildren().add(map.propGroup);
-
-			Light.Distant light = new Light.Distant();
-			light.setAzimuth(-90.0);
-			light.setElevation(40);
 
 			Lighting wallLighting = new Lighting();
 			wallLighting.setLight(light);
 			wallLighting.setSurfaceScale(5.0);
+
+			DropShadow wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
+			wallShadow.setSpread(0.5);
+			wallShadow.setHeight(64);
+			wallShadow.setInput(wallLighting);
 
 			//Wall orientation: true for horizontal, false for vertical
 			for(Wall wall : map.walls)
@@ -101,7 +116,7 @@ public class Map
 				}
 			}
 			map.wallGroup.setCache(true);
-			map.wallGroup.setEffect(wallLighting);
+			map.wallGroup.setEffect(wallShadow);
 			view.getChildren().add(map.wallGroup);
 		}
 		catch(FileNotFoundException e)
@@ -144,8 +159,10 @@ public class Map
 				return m.image;
 		return null;
 	}
-	//added method by Filippo only for bullets collisions, so I know where to respaw
-	public Spawn[] getSpawns() {
+
+	//added method by Filippo only for bullets collisions, so I know where to respawn
+	public Spawn[] getSpawns()
+	{
 		return spawns;
 	}
 

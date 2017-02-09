@@ -62,20 +62,24 @@ public class Renderer extends Scene
 
 		//provisional way to differ enemies and team players
 		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
-		ArrayList<GeneralPlayer> teamBlue  = new ArrayList<GeneralPlayer>();
+		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();
 
-		for(GeneralPlayer p : players){
-			if(p.getTeam() == Teams.RED){
+		for(GeneralPlayer p : players)
+		{
+			if(p.getTeam() == Teams.RED)
 				teamRed.add(p);
-			}else{
+			else
 				teamBlue.add(p);
-			}
 		}
-		for(GeneralPlayer p : players){
-			if(p.getTeam() == Teams.RED){
+		for(GeneralPlayer p : players)
+		{
+			if(p.getTeam() == Teams.RED)
+			{
 				p.setEnemies(teamBlue);
 				p.setTeamPlayers(teamRed);
-			}else{
+			}
+			else
+			{
 				p.setEnemies(teamRed);
 				p.setTeamPlayers(teamBlue);
 			}
@@ -125,7 +129,8 @@ public class Renderer extends Scene
 	}
 
 	//only for testing the bullets collisions for the moment
-	public ArrayList<GeneralPlayer> getPlayers() {
+	public ArrayList<GeneralPlayer> getPlayers()
+	{
 		return players;
 	}
 
