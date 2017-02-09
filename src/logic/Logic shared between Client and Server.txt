@@ -1,0 +1,18 @@
+
+  
+
+
+  Client		<<<-----------------------------------------------------------------------(WINNER)----------------------------------- Server
+ 	|																															         | 	
+  	|																																     |
+ClientPlayer	----------(read a move)------------------------------------------------------------------------------------------->>> ServerPlayer
+				<<<--------(update location/render)----------------------------------------(accept the move/ do collision detection etc)---------
+
+ClientPlayer	----------(shoot)--------------------------------------------------------------------------------------------------->>ServerPlayer
+				<<<--------(reflect the new score/ reder)----------------------------------------(update score(team too)/ respawn)--------------
+
+
+Server:
+	-run timer
+	-check if the game is finished
+	-manage teams(send the same information to all team members)
