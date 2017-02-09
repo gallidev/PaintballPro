@@ -53,7 +53,11 @@ public class Player extends GeneralPlayer{
 		updateBullets();
 		handlePropCollision();
 		handleWallCollision();
-		handleBulletCollision();
+		if(!invincible){
+			handleBulletCollision();
+		} else {
+			checkInvincibility();
+		}
 	}
 	@Override
 	protected void updatePosition(){

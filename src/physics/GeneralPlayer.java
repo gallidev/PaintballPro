@@ -20,8 +20,8 @@ public abstract class GeneralPlayer extends GameObject{
 
 	protected final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected static long shootDelay = 250;
-	protected static long spawnDelay = 3000;
-	protected boolean up, down, left, right, shoot, eliminated;
+	protected static long spawnDelay = 2000;
+	protected boolean up, down, left, right, shoot, eliminated, invincible;
 	protected double angle;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
@@ -49,6 +49,7 @@ public abstract class GeneralPlayer extends GameObject{
 		rotation.setPivotY(playerHeadY);
 		map = scene.getMap();
 		eliminated = false;
+		invincible = false;
 	}
 
 	/**
@@ -187,7 +188,7 @@ public abstract class GeneralPlayer extends GameObject{
 				if(bullet.isActive() && getBoundsInParent().intersects(bullet.getBoundsInParent())){
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
-					this.setVisible(false);
+					setVisible(false);
 					return;
 				}
 			}
@@ -200,9 +201,36 @@ public abstract class GeneralPlayer extends GameObject{
 			x = map.getSpawns()[0].x * 64;
 			y = map.getSpawns()[0].y * 64;
 			eliminated = false;
-			this.setVisible(true);
-		};
-		
+			invincible = true;
+			spawnTimer = System.currentTimeMillis();
+			updatePosition();
+			setVisible(true);
+		}
+	}
+	
+	protected void checkInvincibility() {
+		//Invincible animation
+		if(spawnTimer + spawnDelay > System.currentTimeMillis()){
+			if(System.currentTimeMillis() >= spawnTimer + spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay/8)  
+				setVisible(false);
+			if(System.currentTimeMillis() >= spawnTimer + 2* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 3* spawnDelay/8)
+				setVisible(true);
+			if(System.currentTimeMillis() >= spawnTimer + 3* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 4* spawnDelay/8)
+				setVisible(false);
+			if(System.currentTimeMillis() >= spawnTimer + 4* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 5* spawnDelay/8)
+				setVisible(true);
+			if(System.currentTimeMillis() >= spawnTimer + 5* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 6* spawnDelay/8)
+				setVisible(false);
+			if(System.currentTimeMillis() >= spawnTimer + 6* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 7* spawnDelay/8)
+				setVisible(true);
+			if(System.currentTimeMillis() >= spawnTimer + 7* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 8* spawnDelay/8)
+				setVisible(false);
+			
+		} else {
+			invincible = false;
+			setVisible(true);
+			
+		}
 	}
 
 
