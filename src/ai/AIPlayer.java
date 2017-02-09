@@ -31,6 +31,7 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	public void tick() {
 		rb.tick();
+		handlePropWallCollision();
 		if(!eliminated){
 			updateAngle();
 			updatePosition();
@@ -40,7 +41,6 @@ public class AIPlayer extends GeneralPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
-		handlePropWallCollision();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
@@ -51,8 +51,12 @@ public class AIPlayer extends GeneralPlayer{
 
 	@Override
 	protected void updatePosition(){
-		y -= 2 * Math.cos(angle);
-		x += 2 * Math.sin(angle);
+
+		double yToReduce = 2 * Math.cos(angle);
+		double xToAdd = 2 * Math.sin(angle);
+
+		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) y -= yToReduce;
+		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) x += xToAdd;
 
 		setLayoutX(x);
 		setLayoutY(y);

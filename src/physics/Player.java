@@ -43,6 +43,9 @@ public class Player extends GeneralPlayer{
 	 */
 	@Override
 	public void tick() {
+		// handle the collisions with walls and props before moving the position
+		// of the player so to understand if he can move or not in a specific direction
+		handlePropWallCollision();
 		if(!eliminated){
 			updatePosition();
 			updateShooting();
@@ -52,7 +55,6 @@ public class Player extends GeneralPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
-		handlePropWallCollision();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
@@ -79,10 +81,10 @@ public class Player extends GeneralPlayer{
 				x += movementSpeed * Math.sin(angle + Math.PI/2);
 			}
 		} else {
-			if(up) y -= movementSpeed;
-			if(down) y += movementSpeed;
-			if(left) x -= movementSpeed;
-			if(right) x += movementSpeed;
+			if(up && !collUp) y -= movementSpeed;
+			if(down && !collDown) y += movementSpeed;
+			if(left  && !collLeft) x -= movementSpeed;
+			if(right  && !collRight) x += movementSpeed;
 		}
 
 		setLayoutX(x);

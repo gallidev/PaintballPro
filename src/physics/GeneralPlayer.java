@@ -25,6 +25,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
 	protected boolean up, down, left, right, shoot, eliminated, invincible;
+	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
@@ -102,6 +103,10 @@ public abstract class GeneralPlayer extends GameObject{
 	protected void handlePropWallCollision(){
 		ArrayList<ImageView> propsWalls = map.getProps();
 		propsWalls.addAll(map.getWalls());
+		collUp = false;
+		collDown = false;
+		collRight = false;
+		collLeft = false;
 		for(ImageView propWall : propsWalls){
 			if(bounds.intersects(propWall.getBoundsInParent())) {
 				double propX = propWall.getX();
@@ -121,16 +126,20 @@ public abstract class GeneralPlayer extends GameObject{
 				double propAngle = Math.toDegrees(tempAngle);
 
 				if(propAngle >= 45 && propAngle <= 135){
-					x -= movementSpeed; //can't go right
+					collRight = true;
+					//x -= movementSpeed; //can't go right
 				}
 				if(propAngle >= -135 && propAngle <= -45 ){
-					x += movementSpeed; //can't go left
+					collLeft = true;
+					//x += movementSpeed; //can't go left
 				}
 				if(propAngle > 135 || propAngle < -135){
-					y -= movementSpeed; //can't go down
+					collDown = true;
+					//y -= movementSpeed; //can't go down
 				}
 				if(propAngle > -45 && propAngle < 45 ){
-					y += movementSpeed; //can't go up
+					collUp = true;
+					//y += movementSpeed; //can't go up
 				}
 			}
 			for(Bullet bullet : firedBullets){
