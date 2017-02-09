@@ -1,10 +1,15 @@
 package rendering;
 
-import com.google.gson.Gson;
+import com.google.gson.Gson; //add gson-2.8.0.jar to the project libraries!
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -26,7 +31,7 @@ public class Map
 	private Prop[] props;
 	Spawn[] spawns;
 
-	transient private Group wallGroup, floorGroup;
+	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -46,7 +51,6 @@ public class Map
 				material.image = new Image("assets/" + material.name + ".png", 64, 64, true, true);
 			}
 
-			map.floorGroup = new Group();
 			for(Floor floor : map.floors)
 			{
 				for(int i = 0; i < floor.width; i++)
@@ -56,23 +60,35 @@ public class Map
 						ImageView tile = new ImageView(map.getMaterialImage(floor.material));
 						tile.setX((i + floor.x) * 64);
 						tile.setY((j + floor.y) * 64);
-						tile.setCache(true);
 						map.floorGroup.getChildren().add(tile);
 					}
 				}
 			}
 			map.floorGroup.setCache(true);
+
+			InnerShadow floorShadow = new InnerShadow(40, Color.BLACK);
+			floorShadow.setChoke(0.4);
+
+			map.floorGroup.setEffect(floorShadow);
 			view.getChildren().add(map.floorGroup);
 
 			for(Prop prop : map.props)
 			{
-				prop.image = new ImageView(new Image("assets/" + prop.material + ".png", 64, 64, true, true));
-				prop.image.setX(prop.x * 64);
-				prop.image.setY(prop.y * 64);
-				view.getChildren().add(prop.image);
+				ImageView image = new ImageView(new Image("assets/" + prop.material + ".png", 64, 64, true, true));
+				image.setX(prop.x * 64);
+				image.setY(prop.y * 64);
+				map.propGroup.getChildren().add(image);
 			}
+			view.getChildren().add(map.propGroup);
 
-			map.wallGroup = new Group();
+			Light.Distant light = new Light.Distant();
+			light.setAzimuth(-90.0);
+			light.setElevation(40);
+
+			Lighting wallLighting = new Lighting();
+			wallLighting.setLight(light);
+			wallLighting.setSurfaceScale(5.0);
+			
 			//Wall orientation: true for horizontal, false for vertical
 			for(Wall wall : map.walls)
 			{
@@ -84,6 +100,8 @@ public class Map
 					map.wallGroup.getChildren().add(block);
 				}
 			}
+			map.wallGroup.setCache(true);
+			map.wallGroup.setEffect(wallLighting);
 			view.getChildren().add(map.wallGroup);
 		}
 		catch(FileNotFoundException e)
@@ -95,6 +113,7 @@ public class Map
 
 	/**
 	 * Get <code>ImageView</code> of all wall blocks on the map.
+	 *
 	 * @return <code>ImageView</code> of all wall blocks
 	 */
 	public ArrayList<ImageView> getWalls()
@@ -107,13 +126,14 @@ public class Map
 
 	/**
 	 * Get <code>ImageView</code> of all props on the map.
+	 *
 	 * @return <code>ImageView</code> of all props
 	 */
 	public ArrayList<ImageView> getProps()
 	{
 		ArrayList<ImageView> props = new ArrayList<>();
-		for(Prop prop : this.props)
-			props.add(prop.image);
+		for(Node node : propGroup.getChildren())
+			props.add((ImageView) node);
 		return props;
 	}
 
