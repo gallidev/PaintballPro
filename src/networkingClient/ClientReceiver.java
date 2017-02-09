@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import networkingInterfaces.ClientPlayer;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 
@@ -49,6 +50,11 @@ public class ClientReceiver extends Thread {
 				if(text != null && text.compareTo("Exit:Client") != 0){
 					
 					//    Protocols
+					if(text.contains("GameStart"))
+					{
+						ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
+						// Do stuff here.
+					}
 					
 				}
 				else // if the client wants to exit the system. 

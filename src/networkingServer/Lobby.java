@@ -4,6 +4,9 @@ package networkingServer;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
+import networkingClient.ClientReceiver;
+import networkingClient.ClientSender;
+import networkingInterfaces.TeamMatchMode;
 import networkingSharedStuff.MessageQueue;
 
 /**
@@ -53,7 +56,7 @@ public class Lobby {
 		return getCurrPlayerTotal() == MaxPlayers;
 	}
 
-	private int getCurrPlayerTotal() {
+	public int getCurrPlayerTotal() {
 		return currPlayerBlueNum + currPlayerRedNum;
 	}
 
@@ -193,5 +196,11 @@ public class Lobby {
 			index++;
 		}
 		return playArr;
+	}
+	
+	public void playGame(ServerMsgSender sender, ServerMsgReceiver receiver)
+	{
+		TeamMatchMode teamMatch = new TeamMatchMode();
+		// Do stuff here.
 	}
 }

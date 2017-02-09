@@ -69,6 +69,13 @@ public class ServerMsgReceiver extends Thread {
 					{
 						int gameMode = Integer.parseInt(text.substring(10));
 						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode);
+						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+						int curTotal = lobby.getCurrPlayerTotal();
+						if(curTotal == 8)
+						{
+							lobby.switchGameStatus();
+							lobby.playGame(sender, this);
+						}
 					}
 					
 					// When user attempts to switch teams, try to switch.
