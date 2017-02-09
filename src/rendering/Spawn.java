@@ -2,8 +2,8 @@ package rendering;
 
 import enums.Teams;
 
-class Spawn
+public class Spawn
 {
-	int x, y;
+	public int x, y;
 	Teams team;
 }

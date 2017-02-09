@@ -29,7 +29,7 @@ public class Map
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
-	Spawn[] spawns;
+	private Spawn[] spawns;
 
 	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
 
@@ -88,7 +88,7 @@ public class Map
 			Lighting wallLighting = new Lighting();
 			wallLighting.setLight(light);
 			wallLighting.setSurfaceScale(5.0);
-			
+
 			//Wall orientation: true for horizontal, false for vertical
 			for(Wall wall : map.walls)
 			{
@@ -144,4 +144,9 @@ public class Map
 				return m.image;
 		return null;
 	}
+	//added method by Filippo only for bullets collisions, so I know where to respaw
+	public Spawn[] getSpawns() {
+		return spawns;
+	}
+
 }

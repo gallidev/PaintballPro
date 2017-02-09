@@ -64,7 +64,7 @@ public class Bullet extends Circle{
 		this.y = y;
 	}
 	
-	public boolean getActive(){
+	public boolean isActive(){
 		return this.active;
 	}
 	
