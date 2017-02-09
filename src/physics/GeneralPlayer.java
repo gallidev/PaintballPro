@@ -187,10 +187,11 @@ public abstract class GeneralPlayer extends GameObject{
 		for(GeneralPlayer enemy : enemies){
 
 			for(Bullet bullet : enemy.getBullets()){
-				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent())){
+				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated){
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
 					setVisible(false);
+					bullet.setActive(false);
 					return;
 				}
 			}
