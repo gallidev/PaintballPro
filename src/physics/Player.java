@@ -47,6 +47,7 @@ public class Player extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
+			updateBounds();
 		} else {
 			checkSpawn();
 		}

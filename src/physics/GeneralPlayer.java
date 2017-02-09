@@ -3,6 +3,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import rendering.*;
@@ -31,6 +32,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected Teams team;
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
+	protected Polygon bounds = new Polygon();
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -98,7 +100,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected void handlePropCollision(){
 		ArrayList<ImageView> props = map.getProps();
 		for(ImageView prop : props){
-			if(getBoundsInParent().intersects(prop.getBoundsInParent())) {
+			if(bounds.intersects(prop.getBoundsInParent())) {
 				double propX = prop.getX();
 				double propY = prop.getY();
 				double propWidth = prop.getImage().getWidth();
@@ -139,7 +141,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected void handleWallCollision(){
 		ArrayList<ImageView> walls = map.getWalls();
 		for(ImageView wall : walls){
-			if(getBoundsInParent().intersects(wall.getBoundsInParent())) {
+			if(bounds.intersects(wall.getBoundsInParent())) {
 				double wallX = wall.getX();
 				double wallY = wall.getY();
 				double wallWidth = wall.getImage().getWidth();
@@ -185,7 +187,7 @@ public abstract class GeneralPlayer extends GameObject{
 		for(GeneralPlayer enemy : enemies){
 
 			for(Bullet bullet : enemy.getBullets()){
-				if(bullet.isActive() && getBoundsInParent().intersects(bullet.getBoundsInParent())){
+				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent())){
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
 					setVisible(false);
@@ -232,6 +234,53 @@ public abstract class GeneralPlayer extends GameObject{
 			
 		}
 	}
+	
+	//Consists of 5 points around player
+	protected void updateBounds(){
+		//Point1
+		double x1 = (83 * image.getWidth()/120) - playerHeadX;
+		double y1 = (5 * image.getHeight()/255) - playerHeadY;
+		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+		double boundx1 = x + x2 + playerHeadX;
+		double boundy1 = y + y2 + playerHeadY;
+		//Point2
+		x1 = (image.getWidth()) - playerHeadX;
+		y1 = (233 * image.getHeight()/255) - playerHeadY;
+		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+		double boundx2 = x + x2 + playerHeadX;
+		double boundy2 = y + y2 + playerHeadY;
+		//Point3
+		x1 = (57 * image.getWidth()/120) - playerHeadX;
+		y1 = (image.getHeight()) - playerHeadY;
+		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+		double boundx3 = x + x2 + playerHeadX;
+		double boundy3 = y + y2 + playerHeadY;
+		//Point4
+		x1 = (1 * image.getWidth()/120) - playerHeadX;
+		y1 = (183 * image.getHeight()/255) - playerHeadY;
+		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+		double boundx4 = x + x2 + playerHeadX;
+		double boundy4 = y + y2 + playerHeadY;
+		//Point5
+		x1 = (1 * image.getWidth()/120) - playerHeadX;
+		y1 = (128 * image.getHeight()/255) - playerHeadY;
+		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+		double boundx5 = x + x2 + playerHeadX;
+		double boundy5 = y + y2 + playerHeadY;
+		bounds.getPoints().clear();
+		bounds.getPoints().addAll(new Double[]{
+			    boundx1, boundy1,
+			    boundx2, boundy2,
+			    boundx3, boundy3,
+			    boundx4, boundy4,
+			    boundx5, boundy5});
+	}
+	
 
 
 	/**
