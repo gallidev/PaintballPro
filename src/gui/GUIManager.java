@@ -53,6 +53,7 @@ public class GUIManager {
 				s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 				break;
 			case "Lobby":
+				establishConnection();
 				s.setScene(GameLobbyMenu.getScene(this));
 				break;
 			case "Elimination":
@@ -62,16 +63,16 @@ public class GUIManager {
 	}
 	
 	public void establishConnection() {
-		String nickname = ""; // We ask the user what their nickname is.
-		int portNumber = 0; // The server is on a particular port.
+		String nickname = user.getUsername(); // We ask the user what their nickname is.
+		int portNumber = 25566; // The server is on a particular port.
 		String machName = ""; // The machine has a particular name.
 		
 		// This loads up the client code.
 		c = new Client(nickname,portNumber,machName);
 		
 		// We can then get the client sender and receiver threads.
-//		ClientSender sender = client.getSender();
-//		ClientReceiver receiver = client.getReceiver();
+		ClientSender sender = c.getSender();
+		ClientReceiver receiver = c.getReceiver();
 	}
 
 
