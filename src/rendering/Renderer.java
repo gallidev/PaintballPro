@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import physics.*;
 
 /**
@@ -52,6 +53,8 @@ public class Renderer extends Scene
 		Player player = new Player(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, "Me", false, this, Teams.RED, redPlayerImage);
 		view.getChildren().add(player);
 		players.add(player);
+		//Polygon playerBounds = player.getBounds();
+		//view.getChildren().add(playerBounds);
 
 		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, "Bot1", this, Teams.BLUE, bluePlayerImage);
 		view.getChildren().add(ai);

@@ -101,7 +101,15 @@ public class Player extends GeneralPlayer{
 
 		double deltax = mx - x1;
 		double deltay = y1 - my;
-
+		if(collUp){
+			y += movementSpeed;
+		} else if(collDown) {
+			y -= movementSpeed;
+		} else if(collLeft) {
+			x += movementSpeed;
+		} else if(collRight) {
+			x -= movementSpeed;
+		}
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}

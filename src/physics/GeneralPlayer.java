@@ -26,7 +26,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected static long spawnDelay = 2000;
 	protected boolean up, down, left, right, shoot, eliminated, invincible;
 	protected boolean collUp, collDown, collLeft, collRight;
-	protected double angle;
+	protected double angle, lastAngle;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
 	protected Map map;
@@ -55,6 +55,7 @@ public abstract class GeneralPlayer extends GameObject{
 		map = scene.getMap();
 		eliminated = false;
 		invincible = false;
+		bounds.setFill(Color.RED);
 	}
 
 	/**
@@ -324,6 +325,10 @@ public abstract class GeneralPlayer extends GameObject{
 
 	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
 		this.teamPlayers = teamPlayers;
+	}
+	
+	public Polygon getBounds(){
+		return this.bounds;
 	}
 
 

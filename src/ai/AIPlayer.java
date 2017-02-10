@@ -33,8 +33,8 @@ public class AIPlayer extends GeneralPlayer{
 		rb.tick();
 		handlePropWallCollision();
 		if(!eliminated){
-			updateAngle();
 			updatePosition();
+			updateAngle();
 			updateShooting();
 		} else {
 			checkSpawn();
@@ -52,8 +52,8 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	protected void updatePosition(){
 
-		double yToReduce = 2 * Math.cos(angle);
-		double xToAdd = 2 * Math.sin(angle);
+		double yToReduce = movementSpeed * Math.cos(angle);
+		double xToAdd = movementSpeed * Math.sin(angle);
 
 		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) y -= yToReduce;
 		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) x += xToAdd;
@@ -66,6 +66,15 @@ public class AIPlayer extends GeneralPlayer{
 	//Calculates the angle the player is facing with respect to the mouse
 	@Override
 	protected void updateAngle(){
+		if(collUp){
+			y += movementSpeed;
+		} else if(collDown) {
+			y -= movementSpeed;
+		} else if(collLeft) {
+			x += movementSpeed;
+		} else if(collRight) {
+			x -= movementSpeed;
+		}
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
