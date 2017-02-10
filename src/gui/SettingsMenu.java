@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -73,6 +74,13 @@ public class SettingsMenu {
 		TextField usernameText = new TextField();
 		usernameText.setText(s.getUsername());
 		
+		// Create the shading option label and checkbox
+		Label shadingLabel = new Label("Use shading (default on)");
+		
+		CheckBox shadingCheckbox = new CheckBox();
+		shadingCheckbox.setSelected(s.getShading());
+		
+		
 		// Get the current character resource
 		String currentCharacter = s.getCharacterStyle();
 		// Create the current character image view, and set the
@@ -122,10 +130,12 @@ public class SettingsMenu {
 		topGrid.add(sfxSlider, 1, 1);
 		topGrid.add(usernameLabel, 0, 2);
 		topGrid.add(usernameText, 1, 2);
-		topGrid.add(MenuControls.centreInPane(characterImage), 0, 3);
-		topGrid.add(MenuControls.centreInPane(characterButton), 0, 4);
-		topGrid.add(MenuControls.centreInPane(weaponImage), 1, 3);
-		topGrid.add(MenuControls.centreInPane(weaponButton), 1, 4);
+		topGrid.add(shadingLabel, 0, 3);
+		topGrid.add(shadingCheckbox, 1, 3);
+		topGrid.add(MenuControls.centreInPane(characterImage), 0, 4);
+		topGrid.add(MenuControls.centreInPane(characterButton), 0, 5);
+		topGrid.add(MenuControls.centreInPane(weaponImage), 1, 4);
+		topGrid.add(MenuControls.centreInPane(weaponButton), 1, 5);
 		
 		// Create a array of options for the cancel and apply buttons
 		MenuOption[] set = {new MenuOption("Cancel", new EventHandler<ActionEvent>() {
@@ -142,6 +152,7 @@ public class SettingsMenu {
 		    	s.setUsername(usernameText.getText());
 		    	s.setMusicVolume((int) musicSlider.getValue());
 		    	s.setSfxVolume((int) sfxSlider.getValue());
+		    	s.setShading(shadingCheckbox.isSelected());
 		    	// Transition back to the main menu
 		    	m.transitionTo("Main", null);
 		    }     

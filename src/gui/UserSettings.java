@@ -10,6 +10,7 @@ public class UserSettings {
 	private String characterStyle = CharacterStyles.getFirst();
 	private String weaponStyle = WeaponStyles.getFirst();
 	private String username = "Player";
+	private boolean shading = true;
 	
 	/**
 	 * Get the music volume level
@@ -94,6 +95,23 @@ public class UserSettings {
 	public void setUsername(String username) {
 		this.username = username;
 		UserSettingsManager.saveSettings(this);
-	}	
+	}
+	
+	/**
+	 * Get the user's shading option
+	 * @return true if shading is on (default)
+	 */
+	public boolean getShading() {
+		return shading;
+	}
+	
+	/**
+	 * Set the shading option, and save this to disk
+	 * @param shading true if shading is on (default)
+	 */
+	public void setShading(boolean shading) {
+		this.shading = shading;
+		UserSettingsManager.saveSettings(this);
+	}
 	
 }
