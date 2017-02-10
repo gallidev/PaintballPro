@@ -21,6 +21,7 @@ public class GameTypeMenu {
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Elimination", new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
+		    	m.transitionTo("Lobby", "Elimination");
 		        System.out.println("ActionEvent: (Elimination) " + event);
 		    }     
 		}), new MenuOption("Back", new EventHandler<ActionEvent>() {
