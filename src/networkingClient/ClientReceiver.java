@@ -50,10 +50,15 @@ public class ClientReceiver extends Thread {
 				if(text != null && text.compareTo("Exit:Client") != 0){
 					
 					//    Protocols
-					if(text.contains("GameStart"))
+					if(text.contains("StartGame"))
 					{
-						ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
-						// Do stuff here.
+						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
+						
+						//for debugging 
+						System.out.println("game gas started for player with ID " + clientID);
+						
+						//Do stuff here: show the game window, so that the players can start the game
+						
 					}
 					
 				}
