@@ -30,7 +30,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
 	protected Map map;
-	protected String nickname;
+	protected int id;
 	protected long shootTimer, spawnTimer;
 	protected Teams team;
 	protected ArrayList<GeneralPlayer> enemies;
@@ -44,10 +44,10 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public GeneralPlayer(double x, double y, String nickname, Renderer scene, Teams team, Image image){
+	public GeneralPlayer(double x, double y, int id, Renderer scene, Teams team, Image image){
 		super(x, y, image);
 		this.team = team;
-		this.nickname = nickname;
+		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
@@ -66,9 +66,9 @@ public abstract class GeneralPlayer extends GameObject{
 	 *
 	 * @ atp575
 	 */
-	public GeneralPlayer(double x, double y, String nickname, Image image) {
+	public GeneralPlayer(double x, double y, int id, Image image) {
 		super(x, y, image);
-		this.nickname = nickname;
+		this.id = id;
 	}
 
 	public void understandPlayers(ArrayList<GeneralPlayer> players){

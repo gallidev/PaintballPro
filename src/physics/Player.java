@@ -28,8 +28,8 @@ public class Player extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public Player(double x, double y, String nickname, boolean controlScheme, Renderer scene, Teams team, Image image){
-		super(x, y, nickname, scene, team, image);
+	public Player(double x, double y, int id, boolean controlScheme, Renderer scene, Teams team, Image image){
+		super(x, y, id, scene, team, image);
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
