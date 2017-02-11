@@ -153,6 +153,7 @@ public class SettingsMenu {
 		    	s.setMusicVolume((int) musicSlider.getValue());
 		    	s.setSfxVolume((int) sfxSlider.getValue());
 		    	s.setShading(shadingCheckbox.isSelected());
+		    	m.notifySettingsObservers();
 		    	// Transition back to the main menu
 		    	m.transitionTo("Main", null);
 		    }     

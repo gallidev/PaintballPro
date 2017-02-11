@@ -1,5 +1,8 @@
 package gui;
 
+import java.util.ArrayList;
+
+import audio.AudioManager;
 import enums.GameLocation;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,10 +23,17 @@ public class GUIManager {
 	// When set methods are called for this class/object, the class will 
 	// automatically save the changed preferences
 	private UserSettings user = UserSettingsManager.loadSettings();
+	private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
+	
+	private AudioManager audio;
 	
 	// Set the width and height of the stage
 	public final int width = 800;
 	public final int height = 600;
+	
+	public GUIManager() {
+		audio = new AudioManager(user, this);
+	}
 	
 	/**
 	 * Get the user settings object
@@ -82,6 +92,16 @@ public class GUIManager {
 		s.setTitle("Paintball Pro");
 		s.setScene(MainMenu.getScene(this));
 		s.show();
+	}
+	
+	public void addSettingsObserver(UserSettingsObserver obs) {
+		settingsObservers.add(obs);
+	}
+	
+	public void notifySettingsObservers() {
+		for (UserSettingsObserver obs: settingsObservers) {
+			obs.settingsChanged();
+		}
 	}
 
 }

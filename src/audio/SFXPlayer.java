@@ -1,5 +1,5 @@
 package audio;
 
 public class SFXPlayer {
-	// TODO: implement the sound FX player
+	public static String bulletSound = "";
 }
