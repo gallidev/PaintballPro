@@ -1,5 +1,8 @@
 package logic;
 
+import java.util.ArrayList;
+
+import networkingInterfaces.ClientPlayer;
 import physics.Player;
 
 /**
@@ -9,16 +12,14 @@ import physics.Player;
  */
 public class Team {
 
-	private Player[] members;
-	private int membersNo;
+	private ArrayList<ClientPlayer> members;
 	private int score;
 	
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
 	 */
 	public Team(){
-		members = new Player[4];
-		membersNo = 0;
+		members = new ArrayList<>();
 		score = 0;
 	}
 	
@@ -34,23 +35,22 @@ public class Team {
 	 * Adds another player to the team and increments the number of team players.
 	 * @param p The new team player.
 	 */
-	public void addMember(Player p){
-		members[membersNo] = p;
-		membersNo++;
+	public void addMember(ClientPlayer p){
+		members.add(p);
 	}
 	
 	/**
 	 * Adds players as a member of the team.
 	 * @param teamPlayers The array of players to team.
 	 */
-	public void setMembers(Player[] teamPlayers) {
-		for (Player p : teamPlayers)
+	public void setMembers(ClientPlayer[] teamPlayers) {
+		for (ClientPlayer p : teamPlayers)
 			addMember(p);
 	}
-	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-		p.setXCoord(newXCoord);
-		p.setYCoord(newYCoord);
-	}
+//	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
+//		p.getsetXCoord(newXCoord);
+//		p.setYCoord(newYCoord);
+//	}
 	
 	// Probably not needed here.
 //	 /**
@@ -67,7 +67,7 @@ public class Team {
 	/* Getters and setters */
 	
 	public int getMembersNo() {
-		return membersNo;
+		return members.size();
 	}
 
 	public int getScore() {
@@ -79,7 +79,7 @@ public class Team {
 	}
 	
 
-	public Player[] getMembers(){
+	public ArrayList<ClientPlayer> getMembers(){
 		return members;
 	}
 

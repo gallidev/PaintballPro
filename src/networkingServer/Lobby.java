@@ -199,7 +199,7 @@ public class Lobby {
 	
 	public void playGame(ServerMsgSender sender, ServerMsgReceiver receiver)
 	{
-		ServerGame currentSessionGame = new ServerGame(new TeamMatchMode(blueTeam, redTeam));
+		ServerGame currentSessionGame = new ServerGame(GameType, blueTeam, redTeam);
 		// Do stuff here.
 		//if(currentSessionGame.getGame().isGameFinished())
 			
