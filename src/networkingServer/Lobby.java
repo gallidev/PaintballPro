@@ -1,13 +1,12 @@
 package networkingServer;
 
 
-import java.util.ArrayList;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import networkingClient.ClientReceiver;
-import networkingClient.ClientSender;
-import networkingInterfaces.TeamMatchMode;
-import networkingSharedStuff.MessageQueue;
+import logic.TeamMatchMode;
+import networkingInterfaces.RunningGame;
+import networkingInterfaces.ServerGame;
 
 /**
  * Class to store important client-related information used by Client and Server.
@@ -200,7 +199,9 @@ public class Lobby {
 	
 	public void playGame(ServerMsgSender sender, ServerMsgReceiver receiver)
 	{
-		TeamMatchMode teamMatch = new TeamMatchMode();
+		ServerGame currentSessionGame = new ServerGame(new TeamMatchMode(blueTeam, redTeam));
 		// Do stuff here.
+		//if(currentSessionGame.getGame().isGameFinished())
+			
 	}
 }

@@ -23,7 +23,6 @@ public class TeamMatchMode extends GameMode {
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
 		timer = new RoundTimer(gameTime);
-		timer.startTimer();
 	}
 
 	/**
@@ -54,6 +53,11 @@ public class TeamMatchMode extends GameMode {
 			return null;
 		}
 
+	}
+
+	@Override
+	public void start() {
+		timer.startTimer();		
 	}
 
 }

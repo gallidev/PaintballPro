@@ -2,14 +2,22 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import networkingInterfaces.ClientPlayer;
 
 public class KeyReleaseListener implements EventHandler<KeyEvent>{
 	
 	private Player player;
+	//Provisional. Need to discuss about keeping the Player or replacing it with ClientPlayer.
+	private ClientPlayer cPlayer;
 	
 	public KeyReleaseListener(Player player){
 		this.player = player;
 	}
+	
+	public KeyReleaseListener(ClientPlayer cPlayer){
+		this.cPlayer = cPlayer;
+	}
+	
 	@Override
     public void handle(KeyEvent event) {
 		switch (event.getCode()) {
@@ -24,6 +32,7 @@ public class KeyReleaseListener implements EventHandler<KeyEvent>{
 		default:
 			break;
     }
+		cPlayer.sendNewLocation();
         event.consume();
     }
 }

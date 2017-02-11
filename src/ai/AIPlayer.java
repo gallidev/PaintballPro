@@ -17,8 +17,8 @@ public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
 
-	public AIPlayer(double x, double y, String nickname, Renderer scene, Teams team, Image image){
-		super(x, y, nickname, scene, team, image);
+	public AIPlayer(double x, double y, int id, Renderer scene, Teams team, Image image){
+		super(x, y, id, scene, team, image);
 		angle = Math.toRadians(90);
 		right = true;
 		rb = new RandomBehaviour(this);

@@ -19,4 +19,10 @@ public class KingOfTheHillMode extends GameMode {
 		return null;
 	}
 
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

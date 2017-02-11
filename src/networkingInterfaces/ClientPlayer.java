@@ -13,6 +13,7 @@ import physics.GeneralPlayer;
 public class ClientPlayer {
 	
 	private GeneralPlayer player;
+	private ClientSender sender;
 	
 	/**
 	 * Initializes a new Client Player, which will communicate to the server through a Client Sender and a Client Receiver. 
@@ -24,6 +25,11 @@ public class ClientPlayer {
 	public ClientPlayer(ClientSender sender, ClientReceiver receiver, GeneralPlayer playerType){
 		// Do stuff here.
 		this.player = playerType;
+		this.sender = sender;
 	}
+	
+	public void sendNewLocation(){
+	}
+	
 	
 }

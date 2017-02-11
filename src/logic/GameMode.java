@@ -21,6 +21,8 @@ public abstract class GameMode {
 		this.t2 = t2;
 	}
 	
+	public abstract void start();
+	
 	public void shoot(){
 	
 		
