@@ -1,5 +1,6 @@
 package networkingInterfaces;
 
+import gui.GUIManager;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
@@ -21,7 +22,7 @@ public class GUIIntegration {
 		String machName = ""; // The machine has a particular name.
 		
 		// This loads up the client code.
-		Client client = new Client(nickname,portNumber,machName);
+		Client client = new Client(nickname,portNumber,machName,new GUIManager());
 		
 		// We can then get the client sender and receiver threads.
 		ClientSender sender = client.getSender();

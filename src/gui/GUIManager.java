@@ -21,7 +21,7 @@ public class GUIManager {
 	private Stage s;
 	private Client c;
 
-	private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList(new GameLobbyRow("Test", "User"));
+	private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
 	
 	// Load the user's settings
 	// When set methods are called for this class/object, the class will 
@@ -67,6 +67,7 @@ public class GUIManager {
 				s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 				break;
 			case "Lobby":
+				c.getSender().sendMessage("Play:Mode:1");
 				s.setScene(GameLobbyMenu.getScene(this, lobbyData));
 				break;
 			case "Elimination":
@@ -80,18 +81,13 @@ public class GUIManager {
 		int portNumber = 25566; // The server is on a particular port.
 		String machName = ""; // The machine has a particular name.
 
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				// This loads up the client code.
-				c = new Client(nickname,portNumber,machName);
+		// This loads up the client code.
+		c = new Client(nickname,portNumber,machName,this);
 
-				// We can then get the client sender and receiver threads.
-				ClientSender sender = c.getSender();
-				ClientReceiver receiver = c.getReceiver();
-			}
-		});
-		t.start();
+		// We can then get the client sender and receiver threads.
+		ClientSender sender = c.getSender();
+		ClientReceiver receiver = c.getReceiver();
+
 	}
 
 
@@ -124,8 +120,51 @@ public class GUIManager {
 
 	public void fetchLobbyUpdates() {
 		if (c != null) {
+			System.out.println("Sending fetch request");
 			c.getSender().sendMessage("Get:Red");
 			c.getSender().sendMessage("Get:Blue");
+		} else {
+			System.out.println("//// fetch request");
 		}
+	}
+
+	public void updateRedLobby(String[] redPlayers) {
+		// Update all rows
+		for (int i = 0; i < lobbyData.size(); i++) {
+			String redName = "";
+			if (i < redPlayers.length) {
+				redName = redPlayers[i];
+			}
+			GameLobbyRow row = new GameLobbyRow(redName, lobbyData.get(i).getBlueName());
+			lobbyData.set(i, row);
+		}
+
+		// Add in any new rows
+		for (int i = lobbyData.size(); i < redPlayers.length; i++) {
+			GameLobbyRow row = new GameLobbyRow(redPlayers[i], "");
+			lobbyData.add(row);
+		}
+	}
+
+	public void updateBlueLobby(String[] bluePlayers) {
+		// Update all rows
+		for (int i = 0; i < lobbyData.size(); i++) {
+			String blueName = "";
+			if (i < bluePlayers.length) {
+				blueName = bluePlayers[i];
+			}
+			GameLobbyRow row = new GameLobbyRow(lobbyData.get(i).getRedName(), blueName);
+			lobbyData.set(i, row);
+		}
+
+		// Add in any new rows
+		for (int i = lobbyData.size(); i < bluePlayers.length; i++) {
+			GameLobbyRow row = new GameLobbyRow("", bluePlayers[i]);
+			lobbyData.add(row);
+		}
+	}
+
+	public Client getClient() {
+		return c;
 	}
 }
