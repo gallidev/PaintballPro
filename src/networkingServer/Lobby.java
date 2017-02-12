@@ -61,12 +61,13 @@ public class Lobby {
 		return currPlayerBlueNum + currPlayerRedNum;
 	}
 
-	// add player to team
-	// NOTE - check somewhere else if max players is reached.
+	// Add player to teams alternatively.
+	// We check in LobbyTable if max players is reached.
 	public void addPlayer(Player playerToAdd, int specific)
 	{
 		// Specific - 0 = random, 1 = blue, 2 = red;
-		if(currPlayerBlueNum >= (MaxPlayers/2) && (specific == 0 || specific == 2))
+		int totPlayers = getCurrPlayerTotal();
+		if((totPlayers % 2 == 0) && (currPlayerRedNum <= (MaxPlayers/2)) && (specific == 0 || specific == 2))
 		{	
 			redTeam.put(currPlayerRedNum, playerToAdd);
 			currPlayerRedNum++;
