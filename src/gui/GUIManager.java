@@ -76,13 +76,18 @@ public class GUIManager {
 		String nickname = user.getUsername(); // We ask the user what their nickname is.
 		int portNumber = 25566; // The server is on a particular port.
 		String machName = ""; // The machine has a particular name.
-		
-		// This loads up the client code.
-		c = new Client(nickname,portNumber,machName);
-		
-		// We can then get the client sender and receiver threads.
-		ClientSender sender = c.getSender();
-		ClientReceiver receiver = c.getReceiver();
+
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// This loads up the client code.
+				c = new Client(nickname,portNumber,machName);
+
+				// We can then get the client sender and receiver threads.
+				ClientSender sender = c.getSender();
+				ClientReceiver receiver = c.getReceiver();
+			}
+		});
 	}
 
 
