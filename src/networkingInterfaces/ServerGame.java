@@ -58,7 +58,7 @@ public class ServerGame {
 		ArrayList<ClientPlayer> allPlayers = getAllPlayers();
 		
 		for(ClientPlayer p: allPlayers){
-			p.getQueue().offer(new Message(msg));
+			p.getSender().getQueue().offer(new Message(msg));
 		}
 	}
 	
@@ -70,6 +70,14 @@ public class ServerGame {
 		game.start();
 		String msgToClients = "StartGame";
 		sendMsgToAll(msgToClients);
+	}
+	
+	/**
+	 * Checks to see when a game has ended and sends the appropriate message to all clients.
+	 */
+	public void endGame(){
+		if (game.isGameFinished())
+			sendMsgToAll("EndGame");
 	}
 	
 	/*Getters and setters*/

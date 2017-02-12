@@ -197,11 +197,17 @@ public class Lobby {
 		return playArr;
 	}
 	
+	/**
+	 * Method to be called from the GUI when the lobby ends to start the game logic.
+	 * @param sender
+	 * @param receiver
+	 */
 	public void playGame(ServerMsgSender sender, ServerMsgReceiver receiver)
 	{
 		ServerGame currentSessionGame = new ServerGame(GameType, blueTeam, redTeam);
-		// Do stuff here.
-		//if(currentSessionGame.getGame().isGameFinished())
+		currentSessionGame.startGame();
+		// sends the end game signal to all clients
+		currentSessionGame.endGame();
 			
 	}
 }

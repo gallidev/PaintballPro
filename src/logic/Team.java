@@ -43,7 +43,7 @@ public class Team {
 	 * Adds players as a member of the team.
 	 * @param teamPlayers The array of players to team.
 	 */
-	public void setMembers(ClientPlayer[] teamPlayers) {
+	public void setMembers(ArrayList<ClientPlayer> teamPlayers) {
 		for (ClientPlayer p : teamPlayers)
 			addMember(p);
 	}

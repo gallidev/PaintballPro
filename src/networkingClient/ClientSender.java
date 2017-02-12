@@ -54,4 +54,8 @@ public class ClientSender extends Thread {
 		server.close();
 		return;
 	}
+	
+	public MessageQueue getQueue(){
+		return queue;
+	}
 }
