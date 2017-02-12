@@ -35,8 +35,8 @@ public class Renderer extends Scene
 	public Renderer(String mapName, AudioManager audio)
 	{
 		super(view, 1024, 576);
-		super.setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
+		view.setStyle("-fx-background-color: black;");
 
 		this.audio = audio;
 
