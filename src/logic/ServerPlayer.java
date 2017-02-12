@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import networkingServer.ServerMsgReceiver;
 import physics.Bullet;
+import physics.GeneralPlayer;
 
 /**
  * Class to represent the server version of a player currently in a game. Stores
@@ -18,12 +19,14 @@ public class ServerPlayer {
 	/* The location */
 	private double x;
 	private double y;
+	private GeneralPlayer player;
 
 	/* list of bullets */
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 
-	public ServerPlayer(ServerMsgReceiver receiver, int id){
-		
+	public ServerPlayer(GeneralPlayer p, int id, ServerMsgReceiver receiver){
+		this.player = p;
+		this.id = id;
 	}
 
 }

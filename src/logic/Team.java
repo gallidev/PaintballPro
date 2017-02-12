@@ -2,7 +2,6 @@ package logic;
 
 import java.util.ArrayList;
 
-import networkingInterfaces.ClientPlayer;
 import physics.Player;
 
 /**
@@ -12,7 +11,7 @@ import physics.Player;
  */
 public class Team {
 
-	private ArrayList<ClientPlayer> members;
+	private ArrayList<ServerPlayer> members;
 	private int score;
 	
 	/**
@@ -35,7 +34,7 @@ public class Team {
 	 * Adds another player to the team and increments the number of team players.
 	 * @param p The new team player.
 	 */
-	public void addMember(ClientPlayer p){
+	public void addMember(ServerPlayer p){
 		members.add(p);
 	}
 	
@@ -43,8 +42,8 @@ public class Team {
 	 * Adds players as a member of the team.
 	 * @param teamPlayers The array of players to team.
 	 */
-	public void setMembers(ArrayList<ClientPlayer> teamPlayers) {
-		for (ClientPlayer p : teamPlayers)
+	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
+		for (ServerPlayer p : teamPlayers)
 			addMember(p);
 	}
 //	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
@@ -79,7 +78,7 @@ public class Team {
 	}
 	
 
-	public ArrayList<ClientPlayer> getMembers(){
+	public ArrayList<ServerPlayer> getMembers(){
 		return members;
 	}
 
