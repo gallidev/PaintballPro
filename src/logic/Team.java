@@ -3,7 +3,7 @@ package logic;
 import java.util.ArrayList;
 
 
-import physics.Player;
+import physics.ClientPlayer;
 
 /**
  * Class to represent a team of players in the game.
