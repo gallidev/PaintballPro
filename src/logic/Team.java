@@ -2,8 +2,8 @@ package logic;
 
 import java.util.ArrayList;
 
-import networkingInterfaces.ClientPlayerOld;
-import physics.ClientPlayer;
+
+import physics.Player;
 
 /**
  * Class to represent a team of players in the game.
@@ -12,9 +12,9 @@ import physics.ClientPlayer;
  */
 public class Team {
 
-	private ArrayList<ClientPlayerOld> members;
+	private ArrayList<ServerPlayer> members;
 	private int score;
-	
+
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
 	 */
@@ -22,7 +22,7 @@ public class Team {
 		members = new ArrayList<>();
 		score = 0;
 	}
-	
+
 	/**
 	 * Increments the score of the team with a given number of points
 	 * @param additionalScore The new points gained by the team
@@ -30,28 +30,28 @@ public class Team {
 	public void incrementScore(int additionalScore){
 		score += additionalScore;
 	}
-	
+
 	/**
 	 * Adds another player to the team and increments the number of team players.
 	 * @param p The new team player.
 	 */
-	public void addMember(ClientPlayerOld p){
+	public void addMember(ServerPlayer p){
 		members.add(p);
 	}
-	
+
 	/**
 	 * Adds players as a member of the team.
 	 * @param teamPlayers The array of players to team.
 	 */
-	public void setMembers(ArrayList<ClientPlayerOld> teamPlayers) {
-		for (ClientPlayerOld p : teamPlayers)
+	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
+		for (ServerPlayer p : teamPlayers)
 			addMember(p);
 	}
 //	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
 //		p.getsetXCoord(newXCoord);
 //		p.setYCoord(newYCoord);
 //	}
-	
+
 	// Probably not needed here.
 //	 /**
 //	 * Change one of the team player's location.
@@ -63,9 +63,9 @@ public class Team {
 //		p.setXCoordinate(newXCoord);
 //		p.setYCoordinate(newYCoord);
 //	}
-	
+
 	/* Getters and setters */
-	
+
 	public int getMembersNo() {
 		return members.size();
 	}
@@ -73,15 +73,15 @@ public class Team {
 	public int getScore() {
 		return score;
 	}
-	
+
 	public void setScore(int newScore){
 		score = newScore;
 	}
-	
 
-	public ArrayList<ClientPlayerOld> getMembers(){
+
+	public ArrayList<ServerPlayer> getMembers(){
 		return members;
 	}
 
-	
+
 }
