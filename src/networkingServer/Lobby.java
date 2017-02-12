@@ -203,10 +203,10 @@ public class Lobby {
 	 */
 	public void playGame(ServerMsgSender sender, ServerMsgReceiver receiver)
 	{
-		ServerGame currentSessionGame = new ServerGame(GameType, blueTeam, redTeam);
-		currentSessionGame.startGame();
-		// sends the end game signal to all clients
-		currentSessionGame.endGame();
+//		ServerGame currentSessionGame = new ServerGame(GameType, blueTeam, redTeam);
+//		currentSessionGame.startGame();
+//		// sends the end game signal to all clients
+//		currentSessionGame.endGame();
 			
 	}
 }
