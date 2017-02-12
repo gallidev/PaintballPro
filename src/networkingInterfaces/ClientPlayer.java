@@ -15,7 +15,6 @@ public class ClientPlayer {
 	
 	private GeneralPlayer player;
 	private ClientSender sender;
-	private MessageQueue queue;
 	
 	/**
 	 * Initializes a new Client Player, which will communicate to the server through a Client Sender and a Client Receiver. 
@@ -24,20 +23,14 @@ public class ClientPlayer {
 	 * @param receiver The client receiver.
 	 * @param playerType It is either an instance of GeneralPlayer or AIPlayer, depending on the player's type and game behaviour.
 	 */
-	public ClientPlayer(ClientSender sender, ClientReceiver receiver, GeneralPlayer playerType, MessageQueue queue){
+	public ClientPlayer(ClientSender sender, ClientReceiver receiver, GeneralPlayer playerType){
 		// Do stuff here.
 		this.player = playerType;
 		this.sender = sender;
-		this.queue = queue;
 	}
 	
 	public ClientSender getSender(){
 		return sender;
 	}
-	
-	public MessageQueue getQueue(){
-		return queue;
-	}
-	
 	
 }

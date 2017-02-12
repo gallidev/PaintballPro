@@ -32,7 +32,6 @@ public class KeyReleaseListener implements EventHandler<KeyEvent>{
 		default:
 			break;
     }
-		cPlayer.sendNewLocation();
         event.consume();
     }
 }
