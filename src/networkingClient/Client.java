@@ -65,13 +65,6 @@ public class Client {
 			// Run them in parallel:
 			sender.start();
 
-			//Give time for nickname to be sent to server and appropriate response to be received.
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-
 			String requestStr;
 			clientID = 0;
 			
