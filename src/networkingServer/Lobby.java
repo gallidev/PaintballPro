@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import logic.TeamMatchMode;
-import networkingInterfaces.RunningGame;
 import networkingInterfaces.ServerGame;
 
 /**
