@@ -38,6 +38,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
+	private AudioManager audio;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -49,8 +50,9 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, Teams team){
+	public GeneralPlayer(double x, double y, int id, Map map, Teams team, AudioManager audio){
 		super(x, y);
+		this.audio = audio;
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -72,8 +74,9 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, Teams team, Image image){
+	public GeneralPlayer(double x, double y, int id, Map map, Teams team, Image image, AudioManager audio){
 		super(x, y, image);
+		this.audio = audio;
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -298,7 +301,7 @@ public abstract class GeneralPlayer extends GameObject{
 		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
-		//audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 		firedBullets.add(bullet);
 	}
 

@@ -51,13 +51,13 @@ public class Renderer extends Scene
 
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
-		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, Teams.RED, redPlayerImage);
+		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, Teams.RED, redPlayerImage, audio);
 		players.add(player);
 
-		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map, Teams.BLUE, bluePlayerImage);
+		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map, Teams.BLUE, bluePlayerImage, audio);
 		players.add(ai);
 
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 5, map, Teams.BLUE, bluePlayerImage);
+		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 5, map, Teams.BLUE, bluePlayerImage, audio);
 		players.add(ai2);
 
 		view.getChildren().addAll(players);
