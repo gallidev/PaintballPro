@@ -41,4 +41,4 @@ Start a new game						|StartGame
 Current game session has ended			|EndGame
 
 Return team nicknames                 	|Ret:<team>:<user>-<user>-<user>
-Return lobby timer 						|Ret:Timer:<timer>
+Game starting in 10 secs, max reached	|TimerStart

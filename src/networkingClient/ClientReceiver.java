@@ -91,9 +91,9 @@ public class ClientReceiver extends Thread {
 					{
 						System.out.println("Game has ended for plyaer with ID " + clientID);
 					}
-					else if(text.contains("Ret:Timer:"))
+					else if(text.contains("TimerStart"))
 					{
-						String myTime = text.substring(10);
+						// Do stuff here, we have 10 secs till game start message sent.
 					}
 
 					

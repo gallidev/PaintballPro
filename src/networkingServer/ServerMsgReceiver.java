@@ -68,7 +68,7 @@ public class ServerMsgReceiver extends Thread {
 					if(text.contains("Play:Mode:"))
 					{
 						int gameMode = Integer.parseInt(text.substring(10));
-						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode);
+						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode,this);
 						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 						int curTotal = lobby.getCurrPlayerTotal();
 						if(curTotal == 8)
@@ -112,14 +112,6 @@ public class ServerMsgReceiver extends Thread {
 					{
 						String clientUsername = clientTable.getPlayer(myClientsID).getUsername();
 						myMsgQueue.offer(new Message("Ret:Username:"+clientUsername));
-					}
-					
-					// Get the current timer of the lobby.
-					if(text.contains("Get:LobbyTimer"))
-					{
-						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
-						int mytimer = lobby.getTimer();
-						myMsgQueue.offer(new Message("Ret:Timer:"+Integer.toString(mytimer)));
 					}
 					
 					// Reset the client when they exit the game.

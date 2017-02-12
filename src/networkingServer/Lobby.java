@@ -230,7 +230,7 @@ public class Lobby {
 	}
 
 	// A timer, accessed by the client for game countdown.
-	public int getTimer() {
-		return 0;
+	public void timerStart() {
+		// Do stuff here
 	}
 }
