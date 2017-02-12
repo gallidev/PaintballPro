@@ -50,7 +50,7 @@ public class ServerMsgReceiver extends Thread {
 				
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
-					
+
 					//    Protocols
 					// ---------------- //
 					

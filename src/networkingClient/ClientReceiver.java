@@ -26,9 +26,8 @@ public class ClientReceiver extends Thread {
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
-	 * @param clientID The ID of the client.
+	 * @param Cid The ID of the client.
 	 * @param reader Input stream reader for data.
-	 * @param table Table storing client information.
 	 * @param sender Sender class for sending messages to the client.
 	 */
 	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m)
@@ -52,14 +51,26 @@ public class ClientReceiver extends Thread {
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 
+					System.out.println("Received: " + text);
+
 					// Protocols
 					if(text.contains("Ret:Red:"))
 					{
+						System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
+						for (String r: red) {
+							System.out.println("Got red:" + r);
+						}
+						m.updateRedLobby(red);
 					}
 					else if(text.contains("Ret:Blue:"))
 					{
+						System.out.println("Got blue");
 						String[] blue = text.substring(9).split("-");
+						for (String r: blue) {
+							System.out.println("Got blue:" + r);
+						}
+						m.updateBlueLobby(blue);
 					}
 					else if(text.contains("Ret:Username:"))
 					{

@@ -14,6 +14,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
+import static java.lang.Thread.sleep;
+
 public class GameLobbyMenu {
 	// TODO: implement the lobby menu GUI
 	
@@ -68,15 +70,33 @@ public class GameLobbyMenu {
 //		table.add(teamB3, 1, 3);
 //		table.add(teamB4, 1, 4);
 
+		Thread checkLobby = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						m.fetchLobbyUpdates();
+						sleep(1000);
+					} catch (InterruptedException e) {
+						// Should never happen
+					}
+				}
+			}
+		});
+
+		checkLobby.start();
+
 		
 		GridPane optionsSection = new GridPane();
 		MenuOption[] set = {new MenuOption("Change Team", new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
+		    	m.getClient().getSender().sendMessage("SwitchTeam");
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		}), new MenuOption("Ready", new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		        System.out.println("ActionEvent: " + event);
+		        checkLobby.interrupt();
 		        optionsSection.getChildren().get(0).setVisible(false);
 		        m.transitionTo("Elimination", null);
 		    }     
