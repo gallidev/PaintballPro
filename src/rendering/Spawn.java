@@ -1,11 +1,11 @@
 package rendering;
 
-import enums.Teams;
+import enums.TeamEnum;
 import javafx.scene.image.ImageView;
 
 public class Spawn
 {
 	public int x, y;
-	Teams team;
+	TeamEnum team;
 	transient ImageView image;
 }

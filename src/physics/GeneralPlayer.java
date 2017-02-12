@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.AIPlayer;
-import enums.Teams;
+import enums.TeamEnum;
 import rendering.Spawn;
 
 /**
@@ -34,11 +34,10 @@ public abstract class GeneralPlayer extends GameObject{
 	protected Map map;
 	protected int id;
 	protected long shootTimer, spawnTimer;
-	protected Teams team;
+	protected TeamEnum team;
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
-	private AudioManager audio;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -50,9 +49,9 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, Teams team, AudioManager audio){
+
+	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team){
 		super(x, y);
-		this.audio = audio;
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -74,9 +73,8 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, Teams team, Image image, AudioManager audio){
+	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image){
 		super(x, y, image);
-		this.audio = audio;
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -199,7 +197,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
-			if(team == Teams.BLUE) i = 4;
+			if(team == TeamEnum.BLUE) i = 4;
 			x = map.getSpawns()[i].x * 64;
 			y = map.getSpawns()[i].y * 64;
 			eliminated = false;
@@ -301,7 +299,7 @@ public abstract class GeneralPlayer extends GameObject{
 		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
-		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+
 		firedBullets.add(bullet);
 	}
 
@@ -341,7 +339,7 @@ public abstract class GeneralPlayer extends GameObject{
 		this.shoot = shoot;
 	}
 
-	public Teams getTeam() {
+	public TeamEnum getTeam() {
 		return team;
 	}
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import ai.AIPlayer;
 import audio.AudioManager;
-import enums.Teams;
+import enums.TeamEnum;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Cursor;
@@ -51,13 +51,14 @@ public class Renderer extends Scene
 
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
-		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, Teams.RED, redPlayerImage, audio);
+
+		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage);
 		players.add(player);
 
-		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map, Teams.BLUE, bluePlayerImage, audio);
+		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map, TeamEnum.BLUE, bluePlayerImage, audio);
 		players.add(ai);
 
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 5, map, Teams.BLUE, bluePlayerImage, audio);
+		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 5, map, TeamEnum.BLUE, bluePlayerImage, audio);
 		players.add(ai2);
 
 		view.getChildren().addAll(players);
@@ -69,14 +70,14 @@ public class Renderer extends Scene
 
 		for(GeneralPlayer p : players)
 		{
-			if(p.getTeam() == Teams.RED)
+			if(p.getTeam() == TeamEnum.RED)
 				teamRed.add(p);
 			else
 				teamBlue.add(p);
 		}
 		for(GeneralPlayer p : players)
 		{
-			if(p.getTeam() == Teams.RED)
+			if(p.getTeam() == TeamEnum.RED)
 			{
 				p.setEnemies(teamBlue);
 				p.setTeamPlayers(teamRed);

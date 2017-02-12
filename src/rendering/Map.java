@@ -1,7 +1,7 @@
 package rendering;
 
 import com.google.gson.Gson; //add gson-2.8.0.jar to the project libraries!
-import enums.Teams;
+import enums.TeamEnum;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -65,7 +65,7 @@ public class Map
 						{
 							if(spawn.x == i + floor.x && spawn.y == j + floor.y)
 							{
-								map.spawnGroup[spawn.team == Teams.RED ? 0 : 1].getChildren().add(tile);
+								map.spawnGroup[spawn.team == TeamEnum.RED ? 0 : 1].getChildren().add(tile);
 								continue floorLoop;
 							}
 						}

@@ -2,8 +2,8 @@ package logic;
 
 import java.util.ArrayList;
 
-
-import physics.ClientPlayer;
+import enums.TeamEnum;
+import rendering.Map;
 
 /**
  * Class to represent a team of players in the game.
@@ -14,6 +14,7 @@ public class Team {
 
 	private ArrayList<ServerPlayer> members;
 	private int score;
+	private TeamEnum color;
 
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
@@ -81,6 +82,12 @@ public class Team {
 
 	public ArrayList<ServerPlayer> getMembers(){
 		return members;
+	}
+
+	public void setMap(Map map){
+		for (ServerPlayer p : members){
+			p.setMap(map);
+		}
 	}
 
 

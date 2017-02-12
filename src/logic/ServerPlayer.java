@@ -2,10 +2,13 @@ package logic;
 
 import java.util.ArrayList;
 
+import audio.AudioManager;
+import enums.TeamEnum;
 import javafx.scene.image.Image;
 import networkingServer.ServerMsgReceiver;
 import physics.Bullet;
 import physics.GeneralPlayer;
+import rendering.Map;
 
 /**
  * Class to represent the server version of a player currently in a game. Stores
@@ -15,19 +18,21 @@ import physics.GeneralPlayer;
  */
 public class ServerPlayer  extends GeneralPlayer{
 
-	private int id;
-	/* The location */
-	private double x;
-	private double y;
 	private ServerMsgReceiver receiver;
-	
-	/* list of bullets */
-	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 
-	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y){
+	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
 		super(x, y, id);
 		this.id = id;
 		this.receiver = receiver;
+		this.team = color;
+	}
+
+	public void setMap (Map map){
+		this.map = map;
+	}
+
+	public void setTeam (TeamEnum team){
+		this.team = team;
 	}
 
 	@Override
@@ -47,7 +52,7 @@ public class ServerPlayer  extends GeneralPlayer{
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public ServerMsgReceiver getServerReceiver(){
 		return receiver;
 	}

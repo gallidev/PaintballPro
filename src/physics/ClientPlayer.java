@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import audio.AudioManager;
-import enums.Teams;
+import enums.TeamEnum;
 
 /**
  *  The player, represented by an ImageView that should be running
@@ -32,8 +32,8 @@ public class ClientPlayer extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, Teams team, Image image, AudioManager audio){
-		super(x, y, id, map, team, image, audio);
+	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, Image image){
+		super(x, y, id, map, team, image);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;

@@ -11,7 +11,7 @@ import physics.ClientPlayer;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
-import enums.Teams;
+import enums.TeamEnum;
 
 /**
  * This class should be running on the server
@@ -21,12 +21,16 @@ import enums.Teams;
 public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
+	private AudioManager audio;
 
-	public AIPlayer(double x, double y, int id, Map map, Teams team, Image image, AudioManager audio){
-		super(x, y, id, map, team, image, audio);
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
+		super(x, y, id, map, team, image);
+		this.audio = audio;
 		angle = Math.toRadians(90);
 		right = true;
 		rb = new RandomBehaviour(this);
+		this.audio = audio;
+
 	}
 
 	/**
