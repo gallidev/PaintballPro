@@ -1,3 +1,4 @@
+import gui.GUIManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import rendering.Renderer;
@@ -9,7 +10,8 @@ public class Game extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		stage.setScene(new Renderer("elimination"));
+		GUIManager g = new GUIManager();
+		stage.setScene(new Renderer("elimination", g.getAudioManager()));
 		stage.setTitle("Paintball Pro");
 		stage.show();
 	}
