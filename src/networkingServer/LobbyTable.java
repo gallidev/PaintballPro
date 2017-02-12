@@ -43,6 +43,12 @@ public class LobbyTable {
 	// run a thread to check if a lobby has 0 players, if it does, remove it
 	public synchronized void removeLobby(int lobbyID)
 	{
+		// We reset the allocated lobby to each of our players.
+		for(Player player : lobbyList.get(lobbyID).getPlayers())
+		{
+			player.setAllocatedLobby(-1);
+		}
+		// We then remove the lobby from the list.
 		lobbyList.remove(lobbyID);
 	}
 	
