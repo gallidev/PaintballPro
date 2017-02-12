@@ -4,10 +4,6 @@ import gui.GUIManager;
 import gui.UserSettings;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.Track;
-
-import java.io.File;
-import java.util.Random;
 
 public class AudioManager implements gui.UserSettingsObserver {
 

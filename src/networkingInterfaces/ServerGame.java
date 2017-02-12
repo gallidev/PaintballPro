@@ -6,6 +6,7 @@ import logic.CaptureTheFlagMode;
 import logic.EscortMode;
 import logic.GameMode;
 import logic.KingOfTheHillMode;
+import logic.ServerPlayer;
 import logic.Team;
 import logic.TeamMatchMode;
 import networkingSharedStuff.Message;
@@ -55,10 +56,10 @@ public class ServerGame {
 	 * @param msg The message to be sent to the players.
 	 */
 	public void sendMsgToAll(String msg){
-		ArrayList<ClientPlayerOld> allPlayers = getAllPlayers();
+		ArrayList<ServerPlayer> allPlayers = getAllPlayers();
 		
-		for(ClientPlayerOld p: allPlayers){
-			p.getSender().getQueue().offer(new Message(msg));
+		for(ServerPlayer p: allPlayers){
+			p.getServerReceiver().sendToAll(msg);
 		}
 	}
 	
@@ -85,17 +86,17 @@ public class ServerGame {
 		return game;
 	}
 	
-	public ArrayList<ClientPlayerOld> getRedTeamPlayers(){
+	public ArrayList<ServerPlayer> getRedTeamPlayers(){
 		return game.getFirstTeam().getMembers();
 	}
 	
-	public ArrayList<ClientPlayerOld> getBlueTeamPlayers(){
+	public ArrayList<ServerPlayer> getBlueTeamPlayers(){
 		return game.getSecondTeam().getMembers();
 	}
 	
-	public ArrayList<ClientPlayerOld> getAllPlayers(){
-		ArrayList<ClientPlayerOld> redTeam = getRedTeamPlayers();
-		ArrayList<ClientPlayerOld>  blueTeam = getBlueTeamPlayers();
+	public ArrayList<ServerPlayer> getAllPlayers(){
+		ArrayList<ServerPlayer> redTeam = getRedTeamPlayers();
+		ArrayList<ServerPlayer>  blueTeam = getBlueTeamPlayers();
 		
 		redTeam.addAll(blueTeam);
 		

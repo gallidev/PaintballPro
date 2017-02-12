@@ -298,7 +298,7 @@ public abstract class GeneralPlayer extends GameObject{
 		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
-		//audio.playSFX(audio.sfx.getRandomPaintball());
+		//audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 		firedBullets.add(bullet);
 	}
 
