@@ -204,7 +204,7 @@ public class Lobby {
 		Team newTeam = new Team();
 		for(Player origPlayer : team.values())
 		{
-			ServerPlayer player = new ServerPlayer(origPlayer.getID(),receiver);
+			ServerPlayer player = new ServerPlayer(origPlayer.getID(),receiver,0,0);
 			newTeam.addMember(player);
 		}
 		return newTeam;
@@ -217,7 +217,7 @@ public class Lobby {
 	 */
 	public void playGame(ServerMsgReceiver receiver)
 	{
-		ServerGame currentSessionGame = new ServerGame(GameType, blueTeam, redTeam);
+		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam), convertTeam(receiver,redTeam));
 //		currentSessionGame.startGame();
 //		// sends the end game signal to all clients
 //		currentSessionGame.endGame();			
