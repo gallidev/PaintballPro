@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 public abstract class GameObject extends ImageView {
 	protected double x, y;
 	protected Image image;
-	
+
 	public GameObject(double x, double y, Image image) {
 		super(image);
 		this.x = x;
@@ -14,6 +14,12 @@ public abstract class GameObject extends ImageView {
 		this.image = image;
 		setLayoutX(x);
 		setLayoutY(y);
+	}
+
+	public GameObject(double x, double y){
+		super();
+		this.x = x;
+		this.y = y;
 	}
 
 	public void setXCoord(double x) {
@@ -25,16 +31,16 @@ public abstract class GameObject extends ImageView {
 		this.y = y;
 		setLayoutY(y);
 	}
-	
+
 	public double getXCoord(){
 		return this.x;
 	}
-	
+
 	public double getYCoord(){
 		return this.y;
 	}
-	
+
 	public abstract void tick();
-		
-	
+
+
 }

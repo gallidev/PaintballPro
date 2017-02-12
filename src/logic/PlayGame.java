@@ -2,8 +2,8 @@ package logic;
 
 import java.util.ArrayList;
 
-import networkingInterfaces.ClientPlayer;
-import physics.Player;
+import networkingInterfaces.ClientPlayerOld;
+import physics.ClientPlayer;
 import rendering.Map;
 
 /**
@@ -29,7 +29,7 @@ public class PlayGame {
 	 * @param team2Players
 	 *            All players that will form the second team.
 	 */
-	public PlayGame(GameMode mode, ArrayList<ClientPlayer> team1Players, ArrayList<ClientPlayer> team2Players) {
+	public PlayGame(GameMode mode, ArrayList<ClientPlayerOld> team1Players, ArrayList<ClientPlayerOld> team2Players) {
 		gameMap = new Map();
 		initializeTeamsWithPlayers(team1Players, team2Players);
 		this.mode = mode;
@@ -43,7 +43,7 @@ public class PlayGame {
 	 * @param team2Players
 	 *            All players that will form the first team.
 	 */
-	private void initializeTeamsWithPlayers(ArrayList<ClientPlayer> team1Players, ArrayList<ClientPlayer> team2Players) {
+	private void initializeTeamsWithPlayers(ArrayList<ClientPlayerOld> team1Players, ArrayList<ClientPlayerOld> team2Players) {
 		team1.setMembers(team1Players);
 		team2.setMembers(team2Players);
 	}

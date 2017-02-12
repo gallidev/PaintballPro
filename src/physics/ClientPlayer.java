@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
+import networkingClient.ClientSender;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +13,13 @@ import java.util.List;
 import enums.Teams;
 
 /**
- *  The player, represented by an ImageView
+ *  The player, represented by an ImageView that should be running
  */
-public class Player extends GeneralPlayer{
+public class ClientPlayer extends GeneralPlayer{
 
 	private double mx, my;
 	private boolean controlScheme;
+	private ClientSender sender;
 
 
 	/**
@@ -28,7 +30,7 @@ public class Player extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public Player(double x, double y, int id, boolean controlScheme, Renderer scene, Teams team, Image image){
+	public ClientPlayer(double x, double y, int id, boolean controlScheme, Renderer scene, Teams team, Image image){
 		super(x, y, id, scene, team, image);
 		this.mx = x;
 		this.my = y;
@@ -50,6 +52,7 @@ public class Player extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
+			sendServer();
 		} else {
 			checkSpawn();
 		}
@@ -61,6 +64,7 @@ public class Player extends GeneralPlayer{
 			checkInvincibility();
 		}
 	}
+
 	@Override
 	protected void updatePosition(){
 		if(controlScheme){
@@ -112,6 +116,10 @@ public class Player extends GeneralPlayer{
 		}
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
+	}
+
+	private void sendServer() {
+
 	}
 
 

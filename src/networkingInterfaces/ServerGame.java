@@ -55,9 +55,9 @@ public class ServerGame {
 	 * @param msg The message to be sent to the players.
 	 */
 	public void sendMsgToAll(String msg){
-		ArrayList<ClientPlayer> allPlayers = getAllPlayers();
+		ArrayList<ClientPlayerOld> allPlayers = getAllPlayers();
 		
-		for(ClientPlayer p: allPlayers){
+		for(ClientPlayerOld p: allPlayers){
 			p.getSender().getQueue().offer(new Message(msg));
 		}
 	}
@@ -85,17 +85,17 @@ public class ServerGame {
 		return game;
 	}
 	
-	public ArrayList<ClientPlayer> getRedTeamPlayers(){
+	public ArrayList<ClientPlayerOld> getRedTeamPlayers(){
 		return game.getFirstTeam().getMembers();
 	}
 	
-	public ArrayList<ClientPlayer> getBlueTeamPlayers(){
+	public ArrayList<ClientPlayerOld> getBlueTeamPlayers(){
 		return game.getSecondTeam().getMembers();
 	}
 	
-	public ArrayList<ClientPlayer> getAllPlayers(){
-		ArrayList<ClientPlayer> redTeam = getRedTeamPlayers();
-		ArrayList<ClientPlayer>  blueTeam = getBlueTeamPlayers();
+	public ArrayList<ClientPlayerOld> getAllPlayers(){
+		ArrayList<ClientPlayerOld> redTeam = getRedTeamPlayers();
+		ArrayList<ClientPlayerOld>  blueTeam = getBlueTeamPlayers();
 		
 		redTeam.addAll(blueTeam);
 		
