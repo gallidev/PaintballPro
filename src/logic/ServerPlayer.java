@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import networkingServer.ServerMsgReceiver;
 import physics.Bullet;
+import physics.GeneralPlayer;
 
 /**
  * Class to represent the server version of a player currently in a game. Stores
@@ -12,7 +13,7 @@ import physics.Bullet;
  * 
  * @author Alexandra Paduraru
  */
-public class ServerPlayer {
+public class ServerPlayer  extends GeneralPlayer{
 
 	private int id;
 	/* The location */
@@ -22,7 +23,26 @@ public class ServerPlayer {
 	/* list of bullets */
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 
-	public ServerPlayer(ServerMsgReceiver receiver, int id){
+	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y){
+		super(x, y, id);
+		this.id = id;
+	}
+
+	@Override
+	protected void updatePosition() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void updateAngle() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tick() {
+		// TODO Auto-generated method stub
 		
 	}
 

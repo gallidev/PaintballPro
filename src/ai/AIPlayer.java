@@ -6,13 +6,17 @@ import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.GeneralPlayer;
-import physics.Player;
+import physics.ClientPlayer;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 import enums.Teams;
 
-
+/**
+ * This class should be running on the server
+ * @author gallifilippo
+ *
+ */
 public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;

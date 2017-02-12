@@ -5,9 +5,9 @@ import javafx.scene.input.KeyEvent;
 
 public class KeyPressListener implements EventHandler<KeyEvent>{
 	
-	private Player player;
+	private ClientPlayer player;
 	
-	public KeyPressListener(Player player){
+	public KeyPressListener(ClientPlayer player){
 		this.player = player;
 	}
 	@Override
