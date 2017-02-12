@@ -3,7 +3,6 @@ package rendering;
 import java.util.ArrayList;
 
 import ai.AIPlayer;
-import audio.AudioManager;
 import enums.Teams;
 
 import javafx.animation.AnimationTimer;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import physics.*;
 
 /**
@@ -26,21 +24,17 @@ public class Renderer extends Scene
 	private Map map;
 	private double scale = 1;
 	private ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
-	private AudioManager audio;
-
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
 	 *
 	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String mapName, AudioManager audio)
+	public Renderer(String mapName)
 	{
 		super(view, 1024, 576);
 		super.setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
-
-		this.audio = audio;
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -54,19 +48,16 @@ public class Renderer extends Scene
 
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
-		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, "Me", false, this, Teams.RED, redPlayerImage);
-		view.getChildren().add(player);
+		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, this, Teams.RED, redPlayerImage);
 		players.add(player);
-		//Polygon playerBounds = player.getBounds();
-		//view.getChildren().add(playerBounds);
 
-		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, "Bot1", this, Teams.BLUE, bluePlayerImage);
-		view.getChildren().add(ai);
+		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, this, Teams.BLUE, bluePlayerImage);
 		players.add(ai);
 
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, "Bot2", this, Teams.BLUE, bluePlayerImage);
-		view.getChildren().add(ai2);
+		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 5, this, Teams.BLUE, bluePlayerImage);
 		players.add(ai2);
+
+		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
 		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
@@ -140,9 +131,5 @@ public class Renderer extends Scene
 	public ArrayList<GeneralPlayer> getPlayers()
 	{
 		return players;
-	}
-
-	public AudioManager getAudio() {
-		return audio;
 	}
 }

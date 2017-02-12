@@ -74,7 +74,9 @@ public class Map
 				}
 			}
 			map.spawnGroup[0].setEffect(new DropShadow(32, 0, 0, Color.RED));
+			map.spawnGroup[0].setCache(true);
 			map.spawnGroup[1].setEffect(new DropShadow(32, 0, 0, Color.BLUE));
+			map.spawnGroup[1].setCache(true);
 			map.floorGroup.setCache(true);
 			view.getChildren().add(map.floorGroup);
 			view.getChildren().add(map.spawnGroup[0]);
@@ -135,6 +137,57 @@ public class Map
 		return map;
 	}
 
+	static Map loadRaw(String url)
+	{
+		Map map = null;
+		try
+		{
+			map = (new Gson()).fromJson(new FileReader(url), Map.class);
+
+			for(Material material : map.materials)
+				material.image = new Image("assets/" + material.name + ".png", 64, 64, true, true);
+
+			for(Floor floor : map.floors)
+			{
+				for(int i = 0; i < floor.width; i++)
+				{
+					for(int j = 0; j < floor.height; j++)
+					{
+						ImageView tile = new ImageView(map.getMaterialImage(floor.material));
+						tile.setX((i + floor.x) * 64);
+						tile.setY((j + floor.y) * 64);
+						map.floorGroup.getChildren().add(tile);
+					}
+				}
+			}
+
+			for(Prop prop : map.props)
+			{
+				ImageView image = new ImageView(new Image("assets/" + prop.material + ".png", 64, 64, true, true));
+				image.setX(prop.x * 64);
+				image.setY(prop.y * 64);
+				map.propGroup.getChildren().add(image);
+			}
+
+			//Wall orientation: true for horizontal, false for vertical
+			for(Wall wall : map.walls)
+			{
+				for(int i = 0; i < wall.length; i++)
+				{
+					ImageView block = new ImageView(map.getMaterialImage(wall.material));
+					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
+					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
+					map.wallGroup.getChildren().add(block);
+				}
+			}
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		return map;
+	}
+
 	/**
 	 * Get <code>ImageView</code> of all wall blocks on the map.
 	 *
@@ -161,6 +214,15 @@ public class Map
 		return props;
 	}
 
+	/**
+	 * @author Filippo Galli
+	 * @return The spawn points of both teams
+	 */
+	public Spawn[] getSpawns()
+	{
+		return spawns;
+	}
+
 	private Image getMaterialImage(String material)
 	{
 		for(Material m : materials)
@@ -168,11 +230,4 @@ public class Map
 				return m.image;
 		return null;
 	}
-
-	//added method by Filippo only for bullets collisions, so I know where to respawn
-	public Spawn[] getSpawns()
-	{
-		return spawns;
-	}
-
 }
