@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import audio.AudioManager;
 import enums.GameLocation;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
@@ -18,6 +20,8 @@ public class GUIManager {
 	
 	private Stage s;
 	private Client c;
+
+	private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList(new GameLobbyRow("Test", "User"));
 	
 	// Load the user's settings
 	// When set methods are called for this class/object, the class will 
@@ -63,8 +67,7 @@ public class GUIManager {
 				s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 				break;
 			case "Lobby":
-				establishConnection();
-				s.setScene(GameLobbyMenu.getScene(this));
+				s.setScene(GameLobbyMenu.getScene(this, lobbyData));
 				break;
 			case "Elimination":
 				s.setScene(new Renderer("elimination", audio));
@@ -88,6 +91,7 @@ public class GUIManager {
 				ClientReceiver receiver = c.getReceiver();
 			}
 		});
+		t.start();
 	}
 
 
@@ -95,7 +99,7 @@ public class GUIManager {
 		// TODO: Remove this method once integrated with Game.java
 		s = primaryStage;
 		s.setTitle("Paintball Pro");
-		s.setScene(MainMenu.getScene(this));
+		s.setScene(NicknameMenu.getScene(this));
 		s.show();
 	}
 	
@@ -104,6 +108,7 @@ public class GUIManager {
 	}
 	
 	public void notifySettingsObservers() {
+		// TODO: notify server that username has changed
 		for (UserSettingsObserver obs: settingsObservers) {
 			obs.settingsChanged();
 		}
@@ -111,5 +116,16 @@ public class GUIManager {
 
 	public AudioManager getAudioManager() {
 		return audio;
+	}
+
+	public ObservableList<GameLobbyRow> getLobbyData() {
+		return lobbyData;
+	}
+
+	public void fetchLobbyUpdates() {
+		if (c != null) {
+			c.getSender().sendMessage("Get:Red");
+			c.getSender().sendMessage("Get:Blue");
+		}
 	}
 }

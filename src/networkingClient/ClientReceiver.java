@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import gui.GUIManager;
 import networkingInterfaces.ClientPlayerOld;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
@@ -21,6 +22,7 @@ public class ClientReceiver extends Thread {
 	private ClientSender sender;
 	private MessageQueue myMsgQueue;
 	private Message msg;
+	private GUIManager m;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -29,8 +31,9 @@ public class ClientReceiver extends Thread {
 	 * @param table Table storing client information.
 	 * @param sender Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue)
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m)
 	{
+		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
 		this.sender = sender;
@@ -49,15 +52,19 @@ public class ClientReceiver extends Thread {
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 
+					// Protocols
 					if(text.contains("Ret:Red:"))
 					{
-
+						String[] red = text.substring(8).split("-");
 					}
 					else if(text.contains("Ret:Blue:"))
 					{
-
+						String[] blue = text.substring(9).split("-");
 					}
-					//    Protocols
+					else if(text.contains("Ret:Username:"))
+					{
+						
+					}
 					else if(text.contains("StartGame"))
 					{
 						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.

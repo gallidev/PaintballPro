@@ -10,6 +10,7 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -201,6 +202,20 @@ public class Map
 		return blocks;
 	}
 
+	public ArrayList<Rectangle> getRecWalls(){
+		ArrayList<Rectangle> walls = new ArrayList<>();
+		for(Node node : wallGroup.getChildren()){
+			Rectangle r = new Rectangle();
+			r.setX(node.getBoundsInParent().getMinX());
+			r.setY(node.getBoundsInParent().getMinY());
+			r.setWidth(node.getBoundsInParent().getWidth());
+			r.setHeight(node.getBoundsInParent().getHeight());
+			r.setFill(Color.BLUE);
+			walls.add(r);
+		}
+		return walls;
+	}
+
 	/**
 	 * Get <code>ImageView</code> of all props on the map.
 	 *
@@ -213,6 +228,21 @@ public class Map
 			props.add((ImageView) node);
 		return props;
 	}
+
+	public ArrayList<Rectangle> getRecProps(){
+		ArrayList<Rectangle> props = new ArrayList<>();
+		for(Node node : propGroup.getChildren()){
+			Rectangle r = new Rectangle();
+			r.setX(node.getBoundsInParent().getMinX());
+			r.setY(node.getBoundsInParent().getMinY());
+			r.setWidth(node.getBoundsInParent().getWidth());
+			r.setHeight(node.getBoundsInParent().getHeight());
+			r.setFill(Color.BLUE);
+			props.add(r);
+		}
+		return props;
+	}
+
 
 	/**
 	 * @author Filippo Galli
@@ -230,5 +260,5 @@ public class Map
 				return m.image;
 		return null;
 	}
-	
+
 }

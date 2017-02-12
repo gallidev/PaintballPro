@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import rendering.*;
@@ -38,6 +40,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
+	protected ArrayList<Rectangle> propsWalls;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -59,9 +62,11 @@ public abstract class GeneralPlayer extends GameObject{
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		this.map = map;
+		propsWalls = map.getRecProps();
+	    propsWalls.addAll(map.getRecWalls());
 		eliminated = false;
 		invincible = false;
-		bounds.setFill(Color.RED);
+		updatePlayerBounds();
 	}
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -82,9 +87,12 @@ public abstract class GeneralPlayer extends GameObject{
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		this.map = map;
+		propsWalls = map.getRecProps();
+	    propsWalls.addAll(map.getRecWalls());
 		eliminated = false;
 		invincible = false;
-		bounds.setFill(Color.RED);
+		updatePlayerBounds();
+
 	}
 
 	/**
@@ -125,18 +133,16 @@ public abstract class GeneralPlayer extends GameObject{
 	protected abstract void updateAngle();
 
 	protected void handlePropWallCollision(){
-		ArrayList<ImageView> propsWalls = map.getProps();
-		propsWalls.addAll(map.getWalls());
 		collUp = false;
 		collDown = false;
 		collRight = false;
 		collLeft = false;
-		for(ImageView propWall : propsWalls){
-			if(bounds.intersects(propWall.getBoundsInParent())) {
+		for(Rectangle propWall : propsWalls){
+			if(Shape.intersect(bounds, propWall).getBoundsInLocal().isEmpty() == false) {
 				double propX = propWall.getX();
 				double propY = propWall.getY();
-				double propWidth = propWall.getImage().getWidth();
-				double propHeight = propWall.getImage().getHeight();
+				double propWidth = propWall.getWidth();
+				double propHeight = propWall.getHeight();
 
 				//find angle between center of player and center of the prop
 				double propCenterX = propX + (propWidth/2);
