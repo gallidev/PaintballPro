@@ -49,6 +49,7 @@ public class ClientReceiver extends Thread {
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 
+					// Protocols
 					if(text.contains("Ret:Red:"))
 					{
 
@@ -57,7 +58,10 @@ public class ClientReceiver extends Thread {
 					{
 
 					}
-					//    Protocols
+					else if(text.contains("Ret:Username:"))
+					{
+						
+					}
 					else if(text.contains("StartGame"))
 					{
 						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.

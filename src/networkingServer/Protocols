@@ -11,7 +11,7 @@ We work using strings between the client and the server. This document outlines 
 New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>										
 Angle of player changes.				|
 Player gets shot.						|
-Bullets firing.							|SendToAll:Bulltet:<x>:<y>:<angle>:<team>
+Bullets firing.							|SendToAll:Bullet:<x>:<y>:<angle>:<team>
 ---------------------------------------	|-------------------------------------	|
 				GAME STATUS				|/////////////////////////////////////	|
 ---------------------------------------	|-------------------------------------	|
@@ -29,7 +29,7 @@ Set username							|Set:Username:<username>
 ----------------------------------------|-------------------------------------	|
 Get Red team lobby usernames.			 Get:Red
 Get Blue team lobby usernames.			 Get:Blue
-Get username.							 Get:Nickname
+Get username.							 Get:Username
 Exit system								 Exit:Client
 Exit game								 Exit:Game
 ---------------------------------------	|-------------------------------------	|
