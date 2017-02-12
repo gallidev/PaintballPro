@@ -91,6 +91,10 @@ public class ClientReceiver extends Thread {
 					{
 						System.out.println("Game has ended for plyaer with ID " + clientID);
 					}
+					else if(text.contains("Ret:Timer:"))
+					{
+						String myTime = text.substring(10);
+					}
 
 					
 				}

@@ -77,7 +77,6 @@ public class ServerMsgReceiver extends Thread {
 							lobby.playGame(this);
 						}
 					}
-					
 					// When user attempts to switch teams, try to switch.
 					if(text.contains("SwitchTeam"))
 						gameLobby.switchTeams(clientTable.getPlayer(myClientsID));
@@ -113,6 +112,14 @@ public class ServerMsgReceiver extends Thread {
 					{
 						String clientUsername = clientTable.getPlayer(myClientsID).getUsername();
 						myMsgQueue.offer(new Message("Ret:Username:"+clientUsername));
+					}
+					
+					// Get the current timer of the lobby.
+					if(text.contains("Get:LobbyTimer"))
+					{
+						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+						int mytimer = lobby.getTimer();
+						myMsgQueue.offer(new Message("Ret:Timer:"+Integer.toString(mytimer)));
 					}
 					
 					// Reset the client when they exit the game.
