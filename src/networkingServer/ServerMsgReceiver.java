@@ -171,7 +171,7 @@ public class ServerMsgReceiver extends Thread {
 		sender.stopThread();
 	}
 	
-	private void sendToAll(String text)
+	public void sendToAll(String text)
 	{
 		Player[] gamePlayers = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby()).getPlayers();
 		for(Player player : gamePlayers)

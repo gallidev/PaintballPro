@@ -19,13 +19,15 @@ public class ServerPlayer  extends GeneralPlayer{
 	/* The location */
 	private double x;
 	private double y;
-
+	private ServerMsgReceiver receiver;
+	
 	/* list of bullets */
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 
 	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y){
 		super(x, y, id);
 		this.id = id;
+		this.receiver = receiver;
 	}
 
 	@Override
@@ -44,6 +46,10 @@ public class ServerPlayer  extends GeneralPlayer{
 	public void tick() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public ServerMsgReceiver getServerReceiver(){
+		return receiver;
 	}
 
 }
