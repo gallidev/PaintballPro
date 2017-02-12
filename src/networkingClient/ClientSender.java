@@ -52,8 +52,9 @@ public class ClientSender extends Thread {
 		while (m_running) {
 			//Get messages from the message queue.
 			Message msg = queue.take();
+			String text = msg.getText();
 			//Print to the client stream.
-			server.println(msg);
+			server.println(text);
 		}
 		//If stopped, close the server stream.
 		server.close();
