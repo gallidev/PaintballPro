@@ -218,8 +218,8 @@ public class Lobby {
 	public void playGame(ServerMsgReceiver receiver)
 	{
 		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam), convertTeam(receiver,redTeam));
-//		currentSessionGame.startGame();
-//		// sends the end game signal to all clients
-//		currentSessionGame.endGame();			
+		currentSessionGame.startGame();
+		// sends the end game signal to all clients
+		currentSessionGame.endGame();			
 	}
 }
