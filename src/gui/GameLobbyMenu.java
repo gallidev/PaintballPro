@@ -17,7 +17,7 @@ import javafx.scene.layout.GridPane;
 public class GameLobbyMenu {
 	// TODO: implement the lobby menu GUI
 	
-	public static Scene getScene(GUIManager m) {
+	public static Scene getScene(GUIManager m, ObservableList<GameLobbyRow> lobbyData) {
 //		GridPane table = new GridPane();
 //		Label teamRed = new Label("Red");
 //		Label teamBlue = new Label("Blue");
@@ -46,9 +46,7 @@ public class GameLobbyMenu {
 
 		table.getColumns().addAll(redColumn, blueColumn);
 
-		ObservableList<GameLobbyRow> o = FXCollections.observableArrayList(new GameLobbyRow("Test", "User"));
-
-		table.setItems(o);
+		table.setItems(lobbyData);
 
 
 //		table.add(teamRed, 0, 0);
