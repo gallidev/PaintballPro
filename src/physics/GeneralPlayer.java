@@ -38,25 +38,49 @@ public abstract class GeneralPlayer extends GameObject{
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
-	private AudioManager audio;
 
 	/**
-	 * Create a new player at the set location, and adds the rotation property to the player
+	 * Create a new player at the set location, and adds the rotation property to the player,
+	 * this a General class for the Server Side which does not need to store the Image
 	 * @param x The x-coordinate of the player with respect to the map
 	 * @param y The y-coordinate of the player with respect to the map
-	 * @param scene The scene in which the player will be displayed
+	 * @param id The id of the player
+	 * @param map The map in which the player is playing
+	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Renderer scene, Teams team, Image image){
-		super(x, y, image);
-		this.audio = scene.getAudio();
+	public GeneralPlayer(double x, double y, int id, Map map, Teams team){
+		super(x, y);
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
-		map = scene.getMap();
+		this.map = map;
+		eliminated = false;
+		invincible = false;
+		bounds.setFill(Color.RED);
+	}
+	/**
+	 * Create a new player at the set location, and adds the rotation property to the player,
+	 * this a General class for the Client Side which needs to store the Image
+	 * @param x The x-coordinate of the player with respect to the map
+	 * @param y The y-coordinate of the player with respect to the map
+	 * @param id The id of the player
+	 * @param map The map in which the player is playing
+	 * @param Team The team of the player
+	 *
+	 */
+	public GeneralPlayer(double x, double y, int id, Map map, Teams team, Image image){
+		super(x, y, image);
+		this.team = team;
+		this.id = id;
+		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
+	    getTransforms().add(rotation);
+		rotation.setPivotX(playerHeadX);
+		rotation.setPivotY(playerHeadY);
+		this.map = map;
 		eliminated = false;
 		invincible = false;
 		bounds.setFill(Color.RED);
@@ -78,17 +102,6 @@ public abstract class GeneralPlayer extends GameObject{
 	public GeneralPlayer(double x, double y, int id){
 		super(x,y);
 		this.id = id;
-	}
-
-	public void understandPlayers(ArrayList<GeneralPlayer> players){
-		// understand teamPlayers and enemies
-		for(GeneralPlayer player : players){
-			if(player.getTeam() == this.team){
-				teamPlayers.add(player);
-			}else{
-				enemies.add(player);
-			}
-		}
 	}
 
 	protected abstract void updatePosition();
@@ -285,7 +298,7 @@ public abstract class GeneralPlayer extends GameObject{
 		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
-		audio.playSFX(audio.sfx.getRandomPaintball());
+		//audio.playSFX(audio.sfx.getRandomPaintball());
 		firedBullets.add(bullet);
 	}
 

@@ -10,6 +10,7 @@ import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import audio.AudioManager;
 import enums.Teams;
 
 /**
@@ -20,6 +21,7 @@ public class ClientPlayer extends GeneralPlayer{
 	private double mx, my;
 	private boolean controlScheme;
 	private ClientSender sender;
+	private AudioManager audio;
 
 
 	/**
@@ -30,8 +32,9 @@ public class ClientPlayer extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme, Renderer scene, Teams team, Image image){
-		super(x, y, id, scene, team, image);
+	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, Teams team, Image image){
+		super(x, y, id, map, team, image);
+		this.audio = audio;
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
@@ -120,6 +123,22 @@ public class ClientPlayer extends GeneralPlayer{
 
 	private void sendServer() {
 
+	}
+
+	public void shoot(){
+
+		double x1 = (83 * image.getWidth()/120) - playerHeadX;
+		double y1 = (12 * image.getHeight()/255) - playerHeadY;
+
+		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+
+		double bulletX = x + x2 + playerHeadX;
+		double bulletY = y + y2 + playerHeadY;
+
+		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
+		//audio.playSFX(audio.sfx.getRandomPaintball());
+		firedBullets.add(bullet);
 	}
 
 

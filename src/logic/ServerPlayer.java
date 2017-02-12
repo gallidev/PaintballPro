@@ -10,7 +10,7 @@ import physics.GeneralPlayer;
 /**
  * Class to represent the server version of a player currently in a game. Stores
  * only a selected amount of data, which is strictly necessary to the server.
- * 
+ *
  * @author Alexandra Paduraru
  */
 public class ServerPlayer  extends GeneralPlayer{
@@ -31,19 +31,19 @@ public class ServerPlayer  extends GeneralPlayer{
 	@Override
 	protected void updatePosition() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void updateAngle() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void tick() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
