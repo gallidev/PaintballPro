@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import audio.AudioManager;
 import enums.GameLocation;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
@@ -18,6 +20,8 @@ public class GUIManager {
 	
 	private Stage s;
 	private Client c;
+
+	private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList(new GameLobbyRow("Test", "User"));
 	
 	// Load the user's settings
 	// When set methods are called for this class/object, the class will 
@@ -64,7 +68,7 @@ public class GUIManager {
 				break;
 			case "Lobby":
 				establishConnection();
-				s.setScene(GameLobbyMenu.getScene(this));
+				s.setScene(GameLobbyMenu.getScene(this, lobbyData));
 				break;
 			case "Elimination":
 				s.setScene(new Renderer("elimination", audio));
