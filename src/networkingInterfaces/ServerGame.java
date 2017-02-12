@@ -1,7 +1,6 @@
 package networkingInterfaces;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentMap;
 
 import logic.CaptureTheFlagMode;
 import logic.EscortMode;
@@ -9,7 +8,6 @@ import logic.GameMode;
 import logic.KingOfTheHillMode;
 import logic.Team;
 import logic.TeamMatchMode;
-import networkingServer.Player;
 import networkingSharedStuff.Message;
 
 /**
@@ -31,22 +29,22 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team blueTeam, Team redTeam) {
+	public ServerGame(int gameMode, Team red, Team blue) {
 		switch (gameMode) {
 		case 1:
-			game = new TeamMatchMode(blueTeam, redTeam);
+			game = new TeamMatchMode(red, blue);
 			break;
 		case 2:
-			game = new KingOfTheHillMode(blueTeam, redTeam);
+			game = new KingOfTheHillMode(red, blue);
 			break;
 		case 3:
-			game = new CaptureTheFlagMode(blueTeam, redTeam);
+			game = new CaptureTheFlagMode(red, blue);
 			break;
 		case 4:
-			game = new EscortMode(blueTeam, redTeam);
+			game = new EscortMode(red, blue);
 			break;
 		default:
-			game = new TeamMatchMode(blueTeam, redTeam);
+			game = new TeamMatchMode(red, blue);
 			break;
 		}
 
@@ -57,9 +55,9 @@ public class ServerGame {
 	 * @param msg The message to be sent to the players.
 	 */
 	public void sendMsgToAll(String msg){
-		ArrayList<ClientPlayer> allPlayers = getAllPlayers();
+		ArrayList<ClientPlayerOld> allPlayers = getAllPlayers();
 		
-		for(ClientPlayer p: allPlayers){
+		for(ClientPlayerOld p: allPlayers){
 			p.getSender().getQueue().offer(new Message(msg));
 		}
 	}
@@ -87,17 +85,17 @@ public class ServerGame {
 		return game;
 	}
 	
-	public ArrayList<ClientPlayer> getRedTeamPlayers(){
+	public ArrayList<ClientPlayerOld> getRedTeamPlayers(){
 		return game.getFirstTeam().getMembers();
 	}
 	
-	public ArrayList<ClientPlayer> getBlueTeamPlayers(){
+	public ArrayList<ClientPlayerOld> getBlueTeamPlayers(){
 		return game.getSecondTeam().getMembers();
 	}
 	
-	public ArrayList<ClientPlayer> getAllPlayers(){
-		ArrayList<ClientPlayer> redTeam = getRedTeamPlayers();
-		ArrayList<ClientPlayer>  blueTeam = getBlueTeamPlayers();
+	public ArrayList<ClientPlayerOld> getAllPlayers(){
+		ArrayList<ClientPlayerOld> redTeam = getRedTeamPlayers();
+		ArrayList<ClientPlayerOld>  blueTeam = getBlueTeamPlayers();
 		
 		redTeam.addAll(blueTeam);
 		

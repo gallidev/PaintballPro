@@ -11,7 +11,7 @@ import physics.GeneralPlayer;
  * @author Alexandra Paduraru
  *
  */
-public class ClientPlayer {
+public class ClientPlayerOld {
 	
 	private GeneralPlayer player;
 	private ClientSender sender;
@@ -23,7 +23,7 @@ public class ClientPlayer {
 	 * @param receiver The client receiver.
 	 * @param playerType It is either an instance of GeneralPlayer or AIPlayer, depending on the player's type and game behaviour.
 	 */
-	public ClientPlayer(ClientSender sender, ClientReceiver receiver, GeneralPlayer playerType){
+	public ClientPlayerOld(ClientSender sender, ClientReceiver receiver, GeneralPlayer playerType){
 		// Do stuff here.
 		this.player = playerType;
 		this.sender = sender;

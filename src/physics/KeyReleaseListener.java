@@ -2,19 +2,19 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import networkingInterfaces.ClientPlayer;
+import networkingInterfaces.ClientPlayerOld;
 
 public class KeyReleaseListener implements EventHandler<KeyEvent>{
 	
-	private Player player;
+	private ClientPlayer player;
 	//Provisional. Need to discuss about keeping the Player or replacing it with ClientPlayer.
-	private ClientPlayer cPlayer;
+	private ClientPlayerOld cPlayer;
 	
-	public KeyReleaseListener(Player player){
+	public KeyReleaseListener(ClientPlayer player){
 		this.player = player;
 	}
 	
-	public KeyReleaseListener(ClientPlayer cPlayer){
+	public KeyReleaseListener(ClientPlayerOld cPlayer){
 		this.cPlayer = cPlayer;
 	}
 	

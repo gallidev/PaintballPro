@@ -75,6 +75,11 @@ public abstract class GeneralPlayer extends GameObject{
 		this.id = id;
 	}
 
+	public GeneralPlayer(double x, double y, int id){
+		super(x,y);
+		this.id = id;
+	}
+
 	public void understandPlayers(ArrayList<GeneralPlayer> players){
 		// understand teamPlayers and enemies
 		for(GeneralPlayer player : players){
@@ -331,7 +336,7 @@ public abstract class GeneralPlayer extends GameObject{
 	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
 		this.teamPlayers = teamPlayers;
 	}
-	
+
 	public Polygon getBounds(){
 		return this.bounds;
 	}

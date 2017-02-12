@@ -2,13 +2,13 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import networkingInterfaces.ClientPlayer;
+import networkingInterfaces.ClientPlayerOld;
 
 public class MouseListener implements EventHandler<MouseEvent>{
 	
-	private Player player;
+	private ClientPlayer player;
 	
-	public MouseListener(Player player){
+	public MouseListener(ClientPlayer player){
 		this.player = player;
 	}
 	

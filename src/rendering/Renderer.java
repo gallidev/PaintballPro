@@ -54,7 +54,7 @@ public class Renderer extends Scene
 
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
-		Player player = new Player(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, "Me", false, this, Teams.RED, redPlayerImage);
+		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, "Me", false, this, Teams.RED, redPlayerImage);
 		view.getChildren().add(player);
 		players.add(player);
 		//Polygon playerBounds = player.getBounds();
