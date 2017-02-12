@@ -39,10 +39,17 @@ public class GameLobbyMenu {
 //		}
 
 		TableView table = new TableView();
+		table.setPrefWidth(200.0);
+		table.setPlaceholder(new Label("No Players in Lobby"));
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		table.setSelectionModel(null);
+
 		TableColumn redColumn = new TableColumn("Red");
 		redColumn.setCellValueFactory(new PropertyValueFactory<GameLobbyRow, String>("redName"));
+		redColumn.prefWidthProperty().bind(table.widthProperty().divide(2));
 		TableColumn blueColumn = new TableColumn("Blue");
 		blueColumn.setCellValueFactory(new PropertyValueFactory<GameLobbyRow, String>("blueName"));
+		blueColumn.prefWidthProperty().bind(table.widthProperty().divide(2));
 
 		table.getColumns().addAll(redColumn, blueColumn);
 

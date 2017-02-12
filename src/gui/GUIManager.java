@@ -67,7 +67,6 @@ public class GUIManager {
 				s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 				break;
 			case "Lobby":
-				establishConnection();
 				s.setScene(GameLobbyMenu.getScene(this, lobbyData));
 				break;
 			case "Elimination":
@@ -92,6 +91,7 @@ public class GUIManager {
 				ClientReceiver receiver = c.getReceiver();
 			}
 		});
+		t.start();
 	}
 
 
@@ -99,7 +99,7 @@ public class GUIManager {
 		// TODO: Remove this method once integrated with Game.java
 		s = primaryStage;
 		s.setTitle("Paintball Pro");
-		s.setScene(MainMenu.getScene(this));
+		s.setScene(NicknameMenu.getScene(this));
 		s.show();
 	}
 	
@@ -108,6 +108,7 @@ public class GUIManager {
 	}
 	
 	public void notifySettingsObservers() {
+		// TODO: notify server that username has changed
 		for (UserSettingsObserver obs: settingsObservers) {
 			obs.settingsChanged();
 		}
@@ -115,5 +116,16 @@ public class GUIManager {
 
 	public AudioManager getAudioManager() {
 		return audio;
+	}
+
+	public ObservableList<GameLobbyRow> getLobbyData() {
+		return lobbyData;
+	}
+
+	public void fetchLobbyUpdates() {
+		if (c != null) {
+			c.getSender().sendMessage("Get:Red");
+			c.getSender().sendMessage("Get:Blue");
+		}
 	}
 }
