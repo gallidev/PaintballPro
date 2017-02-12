@@ -1,4 +1,5 @@
 package ai;
+import audio.AudioManager;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,12 +21,16 @@ import enums.TeamEnum;
 public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
+	private AudioManager audio;
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image){
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
 		super(x, y, id, map, team, image);
+		this.audio = audio;
 		angle = Math.toRadians(90);
 		right = true;
 		rb = new RandomBehaviour(this);
+		this.audio = audio;
+
 	}
 
 	/**

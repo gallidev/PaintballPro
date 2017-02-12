@@ -49,6 +49,7 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
+
 	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team){
 		super(x, y);
 		this.team = team;
@@ -298,8 +299,7 @@ public abstract class GeneralPlayer extends GameObject{
 		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
-		//audio.playSFX(audio.sfx.getRandomPaintball());
-		//audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+
 		firedBullets.add(bullet);
 	}
 
