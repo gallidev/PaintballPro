@@ -64,7 +64,6 @@ public class Client {
 
 			// Run them in parallel:
 			sender.start();
-			receiver.start();
 
 			//Give time for nickname to be sent to server and appropriate response to be received.
 			try {
@@ -80,19 +79,25 @@ public class Client {
 			boolean found = false;
 			while(!found)
 			{
-				Message msg = msgQueue.take();
-				String text  = msg.getText();
+				String text = "";
+				try {
+					text = fromServer.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if(text.contains("UserID is:"))
 				{
 					//Set client id as returned value.
 					clientID = Integer.parseInt(text.substring(10));
 					found = true;
 				}
-				else
-					msgQueue.offer(msg);
 			}
 			
 			System.out.println("Client has id:"+clientID);
+			
+			receiver.start();
+			
 			//ClientGUI CGUI = new ClientGUI();
 			//CGUI.loadClient(clientID,nickname,sender,receiver);
 
