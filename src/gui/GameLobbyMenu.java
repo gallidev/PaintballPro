@@ -24,7 +24,13 @@ public class GameLobbyMenu {
 		Label teamB2 = new Label();
 		Label teamB3 = new Label();
 		Label teamB4 = new Label();
-		
+
+		Label[] tableLabels = {teamRed, teamBlue, teamR1, teamR2, teamR3, teamR4, teamB1, teamB2, teamB3, teamB4};
+
+		for (Label label: tableLabels) {
+			label.setStyle("-fx-min-width: 100px; -fx-min-height: 50px; -fx-background-color: green; -fx-border-width: 1px; -fx-border-color: black;");
+		}
+
 		table.add(teamRed, 0, 0);
 		table.add(teamR1, 0, 1);
 		table.add(teamR2, 0, 2);
