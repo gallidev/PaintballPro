@@ -1,6 +1,7 @@
 package networkingInterfaces;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentMap;
 
 import logic.CaptureTheFlagMode;
 import logic.EscortMode;
@@ -8,6 +9,7 @@ import logic.GameMode;
 import logic.KingOfTheHillMode;
 import logic.Team;
 import logic.TeamMatchMode;
+import networkingServer.Player;
 import networkingSharedStuff.Message;
 
 /**
@@ -29,22 +31,22 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team red, Team blue) {
+	public ServerGame(int gameMode, Team blueTeam, Team redTeam) {
 		switch (gameMode) {
 		case 1:
-			game = new TeamMatchMode(red, blue);
+			game = new TeamMatchMode(blueTeam, redTeam);
 			break;
 		case 2:
-			game = new KingOfTheHillMode(red, blue);
+			game = new KingOfTheHillMode(blueTeam, redTeam);
 			break;
 		case 3:
-			game = new CaptureTheFlagMode(red, blue);
+			game = new CaptureTheFlagMode(blueTeam, redTeam);
 			break;
 		case 4:
-			game = new EscortMode(red, blue);
+			game = new EscortMode(blueTeam, redTeam);
 			break;
 		default:
-			game = new TeamMatchMode(red, blue);
+			game = new TeamMatchMode(blueTeam, redTeam);
 			break;
 		}
 
