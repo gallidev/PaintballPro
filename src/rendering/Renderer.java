@@ -59,6 +59,7 @@ public class Renderer extends Scene
 
 		view.getChildren().addAll(players);
 
+
 		//provisional way to differ enemies and team players
 		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
 		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();
