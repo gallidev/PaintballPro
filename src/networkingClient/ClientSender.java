@@ -38,6 +38,11 @@ public class ClientSender extends Thread {
 	{
 		m_running = false;
 	}
+	
+	public void sendMessage(String text)
+	{
+		queue.offer(new Message(text));
+	}
 
 	/**
 	 * The main method running in this class, runs when the class is started after initialisation.
