@@ -4,8 +4,11 @@ package networkingServer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import logic.ServerPlayer;
+import logic.Team;
 import logic.TeamMatchMode;
 import networkingInterfaces.ServerGame;
+import physics.GeneralPlayer;
 
 /**
  * Class to store important client-related information used by Client and Server.
@@ -196,17 +199,27 @@ public class Lobby {
 		return playArr;
 	}
 	
+	private Team convertTeam(ServerMsgReceiver receiver,ConcurrentMap<Integer,Player> team)
+	{
+		Team newTeam = new Team();
+		for(Player origPlayer : team.values())
+		{
+			ServerPlayer player = new ServerPlayer(origPlayer.getID(),receiver,0,0);
+			newTeam.addMember(player);
+		}
+		return newTeam;
+	}
+	
 	/**
 	 * Method to be called from the GUI when the lobby ends to start the game logic.
 	 * @param sender
 	 * @param receiver
 	 */
-	public void playGame(ServerMsgSender sender, ServerMsgReceiver receiver)
+	public void playGame(ServerMsgReceiver receiver)
 	{
-//		ServerGame currentSessionGame = new ServerGame(GameType, blueTeam, redTeam);
-//		currentSessionGame.startGame();
-//		// sends the end game signal to all clients
-//		currentSessionGame.endGame();
-			
+		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam), convertTeam(receiver,redTeam));
+		currentSessionGame.startGame();
+		// sends the end game signal to all clients
+		currentSessionGame.endGame();			
 	}
 }

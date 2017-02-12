@@ -3,6 +3,7 @@ package rendering;
 import java.util.ArrayList;
 
 import ai.AIPlayer;
+import audio.AudioManager;
 import enums.Teams;
 
 import javafx.animation.AnimationTimer;
@@ -24,17 +25,20 @@ public class Renderer extends Scene
 	private Map map;
 	private double scale = 1;
 	private ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
+	private AudioManager audio;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
 	 *
 	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String mapName)
+	public Renderer(String mapName, AudioManager audio)
 	{
 		super(view, 1024, 576);
 		super.setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
+
+		this.audio = audio;
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -132,5 +136,9 @@ public class Renderer extends Scene
 	public ArrayList<GeneralPlayer> getPlayers()
 	{
 		return players;
+	}
+
+	public AudioManager getAudio() {
+		return audio;
 	}
 }
