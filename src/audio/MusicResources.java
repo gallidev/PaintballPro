@@ -1,5 +1,5 @@
 package audio;
 
-public class MusicPlayer {
+public class MusicResources {
 	public static String track1 = "";
 }

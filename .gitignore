@@ -78,3 +78,7 @@ local.properties
 
 # Game Preferences
 preferences.json
+
+*.iml
+
+*.ipr

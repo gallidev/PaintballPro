@@ -1,4 +1,6 @@
 package physics;
+import audio.AudioManager;
+import audio.SFXResources;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -36,6 +38,7 @@ public abstract class GeneralPlayer extends GameObject{
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
+	private AudioManager audio;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -46,6 +49,7 @@ public abstract class GeneralPlayer extends GameObject{
 	 */
 	public GeneralPlayer(double x, double y, int id, Renderer scene, Teams team, Image image){
 		super(x, y, image);
+		this.audio = scene.getAudio();
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -281,6 +285,7 @@ public abstract class GeneralPlayer extends GameObject{
 		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
+		audio.playSFX(SFXResources.paintballRandom);
 		firedBullets.add(bullet);
 	}
 
