@@ -13,20 +13,37 @@ import physics.GeneralPlayer;
  * 
  * @author Alexandra Paduraru
  */
-public class ServerPlayer {
+public class ServerPlayer  extends GeneralPlayer{
 
 	private int id;
 	/* The location */
 	private double x;
 	private double y;
-	private GeneralPlayer player;
 
 	/* list of bullets */
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 
-	public ServerPlayer(GeneralPlayer p, int id, ServerMsgReceiver receiver){
-		this.player = p;
+	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y){
+		super(x, y, id);
 		this.id = id;
+	}
+
+	@Override
+	protected void updatePosition() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void updateAngle() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tick() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
