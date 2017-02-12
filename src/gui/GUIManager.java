@@ -104,4 +104,7 @@ public class GUIManager {
 		}
 	}
 
+	public AudioManager getAudioManager() {
+		return audio;
+	}
 }
