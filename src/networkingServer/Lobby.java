@@ -4,6 +4,7 @@ package networkingServer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import enums.TeamEnum;
 import logic.ServerPlayer;
 import logic.Team;
 import logic.TeamMatchMode;
@@ -200,12 +201,16 @@ public class Lobby {
 		return playArr;
 	}
 	
-	private Team convertTeam(ServerMsgReceiver receiver,ConcurrentMap<Integer,Player> team)
+	private Team convertTeam(ServerMsgReceiver receiver,ConcurrentMap<Integer,Player> team,int teamNum)
 	{
 		Team newTeam = new Team();
 		for(Player origPlayer : team.values())
 		{
-			ServerPlayer player = new ServerPlayer(origPlayer.getID(),receiver,0,0);
+			ServerPlayer player = null;
+			if(teamNum == 1)
+				player = new ServerPlayer(origPlayer.getID(),receiver,0,0,TeamEnum.BLUE);
+			else
+				player = new ServerPlayer(origPlayer.getID(),receiver,0,0,TeamEnum.RED);
 			newTeam.addMember(player);
 		}
 		return newTeam;
@@ -218,7 +223,7 @@ public class Lobby {
 	 */
 	public void playGame(ServerMsgReceiver receiver)
 	{
-		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam), convertTeam(receiver,redTeam));
+		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2));
 		currentSessionGame.startGame();
 		// sends the end game signal to all clients
 		currentSessionGame.endGame();			
