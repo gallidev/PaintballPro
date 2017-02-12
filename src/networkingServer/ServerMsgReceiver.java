@@ -74,7 +74,7 @@ public class ServerMsgReceiver extends Thread {
 						if(curTotal == 8)
 						{
 							lobby.switchGameStatus();
-							lobby.playGame(sender, this);
+							lobby.playGame(this);
 						}
 					}
 					
