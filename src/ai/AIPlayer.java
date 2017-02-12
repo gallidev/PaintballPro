@@ -10,7 +10,7 @@ import physics.ClientPlayer;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
-import enums.Teams;
+import enums.TeamEnum;
 
 /**
  * This class should be running on the server
@@ -21,7 +21,7 @@ public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
 
-	public AIPlayer(double x, double y, int id, Map map, Teams team, Image image){
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image){
 		super(x, y, id, map, team, image);
 		angle = Math.toRadians(90);
 		right = true;
