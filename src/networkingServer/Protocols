@@ -38,3 +38,5 @@ Exit game								 Exit:Game
 Send to all clients in the game.		|SendToAll:<message>
 Start a new game						|StartGame
 Current game session has ended			|EndGame
+
+Retrieve team nicknames                 |Ret:<team>:<user>-<user>-<user>

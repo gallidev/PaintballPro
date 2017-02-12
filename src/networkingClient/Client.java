@@ -29,7 +29,7 @@ public class Client {
 		String nickname = passedNickname;
 
 		//If nickname does not contain a : - if it did program wouldnt work as : is used for a separator.
-		if(!nickname.contains(":"))
+		if(!nickname.contains(":") || !nickname.contains("-"))
 		{
 			int portNumber = portNum;
 			String hostname = machName;

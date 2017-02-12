@@ -48,9 +48,17 @@ public class ClientReceiver extends Thread {
 				
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
-					
+
+					if(text.contains("Ret:Red:"))
+					{
+
+					}
+					else if(text.contains("Ret:Blue:"))
+					{
+
+					}
 					//    Protocols
-					if(text.contains("StartGame"))
+					else if(text.contains("StartGame"))
 					{
 						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
 						
@@ -61,9 +69,11 @@ public class ClientReceiver extends Thread {
 						//Do stuff here: show the game window, so that the players can start the game
 						
 					}
-					if(text.contains("EndGame")){
+					else if(text.contains("EndGame"))
+					{
 						System.out.println("Game has ended for plyaer with ID " + clientID);
 					}
+
 					
 				}
 				else // if the client wants to exit the system. 
