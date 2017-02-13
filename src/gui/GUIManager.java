@@ -24,6 +24,7 @@ public class GUIManager {
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean timerStarted = false;
+    private int timeLeft = 10;
 
     // Load the user's settings
     // When set methods are called for this class/object, the class will
@@ -79,6 +80,9 @@ public class GUIManager {
                     break;
                 case "Elimination":
                     s.setScene(new Renderer("elimination", audio));
+                    break;
+                case "GameEnd":
+                    s.setScene(EndGameMenu.getScene(this));
                     break;
             }
         }
@@ -188,5 +192,13 @@ public class GUIManager {
 
     public String getCurrentScene() {
         return currentScene;
+    }
+
+    public int getTimeLeft() {
+        return timeLeft;
+    }
+
+    public void setTimeLeft(int timeLeft) {
+        this.timeLeft = timeLeft;
     }
 }

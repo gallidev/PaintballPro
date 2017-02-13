@@ -18,8 +18,8 @@ import physics.GeneralPlayer;
  */
 public class Lobby {
 	//Structures storing relevant data.
-	
-	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort	
+
+	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
 	private boolean inGameStatus;
 	private int GameType;
 	private int MaxPlayers;
@@ -30,7 +30,7 @@ public class Lobby {
 	private int id;
 	private static final int lobbyTime = 10; //lobby runs for 2 minutes
 
-	
+
 	public Lobby(int myid, int PassedGameType)
 	{
 		inGameStatus = false;
@@ -45,7 +45,7 @@ public class Lobby {
 	{
 		return id;
 	}
-	
+
 	public boolean getInGameStatus() {
 		return inGameStatus;
 	}
@@ -73,7 +73,7 @@ public class Lobby {
 		// Specific - 0 = random, 1 = blue, 2 = red;
 		int totPlayers = getCurrPlayerTotal();
 		if((totPlayers % 2 == 0) && (currPlayerRedNum <= (MaxPlayers/2)) && (specific == 0 || specific == 2))
-		{	
+		{
 			redTeam.put(currPlayerRedNum, playerToAdd);
 			currPlayerRedNum++;
 		}
@@ -83,7 +83,7 @@ public class Lobby {
 			currPlayerBlueNum++;
 		}
 	}
-	
+
 	// remove player from team and alter everyone's respective positions in the lobby to accomodate
 	public void removePlayer(Player playerToRemove)
 	{
@@ -132,7 +132,7 @@ public class Lobby {
 			}
 		}
 	}
-	
+
 	// switch player's team
 	public void switchTeam(Player playerToSwitch)
 	{
@@ -167,7 +167,7 @@ public class Lobby {
 			}
 		}
 	}
-	
+
 	public String getTeam(int teamNum) // 1 for blue, 2 for red.
 	{
 		String retStr = "";
@@ -190,7 +190,7 @@ public class Lobby {
 		else
 			return "";
 	}
-	
+
 	public Player[] getPlayers()
 	{
 		Player[] playArr = new Player[getCurrPlayerTotal()];
@@ -207,7 +207,7 @@ public class Lobby {
 		}
 		return playArr;
 	}
-	
+
 	private Team convertTeam(ServerMsgReceiver receiver,ConcurrentMap<Integer,Player> team,int teamNum)
 	{
 		Team newTeam = new Team();
@@ -222,7 +222,7 @@ public class Lobby {
 		}
 		return newTeam;
 	}
-	
+
 	/**
 	 * Method to be called from the GUI when the lobby ends to start the game logic.
 	 * @param sender
@@ -230,7 +230,7 @@ public class Lobby {
 	 */
 	public void playGame(ServerMsgReceiver receiver)
 	{
-		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2));
+		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2),receiver);
 		currentSessionGame.startGame();
 		// sends the end game signal to all clients
 		while(!currentSessionGame.getGame().isGameFinished()){}
@@ -239,13 +239,27 @@ public class Lobby {
 
 	// A timer, accessed by the client for game countdown.
 	public void timerStart(ServerMsgReceiver receiver) {
-		RoundTimer timer = new RoundTimer(lobbyTime);
-		timer.startTimer();
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				RoundTimer timer = new RoundTimer(lobbyTime);
+				timer.startTimer();
+				long lastTime = -1;
+				while(!timer.isTimeElapsed()){
+					try {
+						if (lastTime != timer.getTimeLeft()) {
+							System.out.println("Timer changed: from " + lastTime + " to " + timer.getTimeLeft());
+							lastTime = timer.getTimeLeft();
+							receiver.sendToAll("LTime:" + timer.getTimeLeft());
+						}
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
 
-		while(!timer.isTimeElapsed()){
-//			System.out.println("Time left: " + timer.getTimeLeft());
-			receiver.sendToAll("LTime:" + timer.getTimeLeft());
-		}
-		playGame(receiver);
+					}
+				}
+				playGame(receiver);
+			}
+		});
+		t.start();
 	}
 }

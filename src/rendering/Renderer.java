@@ -11,6 +11,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import physics.*;
 
 /**
@@ -34,6 +35,7 @@ public class Renderer extends Scene
 	public Renderer(String mapName, AudioManager audio)
 	{
 		super(view, 1024, 576);
+		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
 
