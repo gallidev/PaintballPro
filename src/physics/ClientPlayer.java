@@ -38,7 +38,7 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 	
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
-		super(x, y, id, new Image("assets/player_" + (team == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
+		super(x, y, id);
 		controlScheme = false;
 		this.team = team;
 		this.receiver = receiver;
