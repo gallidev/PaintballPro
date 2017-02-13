@@ -9,6 +9,7 @@ import logic.KingOfTheHillMode;
 import logic.ServerPlayer;
 import logic.Team;
 import logic.TeamMatchMode;
+import networkingServer.ServerMsgReceiver;
 import networkingSharedStuff.Message;
 
 /**
@@ -21,6 +22,7 @@ import networkingSharedStuff.Message;
 public class ServerGame {
 
 	private GameMode game;
+	private ServerMsgReceiver serverReceiver;
 
 	/**
 	 * The server will run a specific game mode, given as an integer argument in
@@ -30,7 +32,7 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team red, Team blue) {
+	public ServerGame(int gameMode, Team red, Team blue, ServerMsgReceiver receiver) {
 		switch (gameMode) {
 		case 1:
 			game = new TeamMatchMode(red, blue);
@@ -48,19 +50,8 @@ public class ServerGame {
 			game = new TeamMatchMode(red, blue);
 			break;
 		}
+		this.serverReceiver = receiver;
 
-	}
-
-	/**
-	 * Sends a given message to all the players involved in the current game.
-	 * @param msg The message to be sent to the players.
-	 */
-	public void sendMsgToAll(String msg){
-		ArrayList<ServerPlayer> allPlayers = getAllPlayers();
-		
-		for(ServerPlayer p: allPlayers){
-			p.getServerReceiver().sendToAll(msg);
-		}
 	}
 	
 	/**
@@ -70,7 +61,7 @@ public class ServerGame {
 	public void startGame(){
 		game.start();
 		String msgToClients = "StartGame";
-		sendMsgToAll(msgToClients);
+		serverReceiver.sendToAll(msgToClients);
 	}
 	
 	/**
@@ -78,7 +69,7 @@ public class ServerGame {
 	 */
 	public void endGame(){
 		if (game.isGameFinished())
-			sendMsgToAll("EndGame");
+			serverReceiver.sendToAll("EndGame");
 	}
 	
 	/*Getters and setters*/
