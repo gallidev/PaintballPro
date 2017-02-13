@@ -246,6 +246,6 @@ public class Lobby {
 			System.out.println("Time left: " + timer.getTimeLeft());
 			receiver.sendToAll("LTime:" + timer.getTimeLeft());
 		}
-		System.out.println("lobby time done");
+		playGame(receiver);
 	}
 }

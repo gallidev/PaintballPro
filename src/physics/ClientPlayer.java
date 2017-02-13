@@ -119,7 +119,7 @@ public class ClientPlayer extends GeneralPlayer{
 
 	private void sendServerNewPosition(double x, double y, double angle){
 		String msg = "SendToAll:Move:id:" + x + ":" + y + ":" + angle; //Protocol message for updating a location
-		sender.sendMessage(msg);
+		//sender.sendMessage(msg);
 	}
 
 	public void shoot(){
