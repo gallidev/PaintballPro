@@ -88,7 +88,7 @@ public class LobbyTable {
 			this.getLobby(lobbyAllocated).timerStart(receiver);
 			receiver.sendToAll("TimerStart");
 		}
-		
+		receiver.sendToAll("PlayerConnected");
 	}
 	
 	public synchronized Lobby getLobby(int lobbyId)
