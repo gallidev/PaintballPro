@@ -231,7 +231,7 @@ public class Lobby {
 		Player[] allPlayers = getPlayers();
 		
 		//String to be sent needs to contain: 
-		//StartGame:<myID><team>...8 times
+		//StartGame:<myID><myTeam>...8 times
 		
 		for(int i = 0; i < allPlayers.length; i++){
 			String toBeSent = "StartGame:";
