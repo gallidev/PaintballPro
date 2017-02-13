@@ -55,6 +55,15 @@ public class ClientReceiver extends Thread {
 					//System.out.println("Received: " + text);
 
 					// Protocols
+					//In-game messages
+					//Temporary sketch of sending player positions
+//					if (text.contains("Move")){
+//						String[] msg = text.split(":");
+//						int id = Integer.parseInt(msg[2]);
+//						double x = Double.parseDouble(msg[3]);
+//						double y = Double.parseDouble(msg[4]);
+//						double angle = Double.parseDouble(msg[5]);
+//					}
 					if(text.contains("Ret:Red:"))
 					{
 						System.out.println("Got red");

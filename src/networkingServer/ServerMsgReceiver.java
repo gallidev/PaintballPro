@@ -59,7 +59,8 @@ public class ServerMsgReceiver extends Thread {
 					
 					// In-Game Messages
 					// ----------------
-					
+						
+						
 					
 					// In-Game Status'
 					// ---------------
@@ -125,6 +126,7 @@ public class ServerMsgReceiver extends Thread {
 					// Server Actions
 					// ---------------
 					// Send a message to all clients in the game.
+					//Includes : server a new move of one player to all the clients involved in that particular running game
 					if(text.contains("SendToAll:"))
 						sendToAll(text);
 					
