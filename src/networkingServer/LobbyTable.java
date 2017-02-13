@@ -4,6 +4,7 @@ package networkingServer;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
+import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 
 /**
@@ -88,7 +89,10 @@ public class LobbyTable {
 			this.getLobby(lobbyAllocated).timerStart(receiver);
 			receiver.sendToAll("TimerStart");
 		}
-		receiver.sendToAll("PlayerConnected");
+		String redMems = "Ret:Red:" + this.getLobby(lobbyAllocated).getTeam(2);
+		String blueMems = "Ret:Blue:" + this.getLobby(lobbyAllocated).getTeam(1);
+		receiver.sendToAll(redMems);
+		receiver.sendToAll(blueMems);
 	}
 	
 	public synchronized Lobby getLobby(int lobbyId)

@@ -125,8 +125,6 @@ public class ClientReceiver extends Thread {
 						// Do stuff here, we have 10 secs till game start message sent.
 						m.setTimerStarted();
 					}
-
-
 				}
 				else // if the client wants to exit the system.
 				{
