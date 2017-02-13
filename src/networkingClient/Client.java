@@ -61,7 +61,6 @@ public class Client {
 			// Create two client threads, one for sending and one for receiving messages:
 			MessageQueue msgQueue = new MessageQueue();
 			sender = new ClientSender(msgQueue,toServer,nickname);
-			receiver = new ClientReceiver(portNum, fromServer, sender, msgQueue, m);
 
 			// Run them in parallel:
 			sender.start();
@@ -90,6 +89,7 @@ public class Client {
 			
 			System.out.println("Client has id:"+clientID);
 			
+			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m);
 			receiver.start();
 			
 			//ClientGUI CGUI = new ClientGUI();
