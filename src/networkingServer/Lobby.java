@@ -95,6 +95,7 @@ public class Lobby {
 			if(player.getID() == playerToRemove.getID())
 			{
 				blueTeam.remove(counter);
+				currPlayerBlueNum--;
 				removed = true;
 				for(int i = (counter+1); i < (MaxPlayers/2); i++)
 				{
@@ -102,7 +103,6 @@ public class Lobby {
 					{
 						blueTeam.replace(i-1, blueTeam.get(i));
 						blueTeam.remove(i);
-						currPlayerBlueNum--;
 					}
 				}
 			}
@@ -116,13 +116,13 @@ public class Lobby {
 				if(player.getID() == playerToRemove.getID())
 				{
 					redTeam.remove(counter);
+					currPlayerRedNum--;
 					for(int i = (counter+1); i < (MaxPlayers/2); i++)
 					{
 						if(redTeam.containsKey(i))
 						{
 							redTeam.replace(i-1, redTeam.get(i));
 							redTeam.remove(i);
-							currPlayerRedNum--;
 						}
 					}
 				}
