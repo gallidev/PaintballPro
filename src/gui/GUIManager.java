@@ -78,6 +78,9 @@ public class GUIManager {
                     c.getSender().sendMessage("Play:Mode:1");
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
+                case "EliminationSingle":
+                    s.setScene(new Renderer("elimination", audio, null));
+                    break;
                 case "Elimination":
                     s.setScene(new Renderer("elimination", audio, c.getReceiver()));
                     break;
