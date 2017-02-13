@@ -92,11 +92,13 @@ public class GameLobbyMenu {
 							} else {
 								m.fetchLobbyUpdates();
 							}
+							sleep(100);
 						} else {
 							m.fetchLobbyUpdates();
+							sleep(1000);
 						}
 
-						sleep(1000);
+
 					} catch (InterruptedException e) {
 						// Should never happen
 						System.err.println("Could not sleep!");
