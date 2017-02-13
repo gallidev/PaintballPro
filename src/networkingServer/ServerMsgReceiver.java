@@ -48,6 +48,9 @@ public class ServerMsgReceiver extends Thread {
 				//Get input from the client read stream.
 				String text = myClient.readLine();
 				
+				//for debugging
+				System.out.println("ServerReceiver got : " + text);
+				
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 
@@ -68,16 +71,15 @@ public class ServerMsgReceiver extends Thread {
 					if(text.contains("Play:Mode:"))
 					{
 						int gameMode = Integer.parseInt(text.substring(10));
-						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode);
+						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode,this);
 						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 						int curTotal = lobby.getCurrPlayerTotal();
-						if(curTotal == 8)
+						if(curTotal == 2)
 						{
 							lobby.switchGameStatus();
 							lobby.playGame(this);
 						}
 					}
-					
 					// When user attempts to switch teams, try to switch.
 					if(text.contains("SwitchTeam"))
 						gameLobby.switchTeams(clientTable.getPlayer(myClientsID));

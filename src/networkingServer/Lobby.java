@@ -5,9 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
+import logic.RoundTimer;
 import logic.ServerPlayer;
 import logic.Team;
 import logic.TeamMatchMode;
+import networkingClient.ClientSender;
 import networkingInterfaces.ServerGame;
 import physics.GeneralPlayer;
 
@@ -26,12 +28,14 @@ public class Lobby {
 	private ConcurrentMap<Integer,Player> blueTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 1
 	private ConcurrentMap<Integer,Player> redTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 2
 	private int id;
+	private static final int lobbyTime = 10; //lobby runs for 2 minutes
+
 	
 	public Lobby(int myid, int PassedGameType)
 	{
 		inGameStatus = false;
 		GameType = PassedGameType;
-		MaxPlayers = 8;
+		MaxPlayers = 2;
 		currPlayerBlueNum = 0;
 		currPlayerRedNum = 0;
 		id = myid;
@@ -226,6 +230,19 @@ public class Lobby {
 		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2));
 		currentSessionGame.startGame();
 		// sends the end game signal to all clients
-		currentSessionGame.endGame();			
+		while(!currentSessionGame.getGame().isGameFinished()){}
+		currentSessionGame.endGame();
+	}
+
+	// A timer, accessed by the client for game countdown.
+	public void timerStart(ServerMsgReceiver receiver) {
+		RoundTimer timer = new RoundTimer(lobbyTime);
+		timer.startTimer();
+		
+		while(!timer.isTimeElapsed()){
+			System.out.println("Time left: " + timer.getTimeLeft());
+			receiver.sendToAll("LTime:" + timer.getTimeLeft());
+		}
+		System.out.println("lobby time done");
 	}
 }

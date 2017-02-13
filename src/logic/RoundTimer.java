@@ -30,6 +30,7 @@ public class RoundTimer {
 	private void setTimeLeft() {
 	    if (timeLeft == 1)
 	        timer.cancel();
+	    System.out.println(timeLeft + " seconds left");
 	    timeLeft--;
 	}
 
@@ -53,6 +54,10 @@ public class RoundTimer {
 	            	setTimeLeft();
 	        }
 	    }, delay, period);
+	}
+	
+	public long getTimeLeft(){
+		return timeLeft;
 	}
 	
 	//Main method for testing purposes

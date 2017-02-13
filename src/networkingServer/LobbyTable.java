@@ -59,7 +59,7 @@ public class LobbyTable {
 	}
 	
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	public synchronized void addPlayerToLobby(Player player, int gameMode)
+	public synchronized void addPlayerToLobby(Player player, int gameMode, ServerMsgReceiver receiver)
 	{
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
@@ -83,6 +83,12 @@ public class LobbyTable {
 			id++;
 		}
 		player.setAllocatedLobby(lobbyAllocated);
+		if(this.getLobby(lobbyAllocated).isMaxPlayersReached())
+		{
+			this.getLobby(lobbyAllocated).timerStart(receiver);
+			receiver.sendToAll("TimerStart");
+		}
+		
 	}
 	
 	public synchronized Lobby getLobby(int lobbyId)

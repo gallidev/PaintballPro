@@ -76,6 +76,11 @@ public class ClientReceiver extends Thread {
 					{
 						
 					}
+					else if(text.contains("LTime:")){
+						String remTime = text.split(":")[1];
+						long time = Integer.parseInt(remTime);
+						System.out.println("Lobby has " + time + " left");
+					}
 					else if(text.contains("StartGame"))
 					{
 						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
@@ -89,7 +94,11 @@ public class ClientReceiver extends Thread {
 					}
 					else if(text.contains("EndGame"))
 					{
-						System.out.println("Game has ended for plyaer with ID " + clientID);
+						System.out.println("Game has ended for player with ID " + clientID);
+					}
+					else if(text.contains("TimerStart"))
+					{
+						// Do stuff here, we have 10 secs till game start message sent.
 					}
 
 					
