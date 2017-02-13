@@ -30,7 +30,7 @@ public class Map
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
-	private Spawn[] spawns;
+	Spawn[] spawns;
 
 	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group(), spawnGroup[] = new Group[2];
 

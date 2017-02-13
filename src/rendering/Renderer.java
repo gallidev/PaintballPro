@@ -25,7 +25,6 @@ public class Renderer extends Scene
 	static Pane view = new Pane();
 	private Map map;
 	private double scale = 1;
-	private ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
@@ -52,43 +51,21 @@ public class Renderer extends Scene
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
 
-		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, receiver);
-		players.add(player);
-
-		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map, TeamEnum.BLUE, bluePlayerImage, audio);
-		players.add(ai);
-
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 5, map, TeamEnum.BLUE, bluePlayerImage, audio);
-		players.add(ai2);
-
-		view.getChildren().addAll(players);
-
-
-		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
-		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();
-
-		for(GeneralPlayer p : players)
+		ClientPlayer player;
+		if(receiver != null)
 		{
-			if(p.getTeam() == TeamEnum.RED)
-				teamRed.add(p);
-			else
-				teamBlue.add(p);
+			player = receiver.getClientPlayer();
+			player.setImage(player.getTeam() == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+			player.setXCoord(map.spawns[player.getPlayerId()].x * 64);
+			player.setYCoord(map.spawns[player.getPlayerId()].y * 64);
+			player.setMap(map);
+			player.setAudio(audio);
+			player.setEnemies(new ArrayList<>());
 		}
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-			{
-				p.setEnemies(teamBlue);
-				p.setTeamPlayers(teamRed);
-			}
-			else
-			{
-				p.setEnemies(teamRed);
-				p.setTeamPlayers(teamBlue);
-			}
+		else
+			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, null);
 
-		}
+		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
@@ -109,19 +86,16 @@ public class Renderer extends Scene
 				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 
-				for(GeneralPlayer player : players)
+				player.tick();
+				for(Bullet pellet : player.getBullets())
 				{
-					player.tick();
-					for(Bullet pellet : player.getBullets())
+					if(pellet.isActive())
 					{
-						if(pellet.isActive())
-						{
-							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(pellet);
-						}
-						else if(view.getChildren().contains(pellet))
-							view.getChildren().remove((pellet));
+						if(!view.getChildren().contains(pellet))
+							view.getChildren().add(pellet);
 					}
+					else if(view.getChildren().contains(pellet))
+						view.getChildren().remove((pellet));
 				}
 			}
 		}.start();
@@ -130,11 +104,5 @@ public class Renderer extends Scene
 	public Map getMap()
 	{
 		return map;
-	}
-
-	//only for testing the bullets collisions for the moment
-	public ArrayList<GeneralPlayer> getPlayers()
-	{
-		return players;
 	}
 }
