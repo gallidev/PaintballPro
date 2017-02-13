@@ -180,9 +180,6 @@ public class ClientReceiver extends Thread {
 			
 			//for debugging
 			System.out.println("game has started for player with ID " + clientID);
-			
-			System.out.println("My team is: " + myTeam);
-			System.out.println("My opponent team is: " + enemies);
 
 			//Do stuff here: show the game window, so that the players can start the game
 			Platform.runLater(new Runnable() {
