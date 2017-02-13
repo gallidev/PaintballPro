@@ -16,7 +16,7 @@ public class ClientPlayer extends GeneralPlayer{
 	private boolean controlScheme;
 	private ClientSender sender;
 	private AudioManager audio;
-	//private ClientReceiver receiver;
+	private ClientReceiver receiver;
 
 
 	/**
@@ -27,14 +27,14 @@ public class ClientPlayer extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, Image image){
+	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, Image image, ClientReceiver receiver){
 		super(x, y, id, map, team, image);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
-		//this.receiver = receiver;
+		this.receiver = receiver;
 	}
 
 
