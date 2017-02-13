@@ -41,6 +41,7 @@ public class ClientSender extends Thread {
 	
 	public void sendMessage(String text)
 	{
+		//System.out.println("sending my new position : " + text);
 		queue.offer(new Message(text));
 	}
 

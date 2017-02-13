@@ -77,7 +77,7 @@ public class ServerMsgReceiver extends Thread {
 						if(curTotal == 2)
 						{
 							lobby.switchGameStatus();
-							lobby.playGame(this);
+							lobby.timerStart(this);
 						}
 					}
 					// When user attempts to switch teams, try to switch.

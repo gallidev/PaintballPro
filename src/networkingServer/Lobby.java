@@ -185,7 +185,10 @@ public class Lobby {
 				retStr = retStr + player.getUsername() + "-";
 			}
 		}
-		return retStr.substring(0, retStr.length()-1);
+		if(retStr.length() > 1)
+			return retStr.substring(0, retStr.length()-1);
+		else
+			return "";
 	}
 	
 	public Player[] getPlayers()
@@ -238,11 +241,11 @@ public class Lobby {
 	public void timerStart(ServerMsgReceiver receiver) {
 		RoundTimer timer = new RoundTimer(lobbyTime);
 		timer.startTimer();
-		
+
 		while(!timer.isTimeElapsed()){
-			System.out.println("Time left: " + timer.getTimeLeft());
+//			System.out.println("Time left: " + timer.getTimeLeft());
 			receiver.sendToAll("LTime:" + timer.getTimeLeft());
 		}
-		System.out.println("lobby time done");
+		playGame(receiver);
 	}
 }
