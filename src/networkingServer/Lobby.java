@@ -230,7 +230,7 @@ public class Lobby {
 	 */
 	public void playGame(ServerMsgReceiver receiver)
 	{
-		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2));
+		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2),receiver);
 		currentSessionGame.startGame();
 		// sends the end game signal to all clients
 		while(!currentSessionGame.getGame().isGameFinished()){}
@@ -243,7 +243,12 @@ public class Lobby {
 		timer.startTimer();
 
 		while(!timer.isTimeElapsed()){
-//			System.out.println("Time left: " + timer.getTimeLeft());
+//			System.out.println("Lobby has time left: " + timer.getTimeLeft());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				System.out.println("Can't sleep" + e.getMessage());
+			}
 			receiver.sendToAll("LTime:" + timer.getTimeLeft());
 		}
 		playGame(receiver);
