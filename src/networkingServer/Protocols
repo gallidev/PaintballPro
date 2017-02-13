@@ -8,7 +8,7 @@ We work using strings between the client and the server. This document outlines 
 ---------------------------------------	|-------------------------------------	|-------------------------------------
 				IN-GAME					|/////////////////////////////////////	|/////////////////////////////////////
 ---------------------------------------	|-------------------------------------	|-------------------------------------
-New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>										
+New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>:<angle>										
 Angle of player changes.				|
 Player gets shot.						|
 Bullets firing.							|SendToAll:Bullet:<x>:<y>:<angle>:<team>

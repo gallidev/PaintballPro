@@ -1,17 +1,11 @@
 package physics;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.transform.Rotate;
-import logic.GameObject;
-import networkingClient.ClientSender;
-import rendering.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import audio.AudioManager;
 import enums.TeamEnum;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import networkingClient.ClientReceiver;
+import networkingClient.ClientSender;
+import rendering.Map;
 
 /**
  *  The player, represented by an ImageView that should be running
@@ -22,6 +16,7 @@ public class ClientPlayer extends GeneralPlayer{
 	private boolean controlScheme;
 	private ClientSender sender;
 	private AudioManager audio;
+	//private ClientReceiver receiver;
 
 
 	/**
@@ -39,6 +34,7 @@ public class ClientPlayer extends GeneralPlayer{
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
+		//this.receiver = receiver;
 	}
 
 
@@ -55,7 +51,7 @@ public class ClientPlayer extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
-			sendServer();
+			sendServerNewPosition(x, y, angle);
 		} else {
 			checkSpawn();
 		}
@@ -121,8 +117,9 @@ public class ClientPlayer extends GeneralPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
-	private void sendServer() {
-
+	private void sendServerNewPosition(double x, double y, double angle){
+		String msg = "SendToAll:Move:id:" + x + ":" + y + ":" + angle; //Protocol message for updating a location
+		sender.sendMessage(msg);
 	}
 
 	public void shoot(){
@@ -157,5 +154,9 @@ public class ClientPlayer extends GeneralPlayer{
 	public void setMY(double my){
 		this.my = my;
 	}
+	
+//	public ClientReceiver getReceiver(){
+//		return receiver;
+//	}
 
 }
