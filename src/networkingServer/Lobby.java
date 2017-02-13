@@ -241,10 +241,10 @@ public class Lobby {
 			
 			//adding to the string the information about all the other players
 			for (int j = 0; j < allPlayers.length; j++)
-				if (i != j)
+				if ( allPlayers[j].getID() != allPlayers[i].getID())
 					toBeSent += allPlayers[j].getID() + ":" + getTeamAssoc(allPlayers[j].getID()) + ":"; 
 			
-			receiver.sendToID(allPlayers[i], toBeSent);
+			receiver.sendToSpec(allPlayers[i].getID(), toBeSent);
 		}
 		
 		currentSessionGame.startGame();

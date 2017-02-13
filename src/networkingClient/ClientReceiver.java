@@ -43,11 +43,15 @@ public class ClientReceiver extends Thread {
 		fromServer = reader;
 		this.sender = sender;
 		myMsgQueue = msgQueue;
+		myTeam = new ArrayList<>();
+		enemies = new ArrayList<>();
 	}
 
 	/**
 	 * The main method running in this class, runs when the class is started after initialization.
 	 */
+	//Main integration component
+	//@atp575
 	public void run() {
 		try {
 			while (true) {
@@ -99,30 +103,10 @@ public class ClientReceiver extends Thread {
 						m.setTimerStarted();
 						System.out.println("Lobby has " + time + " left");
 					}
-					else if(text.contains("StartGame"))
-					{
-						
-						//create my client
-						cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.RED, this); // Using 'this' is ugly code but currently can't think of another way.
-						
-						//create all the other players in my team
-						
-						//create the enemy team
-						
-						//for debugging
-						System.out.println("Received start signal!");
-						System.out.println("game gas started for player with ID " + clientID);
-
-						//Do stuff here: show the game window, so that the players can start the game
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								m.transitionTo("Elimination", null);
-							}
-						});
-
-
+					else if(text.contains("StartGame")){
+						startGameAction(text);
 					}
+
 					else if(text.contains("EndGame"))
 					{
 						System.out.println("Game has ended for player with ID " + clientID);
@@ -151,8 +135,77 @@ public class ClientReceiver extends Thread {
 		}
 	}
 
-	public ClientPlayer getClientPlayer()
-	{
+	public ClientPlayer getClientPlayer(){
 		return cPlayer;
 	}
+	
+	/**
+	 * Contains everything that needs to be done when a player receives the start signal: 
+	 * take the client's id and team, then form the team and the enemy team.
+	 * This information is then used by the renderer.
+	 * @param text The text received from the server.
+	 */
+	public void startGameAction(String text){
+		//get all the relevant data from the message : StartGame:2:Red:1:Red:
+		String[] data = text.split(":");
+		
+		int myId = Integer.parseInt(data[1]);
+		String team = data[2];
+		
+		//add myself to my team
+		//create my client
+		if (team.equals("Red"))
+			cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.RED, this); // Using 'this' is ugly code but currently can't think of another way.
+		else 
+			cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.BLUE, this);
+		
+		myTeam.add(cPlayer);
+		
+		//extract the other members
+		for (int i = 3; i < data.length-2; i=i+2){
+			int id = Integer.parseInt(data[i]);
+			if ( data[i+1].equals(team)){
+				if (team.equals("Red"))
+					myTeam.add(new ClientPlayer(0, 0, id, TeamEnum.RED, this));
+				else
+					myTeam.add(new ClientPlayer(0, 0, id, TeamEnum.BLUE, this));
+			}
+			else{
+				if (team.equals("Red"))
+					enemies.add(new ClientPlayer(0, 0, id, TeamEnum.RED, this));
+				else
+					enemies.add(new ClientPlayer(0, 0, id, TeamEnum.BLUE, this));
+			}
+		}
+			
+			//for debugging
+			System.out.println("game has started for player with ID " + clientID);
+			
+			System.out.println("My team is: " + myTeam);
+			System.out.println("My opponent team is: " + enemies);
+
+			//Do stuff here: show the game window, so that the players can start the game
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					m.transitionTo("Elimination", null);
+				}
+			});
+		}
+			
+		/**
+		 * Returns the players that are in this Player's team. 
+		 * @return
+		 */
+		public ArrayList<ClientPlayer> getMyTeam(){
+			return myTeam;
+		}
+		
+		/**
+		 * Return all the players that are not in this Player's team.
+		 * @return
+		 */
+		public ArrayList<ClientPlayer> getEnemies(){
+			return enemies;
+		}
 }

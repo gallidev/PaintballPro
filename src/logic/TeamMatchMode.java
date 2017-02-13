@@ -10,7 +10,7 @@ package logic;
 public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
-	private static final long gameTime = 10; // in seconds
+	private static final long gameTime = 20; // in seconds
 
 	/**
 	 * Initialises the game with two teams and starts the count-down.

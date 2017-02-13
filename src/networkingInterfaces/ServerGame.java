@@ -59,8 +59,8 @@ public class ServerGame {
 	 */
 	public void startGame(){
 		game.start();
-		String msgToClients = "StartGame";
-		serverReceiver.sendToAll(msgToClients);
+		//String msgToClients = "StartGame";
+		//serverReceiver.sendToAll(msgToClients);
 	}
 	
 	/**
