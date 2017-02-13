@@ -235,7 +235,7 @@ public class Lobby {
 		
 		for(int i = 0; i < allPlayers.length; i++){
 			String toBeSent = "StartGame:";
-			toBeSent += allPlayers[i].getID() + ":";
+			toBeSent += allPlayers[i].getID() + ":" + getTeamAssoc(allPlayers[i].getID());
 			
 		}
 		
@@ -270,5 +270,24 @@ public class Lobby {
 			}
 		});
 		t.start();
+	}
+	
+	private String getTeamAssoc(int playerID)
+	{
+		for(Player player : redTeam.values())
+		{
+			if(player.getID() == playerID)
+			{
+				return "Red";
+			}
+		}
+		for(Player player : blueTeam.values())
+		{
+			if(player.getID() == playerID)
+			{
+				return "Blue";
+			}
+		}
+		return "";
 	}
 }
