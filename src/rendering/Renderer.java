@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import networkingClient.ClientReceiver;
 import physics.*;
 
 /**
@@ -31,7 +32,7 @@ public class Renderer extends Scene
 	 *
 	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String mapName, AudioManager audio)
+	public Renderer(String mapName, AudioManager audio, ClientReceiver receiver)
 	{
 		super(view, 1024, 576);
 		setFill(Color.BLACK);
@@ -51,7 +52,7 @@ public class Renderer extends Scene
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
 
-		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage);
+		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, receiver);
 		players.add(player);
 
 		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map, TeamEnum.BLUE, bluePlayerImage, audio);
