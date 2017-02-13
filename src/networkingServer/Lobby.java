@@ -235,8 +235,16 @@ public class Lobby {
 		
 		for(int i = 0; i < allPlayers.length; i++){
 			String toBeSent = "StartGame:";
-			toBeSent += allPlayers[i].getID() + ":" + getTeamAssoc(allPlayers[i].getID());
 			
+			//the current player's info
+			toBeSent += allPlayers[i].getID() + ":" + getTeamAssoc(allPlayers[i].getID()) + ":";
+			
+			//adding to the string the information about all the other players
+			for (int j = 0; j < allPlayers.length; j++)
+				if (i != j)
+					toBeSent += allPlayers[j].getID() + ":" + getTeamAssoc(allPlayers[j].getID()) + ":"; 
+			
+			receiver.sendToID(allPlayers[i], toBeSent);
 		}
 		
 		currentSessionGame.startGame();
