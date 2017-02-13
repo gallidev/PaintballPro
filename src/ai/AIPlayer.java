@@ -22,11 +22,13 @@ public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
 	private AudioManager audio;
+	private double movementAngle;
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
 		super(x, y, id, map, team, image);
 		this.audio = audio;
 		angle = Math.toRadians(90);
+		movementAngle = 0;
 		right = true;
 		rb = new RandomBehaviour(this);
 		this.audio = audio;
@@ -61,8 +63,15 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	protected void updatePosition(){
 
-		double yToReduce = movementSpeed * Math.cos(angle);
-		double xToAdd = movementSpeed * Math.sin(angle);
+//		if(up && !collUp) y -= movementSpeed;
+//		if(down && !collDown) y += movementSpeed;
+//		if(left  && !collLeft) x -= movementSpeed;
+//		if(right  && !collRight) x += movementSpeed;
+		
+		if(collUp || collLeft || collRight || collDown) rb.change();
+		
+		double yToReduce = movementSpeed * Math.cos(movementAngle);
+		double xToAdd = movementSpeed * Math.sin(movementAngle);
 
 		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) y -= yToReduce;
 		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) x += xToAdd;
@@ -85,6 +94,10 @@ public class AIPlayer extends GeneralPlayer{
 			x -= movementSpeed;
 		}
 		rotation.setAngle(Math.toDegrees(angle));
+	}
+	
+	public void setMovementAngle(double angle){
+		this.movementAngle = angle;
 	}
 
 }

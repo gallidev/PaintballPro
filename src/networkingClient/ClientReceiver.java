@@ -144,4 +144,9 @@ public class ClientReceiver extends Thread {
 			return;
 		}
 	}
+
+	public ClientPlayer getClientPlayer()
+	{
+		return cPlayer;
+	}
 }
