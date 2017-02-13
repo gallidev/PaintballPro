@@ -25,7 +25,6 @@ public class Renderer extends Scene
 	private Map map;
 	private double scale = 1;
 	private ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
-	private AudioManager audio;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
@@ -38,8 +37,6 @@ public class Renderer extends Scene
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
-
-		this.audio = audio;
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -138,10 +135,5 @@ public class Renderer extends Scene
 	public ArrayList<GeneralPlayer> getPlayers()
 	{
 		return players;
-	}
-
-	public AudioManager getAudio()
-	{
-		return audio;
 	}
 }
