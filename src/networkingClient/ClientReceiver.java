@@ -102,8 +102,12 @@ public class ClientReceiver extends Thread {
 					else if(text.contains("StartGame"))
 					{
 						
-						
+						//create my client
 						cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.RED, this); // Using 'this' is ugly code but currently can't think of another way.
+						
+						//create all the other players in my team
+						
+						//create the enemy team
 						
 						//for debugging
 						System.out.println("Received start signal!");

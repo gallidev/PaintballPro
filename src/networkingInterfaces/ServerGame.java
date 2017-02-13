@@ -57,7 +57,6 @@ public class ServerGame {
 	/**
 	 * Starts a new game in the given mode and notifies all players involved in the game that the game has started.
 	 */
-	//TODO: call this from GameClient when the player is ready to start the game. After, lunch the game window for the player to start.
 	public void startGame(){
 		game.start();
 		String msgToClients = "StartGame";

@@ -228,6 +228,17 @@ public class Lobby {
 		Team red = convertTeam(receiver, redTeam, 2);
 		Team blue = convertTeam(receiver, blueTeam, 1);
 		ServerGame currentSessionGame = new ServerGame(GameType, red, blue, receiver);
+		Player[] allPlayers = getPlayers();
+		
+		//String to be sent needs to contain: 
+		//StartGame:<myID><team>...8 times
+		
+		for(int i = 0; i < allPlayers.length; i++){
+			String toBeSent = "StartGame:";
+			toBeSent += allPlayers[i].getID() + ":";
+			
+		}
+		
 		currentSessionGame.startGame();
 		
 		// sends the end game signal to all clients
