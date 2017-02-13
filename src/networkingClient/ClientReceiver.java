@@ -89,7 +89,7 @@ public class ClientReceiver extends Thread {
 					}
 					else if(text.contains("EndGame"))
 					{
-						System.out.println("Game has ended for plyaer with ID " + clientID);
+						System.out.println("Game has ended for player with ID " + clientID);
 					}
 					else if(text.contains("TimerStart"))
 					{

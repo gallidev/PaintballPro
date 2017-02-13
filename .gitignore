@@ -82,3 +82,5 @@ preferences.json
 *.iml
 
 *.ipr
+*.class
+*.class
