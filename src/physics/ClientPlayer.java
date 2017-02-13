@@ -36,6 +36,13 @@ public class ClientPlayer extends GeneralPlayer{
 		angle = 0.0;
 		this.receiver = receiver;
 	}
+	
+	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
+		super(x, y, id, new Image("assets/player_" + (team == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
+		controlScheme = false;
+		this.team = team;
+		this.receiver = receiver;
+	}
 
 
 	/**
@@ -138,7 +145,20 @@ public class ClientPlayer extends GeneralPlayer{
 		firedBullets.add(bullet);
 	}
 
-
+	public void setXCoord(double x){
+		this.x = x;
+	}
+	
+	public void setYCoord(double x){
+		this.y = y;
+	}
+	
+	public void setMap(Map m){
+		map = m;
+	}
+	
+	
+	
 	public double getMX(){
 		return this.mx;
 	}

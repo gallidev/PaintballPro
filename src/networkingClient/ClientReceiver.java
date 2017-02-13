@@ -3,11 +3,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
 import networkingInterfaces.ClientPlayerOld;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
+import physics.ClientPlayer;
 
 
 // Gets messages from client and puts them in a queue, for another
@@ -24,6 +26,7 @@ public class ClientReceiver extends Thread {
 	private MessageQueue myMsgQueue;
 	private Message msg;
 	private GUIManager m;
+	private ClientPlayer cPlayer;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -96,7 +99,7 @@ public class ClientReceiver extends Thread {
 					}
 					else if(text.contains("StartGame"))
 					{
-						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
+						cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.RED, this); // Using 'this' is ugly code but currently can't think of another way.
 
 						//for debugging
 						System.out.println("Received start signal!");
