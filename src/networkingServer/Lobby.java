@@ -185,7 +185,10 @@ public class Lobby {
 				retStr = retStr + player.getUsername() + "-";
 			}
 		}
-		return retStr.substring(0, retStr.length()-1);
+		if(retStr.length() > 1)
+			return retStr.substring(0, retStr.length()-1);
+		else
+			return "";
 	}
 	
 	public Player[] getPlayers()
