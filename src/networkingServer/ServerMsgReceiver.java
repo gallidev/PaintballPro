@@ -78,7 +78,6 @@ public class ServerMsgReceiver extends Thread {
 						{
 							lobby.switchGameStatus();
 							lobby.playGame(this);
-							System.out.println("game started");
 						}
 					}
 					// When user attempts to switch teams, try to switch.

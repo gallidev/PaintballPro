@@ -85,7 +85,7 @@ public class LobbyTable {
 		player.setAllocatedLobby(lobbyAllocated);
 		if(this.getLobby(lobbyAllocated).isMaxPlayersReached())
 		{
-			this.getLobby(lobbyAllocated).timerStart();
+			this.getLobby(lobbyAllocated).timerStart(receiver);
 			receiver.sendToAll("TimerStart");
 		}
 		

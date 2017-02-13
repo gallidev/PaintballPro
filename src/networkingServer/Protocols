@@ -42,3 +42,4 @@ Current game session has ended			|EndGame
 
 Return team nicknames                 	|Ret:<team>:<user>-<user>-<user>
 Game starting in 10 secs, max reached	|TimerStart
+Remaining lobby timer					|LTime:<seconds>

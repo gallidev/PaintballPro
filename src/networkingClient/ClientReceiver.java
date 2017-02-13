@@ -76,6 +76,11 @@ public class ClientReceiver extends Thread {
 					{
 						
 					}
+					else if(text.contains("LTime:")){
+						String remTime = text.split(":")[1];
+						long time = Integer.parseInt(remTime);
+						System.out.println("Lobby has " + time + " left");
+					}
 					else if(text.contains("StartGame"))
 					{
 						//ClientPlayer cPlayer = new ClientPlayer(sender,this); // Using 'this' is ugly code but currently can't think of another way.
