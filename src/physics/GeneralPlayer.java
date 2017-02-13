@@ -352,6 +352,10 @@ public abstract class GeneralPlayer extends GameObject{
 	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
 		this.enemies = enemies;
 	}
+	
+	public ArrayList<GeneralPlayer> getEnemies(){
+		return this.enemies;
+	}
 
 	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
 		this.teamPlayers = teamPlayers;
