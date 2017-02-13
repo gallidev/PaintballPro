@@ -27,7 +27,7 @@ public class ClientReceiver extends Thread {
 	private Message msg;
 	private GUIManager m;
 	private ClientPlayer cPlayer;
-
+	
 	/**
 	 * Construct the class, setting passed variables to local objects.
 	 * @param Cid The ID of the client.
@@ -99,8 +99,10 @@ public class ClientReceiver extends Thread {
 					}
 					else if(text.contains("StartGame"))
 					{
+						
+						
 						cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.RED, this); // Using 'this' is ugly code but currently can't think of another way.
-
+						
 						//for debugging
 						System.out.println("Received start signal!");
 						System.out.println("game gas started for player with ID " + clientID);

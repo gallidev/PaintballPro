@@ -227,6 +227,7 @@ public class Lobby {
 	{
 		ServerGame currentSessionGame = new ServerGame(GameType, convertTeam(receiver,blueTeam,1), convertTeam(receiver,redTeam,2),receiver);
 		currentSessionGame.startGame();
+		
 		// sends the end game signal to all clients
 		while(!currentSessionGame.getGame().isGameFinished()){}
 		currentSessionGame.endGame();
