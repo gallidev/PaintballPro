@@ -74,6 +74,7 @@ public class ServerMsgReceiver extends Thread {
 						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode,this);
 						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 						int curTotal = lobby.getCurrPlayerTotal();
+//						lobby.timerStart(this);
 						if(curTotal == 2)
 						{
 							lobby.switchGameStatus();
