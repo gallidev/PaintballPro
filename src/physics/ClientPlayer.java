@@ -35,6 +35,7 @@ public class ClientPlayer extends GeneralPlayer{
 		this.controlScheme = controlScheme;
 		angle = 0.0;
 		this.receiver = receiver;
+		this.sender = receiver.getSender();
 	}
 	
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
@@ -126,7 +127,7 @@ public class ClientPlayer extends GeneralPlayer{
 
 	private void sendServerNewPosition(double x, double y, double angle){
 		String msg = "SendToAll:Move:id:" + x + ":" + y + ":" + angle; //Protocol message for updating a location
-		//sender.sendMessage(msg);
+		sender.sendMessage(msg);
 	}
 
 	public void shoot(){

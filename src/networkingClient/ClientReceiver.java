@@ -66,13 +66,10 @@ public class ClientReceiver extends Thread {
 					// Protocols
 					//In-game messages
 					//Temporary sketch of sending player positions
-//					if (text.contains("Move")){
-//						String[] msg = text.split(":");
-//						int id = Integer.parseInt(msg[2]);
-//						double x = Double.parseDouble(msg[3]);
-//						double y = Double.parseDouble(msg[4]);
-//						double angle = Double.parseDouble(msg[5]);
-//					}
+					if (text.contains("Move")){
+						moveAction(text);
+					}
+					
 					if(text.contains("Ret:Red:"))
 					{
 						System.out.println("Got red");
@@ -189,6 +186,47 @@ public class ClientReceiver extends Thread {
 				}
 			});
 		}
+	
+		/**
+		 * Gets a move signal from the server about a specific player. The method finds that player and updates
+		 * the player's position on the map accordingly.
+		 * @param text The protocol message containing the new x and y coordinates, as well as the angle of the player.
+		 */
+		//NEEDS TESTING
+		public void moveAction(String text){
+			String[] msg = text.split(":");
+			int id = Integer.parseInt(msg[2]);
+			double x = Double.parseDouble(msg[3]);
+			double y = Double.parseDouble(msg[4]);
+			double angle = Double.parseDouble(msg[5]);
+			
+			//find the player that need to be updated
+			ClientPlayer p = getPlayerWithID(id);
+			p.setXCoord(x);
+			p.setYCoord(y);
+			p.setAngle(angle);
+			
+		}
+		
+		/**
+		 * Retrieves a player with a specific id from the current game.
+		 * @param id The player's id.
+		 * @return The player with the given id.
+		 */
+		public ClientPlayer getPlayerWithID(int id){
+			//Check if the Player is in my team
+			for(ClientPlayer p: myTeam)
+				if (p.getPlayerId() == id)
+					return p;
+			
+			//otherwise, player is in the enemy team
+			for(ClientPlayer p: enemies)
+				if (p.getPlayerId() == id)
+					return p;
+			
+			return null;
+			
+		}
 			
 		/**
 		 * Returns the players that are in this Player's team. 
@@ -204,5 +242,9 @@ public class ClientReceiver extends Thread {
 		 */
 		public ArrayList<ClientPlayer> getEnemies(){
 			return enemies;
+		}
+		
+		public ClientSender getSender(){
+			return sender;
 		}
 }
