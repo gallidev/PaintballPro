@@ -186,4 +186,10 @@ public class ServerMsgReceiver extends Thread {
 			queue.offer(new Message(text));
 		}
 	}
+	
+	public void sendToSpec(int id, String text)
+	{
+		MessageQueue queue = clientTable.getQueue(id);
+		queue.offer(new Message(text));
+	}
 }
