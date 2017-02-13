@@ -189,64 +189,34 @@ public class Map
 		return map;
 	}
 
-	/**
-	 * Get <code>ImageView</code> of all wall blocks on the map.
-	 *
-	 * @return <code>ImageView</code> of all wall blocks
-	 */
-	public ArrayList<ImageView> getWalls()
+	private ArrayList<Rectangle> getCollisions(Group group)
 	{
-		ArrayList<ImageView> blocks = new ArrayList<>();
-		for(Node node : wallGroup.getChildren())
-			blocks.add((ImageView) node);
-		return blocks;
-	}
-
-	public ArrayList<Rectangle> getRecWalls(){
-		ArrayList<Rectangle> walls = new ArrayList<>();
-		for(Node node : wallGroup.getChildren()){
+		ArrayList<Rectangle> rectangles = new ArrayList<>();
+		for(Node node : group.getChildren())
+		{
 			Rectangle r = new Rectangle();
 			r.setX(node.getBoundsInParent().getMinX());
 			r.setY(node.getBoundsInParent().getMinY());
 			r.setWidth(node.getBoundsInParent().getWidth());
 			r.setHeight(node.getBoundsInParent().getHeight());
-			r.setFill(Color.BLUE);
-			walls.add(r);
+			rectangles.add(r);
 		}
-		return walls;
+		return rectangles;
 	}
 
-	/**
-	 * Get <code>ImageView</code> of all props on the map.
-	 *
-	 * @return <code>ImageView</code> of all props
-	 */
-	public ArrayList<ImageView> getProps()
+	public ArrayList<Rectangle> getRecWalls()
 	{
-		ArrayList<ImageView> props = new ArrayList<>();
-		for(Node node : propGroup.getChildren())
-			props.add((ImageView) node);
-		return props;
+		return getCollisions(wallGroup);
 	}
 
-	public ArrayList<Rectangle> getRecProps(){
-		ArrayList<Rectangle> props = new ArrayList<>();
-		for(Node node : propGroup.getChildren()){
-			Rectangle r = new Rectangle();
-			r.setX(node.getBoundsInParent().getMinX());
-			r.setY(node.getBoundsInParent().getMinY());
-			r.setWidth(node.getBoundsInParent().getWidth());
-			r.setHeight(node.getBoundsInParent().getHeight());
-			r.setFill(Color.BLUE);
-			props.add(r);
-		}
-		return props;
+	public ArrayList<Rectangle> getRecProps()
+	{
+		return getCollisions(propGroup);
 	}
-
 
 	/**
-	 * @author Filippo Galli
 	 * @return The spawn points of both teams
+	 * @author Filippo Galli
 	 */
 	public Spawn[] getSpawns()
 	{
