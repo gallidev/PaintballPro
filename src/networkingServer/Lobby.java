@@ -36,7 +36,7 @@ public class Lobby {
 	{
 		inGameStatus = false;
 		GameType = PassedGameType;
-		MaxPlayers = 2;
+		MaxPlayers = 8;
 		currPlayerBlueNum = 0;
 		currPlayerRedNum = 0;
 		id = myid;
@@ -73,7 +73,7 @@ public class Lobby {
 	{
 		// Specific - 0 = random, 1 = blue, 2 = red;
 		int totPlayers = getCurrPlayerTotal();
-		if((totPlayers % 2 == 1) && (currPlayerRedNum <= (MaxPlayers/2)) && (specific == 0 || specific == 2))
+		if(((totPlayers % 2 == 1) || (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers/2)))
 		{
 			redTeam.put(currPlayerRedNum, playerToAdd);
 			currPlayerRedNum++;
