@@ -1,6 +1,7 @@
 package gui;
 
 import enums.GameLocation;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -70,11 +71,23 @@ public class GameLobbyMenu {
 //		table.add(teamB3, 1, 3);
 //		table.add(teamB4, 1, 4);
 
+		Label timeLabel = new Label("Waiting for more players to join...");
+
 		Thread checkLobby = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				boolean threadRunning = true;
+				while (threadRunning) {
 					try {
+						if (m.isTimerStarted()) {
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									timeLabel.setText("Game starting in 10 seconds...");
+								}
+							});
+							threadRunning = false;
+						}
 						m.fetchLobbyUpdates();
 						sleep(1000);
 					} catch (InterruptedException e) {
@@ -93,18 +106,11 @@ public class GameLobbyMenu {
 		    	m.getClient().getSender().sendMessage("SwitchTeam");
 		        System.out.println("ActionEvent: " + event);
 		    }     
-		}), new MenuOption("Ready", new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		        System.out.println("ActionEvent: " + event);
-		        checkLobby.interrupt();
-		        optionsSection.getChildren().get(0).setVisible(false);
-		        m.transitionTo("Elimination", null);
-		    }     
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);
 		optionsSection.add(options, 1, 0);
 		
-		Label timeLabel = new Label("Time remaining: 2:00");
+
 		optionsSection.add(timeLabel, 0, 0);
 		
 		GridPane mainGrid = new GridPane();
