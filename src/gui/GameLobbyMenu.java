@@ -83,10 +83,12 @@ public class GameLobbyMenu {
 							Platform.runLater(new Runnable() {
 								@Override
 								public void run() {
-									timeLabel.setText("Game starting in 10 seconds...");
+									timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
 								}
 							});
-							threadRunning = false;
+							if (m.getTimeLeft() <= 0) {
+								threadRunning = false;
+							}
 						}
 						m.fetchLobbyUpdates();
 						sleep(1000);

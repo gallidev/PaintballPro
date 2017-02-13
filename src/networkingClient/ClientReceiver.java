@@ -80,8 +80,9 @@ public class ClientReceiver extends Thread {
 					else if(text.contains("LTime:")){
 						m.setTimerStarted();
 						String remTime = text.split(":")[1];
-						long time = Integer.parseInt(remTime);
-//						System.out.println("Lobby has " + time + " left");
+						int time = Integer.parseInt(remTime);
+						m.setTimeLeft(time);
+						System.out.println("Lobby has " + time + " left");
 					}
 					else if(text.contains("StartGame"))
 					{

@@ -239,13 +239,30 @@ public class Lobby {
 
 	// A timer, accessed by the client for game countdown.
 	public void timerStart(ServerMsgReceiver receiver) {
-		RoundTimer timer = new RoundTimer(lobbyTime);
-		timer.startTimer();
 
-		while(!timer.isTimeElapsed()){
-//			System.out.println("Time left: " + timer.getTimeLeft());
-			receiver.sendToAll("LTime:" + timer.getTimeLeft());
-		}
-		playGame(receiver);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				RoundTimer timer = new RoundTimer(lobbyTime);
+				timer.startTimer();
+				long lastTime = -1;
+				while(!timer.isTimeElapsed()){
+					try {
+						if (lastTime != timer.getTimeLeft()) {
+							System.out.println("Timer changed: from " + lastTime + " to " + timer.getTimeLeft());
+							lastTime = timer.getTimeLeft();
+							receiver.sendToAll("LTime:" + timer.getTimeLeft());
+						}
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+
+					}
+				}
+				playGame(receiver);
+			}
+		});
+		t.start();
+
+
 	}
 }
