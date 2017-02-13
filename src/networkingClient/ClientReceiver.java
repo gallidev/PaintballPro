@@ -27,6 +27,8 @@ public class ClientReceiver extends Thread {
 	private Message msg;
 	private GUIManager m;
 	private ClientPlayer cPlayer;
+	private ArrayList<ClientPlayer> myTeam;
+	private ArrayList<ClientPlayer> enemies;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
