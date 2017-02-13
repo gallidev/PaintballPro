@@ -135,7 +135,7 @@ public class GUIManager {
 
     public void fetchLobbyUpdates() {
         if (c != null) {
-            System.out.println("Sending fetch request");
+//            System.out.println("Sending fetch request");
             c.getSender().sendMessage("Get:Red");
             c.getSender().sendMessage("Get:Blue");
         } else {
