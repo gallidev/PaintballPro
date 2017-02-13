@@ -73,6 +73,16 @@ public class GameLobbyMenu {
 
 		Label timeLabel = new Label("Waiting for more players to join...");
 
+		GridPane optionsSection = new GridPane();
+		MenuOption[] set = {new MenuOption("Change Team", new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent event) {
+				m.getClient().getSender().sendMessage("SwitchTeam");
+				m.fetchLobbyUpdates();
+				System.out.println("ActionEvent: " + event);
+			}
+		})};
+		GridPane options = MenuOptionSet.optionSetToGridPane(set);
+
 		Thread checkLobby = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -83,6 +93,7 @@ public class GameLobbyMenu {
 							Platform.runLater(new Runnable() {
 								@Override
 								public void run() {
+									options.setVisible(false);
 									timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
 								}
 							});
@@ -110,14 +121,7 @@ public class GameLobbyMenu {
 		checkLobby.start();
 
 		
-		GridPane optionsSection = new GridPane();
-		MenuOption[] set = {new MenuOption("Change Team", new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	m.getClient().getSender().sendMessage("SwitchTeam");
-		        System.out.println("ActionEvent: " + event);
-		    }     
-		})};
-		GridPane options = MenuOptionSet.optionSetToGridPane(set);
+
 		optionsSection.add(options, 1, 0);
 		
 
