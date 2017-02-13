@@ -82,6 +82,7 @@ public class ClientReceiver extends Thread {
 						String remTime = text.split(":")[1];
 						int time = Integer.parseInt(remTime);
 						m.setTimeLeft(time);
+						m.setTimerStarted();
 						System.out.println("Lobby has " + time + " left");
 					}
 					else if(text.contains("StartGame"))
@@ -105,12 +106,15 @@ public class ClientReceiver extends Thread {
 					else if(text.contains("EndGame"))
 					{
 						System.out.println("Game has ended for player with ID " + clientID);
+						// Get data about scores, and pass into transition method
+						int someScore = 0;
+						m.transitionTo("EndGame", someScore);
 					}
 					else if(text.contains("TimerStart"))
 					{
 						System.out.println("Timer Started");
 						// Do stuff here, we have 10 secs till game start message sent.
-						//m.setTimerStarted();
+						m.setTimerStarted();
 					}
 
 

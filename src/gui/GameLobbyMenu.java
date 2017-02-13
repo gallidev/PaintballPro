@@ -86,14 +86,20 @@ public class GameLobbyMenu {
 									timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
 								}
 							});
-							if (m.getTimeLeft() <= 0) {
+							System.out.println("Starting in :" + m.getTimeLeft());
+							if (m.getTimeLeft() <= 1) {
 								threadRunning = false;
+							} else {
+								m.fetchLobbyUpdates();
 							}
+						} else {
+							m.fetchLobbyUpdates();
 						}
-						m.fetchLobbyUpdates();
+
 						sleep(1000);
 					} catch (InterruptedException e) {
 						// Should never happen
+						System.err.println("Could not sleep!");
 					}
 				}
 			}
