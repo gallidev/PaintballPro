@@ -174,7 +174,12 @@ public class ClientPlayer extends GeneralPlayer{
 	public void setMY(double my){
 		this.my = my;
 	}
-	
+
+	public void setAudio(AudioManager audio)
+	{
+		this.audio = audio;
+	}
+
 //	public ClientReceiver getReceiver(){
 //		return receiver;
 //	}

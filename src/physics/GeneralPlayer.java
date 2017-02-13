@@ -361,5 +361,8 @@ public abstract class GeneralPlayer extends GameObject{
 		return this.bounds;
 	}
 
-
+	public int getPlayerId()
+	{
+		return id;
+	}
 }
