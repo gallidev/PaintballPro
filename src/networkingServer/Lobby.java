@@ -1,6 +1,7 @@
 package networkingServer;
 
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -94,6 +95,7 @@ public class Lobby {
 			if(player.getID() == playerToRemove.getID())
 			{
 				blueTeam.remove(counter);
+				currPlayerBlueNum--;
 				removed = true;
 				for(int i = (counter+1); i < (MaxPlayers/2); i++)
 				{
@@ -101,7 +103,6 @@ public class Lobby {
 					{
 						blueTeam.replace(i-1, blueTeam.get(i));
 						blueTeam.remove(i);
-						currPlayerBlueNum--;
 					}
 				}
 			}
@@ -115,13 +116,13 @@ public class Lobby {
 				if(player.getID() == playerToRemove.getID())
 				{
 					redTeam.remove(counter);
+					currPlayerRedNum--;
 					for(int i = (counter+1); i < (MaxPlayers/2); i++)
 					{
 						if(redTeam.containsKey(i))
 						{
 							redTeam.replace(i-1, redTeam.get(i));
 							redTeam.remove(i);
-							currPlayerRedNum--;
 						}
 					}
 				}
@@ -194,19 +195,12 @@ public class Lobby {
 
 	public Player[] getPlayers()
 	{
-		Player[] playArr = new Player[getCurrPlayerTotal()];
-		int index = 0;
-		for(Player player : blueTeam.values())
-		{
-			playArr[index] = player;
-			index++;
-		}
-		for(Player player : redTeam.values())
-		{
-			playArr[index] = player;
-			index++;
-		}
-		return playArr;
+		ArrayList<Player> playArr = new ArrayList<>();
+		playArr.addAll(blueTeam.values());
+		playArr.addAll(redTeam.values());
+		Player[] playArrReturn = new Player[playArr.size()];
+		playArr.toArray(playArrReturn);
+		return playArrReturn;
 	}
 
 	private Team convertTeam(ServerMsgReceiver receiver,ConcurrentMap<Integer,Player> team,int teamNum)
