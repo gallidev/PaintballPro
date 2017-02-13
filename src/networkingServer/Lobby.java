@@ -134,7 +134,7 @@ public class Lobby {
 	}
 
 	// switch player's team
-	public void switchTeam(Player playerToSwitch)
+	public void switchTeam(Player playerToSwitch, ServerMsgReceiver receiver)
 	{
 		boolean switched = false;
 		for(Player player : blueTeam.values())
@@ -166,6 +166,10 @@ public class Lobby {
 				}
 			}
 		}
+		String redMems = "Ret:Red:" + getTeam(2);
+		String blueMems = "Ret:Blue:" + getTeam(1);
+		receiver.sendToAll(redMems);
+		receiver.sendToAll(blueMems);
 	}
 
 	public String getTeam(int teamNum) // 1 for blue, 2 for red.

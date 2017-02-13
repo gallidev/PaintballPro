@@ -100,8 +100,8 @@ public class LobbyTable {
 		return lobbyList.get(lobbyId);
 	}
 	
-	public synchronized void switchTeams(Player player)
+	public synchronized void switchTeams(Player player, ServerMsgReceiver receiver)
 	{
-		lobbyList.get(player.getAllocatedLobby()).switchTeam(player);
+		lobbyList.get(player.getAllocatedLobby()).switchTeam(player,receiver);
 	}
 }

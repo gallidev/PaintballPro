@@ -84,7 +84,7 @@ public class ServerMsgReceiver extends Thread {
 					}
 					// When user attempts to switch teams, try to switch.
 					if(text.contains("SwitchTeam"))
-						gameLobby.switchTeams(clientTable.getPlayer(myClientsID));
+						gameLobby.switchTeams(clientTable.getPlayer(myClientsID),this);
 					
 					// When user tries to change their username.
 					if(text.contains("Set:Username:"))
