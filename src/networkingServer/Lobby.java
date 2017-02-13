@@ -241,9 +241,9 @@ public class Lobby {
 	public void timerStart(ServerMsgReceiver receiver) {
 		RoundTimer timer = new RoundTimer(lobbyTime);
 		timer.startTimer();
-		
+
 		while(!timer.isTimeElapsed()){
-			System.out.println("Time left: " + timer.getTimeLeft());
+//			System.out.println("Time left: " + timer.getTimeLeft());
 			receiver.sendToAll("LTime:" + timer.getTimeLeft());
 		}
 		System.out.println("lobby time done");

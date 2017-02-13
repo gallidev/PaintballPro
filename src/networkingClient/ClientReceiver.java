@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import gui.GUIManager;
+import javafx.application.Platform;
 import networkingInterfaces.ClientPlayerOld;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
@@ -51,7 +52,7 @@ public class ClientReceiver extends Thread {
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 
-					System.out.println("Received: " + text);
+//					System.out.println("Received: " + text);
 
 					// Protocols
 					if(text.contains("Ret:Red:"))
@@ -77,9 +78,10 @@ public class ClientReceiver extends Thread {
 						
 					}
 					else if(text.contains("LTime:")){
+						m.setTimerStarted();
 						String remTime = text.split(":")[1];
 						long time = Integer.parseInt(remTime);
-						System.out.println("Lobby has " + time + " left");
+//						System.out.println("Lobby has " + time + " left");
 					}
 					else if(text.contains("StartGame"))
 					{
@@ -90,6 +92,13 @@ public class ClientReceiver extends Thread {
 						System.out.println("game gas started for player with ID " + clientID);
 						
 						//Do stuff here: show the game window, so that the players can start the game
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								m.transitionTo("Elimination", null);
+							}
+						});
+
 						
 					}
 					else if(text.contains("EndGame"))
@@ -98,7 +107,9 @@ public class ClientReceiver extends Thread {
 					}
 					else if(text.contains("TimerStart"))
 					{
+						System.out.println("Timer Started");
 						// Do stuff here, we have 10 secs till game start message sent.
+						m.setTimerStarted();
 					}
 
 					
