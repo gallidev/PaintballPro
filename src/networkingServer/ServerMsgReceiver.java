@@ -202,6 +202,8 @@ public class ServerMsgReceiver extends Thread {
 	 * in the Lobby).
 	 * 
 	 * @param text The protocol message for updating a team's score.
+	 * 
+	 * @author Alexandra Paduraru
 	 */
 	public void newScoreAction(String text){
 		//Protocol : "Scored:<Team>"
