@@ -71,4 +71,8 @@ public class Bullet extends Circle{
 	public void setActive(boolean b){
 		this.active = b;
 	}
+	
+	public double getAngle(){
+		return this.angle;
+	}
 }

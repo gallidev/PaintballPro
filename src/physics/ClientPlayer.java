@@ -3,6 +3,7 @@ import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import logic.Team;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import rendering.Map;
@@ -64,7 +65,9 @@ public class ClientPlayer extends GeneralPlayer{
 			checkSpawn();
 		}
 		updatePlayerBounds();
+		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
+		sendActiveBullets();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
@@ -126,6 +129,20 @@ public class ClientPlayer extends GeneralPlayer{
 		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
 		 
 		sender.sendMessage(msg);
+	}
+	
+	private void sendServerBulletPositions(double x, double y, double angle, TeamEnum team){
+		String msg = "SendToAll:Bullet:" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
+		
+		sender.sendMessage(msg);
+	}
+	
+	private void sendActiveBullets(){
+		for(Bullet bullet: firedBullets){
+			if(bullet.isActive()){
+				sendServerBulletPositions(bullet.getX(), bullet.getY(), bullet.getAngle(), team);
+			}
+		}
 	}
 
 	public void shoot(){
