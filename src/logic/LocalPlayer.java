@@ -18,6 +18,7 @@ public class LocalPlayer extends ImageView
 	private int id;
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
+	private TeamEnum team;
 
 	public LocalPlayer(double x, double y, int id, TeamEnum team)
 	{
@@ -29,6 +30,7 @@ public class LocalPlayer extends ImageView
 		getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
+		this.team = team;
 	}
 
 	public void tick(double newX, double newY, double newAngle)
@@ -38,6 +40,13 @@ public class LocalPlayer extends ImageView
 		rotation.setAngle(Math.toDegrees(newAngle));
 		//firedBullets = newFiredBullets;
 	}
+	
+	public void tickBullet(double x, double y, double angle){
+		Bullet b = new Bullet(x, y, angle, team);
+		
+		firedBullets.add(b);
+	}
+	
 
 	public int getPlayerId()
 	{
@@ -48,5 +57,10 @@ public class LocalPlayer extends ImageView
 	{
 		return firedBullets;
 	}
+	
+	public TeamEnum getTeam(){
+		return team;
+	}
 
+	
 }

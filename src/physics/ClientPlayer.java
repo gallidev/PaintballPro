@@ -134,7 +134,7 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 	
 	private void sendServerBulletPositions(double x, double y, double angle, TeamEnum team){
-		String msg = "SendToAll:Bullet:" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
+		String msg = "SendToAll:Bullet:" + id + ":" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
 		
 		sender.sendMessage(msg);
 	}

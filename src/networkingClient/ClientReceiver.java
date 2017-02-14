@@ -141,16 +141,31 @@ public class ClientReceiver extends Thread {
 	}
 	
 	private void bulletAction(String text) {
-		// Protocol message: SendToAll:Bullet:x:y:angle:
+		// Protocol message: SendToAll:Bullet:id:x:y:angle:
 		String[] data = text.split(":");
 		
-		double x = Double.parseDouble(data[2]);
-		double y = Double.parseDouble(data[3]);
+		int id = Integer.parseInt(data[2]);
+		double x = Double.parseDouble(data[3]);
+		double y = Double.parseDouble(data[4]);
 		double angle = Double.parseDouble(data[4]);
 		
-		//LocalPlayer p = getPlayerWithID(id)
+		LocalPlayer p = getPlayerWithID(id);
+		System.out.println("id = " + id);
 		
+		for(LocalPlayer pq : enemies)
+			System.out.print(pq.getPlayerId() + " ");
+		
+		if (p != null)
+			p.tickBullet(x, y, angle);
+		
+		//debugghing code
+//		System.out.print("my Team players: " );
+//		for(LocalPlayer pq : myTeam)
+//			System.out.print(pq.getPlayerId() + " ");
+//		System.out.println();
+//		System.out.print("my enemy players: " );
 	}
+
 	public ClientPlayer getClientPlayer(){
 		return cPlayer;
 	}
@@ -235,7 +250,7 @@ public class ClientReceiver extends Thread {
 		 * @param id The player's id.
 		 * @return The player with the given id.
 		 */
-		public LocalPlayer getPlayerWithID(int id){
+		private LocalPlayer getPlayerWithID(int id){
 			//Check if the Player is in my team
 			for(LocalPlayer p: myTeam)
 				if (p.getPlayerId() == id)
@@ -249,7 +264,7 @@ public class ClientReceiver extends Thread {
 			return null;
 			
 		}
-			
+		
 		/**
 		 * Returns the players that are in this Player's team. 
 		 * @return
