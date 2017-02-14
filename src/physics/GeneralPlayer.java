@@ -1,23 +1,16 @@
 package physics;
-import audio.AudioManager;
-import audio.SFXResources;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import enums.TeamEnum;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
-import rendering.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import ai.AIPlayer;
-import enums.TeamEnum;
-import rendering.Spawn;
+import logic.Team;
+import rendering.Map;
 
 /**
  *  The player, represented by an ImageView
@@ -307,6 +300,10 @@ public abstract class GeneralPlayer extends GameObject{
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
 
 		firedBullets.add(bullet);
+	}
+	
+	public boolean isShot(){
+		return eliminated;
 	}
 
 
