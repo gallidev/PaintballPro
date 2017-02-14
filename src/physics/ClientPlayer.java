@@ -39,7 +39,7 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 	
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
-		super(x, y, id);
+		super(x, y, id, new Image("assets/player_" + (team == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
 		controlScheme = false;
 		this.team = team;
 		this.receiver = receiver;
@@ -59,7 +59,7 @@ public class ClientPlayer extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
-			sendServerNewPosition(x, y, angle);
+			sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		} else {
 			checkSpawn();
 		}
@@ -76,30 +76,27 @@ public class ClientPlayer extends GeneralPlayer{
 	protected void updatePosition(){
 		if(controlScheme){
 			if(up){
-				y -= movementSpeed * Math.cos(angle);
-				x += movementSpeed * Math.sin(angle);
+				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle));
+				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle));
 			}
 			if(down){
-				y += movementSpeed * Math.cos(angle);
-				x -= movementSpeed * Math.sin(angle);
+				setLayoutY(getLayoutY() + movementSpeed * Math.cos(angle));
+				setLayoutX(getLayoutX() - movementSpeed * Math.sin(angle));
 			}
 			if(left){
-				y -= movementSpeed * Math.cos(angle - Math.PI/2);
-				x += movementSpeed * Math.sin(angle - Math.PI/2);
+				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle - Math.PI/2));
+				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle - Math.PI/2));
 			}
 			if(right){
-				y -= movementSpeed * Math.cos(angle + Math.PI/2);
-				x += movementSpeed * Math.sin(angle + Math.PI/2);
+				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle + Math.PI/2));
+				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle + Math.PI/2));
 			}
 		} else {
-			if(up && !collUp) y -= movementSpeed;
-			if(down && !collDown) y += movementSpeed;
-			if(left  && !collLeft) x -= movementSpeed;
-			if(right  && !collRight) x += movementSpeed;
+			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
+			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
+			if(left  && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
+			if(right  && !collRight) setLayoutX(getLayoutX() + movementSpeed);
 		}
-
-		setLayoutX(x);
-		setLayoutY(y);
 	}
 
 
@@ -112,15 +109,15 @@ public class ClientPlayer extends GeneralPlayer{
 
 		double deltax = mx - x1;
 		double deltay = y1 - my;
-		if(collUp){
-			y += movementSpeed;
-		} else if(collDown) {
-			y -= movementSpeed;
-		} else if(collLeft) {
-			x += movementSpeed;
-		} else if(collRight) {
-			x -= movementSpeed;
-		}
+//		if(collUp){
+//			y += movementSpeed;
+//		} else if(collDown) {
+//			y -= movementSpeed;
+//		} else if(collLeft) {
+//			x += movementSpeed;
+//		} else if(collRight) {
+//			x -= movementSpeed;
+//		}
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}
@@ -132,30 +129,24 @@ public class ClientPlayer extends GeneralPlayer{
 
 	public void shoot(){
 
-		double x1 = (83 * image.getWidth()/120) - playerHeadX;
-		double y1 = (12 * image.getHeight()/255) - playerHeadY;
+		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
+		double y1 = (12 * getImage().getHeight()/255) - playerHeadY;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 
-		double bulletX = x + x2 + playerHeadX;
-		double bulletY = y + y2 + playerHeadY;
+		double bulletX = getLayoutX() + x2 + playerHeadX;
+		double bulletY = getLayoutY() + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 		firedBullets.add(bullet);
 	}
-
-	public void setXCoord(double x){
-		this.x = x;
-	}
-	
-	public void setYCoord(double x){
-		this.y = y;
-	}
 	
 	public void setMap(Map m){
 		map = m;
+		propsWalls = map.getRecProps();
+		propsWalls.addAll(map.getRecWalls());
 	}
 	
 	

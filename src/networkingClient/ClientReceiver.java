@@ -202,8 +202,8 @@ public class ClientReceiver extends Thread {
 			
 			//find the player that need to be updated
 			ClientPlayer p = getPlayerWithID(id);
-			p.setXCoord(x);
-			p.setYCoord(y);
+			p.setLayoutX(x);
+			p.setLayoutY(y);
 			p.setAngle(angle);
 			
 		}

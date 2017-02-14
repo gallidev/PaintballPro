@@ -73,26 +73,23 @@ public class AIPlayer extends GeneralPlayer{
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
 
-		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) y -= yToReduce;
-		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) x += xToAdd;
-
-		setLayoutX(x);
-		setLayoutY(y);
+		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) setLayoutY(getLayoutY() - yToReduce);
+		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) setLayoutX(getLayoutX() + xToAdd);
 	}
 
 
 	//Calculates the angle the player is facing with respect to the mouse
 	@Override
 	protected void updateAngle(){
-		if(collUp){
-			y += movementSpeed;
-		} else if(collDown) {
-			y -= movementSpeed;
-		} else if(collLeft) {
-			x += movementSpeed;
-		} else if(collRight) {
-			x -= movementSpeed;
-		}
+//		if(collUp){
+//			y += movementSpeed;
+//		} else if(collDown) {
+//			y -= movementSpeed;
+//		} else if(collLeft) {
+//			x += movementSpeed;
+//		} else if(collRight) {
+//			x -= movementSpeed;
+//		}
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 	

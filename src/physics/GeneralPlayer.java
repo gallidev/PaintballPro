@@ -1,11 +1,6 @@
 package physics;
-import audio.AudioManager;
-import audio.SFXResources;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -15,14 +10,11 @@ import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.AIPlayer;
 import enums.TeamEnum;
-import rendering.Spawn;
-
 /**
  *  The player, represented by an ImageView
  */
-public abstract class GeneralPlayer extends GameObject{
+public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	protected final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected final double movementSpeed = 2;
@@ -44,32 +36,6 @@ public abstract class GeneralPlayer extends GameObject{
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
-	 * this a General class for the Server Side which does not need to store the Image
-	 * @param x The x-coordinate of the player with respect to the map
-	 * @param y The y-coordinate of the player with respect to the map
-	 * @param id The id of the player
-	 * @param map The map in which the player is playing
-	 * @param Team The team of the player
-	 *
-	 */
-
-	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team){
-		super(x, y);
-		this.team = team;
-		this.id = id;
-		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
-	    getTransforms().add(rotation);
-		rotation.setPivotX(playerHeadX);
-		rotation.setPivotY(playerHeadY);
-		this.map = map;
-		propsWalls = map.getRecProps();
-	    propsWalls.addAll(map.getRecWalls());
-		eliminated = false;
-		invincible = false;
-		updatePlayerBounds();
-	}
-	/**
-	 * Create a new player at the set location, and adds the rotation property to the player,
 	 * this a General class for the Client Side which needs to store the Image
 	 * @param x The x-coordinate of the player with respect to the map
 	 * @param y The y-coordinate of the player with respect to the map
@@ -79,7 +45,9 @@ public abstract class GeneralPlayer extends GameObject{
 	 *
 	 */
 	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image){
-		super(x, y, image);
+		super(image);
+		setLayoutX(x);
+		setLayoutY(y);
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -104,12 +72,9 @@ public abstract class GeneralPlayer extends GameObject{
 	 * @ atp575
 	 */
 	public GeneralPlayer(double x, double y, int id, Image image) {
-		super(x, y, image);
-		this.id = id;
-	}
-
-	public GeneralPlayer(double x, double y, int id){
-		super(x,y);
+		super(image);
+		setLayoutX(x);
+		setLayoutY(y);
 		this.id = id;
 	}
 
@@ -147,8 +112,8 @@ public abstract class GeneralPlayer extends GameObject{
 				//find angle between center of player and center of the prop
 				double propCenterX = propX + (propWidth/2);
 				double propCenterY = propY + (propHeight/2);
-				double playerCenterX = x + image.getWidth()/2;
-				double playerCenterY = y + image.getHeight()/2;
+				double playerCenterX = getLayoutX() + getImage().getWidth()/2;
+				double playerCenterY = getLayoutY() + getImage().getHeight()/2;
 				double deltax = propCenterX - playerCenterX;
 				double deltay = playerCenterY - propCenterY;
 
@@ -204,8 +169,8 @@ public abstract class GeneralPlayer extends GameObject{
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
 			if(team == TeamEnum.BLUE) i = 4;
-			x = map.getSpawns()[i].x * 64;
-			y = map.getSpawns()[i].y * 64;
+			setLayoutX(map.getSpawns()[i].x * 64);
+			setLayoutY(map.getSpawns()[i].y * 64);
 			eliminated = false;
 			invincible = true;
 			spawnTimer = System.currentTimeMillis();
@@ -240,49 +205,48 @@ public abstract class GeneralPlayer extends GameObject{
 	}
 
 	//Consists of 5 points around player
-	protected void updatePlayerBounds(){
+	public void updatePlayerBounds(){
 		//Point1
-		double x1 = (83 * image.getWidth()/120) - playerHeadX;
-		double y1 = (5 * image.getHeight()/255) - playerHeadY;
+		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
+		double y1 = (5 * getImage().getHeight()/255) - playerHeadY;
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx1 = x + x2 + playerHeadX;
-		double boundy1 = y + y2 + playerHeadY;
+		double boundx1 = getLayoutX() + x2 + playerHeadX;
+		double boundy1 = getLayoutY() + y2 + playerHeadY;
 		//Point2
-		x1 = (image.getWidth()) - playerHeadX;
-		y1 = (233 * image.getHeight()/255) - playerHeadY;
+		x1 = (getImage().getWidth()) - playerHeadX;
+		y1 = (233 * getImage().getHeight()/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx2 = x + x2 + playerHeadX;
-		double boundy2 = y + y2 + playerHeadY;
+		double boundx2 = getLayoutX() + x2 + playerHeadX;
+		double boundy2 = getLayoutY() + y2 + playerHeadY;
 		//Point3
-		x1 = (57 * image.getWidth()/120) - playerHeadX;
-		y1 = (image.getHeight()) - playerHeadY;
+		x1 = (57 * getImage().getWidth()/120) - playerHeadX;
+		y1 = (getImage().getHeight()) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx3 = x + x2 + playerHeadX;
-		double boundy3 = y + y2 + playerHeadY;
+		double boundx3 = getLayoutX() + x2 + playerHeadX;
+		double boundy3 = getLayoutY() + y2 + playerHeadY;
 		//Point4
-		x1 = (1 * image.getWidth()/120) - playerHeadX;
-		y1 = (183 * image.getHeight()/255) - playerHeadY;
+		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
+		y1 = (183 * getImage().getHeight()/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx4 = x + x2 + playerHeadX;
-		double boundy4 = y + y2 + playerHeadY;
+		double boundx4 = getLayoutX() + x2 + playerHeadX;
+		double boundy4 = getLayoutY() + y2 + playerHeadY;
 		//Point5
-		x1 = (1 * image.getWidth()/120) - playerHeadX;
-		y1 = (128 * image.getHeight()/255) - playerHeadY;
+		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
+		y1 = (128 * getImage().getHeight()/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx5 = x + x2 + playerHeadX;
-		double boundy5 = y + y2 + playerHeadY;
+		double boundx5 = getLayoutX() + x2 + playerHeadX;
+		double boundy5 = getLayoutY() + y2 + playerHeadY;
 		bounds.getPoints().clear();
-		bounds.getPoints().addAll(new Double[]{
-			    boundx1, boundy1,
-			    boundx2, boundy2,
-			    boundx3, boundy3,
-			    boundx4, boundy4,
-			    boundx5, boundy5});
+		bounds.getPoints().addAll(boundx1, boundy1,
+				boundx2, boundy2,
+				boundx3, boundy3,
+				boundx4, boundy4,
+				boundx5, boundy5);
 
 	}
 
@@ -295,14 +259,14 @@ public abstract class GeneralPlayer extends GameObject{
 	 */
 	public void shoot(){
 
-		double x1 = (83 * image.getWidth()/120) - playerHeadX;
-		double y1 = (12 * image.getHeight()/255) - playerHeadY;
+		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
+		double y1 = (12 * getImage().getHeight()/255) - playerHeadY;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 
-		double bulletX = x + x2 + playerHeadX;
-		double bulletY = y + y2 + playerHeadY;
+		double bulletX = getLayoutX() + x2 + playerHeadX;
+		double bulletY = getLayoutY() + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
 

@@ -23,7 +23,6 @@ import physics.*;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	private Map map;
 	private double scale = 1;
 
 	/**
@@ -46,7 +45,7 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		map = Map.load("res/maps/" + mapName + ".json");
+		Map map = Map.load("res/maps/" + mapName + ".json");
 
 		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
 		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
@@ -56,14 +55,14 @@ public class Renderer extends Scene
 		{
 			player = receiver.getClientPlayer();
 			player.setImage(player.getTeam() == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
-			player.setXCoord(map.spawns[player.getPlayerId()].x * 64);
-			player.setYCoord(map.spawns[player.getPlayerId()].y * 64);
 			player.setMap(map);
+			player.setLayoutX(map.spawns[player.getPlayerId()].x * 64);
+			player.setLayoutY(map.spawns[player.getPlayerId()].y * 64);
 			player.setAudio(audio);
-			player.setEnemies(new ArrayList<>());
 		}
 		else
 			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, null);
+		player.setEnemies(new ArrayList<>());
 
 		view.getChildren().add(player);
 
@@ -99,10 +98,5 @@ public class Renderer extends Scene
 				}
 			}
 		}.start();
-	}
-
-	public Map getMap()
-	{
-		return map;
 	}
 }
