@@ -2,6 +2,7 @@ package networkingClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -146,7 +147,10 @@ public class ClientReceiver extends Thread {
 	 */
 	public void startGameAction(String text){
 		//get all the relevant data from the message : StartGame:2:Red:1:Red:
+		System.out.println("Received " + text);
 		String[] data = text.split(":");
+		System.out.println(Arrays.toString(data));
+		
 		
 		int myId = Integer.parseInt(data[1]);
 		String team = data[2];
@@ -161,6 +165,8 @@ public class ClientReceiver extends Thread {
 			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, new Image("assets/player_blue.png", 30, 64, true, true), this);
 		
 		myTeam.add(cPlayer);
+		
+		System.out.println("My id is: " + cPlayer.getPlayerId());
 		
 		//extract the other members
 		for (int i = 3; i < data.length-2; i=i+2){
