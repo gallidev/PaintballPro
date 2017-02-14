@@ -1,5 +1,11 @@
 package physics;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
+import logic.GameObject;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -266,10 +272,6 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 		firedBullets.add(bullet);
 	}
-	
-	public boolean isShot(){
-		return eliminated;
-	}
 
 
 	//Getters and setters below this point
@@ -330,5 +332,13 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	public int getPlayerId()
 	{
 		return id;
+	}
+	
+	public void setXCoord(double x){
+		setLayoutX(x);
+	}
+	
+	public void setYCoord(double y){
+		setLayoutX(y);
 	}
 }

@@ -84,11 +84,11 @@ public class Team {
 		return members;
 	}
 
-	public void setMap(Map map){
-		for (ServerPlayer p : members){
-			p.setMap(map);
-		}
-	}
+//	public void setMap(Map map){
+//		for (ServerPlayer p : members){
+//			p.setMap(map);
+//		}
+//	}
 
 
 }

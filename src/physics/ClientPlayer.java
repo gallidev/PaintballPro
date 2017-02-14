@@ -59,7 +59,7 @@ public class ClientPlayer extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
-			sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
+			//sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		} else {
 			checkSpawn();
 		}
@@ -123,7 +123,8 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 
 	private void sendServerNewPosition(double x, double y, double angle){
-		String msg = "SendToAll:Move:id:" + x + ":" + y + ":" + angle; //Protocol message for updating a location
+		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
+		 
 		sender.sendMessage(msg);
 	}
 

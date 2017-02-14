@@ -158,7 +158,7 @@ public class ClientReceiver extends Thread {
 		if (team.equals("Red"))
 			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, new Image("assets/player_red.png", 30, 64, true, true), this);
 		else 
-			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, new Image("assets/player_blue.png", 30, 64, true, true), this);
+			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, new Image("assets/player_blue.png", 30, 64, true, true), this);
 		
 		myTeam.add(cPlayer);
 		
@@ -181,7 +181,12 @@ public class ClientReceiver extends Thread {
 			
 			//for debugging
 			System.out.println("game has started for player with ID " + clientID);
+			System.out.println("My team = " );
+			for (ClientPlayer p : myTeam)
+				System.out.print(p.getId() + " ");
+			System.out.println("Other team = " + enemies);
 
+			
 			//Do stuff here: show the game window, so that the players can start the game
 			Platform.runLater(new Runnable() {
 				@Override
