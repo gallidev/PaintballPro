@@ -2,19 +2,18 @@ package rendering;
 
 import java.util.ArrayList;
 
-import ai.AIPlayer;
 import audio.AudioManager;
 import enums.TeamEnum;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import logic.LocalPlayer;
 import networkingClient.ClientReceiver;
 import physics.*;
+
+import static gui.GUIManager.redPlayerImage;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -48,9 +47,6 @@ public class Renderer extends Scene
 
 		Map map = Map.load("res/maps/" + mapName + ".json");
 
-		Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
-		Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
-
 		ClientPlayer player;
 		if(receiver != null)
 		{
@@ -60,7 +56,7 @@ public class Renderer extends Scene
 		}
 		else
 		{
-			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, null);
+			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, null);
 			player.setEnemies(new ArrayList<>());
 		}
 		view.getChildren().add(player);

@@ -7,6 +7,7 @@ import enums.GameLocation;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
@@ -37,6 +38,9 @@ public class GUIManager {
     // Set the width and height of the stage
     public final int width = 800;
     public final int height = 600;
+
+    public static final Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
+    public static final Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
 
     public GUIManager() {
         audio = new AudioManager(user, this);

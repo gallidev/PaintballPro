@@ -8,6 +8,9 @@ import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import rendering.Map;
 
+import static gui.GUIManager.bluePlayerImage;
+import static gui.GUIManager.redPlayerImage;
+
 /**
  *  The player, represented by an ImageView that should be running
  */
@@ -28,8 +31,8 @@ public class ClientPlayer extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, Image image, ClientReceiver receiver){
-		super(x, y, id, map, team, image);
+	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver){
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
@@ -40,7 +43,7 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 	
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
-		super(x, y, id, new Image("assets/player_" + (team == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
+		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;
 		this.team = team;
 		this.receiver = receiver;
@@ -188,9 +191,5 @@ public class ClientPlayer extends GeneralPlayer{
 	{
 		this.audio = audio;
 	}
-
-//	public ClientReceiver getReceiver(){
-//		return receiver;
-//	}
 
 }

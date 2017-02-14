@@ -8,6 +8,8 @@ import physics.Bullet;
 
 import java.util.ArrayList;
 
+import static gui.GUIManager.bluePlayerImage;
+import static gui.GUIManager.redPlayerImage;
 import static physics.GeneralPlayer.playerHeadX;
 import static physics.GeneralPlayer.playerHeadY;
 
@@ -19,7 +21,7 @@ public class LocalPlayer extends ImageView
 
 	public LocalPlayer(double x, double y, int id, TeamEnum team)
 	{
-		super(new Image("assets/player_" + (team == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
+		super(team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		setLayoutX(x);
 		setLayoutY(y);
 		this.id = id;
