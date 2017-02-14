@@ -65,9 +65,9 @@ public class ClientPlayer extends GeneralPlayer{
 			checkSpawn();
 		}
 		updatePlayerBounds();
-		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
+		//sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
-		sendActiveBullets();
+		//sendActiveBullets();
 		if(!invincible){
 			handleBulletCollision();
 		} else {

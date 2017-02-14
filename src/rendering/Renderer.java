@@ -62,8 +62,8 @@ public class Renderer extends Scene
 		{
 			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, null);
 			player.setEnemies(new ArrayList<>());
-			view.getChildren().add(player);
 		}
+		view.getChildren().add(player);
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);

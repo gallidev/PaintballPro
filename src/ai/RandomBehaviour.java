@@ -6,6 +6,7 @@ import java.util.Random;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import logic.LocalPlayer;
 import physics.GeneralPlayer;
 
 public class RandomBehaviour {
@@ -14,14 +15,14 @@ public class RandomBehaviour {
 	private long timer = 0;
 	private long delay = 3000;
 	private Random rand;
-	private ArrayList<GeneralPlayer> enemies;
+	private ArrayList<LocalPlayer> enemies;
 	private double angle;
 	private double closestX, closestY;
 	
 	public RandomBehaviour(AIPlayer ai){
 		this.ai = ai;
 		this.angle = 0.0;
-		this.enemies = new ArrayList<GeneralPlayer>();
+		this.enemies = new ArrayList<LocalPlayer>();
 		rand = new Random();
 	}
 	
@@ -48,7 +49,7 @@ public class RandomBehaviour {
 	
 	public void updateAngle(){
 		double minDistance = Double.MAX_VALUE;
-		for(GeneralPlayer enemy: enemies){
+		for(LocalPlayer enemy: enemies){
 			double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
 			if(temp < minDistance){
 				closestX = enemy.getLayoutX();

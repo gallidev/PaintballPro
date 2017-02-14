@@ -2,6 +2,8 @@ package networkingClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
@@ -101,7 +103,14 @@ public class ClientReceiver extends Thread {
 						System.out.println("Game has ended for player with ID " + clientID);
 						// Get data about scores, and pass into transition method
 						int someScore = 0;
-						m.transitionTo("EndGame", someScore);
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								m.transitionTo("EndGame", someScore);
+							}
+							
+						});
+						
 					}
 					else if(text.contains("TimerStart"))
 					{
@@ -136,6 +145,7 @@ public class ClientReceiver extends Thread {
 	public void startGameAction(String text){
 		//get all the relevant data from the message : StartGame:2:Red:1:Red:
 		String[] data = text.split(":");
+		System.out.println(Arrays.toString(data));
 		
 		clientID = Integer.parseInt(data[1]);
 		String team = data[2];
@@ -149,19 +159,20 @@ public class ClientReceiver extends Thread {
 			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, new Image("assets/player_blue.png", 30, 64, true, true), this);
 		
 		//extract the other members
-		for (int i = 3; i < data.length-2; i=i+2){
+		for (int i = 3; i < data.length-1; i=i+2){
 			int id = Integer.parseInt(data[i]);
 			if ( data[i+1].equals(team)){
 				if (team.equals("Red"))
-					myTeam.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
 				else
-					myTeam.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
 			}
 			else{
 				if (team.equals("Red"))
-					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
 				else
 					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
 			}
 		}
 		cPlayer.setEnemies(enemies);
@@ -169,10 +180,8 @@ public class ClientReceiver extends Thread {
 			
 			//for debugging
 			System.out.println("game has started for player with ID " + clientID);
-			System.out.println("My team = " );
 			for (LocalPlayer p : myTeam)
 				System.out.print(p.getPlayerId() + " ");
-			System.out.println("Other team = " + enemies);
 			
 			//Do stuff here: show the game window, so that the players can start the game
 			Platform.runLater(new Runnable() {
