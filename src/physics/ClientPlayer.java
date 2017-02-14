@@ -74,7 +74,7 @@ public class ClientPlayer extends GeneralPlayer{
 		updatePlayerBounds();
 		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
-		sendActiveBullets();
+		sendAllBullets();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
@@ -154,12 +154,6 @@ public class ClientPlayer extends GeneralPlayer{
 		sender.sendMessage(msg);
 	}
 	
-	private void sendServerBulletPositions(double x, double y, double angle, TeamEnum team){
-		String msg = "SendToAll:Bullet:" + id + ":" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
-		
-		sender.sendMessage(msg);
-	}
-	
 	/**
 	 * Lets the server know when a team has gained an additional point.
 	 * 
@@ -178,13 +172,18 @@ public class ClientPlayer extends GeneralPlayer{
 		sender.sendMessage(msg);
 	}
 	
-	private void sendActiveBullets(){
+	private void sendServerBulletPositions(double x, double y, double angle, TeamEnum team){
+		String msg = "SendToAll:Bullet:" + id + ":" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
+		
+		sender.sendMessage(msg);
+	}
+	
+	private void sendAllBullets(){
 		for(Bullet bullet: firedBullets){
-			if(bullet.isActive()){
-				sendServerBulletPositions(bullet.getX(), bullet.getY(), bullet.getAngle(), team);
-			}
+			sendServerBulletPositions(bullet.getX(), bullet.getY(), bullet.getAngle(), team);
 		}
 	}
+	
 
 	public void shoot(){
 

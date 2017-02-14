@@ -97,8 +97,11 @@ public class GUIManager {
 
     public void establishConnection() {
         String nickname = user.getUsername(); // We ask the user what their nickname is.
-        int portNumber = 25566; // The server is on a particular port.
-        String machName = ""; // The machine has a particular name.
+
+        String serverLocation = networkingDiscovery.ClientListener.findServer();
+
+        int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
+        String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
         // This loads up the client code.
         c = new Client(nickname, portNumber, machName, this);
@@ -139,16 +142,12 @@ public class GUIManager {
 
     public void fetchLobbyUpdates() {
         if (c != null) {
-//            System.out.println("Sending fetch request");
             c.getSender().sendMessage("Get:Red");
             c.getSender().sendMessage("Get:Blue");
-        } else {
-            System.out.println("//// fetch request");
         }
     }
 
     public void updateRedLobby(String[] redPlayers) {
-        System.out.println("Updating red lobby");
         // Update all rows
         for (int i = 0; i < lobbyData.size(); i++) {
             String redName = "";
@@ -167,7 +166,6 @@ public class GUIManager {
     }
 
     public void updateBlueLobby(String[] bluePlayers) {
-        System.out.println("Updating blue lobby");
         // Update all rows
         for (int i = 0; i < lobbyData.size(); i++) {
             String blueName = "";

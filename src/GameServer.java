@@ -1,8 +1,12 @@
+import networkingDiscovery.ServerAnnouncer;
 import networkingServer.Server;
 
 public class GameServer {
 	public static void main(String[] args) {
-		String[] serverArgs = {"25566"};
+		int portNo = 25566;
+		String[] serverArgs = {portNo + ""};
+		Thread discovery = new Thread(new ServerAnnouncer(portNo));
+		discovery.start();
 		Server.main(serverArgs);
 	}
 }

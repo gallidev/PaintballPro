@@ -70,20 +70,20 @@ public class ClientReceiver extends Thread {
 					
 					if(text.contains("Ret:Red:"))
 					{
-						System.out.println("Got red");
+//						System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
-						for (String r: red) {
-							System.out.println("Got red:" + r);
-						}
+//						for (String r: red) {
+//							System.out.println("Got red:" + r);
+//						}
 						m.updateRedLobby(red);
 					}
 					else if(text.contains("Ret:Blue:"))
 					{
-						System.out.println("Got blue");
+//						System.out.println("Got blue");
 						String[] blue = text.substring(9).split("-");
-						for (String r: blue) {
-							System.out.println("Got blue:" + r);
-						}
+//						for (String r: blue) {
+//							System.out.println("Got blue:" + r);
+//						}
 						m.updateBlueLobby(blue);
 					}
 					else if(text.contains("Ret:Username:"))
