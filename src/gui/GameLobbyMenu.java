@@ -97,7 +97,6 @@ public class GameLobbyMenu {
 									timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
 								}
 							});
-							System.out.println("Starting in :" + m.getTimeLeft());
 							if (m.getTimeLeft() <= 1) {
 								threadRunning = false;
 							} else {
