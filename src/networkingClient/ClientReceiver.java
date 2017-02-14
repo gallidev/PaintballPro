@@ -166,15 +166,15 @@ public class ClientReceiver extends Thread {
 			int id = Integer.parseInt(data[i]);
 			if ( data[i+1].equals(team)){
 				if (team.equals("Red"))
-					myTeam.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
 				else
-					myTeam.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
 			}
 			else{
 				if (team.equals("Red"))
-					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
 				else
-					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
 				cPlayer.setEnemies(enemies);
 			}
 		}
