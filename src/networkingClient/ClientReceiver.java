@@ -168,10 +168,10 @@ public class ClientReceiver extends Thread {
 			}
 			else{
 				if (team.equals("Red"))
-					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id+3, TeamEnum.RED));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
 				else
 					//enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
-					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id+3, TeamEnum.BLUE));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id, TeamEnum.BLUE));
 			}
 		}
 		cPlayer.setEnemies(enemies);
@@ -209,7 +209,7 @@ public class ClientReceiver extends Thread {
 				//find the player that need to be updated
 				LocalPlayer p = getPlayerWithID(id);
 				if (p == null)
-					p = getPlayerWithID(id+3);
+					p = getPlayerWithID(id);
 				p.tick(x, y, angle);
 			}
 			
