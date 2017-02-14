@@ -66,6 +66,10 @@ public class ClientReceiver extends Thread {
 						moveAction(text);
 					}
 					
+					if (text.contains("Bullet")){
+						bulletAction(text);
+					}
+					
 					if(text.contains("Ret:Red:"))
 					{
 						System.out.println("Got red");
@@ -132,6 +136,18 @@ public class ClientReceiver extends Thread {
 			return;
 		}
 	}
+	
+	private void bulletAction(String text) {
+		// Protocol message: SendToAll:Bullet:x:y:angle:
+		String[] data = text.split(":");
+		
+		double x = Double.parseDouble(data[2]);
+		double y = Double.parseDouble(data[3]);
+		double angle = Double.parseDouble(data[4]);
+		
+		//LocalPlayer p = getPlayerWithID(id)
+		
+	}
 	public ClientPlayer getClientPlayer(){
 		return cPlayer;
 	}
@@ -191,7 +207,6 @@ public class ClientReceiver extends Thread {
 		 * the player's position on the map accordingly.
 		 * @param text The protocol message containing the new x and y coordinates, as well as the angle of the player.
 		 */
-		//NEEDS TESTING
 		public void moveAction(String text){
 			String[] msg = text.split(":");
 			//System.out.println("Text move action: " + Arrays.toString(msg));
