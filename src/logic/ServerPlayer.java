@@ -19,11 +19,7 @@ public class ServerPlayer{
 	private int id, x, y;
 	private double angle;
 	private TeamEnum team;
-<<<<<<< HEAD
-	private Map map;
-=======
 
->>>>>>> ee62fc81f9877da22cbeaccc3ed7a183d65803ec
 	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
 		this.id = id;
 		this.receiver = receiver;
@@ -32,9 +28,7 @@ public class ServerPlayer{
 		this.y = y;
 		angle = 0.0;
 	}
-	public void setMap (Map map){
-		this.map = map;
-	}
+
 	public void setTeam (TeamEnum team){
 		this.team = team;
 	}
