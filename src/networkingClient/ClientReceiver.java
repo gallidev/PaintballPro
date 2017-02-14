@@ -145,7 +145,6 @@ public class ClientReceiver extends Thread {
 	public void startGameAction(String text){
 		//get all the relevant data from the message : StartGame:2:Red:1:Red:
 		String[] data = text.split(":");
-		System.out.println(Arrays.toString(data));
 		
 		clientID = Integer.parseInt(data[1]);
 		String team = data[2];
@@ -180,8 +179,6 @@ public class ClientReceiver extends Thread {
 			
 			//for debugging
 			System.out.println("game has started for player with ID " + clientID);
-			for (LocalPlayer p : myTeam)
-				System.out.print(p.getPlayerId() + " ");
 			
 			//Do stuff here: show the game window, so that the players can start the game
 			Platform.runLater(new Runnable() {
@@ -200,7 +197,7 @@ public class ClientReceiver extends Thread {
 		//NEEDS TESTING
 		public void moveAction(String text){
 			String[] msg = text.split(":");
-			System.out.println(msg);
+			System.out.println("Text move action: " + Arrays.toString(msg));
 			
 			int id = Integer.parseInt(msg[2]);
 			double x = Double.parseDouble(msg[3]);
