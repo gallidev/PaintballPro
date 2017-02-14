@@ -18,7 +18,7 @@ Client Player shoots.					|SendToServer:Shot:id:<x>:<y>:<angle>:<team>
 				GAME STATUS				|/////////////////////////////////////	|
 ---------------------------------------	|-------------------------------------	|
 Win/Loose a game.						|
-Change in game points.					|
+Change in game points.					|Scored:<team colour which gains poins> | Assumes that only one point is scored at a time.  
 Game duration.							|
 ---------------------------------------	|-------------------------------------	|
 			CLIENT ACTIONS				|/////////////////////////////////////	|

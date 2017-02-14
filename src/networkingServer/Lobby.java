@@ -35,6 +35,8 @@ public class Lobby {
 	private int currPlayerRedNum;
 	private ConcurrentMap<Integer,Player> blueTeam = new ConcurrentHashMap<Integer,Player>();
 	private ConcurrentMap<Integer,Player> redTeam = new ConcurrentHashMap<Integer,Player>();
+	private Team red;
+	private Team blue;
 
 
 	public Lobby(int myid, int PassedGameType)
@@ -247,8 +249,8 @@ public class Lobby {
 	 */
 	public void playGame(ServerMsgReceiver receiver)
 	{
-		Team red = convertTeam(receiver, redTeam, 2);
-		Team blue = convertTeam(receiver, blueTeam, 1);
+		red = convertTeam(receiver, redTeam, 2);
+		blue = convertTeam(receiver, blueTeam, 1);
 		ServerGame currentSessionGame = new ServerGame(GameType, red, blue, receiver);
 		Player[] allPlayers = getPlayers();
 		
@@ -300,6 +302,14 @@ public class Lobby {
 			}
 		});
 		t.start();
+	}
+	
+	public Team getRedTeam(){
+		return red;
+	}
+	
+	public Team getBlueTeam(){
+		return blue;
 	}
 	
 	private String getTeamAssoc(int playerID)

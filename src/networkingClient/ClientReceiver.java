@@ -2,21 +2,16 @@ package networkingClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
-import javafx.scene.image.Image;
 import logic.LocalPlayer;
-import networkingInterfaces.ClientPlayerOld;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 import physics.ClientPlayer;
 import rendering.Map;
 
-import static gui.GUIManager.bluePlayerImage;
-import static gui.GUIManager.redPlayerImage;
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
 /**

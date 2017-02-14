@@ -21,6 +21,9 @@ public class ClientPlayer extends GeneralPlayer{
 	private ClientSender sender;
 	private AudioManager audio;
 	private ClientReceiver receiver;
+	
+	//flag for keeping track of scores
+	boolean scoreChanged = true;
 
 
 	/**
@@ -65,6 +68,8 @@ public class ClientPlayer extends GeneralPlayer{
 			updateAngle();
 		} else {
 			checkSpawn();
+			if (scoreChanged)
+				updateScore();
 		}
 		updatePlayerBounds();
 		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
@@ -74,6 +79,17 @@ public class ClientPlayer extends GeneralPlayer{
 			handleBulletCollision();
 		} else {
 			checkInvincibility();
+		}
+	}
+
+	private void updateScore() {
+		sendServerNewScore();
+		scoreChanged = false;
+		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			System.err.println("Thread can't sleep" + e);
 		}
 	}
 
@@ -127,6 +143,11 @@ public class ClientPlayer extends GeneralPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	/**
+	 * Lets the server know when a player has moved.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	private void sendServerNewPosition(double x, double y, double angle){
 		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
 		 
@@ -135,6 +156,24 @@ public class ClientPlayer extends GeneralPlayer{
 	
 	private void sendServerBulletPositions(double x, double y, double angle, TeamEnum team){
 		String msg = "SendToAll:Bullet:" + id + ":" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
+		
+		sender.sendMessage(msg);
+	}
+	
+	/**
+	 * Lets the server know when a team has gained an additional point.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
+	public void sendServerNewScore(){
+		//Protocol: Scored:<team>
+		String msg = "Scored:";
+		
+		//The current player has been shot, so the point goes to the other team
+		if(team == TeamEnum.RED)
+			msg += "Blue";
+		else
+			msg += "Red";
 		
 		sender.sendMessage(msg);
 	}

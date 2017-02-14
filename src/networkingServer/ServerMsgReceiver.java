@@ -22,6 +22,7 @@ public class ServerMsgReceiver extends Thread {
 	private LobbyTable gameLobby;
 	private MessageQueue myMsgQueue;
 	private Message msg;
+	private Lobby lobby;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -64,6 +65,8 @@ public class ServerMsgReceiver extends Thread {
 					
 					// In-Game Status'
 					// ---------------
+					if (text.contains("Scored"))
+						newScoreAction(text);
 					
 					
 					// UI Client Actions.
@@ -73,7 +76,7 @@ public class ServerMsgReceiver extends Thread {
 					{
 						int gameMode = Integer.parseInt(text.substring(10));
 						gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode,this);
-						Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+						lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 						int curTotal = lobby.getCurrPlayerTotal();
 //						lobby.timerStart(this);
 						if(curTotal == 2)
@@ -191,5 +194,26 @@ public class ServerMsgReceiver extends Thread {
 	{
 		MessageQueue queue = clientTable.getQueue(id);
 		queue.offer(new Message(text));
+	}
+	
+	/**
+	 * Updates a team's score based on the information got from a client. 
+	 * Helps the server keep track of each team's score(the teams are stored
+	 * in the Lobby).
+	 * 
+	 * @param text The protocol message for updating a team's score.
+	 */
+	public void newScoreAction(String text){
+		//Protocol : "Scored:<Team>"
+		String teamColour = text.split(":")[1];
+		
+		if (teamColour.equals("Red"))
+			lobby.getRedTeam().incrementScore(1);
+		else
+			lobby.getBlueTeam().incrementScore(1);
+		
+		//debugging code
+		System.out.println("Red team score: " + lobby.getRedTeam().getScore());
+		System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
 	}
 }
