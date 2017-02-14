@@ -16,12 +16,15 @@ import rendering.Map;
  *
  * @author Alexandra Paduraru
  */
-public class ServerPlayer extends GeneralPlayer{
+public class ServerPlayer{
 
 	private ServerMsgReceiver receiver;
+	private int id;
+	private TeamEnum team;
+	private Map map;
 
 	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
-		super(x, y, id, new Image("assets/player_" + (color == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
+		//super(x, y, id, new Image(""));
 		this.id = id;
 		this.receiver = receiver;
 		this.team = color;
@@ -35,19 +38,19 @@ public class ServerPlayer extends GeneralPlayer{
 		this.team = team;
 	}
 
-	@Override
+	//@Override
 	protected void updatePosition() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	protected void updateAngle() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void tick() {
 		// TODO Auto-generated method stub
 
