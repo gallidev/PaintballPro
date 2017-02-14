@@ -94,7 +94,7 @@ public class GUIManager {
     public void establishConnection() {
         String nickname = user.getUsername(); // We ask the user what their nickname is.
         int portNumber = 25566; // The server is on a particular port.
-        String machName = ""; // The machine has a particular name.
+        String machName = "10.20.201.230"; // The machine has a particular name.
 
         // This loads up the client code.
         c = new Client(nickname, portNumber, machName, this);
