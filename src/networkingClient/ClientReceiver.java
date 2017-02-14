@@ -153,25 +153,24 @@ public class ClientReceiver extends Thread {
 		//add myself to my team
 		//create my client
 		if (team.equals("Red"))
-			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, new Image("assets/player_red.png", 30, 64, true, true), this);
+			cPlayer = new ClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, new Image("assets/player_red.png", 30, 64, true, true), this);
 		else 
-			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, new Image("assets/player_blue.png", 30, 64, true, true), this);
+			cPlayer = new ClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, new Image("assets/player_blue.png", 30, 64, true, true), this);
 		
 		//extract the other members
 		for (int i = 3; i < data.length-1; i=i+2){
 			int id = Integer.parseInt(data[i]);
 			if ( data[i+1].equals(team)){
 				if (team.equals("Red"))
-					myTeam.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
 				else
-					myTeam.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
 			}
 			else{
 				if (team.equals("Red"))
-					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id+3, TeamEnum.RED));
+					enemies.add(new LocalPlayer(map.getSpawns()[id+3].x * 64, map.getSpawns()[id+3].y * 64, id, TeamEnum.RED));
 				else
-					//enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
-					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id+3, TeamEnum.BLUE));
+					enemies.add(new LocalPlayer(map.getSpawns()[id+3].x * 64, map.getSpawns()[id+3].y * 64, id, TeamEnum.BLUE));
 			}
 		}
 		cPlayer.setEnemies(enemies);
@@ -208,8 +207,8 @@ public class ClientReceiver extends Thread {
 			if (id != clientID){
 				//find the player that need to be updated
 				LocalPlayer p = getPlayerWithID(id);
-				if (p == null)
-					p = getPlayerWithID(id+3);
+//				if (p == null)
+//					p = getPlayerWithID(id+3);
 				p.tick(x, y, angle);
 			}
 			
