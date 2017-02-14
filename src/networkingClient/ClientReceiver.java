@@ -168,25 +168,23 @@ public class ClientReceiver extends Thread {
 			}
 			else{
 				if (team.equals("Red"))
-					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.BLUE));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id+3, TeamEnum.BLUE));
 				else
 					//enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
-					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id, TeamEnum.RED));
+					enemies.add(new LocalPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id+3].y * 64, id+3, TeamEnum.RED));
 			}
 		}
 		cPlayer.setEnemies(enemies);
 
+		//for debugging
+		System.out.println("game has started for player with ID " + clientID);
 			
-			//for debugging
-			System.out.println("game has started for player with ID " + clientID);
-			
-			//Do stuff here: show the game window, so that the players can start the game
-			Platform.runLater(new Runnable() {
+		Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
 					m.transitionTo("Elimination", null);
 				}
-			});
+		});
 		}
 	
 		/**
@@ -197,19 +195,21 @@ public class ClientReceiver extends Thread {
 		//NEEDS TESTING
 		public void moveAction(String text){
 			String[] msg = text.split(":");
-			System.out.println("Text move action: " + Arrays.toString(msg));
+			//System.out.println("Text move action: " + Arrays.toString(msg));
 			
 			int id = Integer.parseInt(msg[2]);
 			double x = Double.parseDouble(msg[3]);
 			double y = Double.parseDouble(msg[4]);
 			double angle = Double.parseDouble(msg[5]);
 			
-			for(LocalPlayer p : myTeam)
-				System.out.println(p.getPlayerId());
+			//for(LocalPlayer p : myTeam)
+				//System.out.println(p.getPlayerId());
 			
 			if (id != clientID){
 				//find the player that need to be updated
 				LocalPlayer p = getPlayerWithID(id);
+				if (p == null)
+					p = getPlayerWithID(id+3);
 				p.tick(x, y, angle);
 			}
 			
