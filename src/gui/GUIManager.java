@@ -84,7 +84,7 @@ public class GUIManager {
                 case "Elimination":
                     s.setScene(new Renderer("elimination", audio, c.getReceiver()));
                     break;
-                case "GameEnd":
+                case "EndGame":
                     s.setScene(EndGameMenu.getScene(this));
                     break;
             }
