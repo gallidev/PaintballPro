@@ -60,12 +60,11 @@ public class ClientPlayer extends GeneralPlayer{
 			updatePosition();
 			updateShooting();
 			updateAngle();
-			//sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		} else {
 			checkSpawn();
 		}
 		updatePlayerBounds();
-		//sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
+		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
 		//sendActiveBullets();
 		if(!invincible){

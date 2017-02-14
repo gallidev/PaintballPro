@@ -321,4 +321,8 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	public ArrayList<LocalPlayer> getEnemies(){
 		return this.enemies;
 	}
+	
+	public int getPlayerId(){
+		return id;
+	}
 }

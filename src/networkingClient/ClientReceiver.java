@@ -200,14 +200,21 @@ public class ClientReceiver extends Thread {
 		//NEEDS TESTING
 		public void moveAction(String text){
 			String[] msg = text.split(":");
+			System.out.println(msg);
+			
 			int id = Integer.parseInt(msg[2]);
 			double x = Double.parseDouble(msg[3]);
 			double y = Double.parseDouble(msg[4]);
 			double angle = Double.parseDouble(msg[5]);
 			
-			//find the player that need to be updated
-			LocalPlayer p = getPlayerWithID(id);
-			p.tick(x, y, angle);
+			System.out.println(myTeam);
+			System.out.println(enemies);
+			
+			if (id != clientID){
+				//find the player that need to be updated
+				LocalPlayer p = getPlayerWithID(id);
+				p.tick(x, y, angle);
+			}
 			
 		}
 		
