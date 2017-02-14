@@ -33,7 +33,7 @@ public class LocalPlayer extends ImageView
 	{
 		setLayoutX(newX);
 		setLayoutY(newY);
-		rotation.setAngle(newAngle);
+		rotation.setAngle(Math.toDegrees(newAngle));
 		//firedBullets = newFiredBullets;
 	}
 

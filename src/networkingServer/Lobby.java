@@ -9,27 +9,32 @@ import enums.TeamEnum;
 import logic.RoundTimer;
 import logic.ServerPlayer;
 import logic.Team;
-import logic.TeamMatchMode;
-import networkingClient.ClientSender;
 import networkingInterfaces.ServerGame;
-import physics.GeneralPlayer;
 
 /**
- * Class to store important client-related information used by Client and Server.
+ * Class to represent a lobby.
  */
 public class Lobby {
 	//Structures storing relevant data.
 
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
+	// 1 - Blue Team, 2 - Red Team
+	// A lobby runs for 2 minutes and then starts a game, if full it starts a 10 second countdown before running a game.
+	
+	// Lobby information
+	private int id;
+	private static final int lobbyTime = 10;
 	private boolean inGameStatus;
+
+	// Game information
 	private int GameType;
 	private int MaxPlayers;
+	
+	// Team information
 	private int currPlayerBlueNum;
 	private int currPlayerRedNum;
-	private ConcurrentMap<Integer,Player> blueTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 1
-	private ConcurrentMap<Integer,Player> redTeam = new ConcurrentHashMap<Integer,Player>(); // Team num 2
-	private int id;
-	private static final int lobbyTime = 10; //lobby runs for 2 minutes
+	private ConcurrentMap<Integer,Player> blueTeam = new ConcurrentHashMap<Integer,Player>();
+	private ConcurrentMap<Integer,Player> redTeam = new ConcurrentHashMap<Integer,Player>();
 
 
 	public Lobby(int myid, int PassedGameType)
@@ -67,13 +72,13 @@ public class Lobby {
 		return currPlayerBlueNum + currPlayerRedNum;
 	}
 
-	// Add player to teams alternatively.
+	// Add player to teams - alternate teams unless specified (when a client requests to switch teams).
 	// We check in LobbyTable if max players is reached.
 	public void addPlayer(Player playerToAdd, int specific)
 	{
 		// Specific - 0 = random, 1 = blue, 2 = red;
 		int totPlayers = getCurrPlayerTotal();
-		if(((totPlayers % 2 == 1) || (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers/2)))
+		if(((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers/2)))
 		{
 			redTeam.put(currPlayerRedNum, playerToAdd);
 			currPlayerRedNum++;
@@ -92,6 +97,10 @@ public class Lobby {
 		int counter = 0;
 		for(Player player : blueTeam.values())
 		{
+			/*
+			 * We look through until we find the player we are looking for, we then remove this player from the team
+			 * and shift all of the items above the player down by one position.
+			 */
 			if(player.getID() == playerToRemove.getID())
 			{
 				blueTeam.remove(counter);
@@ -113,6 +122,10 @@ public class Lobby {
 			counter = 0;
 			for(Player player : redTeam.values())
 			{
+				/*
+				 * We look through until we find the player we are looking for, we then remove this player from the team
+				 * and shift all of the items above the player down by one position.
+				 */
 				if(player.getID() == playerToRemove.getID())
 				{
 					redTeam.remove(counter);
@@ -137,6 +150,10 @@ public class Lobby {
 		boolean switched = false;
 		for(Player player : blueTeam.values())
 		{
+			/*
+			 * We look through until we find the player we are looking for, we then remove them from
+			 * their original team and add them to the other team.
+			 */
 			if(player.getID() == playerToSwitch.getID())
 			{
 				if(currPlayerRedNum < (MaxPlayers/2))
@@ -152,6 +169,10 @@ public class Lobby {
 		{
 			for(Player player : redTeam.values())
 			{
+				/*
+				 * We look through until we find the player we are looking for, we then remove them from
+				 * their original team and add them to the other team.
+				 */
 				if(player.getID() == playerToSwitch.getID())
 				{
 					if(currPlayerBlueNum < (MaxPlayers/2))
@@ -170,7 +191,8 @@ public class Lobby {
 		receiver.sendToAll(blueMems);
 	}
 
-	public String getTeam(int teamNum) // 1 for blue, 2 for red.
+	
+	public String getTeam(int teamNum)
 	{
 		String retStr = "";
 		if(teamNum == 1)
