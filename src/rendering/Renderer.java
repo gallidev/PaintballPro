@@ -52,17 +52,12 @@ public class Renderer extends Scene
 
 		ClientPlayer player;
 		if(receiver != null)
-		{
 			player = receiver.getClientPlayer();
-			player.setImage(player.getTeam() == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
-			player.setMap(map);
-			player.setLayoutX(map.spawns[player.getPlayerId()].x * 64);
-			player.setLayoutY(map.spawns[player.getPlayerId()].y * 64);
-			player.setAudio(audio);
-		}
 		else
+		{
 			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, redPlayerImage, null);
-		player.setEnemies(new ArrayList<>());
+			player.setEnemies(new ArrayList<>());
+		}
 
 		view.getChildren().add(player);
 

@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
 import networkingInterfaces.ClientPlayerOld;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 import physics.ClientPlayer;
+import rendering.Map;
 
 
 // Gets messages from client and puts them in a queue, for another
@@ -148,13 +150,15 @@ public class ClientReceiver extends Thread {
 		
 		int myId = Integer.parseInt(data[1]);
 		String team = data[2];
+
+		Map map = Map.loadRaw("elimination");
 		
 		//add myself to my team
 		//create my client
 		if (team.equals("Red"))
-			cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.RED, this); // Using 'this' is ugly code but currently can't think of another way.
+			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, new Image("assets/player_red.png", 30, 64, true, true), this);
 		else 
-			cPlayer = new ClientPlayer(0, 0, clientID, TeamEnum.BLUE, this);
+			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, new Image("assets/player_blue.png", 30, 64, true, true), this);
 		
 		myTeam.add(cPlayer);
 		
