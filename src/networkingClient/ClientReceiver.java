@@ -2,8 +2,6 @@ package networkingClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
@@ -14,16 +12,12 @@ import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
 import physics.ClientPlayer;
 import rendering.Map;
-
-
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
-
 /**
  * Class to get messages from client, process and put appropriate message for a client.
  */
 public class ClientReceiver extends Thread {
-
 	private int clientID;
 	private BufferedReader fromServer;
 	private ClientSender sender;
@@ -50,7 +44,6 @@ public class ClientReceiver extends Thread {
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
 	}
-
 	/**
 	 * The main method running in this class, runs when the class is started after initialization.
 	 */
@@ -61,12 +54,9 @@ public class ClientReceiver extends Thread {
 			while (true) {
 				//Get input from the client read stream.
 				String text = fromServer.readLine();
-
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
-
 					//System.out.println("Received: " + text);
-
 					// Protocols
 					//In-game messages
 					//Temporary sketch of sending player positions
@@ -94,7 +84,6 @@ public class ClientReceiver extends Thread {
 					}
 					else if(text.contains("Ret:Username:"))
 					{
-
 					}
 					else if(text.contains("LTime:")){
 						//m.setTimerStarted();
@@ -107,7 +96,6 @@ public class ClientReceiver extends Thread {
 					else if(text.contains("StartGame")){
 						startGameAction(text);
 					}
-
 					else if(text.contains("EndGame"))
 					{
 						System.out.println("Game has ended for player with ID " + clientID);
@@ -135,7 +123,6 @@ public class ClientReceiver extends Thread {
 			return;
 		}
 	}
-
 	public ClientPlayer getClientPlayer(){
 		return cPlayer;
 	}
@@ -148,14 +135,10 @@ public class ClientReceiver extends Thread {
 	 */
 	public void startGameAction(String text){
 		//get all the relevant data from the message : StartGame:2:Red:1:Red:
-		System.out.println("Received " + text);
 		String[] data = text.split(":");
-		System.out.println(Arrays.toString(data));
-		
 		
 		clientID = Integer.parseInt(data[1]);
 		String team = data[2];
-
 		Map map = Map.loadRaw("elimination");
 		
 		//add myself to my team
@@ -165,10 +148,6 @@ public class ClientReceiver extends Thread {
 		else 
 			cPlayer = new ClientPlayer(map.getSpawns()[clientID].x * 64, map.getSpawns()[clientID].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, new Image("assets/player_blue.png", 30, 64, true, true), this);
 		
-		myTeam.add(cPlayer);
-		
-		System.out.println("My id is: " + cPlayer.getPlayerId());
-
 		//extract the other members
 		for (int i = 3; i < data.length-2; i=i+2){
 			int id = Integer.parseInt(data[i]);
@@ -183,17 +162,17 @@ public class ClientReceiver extends Thread {
 					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
 				else
 					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
-				cPlayer.setEnemies(enemies);
 			}
 		}
+		cPlayer.setEnemies(enemies);
+
 			
 			//for debugging
 			System.out.println("game has started for player with ID " + clientID);
 			System.out.println("My team = " );
 			for (LocalPlayer p : myTeam)
-				System.out.print(p.getId() + " ");
+				System.out.print(p.getPlayerId() + " ");
 			System.out.println("Other team = " + enemies);
-
 			
 			//Do stuff here: show the game window, so that the players can start the game
 			Platform.runLater(new Runnable() {
