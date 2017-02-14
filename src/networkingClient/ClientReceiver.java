@@ -204,8 +204,8 @@ public class ClientReceiver extends Thread {
 			double y = Double.parseDouble(msg[4]);
 			double angle = Double.parseDouble(msg[5]);
 			
-			System.out.println(myTeam);
-			System.out.println(enemies);
+			for(LocalPlayer p : myTeam)
+				System.out.println(p.getPlayerId());
 			
 			if (id != clientID){
 				//find the player that need to be updated
