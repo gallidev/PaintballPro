@@ -287,7 +287,7 @@ public class Lobby {
 				while(!timer.isTimeElapsed()){
 					try {
 						if (lastTime != timer.getTimeLeft()) {
-							System.out.println("Timer changed: from " + lastTime + " to " + timer.getTimeLeft());
+							//System.out.println("Timer changed: from " + lastTime + " to " + timer.getTimeLeft());
 							lastTime = timer.getTimeLeft();
 							receiver.sendToAll("LTime:" + timer.getTimeLeft());
 						}

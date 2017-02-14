@@ -140,6 +140,13 @@ public class ClientReceiver extends Thread {
 		}
 	}
 	
+	/**
+	 * Action starting when a player fires a bullet. It renders the bullet and also detects when a player has been eliminated.
+	 * @param text The protocol text containg information about the coordinates and angle of the bullet, 
+	 * as well as the player id which shot it.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	private void bulletAction(String text) {
 		// Protocol message: SendToAll:Bullet:id:x:y:angle:
 		String[] data = text.split(":");
@@ -150,10 +157,6 @@ public class ClientReceiver extends Thread {
 		double angle = Double.parseDouble(data[4]);
 		
 		LocalPlayer p = getPlayerWithID(id);
-		System.out.println("id = " + id);
-		
-		for(LocalPlayer pq : enemies)
-			System.out.print(pq.getPlayerId() + " ");
 		
 		if (p != null)
 			p.tickBullet(x, y, angle);
@@ -175,6 +178,8 @@ public class ClientReceiver extends Thread {
 	 * take the client's id and team, then form the team and the enemy team.
 	 * This information is then used by the renderer.
 	 * @param text The text received from the server.
+	 * 
+	 * @author Alexandra Paduraru
 	 */
 	public void startGameAction(String text){
 		//get all the relevant data from the message : StartGame:2:Red:1:Red:
@@ -224,6 +229,8 @@ public class ClientReceiver extends Thread {
 		 * Gets a move signal from the server about a specific player. The method finds that player and updates
 		 * the player's position on the map accordingly.
 		 * @param text The protocol message containing the new x and y coordinates, as well as the angle of the player.
+		 * 
+		 * @author Alexandra Paduraru
 		 */
 		public void moveAction(String text){
 			String[] msg = text.split(":");
@@ -245,10 +252,14 @@ public class ClientReceiver extends Thread {
 			
 		}
 		
+		/*Getters and setters*/
+		
 		/**
 		 * Retrieves a player with a specific id from the current game.
 		 * @param id The player's id.
 		 * @return The player with the given id.
+		 * 
+		 * @author Alexandra Paduraru
 		 */
 		private LocalPlayer getPlayerWithID(int id){
 			//Check if the Player is in my team
@@ -267,7 +278,9 @@ public class ClientReceiver extends Thread {
 		
 		/**
 		 * Returns the players that are in this Player's team. 
-		 * @return
+		 * @return All the other players in the user's team, except himself.
+		 * 
+		 * @author Alexandra Paduraru
 		 */
 		public ArrayList<LocalPlayer> getMyTeam(){
 			return myTeam;
@@ -275,11 +288,14 @@ public class ClientReceiver extends Thread {
 		
 		/**
 		 * Return all the players that are not in this Player's team.
-		 * @return
+		 * @return All opponent players.
+		 * 
+		 * @author Alexandra Paduraru
 		 */
 		public ArrayList<LocalPlayer> getEnemies(){
 			return enemies;
 		}
+		
 		
 		public ClientSender getSender(){
 			return sender;

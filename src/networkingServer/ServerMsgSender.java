@@ -52,7 +52,7 @@ public class ServerMsgSender extends Thread {
 		while (m_running) {
 			//Get messages from the message queue.
 			Message msg = queue.take();
-			System.out.println("Sending:" + msg.getText());
+			//System.out.println("Sending:" + msg.getText());
 			//Print to the client stream.
 			client.println(msg.getText());
 		}
