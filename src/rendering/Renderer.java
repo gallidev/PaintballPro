@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import logic.LocalPlayer;
 import networkingClient.ClientReceiver;
 import physics.*;
 
@@ -54,7 +55,6 @@ public class Renderer extends Scene
 		if(receiver != null)
 		{
 			player = receiver.getClientPlayer();
-			player.setEnemies(new ArrayList<>());
 			view.getChildren().addAll(receiver.getMyTeam());
 			view.getChildren().addAll(receiver.getEnemies());
 		}

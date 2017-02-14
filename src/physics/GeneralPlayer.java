@@ -6,6 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
+import logic.LocalPlayer;
 import rendering.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import enums.TeamEnum;
  */
 public abstract class GeneralPlayer extends ImageView implements GameObject{
 
-	protected final double playerHeadX = 12.5, playerHeadY = 47.5;
+	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected final double movementSpeed = 2;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
@@ -29,8 +30,8 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected int id;
 	protected long shootTimer, spawnTimer;
 	protected TeamEnum team;
-	protected ArrayList<GeneralPlayer> enemies;
-	protected ArrayList<GeneralPlayer> teamPlayers;
+	protected ArrayList<LocalPlayer> enemies;
+	protected ArrayList<LocalPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
 	protected ArrayList<Rectangle> propsWalls;
 
@@ -150,9 +151,9 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 */
 	protected void handleBulletCollision()
 	{
-		for(GeneralPlayer enemy : enemies){
+		for(LocalPlayer enemy : enemies){
 
-			for(Bullet bullet : enemy.getBullets()){
+			for(Bullet bullet : enemy.getFiredBullets()){
 				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated){
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
@@ -313,32 +314,11 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return team;
 	}
 
-	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
+	public void setEnemies(ArrayList<LocalPlayer> enemies) {
 		this.enemies = enemies;
 	}
 	
-	public ArrayList<GeneralPlayer> getEnemies(){
+	public ArrayList<LocalPlayer> getEnemies(){
 		return this.enemies;
-	}
-
-	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
-		this.teamPlayers = teamPlayers;
-	}
-
-	public Polygon getBounds(){
-		return this.bounds;
-	}
-
-	public int getPlayerId()
-	{
-		return id;
-	}
-	
-	public void setXCoord(double x){
-		setLayoutX(x);
-	}
-	
-	public void setYCoord(double y){
-		setLayoutX(y);
 	}
 }

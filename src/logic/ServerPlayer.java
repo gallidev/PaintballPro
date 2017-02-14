@@ -23,7 +23,6 @@ public class ServerPlayer{
 	private int id, x, y;
 	private double angle;
 	private TeamEnum team;
-	private Map map;
 
 	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
 		this.id = id;
