@@ -3,6 +3,9 @@ package ai;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import physics.GeneralPlayer;
 
 public class RandomBehaviour {
@@ -13,6 +16,7 @@ public class RandomBehaviour {
 	private Random rand;
 	private ArrayList<GeneralPlayer> enemies;
 	private double angle;
+	private double closestX, closestY;
 	
 	public RandomBehaviour(AIPlayer ai){
 		this.ai = ai;
@@ -32,8 +36,10 @@ public class RandomBehaviour {
 		ai.setMovementAngle(movementAngle);
 	}
 	
-	private boolean randomShooting(){
-		return (rand.nextInt(4) == 1);
+	private boolean updateShooting(double x, double y){
+		double distance = Math.sqrt(Math.pow(x - ai.getLayoutX(), 2) + (Math.pow(ai.getLayoutY() - y, 2)));
+		if(canSee(x, y) && distance < 500) return true;
+		return false;
 	}
 	
 	public void change(){
@@ -41,8 +47,6 @@ public class RandomBehaviour {
 	}
 	
 	public void updateAngle(){
-		double closestX = 0;
-		double closestY = 0;
 		double minDistance = Double.MAX_VALUE;
 		for(GeneralPlayer enemy: enemies){
 			double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
@@ -57,6 +61,18 @@ public class RandomBehaviour {
 		angle = Math.atan2(deltaX, deltaY);
 	}
 	
+	public boolean canSee(double x, double y){
+		Line line = new Line(ai.getLayoutX(), ai.getLayoutY(), x, y);
+		ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
+		propsWalls.addAll(ai.getMap().getRecWalls());
+		for(Rectangle propWall : propsWalls){
+			if(Shape.intersect(line, propWall).getBoundsInLocal().isEmpty() == false) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	public void tick() {
 		enemies = ai.getEnemies();
@@ -64,7 +80,7 @@ public class RandomBehaviour {
 		ai.setAngle(angle);
 		if(timer < System.currentTimeMillis() - delay){
 			randomMovement();
-			ai.setShoot(randomShooting());
+			ai.setShoot(updateShooting(closestX, closestY));
 			timer = System.currentTimeMillis();
 		}	
 	}	

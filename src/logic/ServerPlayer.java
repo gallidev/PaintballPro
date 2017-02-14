@@ -19,13 +19,13 @@ import rendering.Map;
 public class ServerPlayer{
 
 	private ServerMsgReceiver receiver;
-	private double x;
-	private double y;
-	private double angle;
+	
 	private int id;
 	private TeamEnum team;
+	private Map map;
 
-	public ServerPlayer(int id, ServerMsgReceiver receiver, double x, double y, TeamEnum color){
+	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
+		//super(x, y, id, new Image(""));
 		this.id = id;
 		this.receiver = receiver;
 		this.team = color;
@@ -37,7 +37,25 @@ public class ServerPlayer{
 	public void setTeam (TeamEnum team){
 		this.team = team;
 	}
-	
+
+	//@Override
+	protected void updatePosition() {
+		// TODO Auto-generated method stub
+
+	}
+
+	//@Override
+	protected void updateAngle() {
+		// TODO Auto-generated method stub
+
+	}
+
+	//@Override
+	public void tick() {
+		// TODO Auto-generated method stub
+
+	}
+
 	public ServerMsgReceiver getServerReceiver(){
 		return receiver;
 	}
