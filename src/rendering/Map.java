@@ -138,12 +138,12 @@ public class Map
 		return map;
 	}
 
-	static Map loadRaw(String url)
+	public static Map loadRaw(String url)
 	{
 		Map map = null;
 		try
 		{
-			map = (new Gson()).fromJson(new FileReader(url), Map.class);
+			map = (new Gson()).fromJson(new FileReader("res/maps/" + url + ".json"), Map.class);
 
 			for(Material material : map.materials)
 				material.image = new Image("assets/" + material.name + ".png", 64, 64, true, true);

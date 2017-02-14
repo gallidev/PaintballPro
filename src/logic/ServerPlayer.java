@@ -16,12 +16,12 @@ import rendering.Map;
  *
  * @author Alexandra Paduraru
  */
-public class ServerPlayer  extends GeneralPlayer{
+public class ServerPlayer extends GeneralPlayer{
 
 	private ServerMsgReceiver receiver;
 
 	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
-		super(x, y, id);
+		super(x, y, id, new Image("assets/player_" + (color == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
 		this.id = id;
 		this.receiver = receiver;
 		this.team = color;

@@ -26,8 +26,8 @@ public class RandomBehaviour {
 		//0 = Left, 1 = Right, 2 = Horizontally stationary
 		double targetX = (double)rand.nextInt(1900);
 		double targetY = (double)rand.nextInt(800);
-		double deltaX = targetX - ai.getXCoord();
-		double deltaY = ai.getYCoord() - targetY;
+		double deltaX = targetX - ai.getLayoutX();
+		double deltaY = ai.getLayoutY() - targetY;
 		double movementAngle = Math.atan2(deltaX, deltaY);
 		ai.setMovementAngle(movementAngle);
 	}
@@ -45,15 +45,15 @@ public class RandomBehaviour {
 		double closestY = 0;
 		double minDistance = Double.MAX_VALUE;
 		for(GeneralPlayer enemy: enemies){
-			double temp = Math.sqrt((Math.pow(enemy.getXCoord() - ai.getXCoord(), 2) + Math.pow(enemy.getYCoord() - ai.getYCoord(), 2)));
+			double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
 			if(temp < minDistance){
-				closestX = enemy.getXCoord();
-				closestY = enemy.getYCoord();
+				closestX = enemy.getLayoutX();
+				closestY = enemy.getLayoutY();
 				minDistance = temp;
 			}
 		}
-		double deltaX = closestX - ai.getXCoord();
-		double deltaY = ai.getYCoord() - closestY;
+		double deltaX = closestX - ai.getLayoutX();
+		double deltaY = ai.getLayoutY() - closestY;
 		angle = Math.atan2(deltaX, deltaY);
 	}
 	
