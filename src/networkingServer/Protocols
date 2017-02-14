@@ -8,10 +8,12 @@ We work using strings between the client and the server. This document outlines 
 ---------------------------------------	|-------------------------------------	|-------------------------------------
 				IN-GAME					|/////////////////////////////////////	|/////////////////////////////////////
 ---------------------------------------	|-------------------------------------	|-------------------------------------
-New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>:<angle>										
+New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>:<angle>
 Angle of player changes.				|
-Player gets shot.						|
+Player gets shot.						|SendToAll:Eliminated:id
 Bullets firing.							|SendToAll:Bullet:<x>:<y>:<angle>:<team>
+Client Player moves.					|SendToServer:Move:id:<x>:<y>:<angle>
+Client Player shoots.					|SendToServer:Shot:id:<x>:<y>:<angle>:<team>
 ---------------------------------------	|-------------------------------------	|
 				GAME STATUS				|/////////////////////////////////////	|
 ---------------------------------------	|-------------------------------------	|

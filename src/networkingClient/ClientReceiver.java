@@ -8,6 +8,7 @@ import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import logic.LocalPlayer;
 import networkingInterfaces.ClientPlayerOld;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
@@ -30,8 +31,8 @@ public class ClientReceiver extends Thread {
 	private Message msg;
 	private GUIManager m;
 	private ClientPlayer cPlayer;
-	private ArrayList<ClientPlayer> myTeam;
-	private ArrayList<ClientPlayer> enemies;
+	private ArrayList<LocalPlayer> myTeam;
+	private ArrayList<LocalPlayer> enemies;
 	
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -152,7 +153,7 @@ public class ClientReceiver extends Thread {
 		System.out.println(Arrays.toString(data));
 		
 		
-		int myId = Integer.parseInt(data[1]);
+		clientID = Integer.parseInt(data[1]);
 		String team = data[2];
 
 		Map map = Map.loadRaw("elimination");
@@ -167,28 +168,29 @@ public class ClientReceiver extends Thread {
 		myTeam.add(cPlayer);
 		
 		System.out.println("My id is: " + cPlayer.getPlayerId());
-		
+
 		//extract the other members
 		for (int i = 3; i < data.length-2; i=i+2){
 			int id = Integer.parseInt(data[i]);
 			if ( data[i+1].equals(team)){
 				if (team.equals("Red"))
-					myTeam.add(new ClientPlayer(0, 0, id, TeamEnum.RED, this));
+					myTeam.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
 				else
-					myTeam.add(new ClientPlayer(0, 0, id, TeamEnum.BLUE, this));
+					myTeam.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
 			}
 			else{
 				if (team.equals("Red"))
-					enemies.add(new ClientPlayer(0, 0, id, TeamEnum.RED, this));
+					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.RED));
 				else
-					enemies.add(new ClientPlayer(0, 0, id, TeamEnum.BLUE, this));
+					enemies.add(new LocalPlayer(0, 0, id, TeamEnum.BLUE));
+				cPlayer.setEnemies(enemies);
 			}
 		}
 			
 			//for debugging
 			System.out.println("game has started for player with ID " + clientID);
 			System.out.println("My team = " );
-			for (ClientPlayer p : myTeam)
+			for (LocalPlayer p : myTeam)
 				System.out.print(p.getId() + " ");
 			System.out.println("Other team = " + enemies);
 
@@ -216,10 +218,8 @@ public class ClientReceiver extends Thread {
 			double angle = Double.parseDouble(msg[5]);
 			
 			//find the player that need to be updated
-			ClientPlayer p = getPlayerWithID(id);
-			p.setLayoutX(x);
-			p.setLayoutY(y);
-			p.setAngle(angle);
+			LocalPlayer p = getPlayerWithID(id);
+			p.tick(x, y, angle);
 			
 		}
 		
@@ -228,14 +228,14 @@ public class ClientReceiver extends Thread {
 		 * @param id The player's id.
 		 * @return The player with the given id.
 		 */
-		public ClientPlayer getPlayerWithID(int id){
+		public LocalPlayer getPlayerWithID(int id){
 			//Check if the Player is in my team
-			for(ClientPlayer p: myTeam)
+			for(LocalPlayer p: myTeam)
 				if (p.getPlayerId() == id)
 					return p;
 			
 			//otherwise, player is in the enemy team
-			for(ClientPlayer p: enemies)
+			for(LocalPlayer p: enemies)
 				if (p.getPlayerId() == id)
 					return p;
 			
@@ -247,7 +247,7 @@ public class ClientReceiver extends Thread {
 		 * Returns the players that are in this Player's team. 
 		 * @return
 		 */
-		public ArrayList<ClientPlayer> getMyTeam(){
+		public ArrayList<LocalPlayer> getMyTeam(){
 			return myTeam;
 		}
 		
@@ -255,7 +255,7 @@ public class ClientReceiver extends Thread {
 		 * Return all the players that are not in this Player's team.
 		 * @return
 		 */
-		public ArrayList<ClientPlayer> getEnemies(){
+		public ArrayList<LocalPlayer> getEnemies(){
 			return enemies;
 		}
 		
