@@ -69,7 +69,7 @@ public class ClientPlayer extends GeneralPlayer{
 		updatePlayerBounds();
 		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
-		sendActiveBullets();
+		sendAllBullets();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
@@ -139,11 +139,9 @@ public class ClientPlayer extends GeneralPlayer{
 		sender.sendMessage(msg);
 	}
 	
-	private void sendActiveBullets(){
+	private void sendAllBullets(){
 		for(Bullet bullet: firedBullets){
-			if(bullet.isActive()){
-				sendServerBulletPositions(bullet.getX(), bullet.getY(), bullet.getAngle(), team);
-			}
+			sendServerBulletPositions(bullet.getX(), bullet.getY(), bullet.getAngle(), team);
 		}
 	}
 
