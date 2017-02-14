@@ -1,28 +1,16 @@
 package ai;
 import audio.AudioManager;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.transform.Rotate;
-import logic.GameObject;
-import physics.Bullet;
 import physics.GeneralPlayer;
-import physics.ClientPlayer;
 import rendering.*;
-import java.util.ArrayList;
-import java.util.List;
 import enums.TeamEnum;
 
-/**
- * This class should be running on the server
- * @author gallifilippo
- *
- */
 public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
 	private AudioManager audio;
 	private double movementAngle;
+	private Map map;
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
 		super(x, y, id, map, team, image);
@@ -32,7 +20,7 @@ public class AIPlayer extends GeneralPlayer{
 		right = true;
 		rb = new RandomBehaviour(this);
 		this.audio = audio;
-
+		this.map = map;
 	}
 
 	/**
@@ -62,12 +50,6 @@ public class AIPlayer extends GeneralPlayer{
 
 	@Override
 	protected void updatePosition(){
-
-//		if(up && !collUp) y -= movementSpeed;
-//		if(down && !collDown) y += movementSpeed;
-//		if(left  && !collLeft) x -= movementSpeed;
-//		if(right  && !collRight) x += movementSpeed;
-		
 		if(collUp || collLeft || collRight || collDown) rb.change();
 		
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
@@ -77,24 +59,17 @@ public class AIPlayer extends GeneralPlayer{
 		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) setLayoutX(getLayoutX() + xToAdd);
 	}
 
-
-	//Calculates the angle the player is facing with respect to the mouse
 	@Override
 	protected void updateAngle(){
-//		if(collUp){
-//			y += movementSpeed;
-//		} else if(collDown) {
-//			y -= movementSpeed;
-//		} else if(collLeft) {
-//			x += movementSpeed;
-//		} else if(collRight) {
-//			x -= movementSpeed;
-//		}
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 	
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
+	}
+	
+	public Map getMap(){
+		return this.map;
 	}
 
 }
