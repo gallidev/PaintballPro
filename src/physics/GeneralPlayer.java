@@ -1,4 +1,8 @@
 package physics;
+import java.util.ArrayList;
+import java.util.List;
+
+import enums.TeamEnum;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polygon;
@@ -6,12 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
-import logic.LocalPlayer;
-import rendering.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import enums.TeamEnum;
+import logic.Team;
+import rendering.Map;
 /**
  *  The player, represented by an ImageView
  */

@@ -276,8 +276,8 @@ public class Lobby {
 		
 		// sends the end game signal to all clients
 		while(!currentSessionGame.getGame().isGameFinished()){}
-		//currentSessionGame.endGame(getWinner());
-		currentSessionGame.endGame();
+		currentSessionGame.endGame(getWinner());
+		//currentSessionGame.endGame();
 	}
 
 	// A timer, accessed by the client for game countdown.
@@ -306,9 +306,9 @@ public class Lobby {
 		t.start();
 	}
 	
-//	public TeamEnum getWinner(){
-//		return currentSessionGame.getGame().whoWon().getColour();
-//	}
+	public TeamEnum getWinner(){
+		return currentSessionGame.getGame().whoWon().getColour();
+	}
 	
 	public Team getRedTeam(){
 		return red;
