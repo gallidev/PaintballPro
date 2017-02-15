@@ -203,24 +203,8 @@ public class ClientPlayer extends GeneralPlayer{
 		firedBullets.add(bullet);
 	}
 
-	public void setMap(Map m){
-		map = m;
-		propsWalls = map.getRecProps();
-		propsWalls.addAll(map.getRecWalls());
-	}
-
-
-
-	public double getMX(){
-		return this.mx;
-	}
-
 	public void setMX(double mx){
 		this.mx = mx;
-	}
-
-	public double getMY(){
-		return this.my;
 	}
 
 	public void setMY(double my){

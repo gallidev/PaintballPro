@@ -11,6 +11,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import logic.LocalPlayer;
 import networkingClient.ClientReceiver;
 import physics.*;
 
@@ -73,6 +74,7 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		ArrayList<Bullet> pellets = new ArrayList<>();
 		new AnimationTimer()
 		{
 			@Override
@@ -81,17 +83,20 @@ public class Renderer extends Scene
 				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 
+				view.getChildren().removeAll(pellets);
+				pellets.clear();
+
 				player.tick();
 				for(Bullet pellet : player.getBullets())
 				{
 					if(pellet.isActive())
-					{
-						if(!view.getChildren().contains(pellet))
-							view.getChildren().add(pellet);
-					}
-					else if(view.getChildren().contains(pellet))
-						view.getChildren().remove((pellet));
+						pellets.add(pellet);
 				}
+				for(LocalPlayer player : receiver.getMyTeam())
+					pellets.addAll(player.getFiredBullets());
+				for(LocalPlayer player : receiver.getEnemies())
+					pellets.addAll(player.getFiredBullets());
+				view.getChildren().addAll(pellets);
 			}
 		}.start();
 	}
