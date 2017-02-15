@@ -10,22 +10,22 @@ import logic.LocalPlayer;
 import physics.GeneralPlayer;
 
 public class RandomBehaviour {
-	
+
 	private AIPlayer ai;
 	private long timer = 0;
 	private long delay = 3000;
 	private Random rand;
-	private ArrayList<LocalPlayer> enemies;
+	private ArrayList<GeneralPlayer> enemies;
 	private double angle;
 	private double closestX, closestY;
-	
+
 	public RandomBehaviour(AIPlayer ai){
 		this.ai = ai;
 		this.angle = 0.0;
-		this.enemies = new ArrayList<LocalPlayer>();
+		this.enemies = new ArrayList<GeneralPlayer>();
 		rand = new Random();
 	}
-	
+
 	private void randomMovement(){
 		//0 = Up, 1 = Down, 2 = Vertically stationary
 		//0 = Left, 1 = Right, 2 = Horizontally stationary
@@ -36,20 +36,20 @@ public class RandomBehaviour {
 		double movementAngle = Math.atan2(deltaX, deltaY);
 		ai.setMovementAngle(movementAngle);
 	}
-	
+
 	private boolean updateShooting(double x, double y){
 		double distance = Math.sqrt(Math.pow(x - ai.getLayoutX(), 2) + (Math.pow(ai.getLayoutY() - y, 2)));
 		if(canSee(x, y) && distance < 500) return true;
 		return false;
 	}
-	
+
 	public void change(){
 		timer = System.currentTimeMillis() - delay;
 	}
-	
+
 	public void updateAngle(){
 		double minDistance = Double.MAX_VALUE;
-		for(LocalPlayer enemy: enemies){
+		for(GeneralPlayer enemy: enemies){
 			double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
 			if(temp < minDistance){
 				closestX = enemy.getLayoutX();
@@ -61,7 +61,7 @@ public class RandomBehaviour {
 		double deltaY = ai.getLayoutY() - closestY;
 		angle = Math.atan2(deltaX, deltaY);
 	}
-	
+
 	public boolean canSee(double x, double y){
 		Line line = new Line(ai.getLayoutX(), ai.getLayoutY(), x, y);
 		ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
@@ -73,8 +73,8 @@ public class RandomBehaviour {
 		}
 		return true;
 	}
-	
-	
+
+
 	public void tick() {
 		enemies = ai.getEnemies();
 		updateAngle();
@@ -83,6 +83,6 @@ public class RandomBehaviour {
 			randomMovement();
 			ai.setShoot(updateShooting(closestX, closestY));
 			timer = System.currentTimeMillis();
-		}	
-	}	
+		}
+	}
 }
