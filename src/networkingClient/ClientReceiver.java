@@ -226,7 +226,7 @@ public class ClientReceiver extends Thread {
 					enemies.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id, TeamEnum.RED));
 			}
 		}
-		//cPlayer.setEnemies(enemies);
+		cPlayer.setClientEnemies(enemies);
 
 		//for debugging
 		System.out.println("game has started for player with ID " + clientID);
