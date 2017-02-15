@@ -15,7 +15,7 @@ import static physics.GeneralPlayer.playerHeadY;
 public class LocalPlayer extends ImageView
 {
 	private int id;
-	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
+	private final ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private TeamEnum team;
 
@@ -41,11 +41,8 @@ public class LocalPlayer extends ImageView
 
 	public void tickBullets(ArrayList<Bullet> newFiredBullets)
 	{
-		synchronized(firedBullets)
-		{
-			firedBullets.clear();
-			firedBullets.addAll(newFiredBullets);
-		}
+		firedBullets.clear();
+		firedBullets.addAll(newFiredBullets);
 	}
 
 
@@ -56,7 +53,12 @@ public class LocalPlayer extends ImageView
 
 	public ArrayList<Bullet> getFiredBullets()
 	{
-		return firedBullets;
+		ArrayList<Bullet> tmp;
+		synchronized(firedBullets)
+		{
+			tmp = new ArrayList<>(firedBullets);
+		}
+		return tmp;
 	}
 
 	public TeamEnum getTeam()

@@ -29,6 +29,7 @@ public class Lobby {
 	// Game information
 	private int GameType;
 	private int MaxPlayers;
+	private ServerGame currentSessionGame;
 	
 	// Team information
 	private int currPlayerBlueNum;
@@ -251,7 +252,7 @@ public class Lobby {
 	{
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
-		ServerGame currentSessionGame = new ServerGame(GameType, red, blue, receiver);
+		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
 		Player[] allPlayers = getPlayers();
 		
 		//String to be sent needs to contain: 
@@ -275,7 +276,8 @@ public class Lobby {
 		
 		// sends the end game signal to all clients
 		while(!currentSessionGame.getGame().isGameFinished()){}
-		currentSessionGame.endGame();
+		currentSessionGame.endGame(getWinner());
+		//currentSessionGame.endGame();
 	}
 
 	// A timer, accessed by the client for game countdown.
@@ -302,6 +304,10 @@ public class Lobby {
 			}
 		});
 		t.start();
+	}
+	
+	public TeamEnum getWinner(){
+		return currentSessionGame.getGame().whoWon().getColour();
 	}
 	
 	public Team getRedTeam(){
