@@ -200,12 +200,12 @@ public class ClientReceiver extends Thread {
 		String[] data = text.split(":");
 
 		clientID = Integer.parseInt(data[1]);
-		String team = data[2];
+		String clientTeam = data[2];
 		Map map = Map.loadRaw("elimination");
 
 		//add myself to my team
 		//create my client
-		if (team.equals("Red"))
+		if (clientTeam.equals("Red"))
 			cPlayer = new ClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.RED, this);
 		else
 			cPlayer = new ClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64, clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this);
@@ -213,17 +213,17 @@ public class ClientReceiver extends Thread {
 		//extract the other members
 		for (int i = 3; i < data.length-1; i=i+2){
 			int id = Integer.parseInt(data[i]);
-			if ( data[i+1].equals(team)){
-				if (team.equals("Red"))
+			if ( data[i+1].equals(clientTeam)){
+				if (clientTeam.equals("Red"))
 					myTeam.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id, TeamEnum.RED));
 				else
-					myTeam.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id, TeamEnum.BLUE));
+					myTeam.add(new LocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id, TeamEnum.BLUE));
 			}
 			else{
-				if (team.equals("Red"))
-					enemies.add(new LocalPlayer(map.getSpawns()[id+3].x * 64, map.getSpawns()[id+3].y * 64, id, TeamEnum.RED));
+				if (clientTeam.equals("Red"))
+					enemies.add(new LocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id, TeamEnum.BLUE));
 				else
-					enemies.add(new LocalPlayer(map.getSpawns()[id+3].x * 64, map.getSpawns()[id+3].y * 64, id, TeamEnum.BLUE));
+					enemies.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id, TeamEnum.RED));
 			}
 		}
 		//cPlayer.setEnemies(enemies);
