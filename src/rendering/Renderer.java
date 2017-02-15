@@ -85,7 +85,6 @@ public class Renderer extends Scene
 				view.getChildren().removeAll(pellets);
 				pellets.clear();
 
-				player.tick();
 				for(Bullet pellet : player.getBullets())
 				{
 					if(pellet.isActive())
@@ -96,6 +95,7 @@ public class Renderer extends Scene
 				for(LocalPlayer player : receiver.getEnemies())
 					pellets.addAll(player.getFiredBullets());
 				view.getChildren().addAll(pellets);
+				player.tick();
 			}
 		}.start();
 	}
