@@ -18,15 +18,12 @@ import static gui.GUIManager.redPlayerImage;
 /**
  * The player, represented by an ImageView that should be running
  */
-public class ClientPlayer extends GeneralPlayer
+public class OfflinePlayer extends GeneralPlayer
 {
 
 	private double mx, my;
 	private boolean controlScheme;
-	private ClientSender sender;
 	private AudioManager audio;
-	private ClientReceiver receiver;
-	private ArrayList<LocalPlayer> clientEnemies;
 
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
@@ -39,7 +36,7 @@ public class ClientPlayer extends GeneralPlayer
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene         The scene in which the player will be displayed
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
+	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team)
 	{
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		this.audio = audio;
@@ -47,16 +44,13 @@ public class ClientPlayer extends GeneralPlayer
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
-		this.receiver = receiver;
-		this.sender = receiver.getSender();
 	}
 
-	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver)
+	public OfflinePlayer(double x, double y, int id, TeamEnum team)
 	{
 		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;
 		this.team = team;
-		this.receiver = receiver;
 	}
 
 
@@ -82,8 +76,6 @@ public class ClientPlayer extends GeneralPlayer
 		}
 		updatePlayerBounds();
 		updateBullets();
-		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
-		sendActiveBullets();
 
 		if(!invincible)
 		{
@@ -92,25 +84,6 @@ public class ClientPlayer extends GeneralPlayer
 		else
 		{
 			checkInvincibility();
-		}
-	}
-
-	protected void handleBulletCollision()
-	{
-		for(LocalPlayer enemy : clientEnemies)
-		{
-			for(Bullet bullet : enemy.getFiredBullets())
-			{
-				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated)
-				{
-					spawnTimer = System.currentTimeMillis();
-					eliminated = true;
-					sendServerNewScore();
-					setVisible(false);
-					bullet.setActive(false);
-					return;
-				}
-			}
 		}
 	}
 
@@ -144,10 +117,23 @@ public class ClientPlayer extends GeneralPlayer
 		else
 		{
 			//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
-			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
-			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
-			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
-			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
+
+			int moveY = 0;
+			int moveX = 0;
+
+//			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
+//			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
+//			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
+//			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
+
+			if(up && !collUp) moveY -= movementSpeed;
+			if(down && !collDown) moveY += movementSpeed;
+			if(left && !collLeft) moveX -= movementSpeed;
+			if(right && !collRight) moveX += movementSpeed;
+
+			setLayoutX(getLayoutX() + moveX);
+			setLayoutY(getLayoutY() + moveY);
+
 		}
 	}
 
@@ -182,50 +168,6 @@ public class ClientPlayer extends GeneralPlayer
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
-	/**
-	 * Lets the server know when a player has moved.
-	 *
-	 * @author Alexandra Paduraru
-	 */
-	private void sendServerNewPosition(double x, double y, double angle)
-	{
-		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
-
-		sender.sendMessage(msg);
-	}
-
-	/**
-	 * Lets the server know when a team has gained an additional point.
-	 *
-	 * @author Alexandra Paduraru
-	 */
-	public void sendServerNewScore()
-	{
-		//Protocol: Scored:<team>
-		String msg = "Scored:";
-
-		//The current player has been shot, so the point goes to the other team
-		if(team == TeamEnum.RED)
-			msg += "Blue";
-		else
-			msg += "Red";
-
-		sender.sendMessage(msg);
-	}
-
-	private void sendActiveBullets()
-	{
-		String msg = "SendToAll:Bullet:" + id + ":" + team;
-		for(Bullet bullet : firedBullets)
-		{
-			if(bullet.isActive())
-			{
-				msg += ":" + bullet.getX() + ":" + bullet.getY() + ":" + bullet.getAngle();
-			}
-		}
-		sender.sendMessage(msg);
-	}
-
 
 	public void shoot()
 	{
@@ -244,13 +186,11 @@ public class ClientPlayer extends GeneralPlayer
 		firedBullets.add(bullet);
 	}
 
-	@Override
 	public void setMX(double mx)
 	{
 		this.mx = mx;
 	}
 
-	@Override
 	public void setMY(double my)
 	{
 		this.my = my;
@@ -261,13 +201,4 @@ public class ClientPlayer extends GeneralPlayer
 		this.audio = audio;
 	}
 
-	public ArrayList<LocalPlayer> getClientEnemies()
-	{
-		return clientEnemies;
-	}
-
-	public void setClientEnemies(ArrayList<LocalPlayer> clientEnemies)
-	{
-		this.clientEnemies = clientEnemies;
-	}
 }

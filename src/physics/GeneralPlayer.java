@@ -159,6 +159,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 					eliminated = true;
 					setVisible(false);
 					bullet.setActive(false);
+
 					return;
 				}
 			}
@@ -328,5 +329,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	public int getPlayerId(){
 		return id;
+	}
+
+	public void setMX(double newX) {
+	}
+	public void setMY(double newY){
 	}
 }

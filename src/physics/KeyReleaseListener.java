@@ -5,19 +5,19 @@ import javafx.scene.input.KeyEvent;
 import networkingInterfaces.ClientPlayerOld;
 
 public class KeyReleaseListener implements EventHandler<KeyEvent>{
-	
-	private ClientPlayer player;
+
+	private GeneralPlayer player;
 	//Provisional. Need to discuss about keeping the Player or replacing it with ClientPlayer.
 	private ClientPlayerOld cPlayer;
-	
-	public KeyReleaseListener(ClientPlayer player){
+
+	public KeyReleaseListener(GeneralPlayer player){
 		this.player = player;
 	}
-	
+
 	public KeyReleaseListener(ClientPlayerOld cPlayer){
 		this.cPlayer = cPlayer;
 	}
-	
+
 	@Override
     public void handle(KeyEvent event) {
 		switch (event.getCode()) {

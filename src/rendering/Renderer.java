@@ -59,7 +59,7 @@ public class Renderer extends Scene
 		else
 		{
 			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, null);
-			player.setEnemies(new ArrayList<>());
+			player.setClientEnemies(new ArrayList<>());
 		}
 		view.getChildren().add(player);
 
@@ -125,7 +125,7 @@ public class Renderer extends Scene
 
 		ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
 
-		ClientPlayer player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, null);
+		OfflinePlayer player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
 		view.getChildren().add(player);
 		players.add(player);
 		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 1, map, TeamEnum.BLUE, audio);

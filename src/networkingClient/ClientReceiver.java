@@ -118,6 +118,7 @@ public class ClientReceiver extends Thread {
 					else if(text.contains("EndGame"))
 					{
 						System.out.println("Game has ended for player with ID " + clientID);
+						System.out.println("Message:" + text);
 						// Get data about scores, and pass into transition method
 						int someScore = 0;
 						Platform.runLater(new Runnable() {
