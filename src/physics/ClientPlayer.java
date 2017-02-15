@@ -1,52 +1,61 @@
 package physics;
+
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import logic.LocalPlayer;
 import logic.Team;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import rendering.Map;
 
+import java.util.ArrayList;
+
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
 
 /**
- *  The player, represented by an ImageView that should be running
+ * The player, represented by an ImageView that should be running
  */
-public class ClientPlayer extends GeneralPlayer{
+public class ClientPlayer extends GeneralPlayer
+{
 
 	private double mx, my;
 	private boolean controlScheme;
 	private ClientSender sender;
 	private AudioManager audio;
 	private ClientReceiver receiver;
+	private ArrayList<LocalPlayer> clientEnemies;
 
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
-	 * @param x The x-coordinate of the player with respect to the map
-	 * @param y The y-coordinate of the player with respect to the map
-	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
-	 * @param scene The scene in which the player will be displayed
 	 *
+	 * @param x             The x-coordinate of the player with respect to the map
+	 * @param y             The y-coordinate of the player with respect to the map
+	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
+	 * @param scene         The scene in which the player will be displayed
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver){
+	public ClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
+	{
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
-		if(receiver != null){
+		if(receiver != null)
+		{
 			this.receiver = receiver;
 			this.sender = receiver.getSender();
 		}
 	}
 
-	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
+	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver)
+	{
 		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;
 		this.team = team;
@@ -59,88 +68,134 @@ public class ClientPlayer extends GeneralPlayer{
 	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed
 	 */
 	@Override
-	public void tick() {
+	public void tick()
+	{
 		// handle the collisions with walls and props before moving the position
 		// of the player so to understand if he can move or not in a specific direction
 		handlePropWallCollision();
-		if(!eliminated){
+		if(!eliminated)
+		{
 			updatePosition();
 			updateShooting();
 			updateAngle();
-		} else {
+		}
+		else
+		{
 			checkSpawn();
-			if (scoreChanged && receiver != null)
+			if(scoreChanged && receiver != null)
 				updateScore();
 		}
 		updatePlayerBounds();
 		updateBullets();
-		if(receiver != null){
+		if(receiver != null)
+		{
 			sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 			sendActiveBullets();
 		}
 
-		if(!invincible){
+		if(!invincible)
+		{
 			handleBulletCollision();
-		} else {
+		}
+		else
+		{
 			checkInvincibility();
 		}
 	}
 
-	private void updateScore() {
+	protected void handleBulletCollision()
+	{
+		for(LocalPlayer enemy : clientEnemies)
+		{
+			for(Bullet bullet : enemy.getFiredBullets())
+			{
+				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated)
+				{
+					spawnTimer = System.currentTimeMillis();
+					eliminated = true;
+					setVisible(false);
+					bullet.setActive(false);
+					return;
+				}
+			}
+		}
+	}
+
+	private void updateScore()
+	{
 		sendServerNewScore();
 		scoreChanged = false;
 
-		try {
+		try
+		{
 			Thread.sleep(100);
-		} catch (InterruptedException e) {
+		}
+		catch(InterruptedException e)
+		{
 			System.err.println("Thread can't sleep" + e);
 		}
 	}
 
 	@Override
-	protected void updatePosition(){
-		if(controlScheme){
-			if(up){
+	protected void updatePosition()
+	{
+		if(controlScheme)
+		{
+			if(up)
+			{
 				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle));
 				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle));
 			}
-			if(down){
+			if(down)
+			{
 				setLayoutY(getLayoutY() + movementSpeed * Math.cos(angle));
 				setLayoutX(getLayoutX() - movementSpeed * Math.sin(angle));
 			}
-			if(left){
-				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle - Math.PI/2));
-				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle - Math.PI/2));
+			if(left)
+			{
+				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle - Math.PI / 2));
+				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle - Math.PI / 2));
 			}
-			if(right){
-				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle + Math.PI/2));
-				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle + Math.PI/2));
+			if(right)
+			{
+				setLayoutY(getLayoutY() - movementSpeed * Math.cos(angle + Math.PI / 2));
+				setLayoutX(getLayoutX() + movementSpeed * Math.sin(angle + Math.PI / 2));
 			}
-		} else {
+		}
+		else
+		{
 			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
 			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
-			if(left  && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
-			if(right  && !collRight) setLayoutX(getLayoutX() + movementSpeed);
+			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
+			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
 		}
 	}
 
 
 	//Calculates the angle the player is facing with respect to the mouse
 	@Override
-	protected void updateAngle(){
+	protected void updateAngle()
+	{
 		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
 		double x1 = temp.getX();
 		double y1 = temp.getY();
 
 		double deltax = mx - x1;
 		double deltay = y1 - my;
-		if(collUp){
+		if(collUp)
+		{
 			setLayoutY(getLayoutY() + movementSpeed);
-		} else if(collDown) {
+		}
+		else if(collDown)
+		{
 			setLayoutY(getLayoutY() - movementSpeed);
-		} else if(collLeft) {
+		}
+		else if(collLeft)
+		{
 			setLayoutX(getLayoutX() + movementSpeed);
-		} else if(collRight) {
+		}
+		else if(collRight)
+		{
 			setLayoutX(getLayoutX() - movementSpeed);
 		}
 		angle = Math.atan2(deltax, deltay);
@@ -152,7 +207,8 @@ public class ClientPlayer extends GeneralPlayer{
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	private void sendServerNewPosition(double x, double y, double angle){
+	private void sendServerNewPosition(double x, double y, double angle)
+	{
 		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
 
 		sender.sendMessage(msg);
@@ -163,7 +219,8 @@ public class ClientPlayer extends GeneralPlayer{
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public void sendServerNewScore(){
+	public void sendServerNewScore()
+	{
 		//Protocol: Scored:<team>
 		String msg = "Scored:";
 
@@ -176,10 +233,13 @@ public class ClientPlayer extends GeneralPlayer{
 		sender.sendMessage(msg);
 	}
 
-	private void sendActiveBullets(){
+	private void sendActiveBullets()
+	{
 		String msg = "SendToAll:Bullet:" + id + ":" + team;
-		for(Bullet bullet: firedBullets){
-			if(bullet.isActive()){
+		for(Bullet bullet : firedBullets)
+		{
+			if(bullet.isActive())
+			{
 				msg += ":" + bullet.getX() + ":" + bullet.getY() + ":" + bullet.getAngle();
 			}
 		}
@@ -187,10 +247,11 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 
 
-	public void shoot(){
+	public void shoot()
+	{
 
-		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
-		double y1 = (12 * getImage().getHeight()/255) - playerHeadY;
+		double x1 = (83 * getImage().getWidth() / 120) - playerHeadX;
+		double y1 = (12 * getImage().getHeight() / 255) - playerHeadY;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
@@ -199,15 +260,17 @@ public class ClientPlayer extends GeneralPlayer{
 		double bulletY = getLayoutY() + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
-		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
 	}
 
-	public void setMX(double mx){
+	public void setMX(double mx)
+	{
 		this.mx = mx;
 	}
 
-	public void setMY(double my){
+	public void setMY(double my)
+	{
 		this.my = my;
 	}
 
@@ -216,4 +279,13 @@ public class ClientPlayer extends GeneralPlayer{
 		this.audio = audio;
 	}
 
+	public ArrayList<LocalPlayer> getClientEnemies()
+	{
+		return clientEnemies;
+	}
+
+	public void setClientEnemies(ArrayList<LocalPlayer> clientEnemies)
+	{
+		this.clientEnemies = clientEnemies;
+	}
 }
