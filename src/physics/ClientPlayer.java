@@ -25,7 +25,6 @@ public class ClientPlayer extends GeneralPlayer{
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
 
-
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
 	 * @param x The x-coordinate of the player with respect to the map

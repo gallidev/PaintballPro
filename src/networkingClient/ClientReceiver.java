@@ -57,9 +57,9 @@ public class ClientReceiver extends Thread {
 				//If text isn't null and does not read "Exit:Client" do...
 				if(text != null && text.compareTo("Exit:Client") != 0){
 					//System.out.println("Received: " + text);
+					
 					// Protocols
 					//In-game messages
-					//Temporary sketch of sending player positions
 					if (text.contains("Move")){
 						moveAction(text);
 					}
@@ -68,6 +68,8 @@ public class ClientReceiver extends Thread {
 						bulletAction(text);
 					}
 					
+					
+					//UI Requests
 					if(text.contains("Ret:Red:"))
 					{
 //						System.out.println("Got red");
@@ -86,9 +88,19 @@ public class ClientReceiver extends Thread {
 //						}
 						m.updateBlueLobby(blue);
 					}
+					
 					else if(text.contains("Ret:Username:"))
 					{
 					}
+					
+					//Lobby status
+					else if(text.contains("TimerStart"))
+					{
+						System.out.println("Timer Started");
+						// Do stuff here, we have 10 secs till game start message sent.
+						m.setTimerStarted();
+					}
+					
 					else if(text.contains("LTime:")){
 						//m.setTimerStarted();
 						String remTime = text.split(":")[1];
@@ -97,6 +109,8 @@ public class ClientReceiver extends Thread {
 						m.setTimerStarted();
 						System.out.println("Lobby has " + time + " left");
 					}
+					
+					//Game status
 					else if(text.contains("StartGame")){
 						startGameAction(text);
 					}
@@ -114,12 +128,7 @@ public class ClientReceiver extends Thread {
 						});
 						
 					}
-					else if(text.contains("TimerStart"))
-					{
-						System.out.println("Timer Started");
-						// Do stuff here, we have 10 secs till game start message sent.
-						m.setTimerStarted();
-					}
+					
 				}
 				else // if the client wants to exit the system.
 				{
@@ -134,6 +143,8 @@ public class ClientReceiver extends Thread {
 			return;
 		}
 	}
+	
+	//Different actions to handle the server messages
 	
 	/**
 	 * Action starting when a player fires a bullet. It renders the bullet and also detects when a player has been eliminated.
@@ -164,9 +175,6 @@ public class ClientReceiver extends Thread {
 //		System.out.print("my enemy players: " );
 	}
 
-	public ClientPlayer getClientPlayer(){
-		return cPlayer;
-	}
 	
 	/**
 	 * Contains everything that needs to be done when a player receives the start signal: 
@@ -294,5 +302,10 @@ public class ClientReceiver extends Thread {
 		
 		public ClientSender getSender(){
 			return sender;
+		}
+		
+
+		public ClientPlayer getClientPlayer(){
+			return cPlayer;
 		}
 }
