@@ -51,7 +51,6 @@ public class NicknameMenu {
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
                 // Transition back to the main menu
-                m.establishConnection();
                 m.transitionTo("Main", null);
             }
         })};
