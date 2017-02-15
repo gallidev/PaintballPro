@@ -84,6 +84,10 @@ public class Team {
 		return members;
 	}
 
+	public TeamEnum getColour(){
+		return color;
+	}
+	
 //	public void setMap(Map map){
 //		for (ServerPlayer p : members){
 //			p.setMap(map);
