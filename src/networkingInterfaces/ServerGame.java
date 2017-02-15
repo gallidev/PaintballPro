@@ -68,15 +68,21 @@ public class ServerGame {
 	 * Checks to see when a game has ended and sends the appropriate message to all clients.
 	 */
 	public void endGame(TeamEnum t){
-		String toBeSent = "EndGame";
+		String toBeSent = "EndGame:";
 		
-		if (t== TeamEnum.RED)
+		if (t== TeamEnum.RED){
 			toBeSent += "Red";
-		else
+			System.out.println("Winner: Red");
+		}
+		else{
 			toBeSent += "Blue";
+			System.out.println("Winner: Blue");
+		}
 		
 		if (game.isGameFinished())
 			serverReceiver.sendToAll(toBeSent);
+		
+		
 	}
 	
 	public void endGame(){
