@@ -12,7 +12,7 @@ public class GameClient extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		stage.getIcons().addAll(new Image("assets/icon_16.png"), new Image("assets/icon_16.png"), new Image("assets/icon_16.png"));
+		stage.getIcons().addAll(new Image("assets/icon_dock.png"), new Image("assets/icon_32.png"), new Image("assets/icon_16.png"));
 		m.setStage(stage);
 //		stage.setScene(new Renderer("elimination"));
 //		stage.setTitle("Paintball Pro");
