@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -43,14 +44,13 @@ public class NicknameMenu {
         topGrid.add(usernameText, 1, 0);
 
         // Create a array of options for the cancel and apply buttons
-        MenuOption[] set = {new MenuOption("Confirm", new EventHandler<ActionEvent>() {
+        MenuOption[] set = {new MenuOption("Connect", new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 // Update the preferences (these will automatically be saved
                 // when set is called)
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
                 // Transition back to the main menu
-                m.establishConnection();
                 m.transitionTo("Main", null);
             }
         })};

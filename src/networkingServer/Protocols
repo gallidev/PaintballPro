@@ -11,14 +11,14 @@ We work using strings between the client and the server. This document outlines 
 New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>:<angle>
 Angle of player changes.				|
 Player gets shot.						|SendToAll:Eliminated:id
-Bullets firing.							|SendToAll:Bullet:<x>:<y>:<angle>:<team>
+Bullets firing.							|SendToAll:Bullet:<id>:<x>:<y>:<angle>:<team>
 Client Player moves.					|SendToServer:Move:id:<x>:<y>:<angle>
 Client Player shoots.					|SendToServer:Shot:id:<x>:<y>:<angle>:<team>
 ---------------------------------------	|-------------------------------------	|
 				GAME STATUS				|/////////////////////////////////////	|
 ---------------------------------------	|-------------------------------------	|
 Win/Loose a game.						|
-Change in game points.					|
+Change in game points.					|Scored:<team colour which gains poins> | Assumes that only one point is scored at a time.  
 Game duration.							|
 ---------------------------------------	|-------------------------------------	|
 			CLIENT ACTIONS				|/////////////////////////////////////	|

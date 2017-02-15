@@ -7,6 +7,7 @@ import enums.GameLocation;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
@@ -37,6 +38,9 @@ public class GUIManager {
     // Set the width and height of the stage
     public final int width = 800;
     public final int height = 600;
+
+    public static final Image redPlayerImage = new Image("assets/player_red.png", 30, 64, true, true);
+    public static final Image bluePlayerImage = new Image("assets/player_blue.png", 30, 64, true, true);
 
     public GUIManager() {
         audio = new AudioManager(user, this);
@@ -92,17 +96,22 @@ public class GUIManager {
     }
 
     public void establishConnection() {
-        String nickname = user.getUsername(); // We ask the user what their nickname is.
-        int portNumber = 25566; // The server is on a particular port.
-        String machName = "10.20.201.220"; // The machine has a particular name.
+        if (c == null) {
+            String nickname = user.getUsername(); // We ask the user what their nickname is.
 
-        // This loads up the client code.
-        c = new Client(nickname, portNumber, machName, this);
+//        String serverLocation = networkingDiscovery.ClientListener.findServer();
+            String serverLocation = "127.0.0.1:25566";
 
-        // We can then get the client sender and receiver threads.
-        ClientSender sender = c.getSender();
-        ClientReceiver receiver = c.getReceiver();
+            int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
+            String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
+            // This loads up the client code.
+            c = new Client(nickname, portNumber, machName, this);
+
+            // We can then get the client sender and receiver threads.
+            ClientSender sender = c.getSender();
+            ClientReceiver receiver = c.getReceiver();
+        }
     }
 
 
@@ -135,16 +144,12 @@ public class GUIManager {
 
     public void fetchLobbyUpdates() {
         if (c != null) {
-//            System.out.println("Sending fetch request");
             c.getSender().sendMessage("Get:Red");
             c.getSender().sendMessage("Get:Blue");
-        } else {
-            System.out.println("//// fetch request");
         }
     }
 
     public void updateRedLobby(String[] redPlayers) {
-        System.out.println("Updating red lobby");
         // Update all rows
         for (int i = 0; i < lobbyData.size(); i++) {
             String redName = "";
@@ -163,7 +168,6 @@ public class GUIManager {
     }
 
     public void updateBlueLobby(String[] bluePlayers) {
-        System.out.println("Updating blue lobby");
         // Update all rows
         for (int i = 0; i < lobbyData.size(); i++) {
             String blueName = "";

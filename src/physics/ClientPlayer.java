@@ -8,6 +8,9 @@ import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import rendering.Map;
 
+import static gui.GUIManager.bluePlayerImage;
+import static gui.GUIManager.redPlayerImage;
+
 /**
  *  The player, represented by an ImageView that should be running
  */
@@ -18,7 +21,9 @@ public class ClientPlayer extends GeneralPlayer{
 	private ClientSender sender;
 	private AudioManager audio;
 	private ClientReceiver receiver;
-
+	
+	//flag for keeping track of scores
+	boolean scoreChanged = true;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -28,8 +33,8 @@ public class ClientPlayer extends GeneralPlayer{
 	 * @param scene The scene in which the player will be displayed
 	 *
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, Image image, ClientReceiver receiver){
-		super(x, y, id, map, team, image);
+	public ClientPlayer(double x, double y, int id, boolean controlScheme,Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver){
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
@@ -40,7 +45,7 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 	
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
-		super(x, y, id, new Image("assets/player_" + (team == TeamEnum.RED ? "red" : "blue") + ".png", 30, 64, true, true));
+		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;
 		this.team = team;
 		this.receiver = receiver;
@@ -62,15 +67,28 @@ public class ClientPlayer extends GeneralPlayer{
 			updateAngle();
 		} else {
 			checkSpawn();
+			if (scoreChanged)
+				updateScore();
 		}
 		updatePlayerBounds();
 		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
-		//sendActiveBullets();
+		sendActiveBullets();
 		if(!invincible){
 			handleBulletCollision();
 		} else {
 			checkInvincibility();
+		}
+	}
+
+	private void updateScore() {
+		sendServerNewScore();
+		scoreChanged = false;
+		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			System.err.println("Thread can't sleep" + e);
 		}
 	}
 
@@ -124,25 +142,45 @@ public class ClientPlayer extends GeneralPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	/**
+	 * Lets the server know when a player has moved.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	private void sendServerNewPosition(double x, double y, double angle){
 		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
 		 
 		sender.sendMessage(msg);
 	}
 	
-	private void sendServerBulletPositions(double x, double y, double angle, TeamEnum team){
-		String msg = "SendToAll:Bullet:" + x + ":" + y + ":" + angle + ":" + team; //Protocol message for updating bullet location
+	/**
+	 * Lets the server know when a team has gained an additional point.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
+	public void sendServerNewScore(){
+		//Protocol: Scored:<team>
+		String msg = "Scored:";
+		
+		//The current player has been shot, so the point goes to the other team
+		if(team == TeamEnum.RED)
+			msg += "Blue";
+		else
+			msg += "Red";
 		
 		sender.sendMessage(msg);
 	}
 	
 	private void sendActiveBullets(){
+		String msg = "SendToAll:Bullet:" + id;
 		for(Bullet bullet: firedBullets){
 			if(bullet.isActive()){
-				sendServerBulletPositions(bullet.getX(), bullet.getY(), bullet.getAngle(), team);
+				msg += ":" + bullet.getX() + ":" + bullet.getY() + ":" + bullet.getAngle() + ":" + team;
 			}
 		}
+		sender.sendMessage(msg);
 	}
+	
 
 	public void shoot(){
 
@@ -188,9 +226,5 @@ public class ClientPlayer extends GeneralPlayer{
 	{
 		this.audio = audio;
 	}
-
-//	public ClientReceiver getReceiver(){
-//		return receiver;
-//	}
 
 }

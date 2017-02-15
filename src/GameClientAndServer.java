@@ -1,3 +1,4 @@
+import networkingDiscovery.ServerAnnouncer;
 import networkingServer.Server;
 
 /**
@@ -9,7 +10,10 @@ public class GameClientAndServer {
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                String[] serverArgs = {"25566"};
+                int portNo = 25566;
+                String[] serverArgs = {portNo + ""};
+//                Thread discovery = new Thread(new ServerAnnouncer(portNo));
+//                discovery.start();
                 Server.main(serverArgs);
             }
         })).start();
