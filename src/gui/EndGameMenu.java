@@ -25,7 +25,7 @@ public class EndGameMenu {
 
         MenuOption[] set = {new MenuOption("Main Menu", new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                m.transitionTo("MainMenu", null);
+                m.transitionTo("Main", null);
                 System.out.println("ActionEvent: " + event);
             }
         })};
