@@ -1,6 +1,8 @@
 package physics;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -103,39 +105,40 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		collDown = false;
 		collRight = false;
 		collLeft = false;
+		ArrayList<Double> angles = new ArrayList<>();
 		for(Rectangle propWall : propsWalls){
-			if(Shape.intersect(bounds, propWall).getBoundsInLocal().isEmpty() == false) {
-				double propX = propWall.getX();
+			//it returns a path with the collision with walls
+			Path tmp = (Path) Shape.intersect(bounds, propWall);
+			if(tmp.getBoundsInLocal().isEmpty() == false) {
+				double propX =propWall.getX();
 				double propY = propWall.getY();
 				double propWidth = propWall.getWidth();
 				double propHeight = propWall.getHeight();
 
 				//find angle between center of player and center of the prop
-				double propCenterX = propX + (propWidth/2);
-				double propCenterY = propY + (propHeight/2);
+				//MoveTo moveToValues = (MoveTo) tmp.getElements().get(0);
+				double propCenterX = (propX +propWidth/2);
+				double propCenterY = (propY + propHeight/2);
 				double playerCenterX = getLayoutX() + getImage().getWidth()/2;
 				double playerCenterY = getLayoutY() + getImage().getHeight()/2;
 				double deltax = propCenterX - playerCenterX;
 				double deltay = playerCenterY - propCenterY;
 
-				double tempAngle = Math.atan2(deltax, deltay);
+				double tempAngle = Math.atan2(deltay, deltax);
 				double propAngle = Math.toDegrees(tempAngle);
 
-				if(propAngle >= 45 && propAngle <= 135){
-					collRight = true;
-					//x -= movementSpeed; //can't go right
-				}
-				if(propAngle >= -135 && propAngle <= -45 ){
-					collLeft = true;
-					//x += movementSpeed; //can't go left
-				}
-				if(propAngle > 135 || propAngle < -135){
-					collDown = true;
-					//y -= movementSpeed; //can't go down
-				}
-				if(propAngle > -45 && propAngle < 45 ){
+				angles.add(propAngle);
+				if(propAngle < 135 && propAngle >= 45){
 					collUp = true;
-					//y += movementSpeed; //can't go up
+				}
+				if( propAngle < 45 && propAngle >= -45){
+					collRight = true;
+				}
+				if(propAngle < -45 && propAngle >= -135){
+					collDown = true;
+				}
+				if(propAngle < -135 || propAngle >= 135 ){
+					collLeft = true;
 				}
 			}
 			for(Bullet bullet : firedBullets){
@@ -144,6 +147,23 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 				}
 			}
 		}
+		if(!angles.isEmpty()){
+			double mean = getMeanAngle(angles);
+			//System.out.println("mean: " + mean);
+			if(mean < 135 && mean >= 45){
+				collUp = true;
+			}
+			if( mean < 45 && mean >= -45){
+				collRight = true;
+			}
+			if(mean < -45 && mean >= -135){
+				collDown = true;
+			}
+			if(mean < -135 || mean >= 135 ){
+				collLeft = true;
+			}
+		}
+
 	}
 
 	/**
@@ -275,6 +295,26 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		firedBullets.add(bullet);
 	}
 
+	// source file can be found here https://rosettacode.org/wiki/Averages/Mean_angle#Java
+	  private double getMeanAngle(List<Double> sample) {
+
+	    double x_component = 0.0;
+	    double y_component = 0.0;
+	    double avg_d, avg_r;
+
+	    for (double angle_d : sample) {
+	      double angle_r;
+	      angle_r = Math.toRadians(angle_d);
+	      x_component += Math.cos(angle_r);
+	      y_component += Math.sin(angle_r);
+	    }
+	    x_component /= sample.size();
+	    y_component /= sample.size();
+	    avg_r = Math.atan2(y_component, x_component);
+	    avg_d = Math.toDegrees(avg_r);
+
+	    return avg_d;
+	  }
 
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
@@ -335,4 +375,5 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	}
 	public void setMY(double newY){
 	}
+
 }
