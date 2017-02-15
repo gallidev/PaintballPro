@@ -4,12 +4,13 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
 public class KeyPressListener implements EventHandler<KeyEvent>{
-	
-	private ClientPlayer player;
-	
-	public KeyPressListener(ClientPlayer player){
+
+	private GeneralPlayer player;
+
+	public KeyPressListener(GeneralPlayer player){
 		this.player = player;
 	}
+
 	@Override
     public void handle(KeyEvent event) {
 		switch (event.getCode()) {
