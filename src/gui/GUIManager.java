@@ -22,6 +22,7 @@ public class GUIManager {
     private Stage s;
     private Client c;
     private String currentScene = "";
+    private String ipAddress = "";
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean timerStarted = false;
@@ -101,9 +102,8 @@ public class GUIManager {
 
 //        String serverLocation = networkingDiscovery.ClientListener.findServer();
 
-         String serverLocation = "127.0.0.1:25566";
-		//Server Filippo
-		//String serverLocation = "10.20.201.220:25566";
+		String serverLocation = ipAddress + ":25566";
+
         
         int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
         String machName = serverLocation.split(":")[0]; // The machine has a particular name.
@@ -210,5 +210,9 @@ public class GUIManager {
 
     public void setTimeLeft(int timeLeft) {
         this.timeLeft = timeLeft;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 }
