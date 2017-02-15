@@ -12,8 +12,8 @@ public class GameClientAndServer {
             public void run() {
                 int portNo = 25566;
                 String[] serverArgs = {portNo + ""};
-                Thread discovery = new Thread(new ServerAnnouncer(portNo));
-                discovery.start();
+//                Thread discovery = new Thread(new ServerAnnouncer(portNo));
+//                discovery.start();
                 Server.main(serverArgs);
             }
         })).start();

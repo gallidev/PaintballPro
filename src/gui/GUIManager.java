@@ -98,7 +98,8 @@ public class GUIManager {
     public void establishConnection() {
         String nickname = user.getUsername(); // We ask the user what their nickname is.
 
-        String serverLocation = networkingDiscovery.ClientListener.findServer();
+//        String serverLocation = networkingDiscovery.ClientListener.findServer();
+        String serverLocation = "127.0.0.1:25566";
 
         int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
         String machName = serverLocation.split(":")[0]; // The machine has a particular name.
