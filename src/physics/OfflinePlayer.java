@@ -116,7 +116,8 @@ public class OfflinePlayer extends GeneralPlayer
 		}
 		else
 		{
-			System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
+			//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
+
 			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
 			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
 			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
