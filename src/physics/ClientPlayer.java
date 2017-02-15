@@ -21,7 +21,7 @@ public class ClientPlayer extends GeneralPlayer{
 	private ClientSender sender;
 	private AudioManager audio;
 	private ClientReceiver receiver;
-	
+
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
 
@@ -40,10 +40,14 @@ public class ClientPlayer extends GeneralPlayer{
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
-		this.receiver = receiver;
-		this.sender = receiver.getSender();
+
+		if(receiver != null){
+			this.receiver = receiver;
+			this.sender = receiver.getSender();
+		}
+
 	}
-	
+
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
 		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;
@@ -67,13 +71,16 @@ public class ClientPlayer extends GeneralPlayer{
 			updateAngle();
 		} else {
 			checkSpawn();
-			if (scoreChanged)
+			if (scoreChanged && receiver != null)
 				updateScore();
 		}
 		updatePlayerBounds();
-		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
 		updateBullets();
-		sendActiveBullets();
+		if(receiver != null){
+			sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
+			sendActiveBullets();
+		}
+
 		if(!invincible){
 			handleBulletCollision();
 		} else {
@@ -84,7 +91,7 @@ public class ClientPlayer extends GeneralPlayer{
 	private void updateScore() {
 		sendServerNewScore();
 		scoreChanged = false;
-		
+
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -144,33 +151,33 @@ public class ClientPlayer extends GeneralPlayer{
 
 	/**
 	 * Lets the server know when a player has moved.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
 	private void sendServerNewPosition(double x, double y, double angle){
 		String msg = "SendToAll:Move:" + id + ":" + x + ":" + y + ":" + angle; //Protocol message for updating a location
-		 
+
 		sender.sendMessage(msg);
 	}
-	
+
 	/**
 	 * Lets the server know when a team has gained an additional point.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
 	public void sendServerNewScore(){
 		//Protocol: Scored:<team>
 		String msg = "Scored:";
-		
+
 		//The current player has been shot, so the point goes to the other team
 		if(team == TeamEnum.RED)
 			msg += "Blue";
 		else
 			msg += "Red";
-		
+
 		sender.sendMessage(msg);
 	}
-	
+
 	private void sendActiveBullets(){
 		String msg = "SendToAll:Bullet:" + id;
 		for(Bullet bullet: firedBullets){
@@ -180,7 +187,7 @@ public class ClientPlayer extends GeneralPlayer{
 		}
 		sender.sendMessage(msg);
 	}
-	
+
 
 	public void shoot(){
 
@@ -197,15 +204,15 @@ public class ClientPlayer extends GeneralPlayer{
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 		firedBullets.add(bullet);
 	}
-	
+
 	public void setMap(Map m){
 		map = m;
 		propsWalls = map.getRecProps();
 		propsWalls.addAll(map.getRecWalls());
 	}
-	
-	
-	
+
+
+
 	public double getMX(){
 		return this.mx;
 	}

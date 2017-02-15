@@ -30,8 +30,8 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected int id;
 	protected long shootTimer, spawnTimer;
 	protected TeamEnum team;
-	protected ArrayList<LocalPlayer> enemies;
-	protected ArrayList<LocalPlayer> teamPlayers;
+	protected ArrayList<GeneralPlayer> enemies;
+	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
 	protected ArrayList<Rectangle> propsWalls;
 
@@ -151,9 +151,9 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 */
 	protected void handleBulletCollision()
 	{
-		for(LocalPlayer enemy : enemies){
+		for(GeneralPlayer enemy : enemies){
 
-			for(Bullet bullet : enemy.getFiredBullets()){
+			for(Bullet bullet : enemy.getBullets()){
 				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated){
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
@@ -314,14 +314,18 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return team;
 	}
 
-	public void setEnemies(ArrayList<LocalPlayer> enemies) {
+	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
+	}
+
+	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
 		this.enemies = enemies;
 	}
-	
-	public ArrayList<LocalPlayer> getEnemies(){
+
+	public ArrayList<GeneralPlayer> getEnemies(){
 		return this.enemies;
 	}
-	
+
 	public int getPlayerId(){
 		return id;
 	}

@@ -5,6 +5,9 @@ import physics.GeneralPlayer;
 import rendering.*;
 import enums.TeamEnum;
 
+import static gui.GUIManager.bluePlayerImage;
+import static gui.GUIManager.redPlayerImage;
+
 public class AIPlayer extends GeneralPlayer{
 
 	private RandomBehaviour rb;
@@ -12,8 +15,9 @@ public class AIPlayer extends GeneralPlayer{
 	private double movementAngle;
 	private Map map;
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
-		super(x, y, id, map, team, image);
+
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio){
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -51,7 +55,7 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	protected void updatePosition(){
 		if(collUp || collLeft || collRight || collDown) rb.change();
-		
+
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
 
@@ -63,11 +67,11 @@ public class AIPlayer extends GeneralPlayer{
 	protected void updateAngle(){
 		rotation.setAngle(Math.toDegrees(angle));
 	}
-	
+
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
 	}
-	
+
 	public Map getMap(){
 		return this.map;
 	}
