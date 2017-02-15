@@ -96,20 +96,25 @@ public class GUIManager {
     }
 
     public void establishConnection() {
-        String nickname = user.getUsername(); // We ask the user what their nickname is.
+        if (c == null) {
+            String nickname = user.getUsername(); // We ask the user what their nickname is.
 
-        String serverLocation = networkingDiscovery.ClientListener.findServer();
+//        String serverLocation = networkingDiscovery.ClientListener.findServer();
 
+            //String serverLocation = "127.0.0.1:25566";
+		//Server Filippo
+		String serverLocation = "10.20.201.220:25566";
+        
         int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
         String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
-        // This loads up the client code.
-        c = new Client(nickname, portNumber, machName, this);
+            // This loads up the client code.
+            c = new Client(nickname, portNumber, machName, this);
 
-        // We can then get the client sender and receiver threads.
-        ClientSender sender = c.getSender();
-        ClientReceiver receiver = c.getReceiver();
-
+            // We can then get the client sender and receiver threads.
+            ClientSender sender = c.getSender();
+            ClientReceiver receiver = c.getReceiver();
+        }
     }
 
 

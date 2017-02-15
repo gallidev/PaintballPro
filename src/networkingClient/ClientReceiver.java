@@ -154,19 +154,24 @@ public class ClientReceiver extends Thread {
 	 * @author Alexandra Paduraru
 	 */
 	private void bulletAction(String text) {
-		// Protocol message: SendToAll:Bullet:id:x:y:angle:
+		// Protocol message: SendToAll:Bullet:id:team:x:y:angle:
 		String[] data = text.split(":");
 
 		int id = Integer.parseInt(data[2]);
-		double x = Double.parseDouble(data[3]);
-		double y = Double.parseDouble(data[4]);
-		double angle = Double.parseDouble(data[4]);
+		String t = data[3];
 
 		LocalPlayer p = getPlayerWithID(id);
 
-		if (p != null)
-			p.tickBullet(x, y, angle);
+		for (int i = 4; i < data.length-2; i = i+3){
 
+			double x = Double.parseDouble(data[i]);
+			double y = Double.parseDouble(data[i+1]);
+			double angle = Double.parseDouble(data[i+2]);
+
+
+			if (p != null)
+				p.tickBullet(x, y, angle);
+		}
 		//debugghing code
 //		System.out.print("my Team players: " );
 //		for(LocalPlayer pq : myTeam)

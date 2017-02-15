@@ -40,12 +40,10 @@ public class ClientPlayer extends GeneralPlayer{
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
-
 		if(receiver != null){
 			this.receiver = receiver;
 			this.sender = receiver.getSender();
 		}
-
 	}
 
 	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver){
@@ -179,10 +177,10 @@ public class ClientPlayer extends GeneralPlayer{
 	}
 
 	private void sendActiveBullets(){
-		String msg = "SendToAll:Bullet:" + id;
+		String msg = "SendToAll:Bullet:" + id + ":" + team;
 		for(Bullet bullet: firedBullets){
 			if(bullet.isActive()){
-				msg += ":" + bullet.getX() + ":" + bullet.getY() + ":" + bullet.getAngle() + ":" + team;
+				msg += ":" + bullet.getX() + ":" + bullet.getY() + ":" + bullet.getAngle();
 			}
 		}
 		sender.sendMessage(msg);
