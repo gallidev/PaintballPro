@@ -40,6 +40,8 @@ public class GameTypeMenu {
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
 		
 		// Create the scene and return it
-		return new Scene(grid, m.width, m.height);
+		Scene s = new Scene(grid, m.width, m.height);
+		s.getStylesheets().add("styles/menu.css");
+		return s;
 	}
 }

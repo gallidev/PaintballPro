@@ -1,8 +1,13 @@
 package gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+
+import javafx.scene.image.ImageView;
 
 /**
  * Main Menu scene class
@@ -15,6 +20,12 @@ public class MainMenu {
 	 * @return main menu scene
 	 */
 	public static Scene getScene(GUIManager m) {
+
+		Image i = new Image("assets/paintballlogo.png");
+		ImageView iv = new ImageView(i);
+		iv.setId("logo");
+		iv.setPreserveRatio(true);
+		iv.setFitWidth(400);
 		
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Single player", new EventHandler<ActionEvent>() {
@@ -37,8 +48,19 @@ public class MainMenu {
 		
 		// Turn the collection of button options into a GridPane to be displayed
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
-		
+		GridPane view = new GridPane();
+
+		view.setAlignment(Pos.CENTER);
+		view.setHgap(10);
+		view.setVgap(10);
+		view.setPadding(new Insets(25, 25, 25, 25));
+
+		view.add(iv, 0, 0);
+		view.add(grid, 0, 1);
+
 		// Create the scene and return it
-		return new Scene(grid, m.width, m.height);
+		Scene s = new Scene(view, m.width, m.height);
+		s.getStylesheets().add("styles/menu.css");
+		return s;
 	}
 }
