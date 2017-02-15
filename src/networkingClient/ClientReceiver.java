@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import logic.LocalPlayer;
 import networkingSharedStuff.Message;
 import networkingSharedStuff.MessageQueue;
+import physics.Bullet;
 import physics.ClientPlayer;
 import rendering.Map;
 
@@ -161,17 +162,21 @@ public class ClientReceiver extends Thread {
 		String t = data[3];
 
 		LocalPlayer p = getPlayerWithID(id);
-		
-		for (int i = 4; i < data.length-2; i = i+3){
-			
-			double x = Double.parseDouble(data[i]);
-			double y = Double.parseDouble(data[i+1]);
-			double angle = Double.parseDouble(data[i+2]);
+		if(p != null) //the player is not us
+		{
+			ArrayList<Bullet> firedBullets = new ArrayList<>();
+			for(int i = 4; i < data.length - 2; i = i + 3)
+			{
 
-			
-			if (p != null)
-				p.tickBullet(x, y, angle);
+				double x = Double.parseDouble(data[i]);
+				double y = Double.parseDouble(data[i + 1]);
+				double angle = Double.parseDouble(data[i + 2]);
+
+				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
+			}
+			p.tickBullets(firedBullets);
 		}
+
 		
 		//debugghing code
 //		System.out.print("my Team players: " );

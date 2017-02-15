@@ -1,7 +1,6 @@
 package logic;
 
 import enums.TeamEnum;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import physics.Bullet;
@@ -38,15 +37,14 @@ public class LocalPlayer extends ImageView
 		setLayoutX(newX);
 		setLayoutY(newY);
 		rotation.setAngle(Math.toDegrees(newAngle));
-		//firedBullets = newFiredBullets;
 	}
-	
-	public void tickBullet(double x, double y, double angle){
-		Bullet b = new Bullet(x, y, angle, team);
-		
-		firedBullets.add(b);
+
+	public void tickBullets(ArrayList<Bullet> newFiredBullets)
+	{
+		firedBullets.clear();
+		firedBullets.addAll(newFiredBullets);
 	}
-	
+
 
 	public int getPlayerId()
 	{
@@ -57,10 +55,10 @@ public class LocalPlayer extends ImageView
 	{
 		return firedBullets;
 	}
-	
-	public TeamEnum getTeam(){
+
+	public TeamEnum getTeam()
+	{
 		return team;
 	}
 
-	
 }
