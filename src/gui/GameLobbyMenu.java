@@ -133,8 +133,10 @@ public class GameLobbyMenu {
 		mainGrid.setPadding(new Insets(25, 25, 25, 25));
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
-		
-		return new Scene(mainGrid, m.width, m.height);
+
+		Scene s = new Scene(mainGrid, m.width, m.height);
+		s.getStylesheets().add("styles/menu.css");
+		return s;
 	}
 	
 }

@@ -167,6 +167,8 @@ public class SettingsMenu {
 		mainGrid.add(buttonGrid, 0, 1);
 		
 		// Create a new scene using the main grid
-		return new Scene(mainGrid, m.width, m.height);
+		Scene scene = new Scene(mainGrid, m.width, m.height);
+		scene.getStylesheets().add("styles/menu.css");
+		return scene;
 	}
 }
