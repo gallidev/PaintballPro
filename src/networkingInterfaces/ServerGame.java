@@ -2,6 +2,7 @@ package networkingInterfaces;
 
 import java.util.ArrayList;
 
+import enums.TeamEnum;
 import logic.CaptureTheFlagMode;
 import logic.EscortMode;
 import logic.GameMode;
@@ -66,6 +67,24 @@ public class ServerGame {
 	/**
 	 * Checks to see when a game has ended and sends the appropriate message to all clients.
 	 */
+	public void endGame(TeamEnum t){
+		String toBeSent = "EndGame:";
+		
+		if (t== TeamEnum.RED){
+			toBeSent += "Red";
+			System.out.println("Winner: Red");
+		}
+		else{
+			toBeSent += "Blue";
+			System.out.println("Winner: Blue");
+		}
+		
+		if (game.isGameFinished())
+			serverReceiver.sendToAll(toBeSent);
+		
+		
+	}
+	
 	public void endGame(){
 		if (game.isGameFinished())
 			serverReceiver.sendToAll("EndGame");

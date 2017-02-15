@@ -79,7 +79,6 @@ public class ClientPlayer extends GeneralPlayer
 		else
 		{
 			checkSpawn();
-			updateScore();
 		}
 		updatePlayerBounds();
 		updateBullets();
@@ -106,6 +105,7 @@ public class ClientPlayer extends GeneralPlayer
 				{
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
+					sendServerNewScore();
 					setVisible(false);
 					bullet.setActive(false);
 					return;
@@ -114,20 +114,6 @@ public class ClientPlayer extends GeneralPlayer
 		}
 	}
 
-	private void updateScore()
-	{
-		sendServerNewScore();
-		scoreChanged = false;
-
-		try
-		{
-			Thread.sleep(100);
-		}
-		catch(InterruptedException e)
-		{
-			System.err.println("Thread can't sleep" + e);
-		}
-	}
 
 	@Override
 	protected void updatePosition()

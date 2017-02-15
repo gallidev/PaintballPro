@@ -40,8 +40,15 @@ public class NicknameMenu {
         TextField usernameText = new TextField();
         usernameText.setText(s.getUsername());
 
+        Label ipLabel = new Label("Server IP Address");
+
+        TextField ipText = new TextField("10.20.201.220");
+
         topGrid.add(usernameLabel, 0, 0);
         topGrid.add(usernameText, 1, 0);
+
+        topGrid.add(ipLabel, 0, 1);
+        topGrid.add(ipText, 1, 1);
 
         // Create a array of options for the cancel and apply buttons
         MenuOption[] set = {new MenuOption("Connect", new EventHandler<ActionEvent>() {
@@ -51,6 +58,7 @@ public class NicknameMenu {
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
                 // Transition back to the main menu
+                m.setIpAddress(ipText.getText());
                 m.transitionTo("Main", null);
             }
         })};
