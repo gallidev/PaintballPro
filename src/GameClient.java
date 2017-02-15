@@ -20,10 +20,10 @@ public class GameClient extends Application {
 	}
 
 	public static void main(String[] args) {
-		if (System.getProperty("os.name").contains("Mac")) {
-			java.awt.Image image = new ImageIcon("res/assets/icon_dock.png").getImage();
-			com.apple.eawt.Application.getApplication().setDockIconImage(image);
-		}
+//		if (System.getProperty("os.name").contains("Mac")) {
+//			java.awt.Image image = new ImageIcon("res/assets/icon_dock.png").getImage();
+//			com.apple.eawt.Application.getApplication().setDockIconImage(image);
+//		}
 		launch(args);
 	}
 }

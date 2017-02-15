@@ -59,7 +59,7 @@ public class Renderer extends Scene
 		else
 		{
 			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, null);
-			player.setEnemies(new ArrayList<>());
+			player.setClientEnemies(new ArrayList<>());
 		}
 		view.getChildren().add(player);
 

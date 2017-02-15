@@ -15,7 +15,7 @@ import static physics.GeneralPlayer.playerHeadY;
 public class LocalPlayer extends ImageView
 {
 	private int id;
-	private final ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
+	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private TeamEnum team;
 
