@@ -118,10 +118,22 @@ public class OfflinePlayer extends GeneralPlayer
 		{
 			//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
-			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
-			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
-			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
-			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
+			int moveY = 0;
+			int moveX = 0;
+
+//			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
+//			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
+//			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
+//			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
+
+			if(up && !collUp) moveY -= movementSpeed;
+			if(down && !collDown) moveY += movementSpeed;
+			if(left && !collLeft) moveX -= movementSpeed;
+			if(right && !collRight) moveX += movementSpeed;
+
+			setLayoutX(getLayoutX() + moveX);
+			setLayoutY(getLayoutY() + moveY);
+
 		}
 	}
 
