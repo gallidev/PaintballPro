@@ -89,7 +89,7 @@ public class Team {
 	public TeamEnum getColour(){
 		return colour;
 	}
-	
+
 //	public void setMap(Map map){
 //		for (ServerPlayer p : members){
 //			p.setMap(map);

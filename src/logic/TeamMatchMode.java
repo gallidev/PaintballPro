@@ -4,17 +4,17 @@ package logic;
  * Creates a new game in the Team Match mode. In the Team Match mode, the teams
  * play against each other for a set amount of time. The winning team is the one
  * with the biggest number of points.
- * 
+ *
  * @author Alexandra Paduraru
  */
 public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
-	private static final long gameTime = 40; // in seconds
+	private static final long gameTime = 180; // in seconds
 
 	/**
 	 * Initialises the game with two teams and starts the count-down.
-	 * 
+	 *
 	 * @param t1
 	 *            The first team.
 	 * @param t2
@@ -38,7 +38,7 @@ public class TeamMatchMode extends GameMode {
 	// Doesn't consider ties!!
 	/**
 	 * Returns the winner team.
-	 * 
+	 *
 	 * @return The team who has won the game. The method returns null in case if
 	 *         the game is a draw. However, the game should not stop, as 30 more
 	 *         seconds are allocated for the game to finish.
@@ -49,13 +49,13 @@ public class TeamMatchMode extends GameMode {
 			return getFirstTeam();
 		else if (getFirstTeam().getScore() < getSecondTeam().getScore())
 			return getSecondTeam();
-		
+
 		return getSecondTeam();
 	}
 
 	@Override
 	public void start() {
-		timer.startTimer();		
+		timer.startTimer();
 	}
 
 }
