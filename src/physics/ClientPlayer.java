@@ -144,10 +144,26 @@ public class ClientPlayer extends GeneralPlayer
 		else
 		{
 			//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
-			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
-			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
-			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
-			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
+			if(up && !collUp){
+				setLayoutY(getLayoutY() - movementSpeed);
+			}else if(!up && collUp){
+				setLayoutY(getLayoutY() + movementSpeed);
+			}
+			if(down && !collDown){
+				setLayoutY(getLayoutY() + movementSpeed);
+			}else if(!down && collDown){
+				setLayoutY(getLayoutY() - movementSpeed);
+			}
+			if(left && !collLeft) {
+				setLayoutX(getLayoutX() - movementSpeed);
+			} else if(!left && collLeft){
+				setLayoutX(getLayoutX() + movementSpeed);
+			}
+			if(right && !collRight){
+				setLayoutX(getLayoutX() + movementSpeed);
+			}else if (!right && collRight){
+				setLayoutX(getLayoutX() - movementSpeed);
+			}
 		}
 	}
 
@@ -162,22 +178,6 @@ public class ClientPlayer extends GeneralPlayer
 
 		double deltax = mx - x1;
 		double deltay = y1 - my;
-		if(collUp)
-		{
-			setLayoutY(getLayoutY() + movementSpeed);
-		}
-		else if(collDown)
-		{
-			setLayoutY(getLayoutY() - movementSpeed);
-		}
-		else if(collLeft)
-		{
-			setLayoutX(getLayoutX() + movementSpeed);
-		}
-		else if(collRight)
-		{
-			setLayoutX(getLayoutX() - movementSpeed);
-		}
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}

@@ -25,6 +25,7 @@ public class OfflinePlayer extends GeneralPlayer
 	private boolean controlScheme;
 	private AudioManager audio;
 
+
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
 
@@ -118,21 +119,26 @@ public class OfflinePlayer extends GeneralPlayer
 		{
 			//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
-			int moveY = 0;
-			int moveX = 0;
-
-//			if(up && !collUp) setLayoutY(getLayoutY() - movementSpeed);
-//			if(down && !collDown) setLayoutY(getLayoutY() + movementSpeed);
-//			if(left && !collLeft) setLayoutX(getLayoutX() - movementSpeed);
-//			if(right && !collRight) setLayoutX(getLayoutX() + movementSpeed);
-
-			if(up && !collUp) moveY -= movementSpeed;
-			if(down && !collDown) moveY += movementSpeed;
-			if(left && !collLeft) moveX -= movementSpeed;
-			if(right && !collRight) moveX += movementSpeed;
-
-			setLayoutX(getLayoutX() + moveX);
-			setLayoutY(getLayoutY() + moveY);
+			if(up && !collUp){
+				setLayoutY(getLayoutY() - movementSpeed);
+			}else if(!up && collUp){
+				setLayoutY(getLayoutY() + movementSpeed);
+			}
+			if(down && !collDown){
+				setLayoutY(getLayoutY() + movementSpeed);
+			}else if(!down && collDown){
+				setLayoutY(getLayoutY() - movementSpeed);
+			}
+			if(left && !collLeft) {
+				setLayoutX(getLayoutX() - movementSpeed);
+			} else if(!left && collLeft){
+				setLayoutX(getLayoutX() + movementSpeed);
+			}
+			if(right && !collRight){
+				setLayoutX(getLayoutX() + movementSpeed);
+			}else if (!right && collRight){
+				setLayoutX(getLayoutX() - movementSpeed);
+			}
 
 		}
 	}
@@ -148,22 +154,6 @@ public class OfflinePlayer extends GeneralPlayer
 
 		double deltax = mx - x1;
 		double deltay = y1 - my;
-		if(collUp)
-		{
-			setLayoutY(getLayoutY() + movementSpeed);
-		}
-		else if(collDown)
-		{
-			setLayoutY(getLayoutY() - movementSpeed);
-		}
-		else if(collLeft)
-		{
-			setLayoutX(getLayoutX() + movementSpeed);
-		}
-		else if(collRight)
-		{
-			setLayoutX(getLayoutX() - movementSpeed);
-		}
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}
@@ -200,5 +190,6 @@ public class OfflinePlayer extends GeneralPlayer
 	{
 		this.audio = audio;
 	}
+
 
 }
