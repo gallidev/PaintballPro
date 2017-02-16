@@ -252,6 +252,7 @@ public class Lobby {
 	{
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
+		
 		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
 		Player[] allPlayers = getPlayers();
 		
@@ -276,6 +277,7 @@ public class Lobby {
 		
 		// sends the end game signal to all clients
 		while(!currentSessionGame.getGame().isGameFinished()){}
+		
 		currentSessionGame.endGame(getWinner());
 		//currentSessionGame.endGame();
 	}

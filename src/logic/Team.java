@@ -14,7 +14,7 @@ public class Team {
 
 	private ArrayList<ServerPlayer> members;
 	private int score;
-	private TeamEnum color;
+	private TeamEnum colour;
 
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
@@ -38,6 +38,7 @@ public class Team {
 	 */
 	public void addMember(ServerPlayer p){
 		members.add(p);
+		colour = p.getColour();
 	}
 
 	/**
@@ -47,6 +48,7 @@ public class Team {
 	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
 		for (ServerPlayer p : teamPlayers)
 			addMember(p);
+		colour = teamPlayers.get(0).getColour();
 	}
 //	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
 //		p.getsetXCoord(newXCoord);
@@ -85,7 +87,7 @@ public class Team {
 	}
 
 	public TeamEnum getColour(){
-		return color;
+		return colour;
 	}
 	
 //	public void setMap(Map map){

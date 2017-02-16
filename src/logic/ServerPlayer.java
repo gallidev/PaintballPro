@@ -48,4 +48,8 @@ public class ServerPlayer{
 	public ServerMsgReceiver getServerReceiver(){
 		return receiver;
 	}
+	
+	public TeamEnum getColour(){
+		return team;
+	}
 }

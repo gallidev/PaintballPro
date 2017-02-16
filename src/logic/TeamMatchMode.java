@@ -10,7 +10,7 @@ package logic;
 public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
-	private static final long gameTime = 180; // in seconds
+	private static final long gameTime = 40; // in seconds
 
 	/**
 	 * Initialises the game with two teams and starts the count-down.
@@ -22,6 +22,8 @@ public class TeamMatchMode extends GameMode {
 	 */
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
+		System.out.println("First team colour is : " + t1.getColour());
+		System.out.println("second team colour is : " + t2.getColour());
 		timer = new RoundTimer(gameTime);
 	}
 
@@ -43,16 +45,12 @@ public class TeamMatchMode extends GameMode {
 	 */
 	@Override
 	public Team whoWon() {
-		if (super.getFirstTeam().getScore() > super.getSecondTeam().getScore())
-			return super.getFirstTeam();
-		else if (super.getFirstTeam().getScore() < super.getSecondTeam().getScore())
-			return super.getSecondTeam();
-		else {
-			// Give players 30 more seconds to play if it is a draw
-			timer = new RoundTimer(30);
-			return null;
-		}
-
+		if (getFirstTeam().getScore() > getSecondTeam().getScore())
+			return getFirstTeam();
+		else if (getFirstTeam().getScore() < getSecondTeam().getScore())
+			return getSecondTeam();
+		
+		return getSecondTeam();
 	}
 
 	@Override
