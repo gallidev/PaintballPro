@@ -371,6 +371,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return id;
 	}
 
+	public ArrayList<GeneralPlayer> getTeamPlayers(){
+		return teamPlayers;
+	}
+	
 	public void setMX(double newX) {
 	}
 	public void setMY(double newY){

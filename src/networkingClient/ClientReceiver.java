@@ -59,7 +59,6 @@ public class ClientReceiver extends Thread {
 				if(text != null && text.compareTo("Exit:Client") != 0){
 					//System.out.println("Received: " + text);
 
-					// Protocols
 					//In-game messages
 					if (text.contains("Move")){
 						moveAction(text);

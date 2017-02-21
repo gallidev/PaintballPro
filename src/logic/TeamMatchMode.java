@@ -35,8 +35,7 @@ public class TeamMatchMode extends GameMode {
 		return timer.isTimeElapsed();
 	}
 
-	// Doesn't consider ties!!
-	/**
+		/**
 	 * Returns the winner team.
 	 *
 	 * @return The team who has won the game. The method returns null in case if
@@ -49,8 +48,13 @@ public class TeamMatchMode extends GameMode {
 			return getFirstTeam();
 		else if (getFirstTeam().getScore() < getSecondTeam().getScore())
 			return getSecondTeam();
-
-		return getSecondTeam();
+		else{
+			//allocate 30 more seconds to the game.
+			RoundTimer delay = new RoundTimer(30);
+			delay.startTimer();
+			while (!delay.isTimeElapsed()){}
+			return whoWon();
+		}
 	}
 
 	@Override

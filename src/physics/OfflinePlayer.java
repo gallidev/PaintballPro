@@ -26,9 +26,6 @@ public class OfflinePlayer extends GeneralPlayer
 	private AudioManager audio;
 
 
-	//flag for keeping track of scores
-	boolean scoreChanged = true;
-
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
 	 *
@@ -141,6 +138,24 @@ public class OfflinePlayer extends GeneralPlayer
 			}
 
 		}
+	}
+	
+	protected void handleBulletCollision()
+	{
+		for(GeneralPlayer enemy : enemies){
+
+			for(Bullet bullet : enemy.getBullets()){
+				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated){
+					spawnTimer = System.currentTimeMillis();
+					eliminated = true;
+					setVisible(false);
+					bullet.setActive(false);
+
+					return;
+				}
+			}
+		}
+
 	}
 
 

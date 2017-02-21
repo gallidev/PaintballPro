@@ -23,11 +23,6 @@ public abstract class GameMode {
 	
 	public abstract void start();
 	
-	public void shoot(){
-	
-		
-		//respawn the player that was hit
-	}
 	
 	/**
 	 * Checks to see if the game has finished.
