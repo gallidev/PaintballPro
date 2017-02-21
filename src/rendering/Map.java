@@ -2,6 +2,8 @@ package rendering;
 
 import com.google.gson.Gson; //add gson-2.8.0.jar to the project libraries!
 import enums.TeamEnum;
+import gui.GUIManager;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -30,7 +32,7 @@ public class Map
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
-	Spawn[] spawns;
+	private Spawn[] spawns;
 
 	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group(), spawnGroup[] = new Group[2];
 
@@ -76,25 +78,19 @@ public class Map
 			}
 			map.spawnGroup[0].setEffect(new DropShadow(32, 0, 0, Color.RED));
 			map.spawnGroup[0].setCache(true);
+			map.spawnGroup[0].setCacheHint(CacheHint.SPEED);
 			map.spawnGroup[1].setEffect(new DropShadow(32, 0, 0, Color.BLUE));
 			map.spawnGroup[1].setCache(true);
+			map.spawnGroup[1].setCacheHint(CacheHint.SPEED);
 			map.floorGroup.setCache(true);
+			map.floorGroup.setCacheHint(CacheHint.SPEED);
 			view.getChildren().add(map.floorGroup);
 			view.getChildren().add(map.spawnGroup[0]);
 			view.getChildren().add(map.spawnGroup[1]);
 
-			Light.Distant light = new Light.Distant();
-			light.setAzimuth(145.0);
-			light.setElevation(40);
-
-			Lighting propLighting = new Lighting();
-			propLighting.setLight(light);
-			propLighting.setSurfaceScale(3.0);
-
 			DropShadow propShadow = new DropShadow(16, 0, 0, Color.BLACK);
 			propShadow.setSpread(0.5);
 			propShadow.setHeight(64);
-			propShadow.setInput(propLighting);
 
 			for(Prop prop : map.props)
 			{
@@ -104,17 +100,13 @@ public class Map
 				map.propGroup.getChildren().add(image);
 			}
 			map.propGroup.setCache(true);
+			map.propGroup.setCacheHint(CacheHint.SPEED);
 			map.propGroup.setEffect(propShadow);
 			view.getChildren().add(map.propGroup);
-
-			Lighting wallLighting = new Lighting();
-			wallLighting.setLight(light);
-			wallLighting.setSurfaceScale(5.0);
 
 			DropShadow wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
 			wallShadow.setSpread(0.5);
 			wallShadow.setHeight(64);
-			wallShadow.setInput(wallLighting);
 
 			//Wall orientation: true for horizontal, false for vertical
 			for(Wall wall : map.walls)
@@ -128,8 +120,28 @@ public class Map
 				}
 			}
 			map.wallGroup.setCache(true);
+			map.wallGroup.setCacheHint(CacheHint.SPEED);
 			map.wallGroup.setEffect(wallShadow);
 			view.getChildren().add(map.wallGroup);
+
+			//turn on lighting if the user has it enabled
+			if(GUIManager.getUserSettings().getShading())
+			{
+				Light.Distant light = new Light.Distant();
+				light.setAzimuth(145.0);
+				light.setElevation(40);
+
+				Lighting propLighting = new Lighting();
+				propLighting.setLight(light);
+				propLighting.setSurfaceScale(3.0);
+
+				Lighting wallLighting = new Lighting();
+				wallLighting.setLight(light);
+				wallLighting.setSurfaceScale(5.0);
+
+				propShadow.setInput(propLighting);
+				wallShadow.setInput(wallLighting);
+			}
 		}
 		catch(FileNotFoundException e)
 		{

@@ -7,6 +7,7 @@ import audio.AudioManager;
 import enums.TeamEnum;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -14,8 +15,6 @@ import javafx.scene.paint.Color;
 import logic.LocalPlayer;
 import networkingClient.ClientReceiver;
 import physics.*;
-
-import static gui.GUIManager.redPlayerImage;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -47,21 +46,26 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		Map map = Map.load("res/maps/" + mapName + ".json");
+		Map.load("res/maps/" + mapName + ".json");
 
-		ClientPlayer player;
-		if(receiver != null)
-		{
-			player = receiver.getClientPlayer();
-			view.getChildren().addAll(receiver.getMyTeam());
-			view.getChildren().addAll(receiver.getEnemies());
-		}
-		else
-		{
-			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, null);
-			player.setClientEnemies(new ArrayList<>());
-		}
+		ClientPlayer player = receiver.getClientPlayer();
+		player.setCache(true);
+		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		view.getChildren().add(player);
+
+		receiver.getMyTeam().forEach(localPlayer ->
+		{
+			localPlayer.setCache(true);
+			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+		view.getChildren().addAll(receiver.getMyTeam());
+
+		receiver.getEnemies().forEach(localPlayer ->
+		{
+			localPlayer.setCache(true);
+			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+		view.getChildren().addAll(receiver.getEnemies());
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
@@ -123,7 +127,7 @@ public class Renderer extends Scene
 
 		Map map = Map.load("res/maps/" + mapName + ".json");
 
-		ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
+		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
 		OfflinePlayer player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
 		view.getChildren().add(player);
@@ -131,12 +135,18 @@ public class Renderer extends Scene
 		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 1, map, TeamEnum.BLUE, audio);
 		view.getChildren().add(ai);
 		players.add(ai);
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map, TeamEnum.BLUE,audio);
+		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map, TeamEnum.BLUE, audio);
 		view.getChildren().add(ai2);
 		players.add(ai2);
 		AIPlayer ai3 = new AIPlayer(map.getSpawns()[1].x * 64, map.getSpawns()[1].y * 64, 1, map, TeamEnum.RED, audio);
 		view.getChildren().add(ai3);
 		players.add(ai3);
+
+		players.forEach(p -> {
+			p.setCache(true);
+			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+
 		//provisional way to differ enemies and team players
 		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
 		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();
