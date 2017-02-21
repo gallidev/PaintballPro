@@ -37,7 +37,6 @@ public class ClientPlayer extends GeneralPlayer
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
-	 * @param scene         The scene in which the player will be displayed
 	 */
 	public ClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
 	{
@@ -72,6 +71,9 @@ public class ClientPlayer extends GeneralPlayer
 		handlePropWallCollision();
 		if(!eliminated)
 		{
+			lastX = getLayoutX();
+			lastY = getLayoutY();
+			lastAngle = angle;
 			updatePosition();
 			updateShooting();
 			updateAngle();
@@ -82,7 +84,9 @@ public class ClientPlayer extends GeneralPlayer
 		}
 		updatePlayerBounds();
 		updateBullets();
-		sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
+		if(!(lastX == getLayoutX() && lastY == getLayoutY() && lastAngle == angle)){
+			sendServerNewPosition(getLayoutX(), getLayoutY(), angle);
+		}
 		sendActiveBullets();
 
 		if(!invincible)

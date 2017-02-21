@@ -31,6 +31,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected Map map;
 	protected int id;
 	protected long shootTimer, spawnTimer;
+	protected double lastX, lastY;
 	protected TeamEnum team;
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
@@ -51,6 +52,9 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
+		this.lastX = x;
+		this.lastY = y;
+		this.lastAngle = angle;
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
