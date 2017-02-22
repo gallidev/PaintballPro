@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
+import players.ServerPlayer;
 import rendering.Map;
 
 /**

@@ -1,12 +1,13 @@
-package ai;
+package players;
 import audio.AudioManager;
 import javafx.scene.image.Image;
-import physics.GeneralPlayer;
 import rendering.*;
 import enums.TeamEnum;
 
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
+
+import ai.RandomBehaviour;
 
 public class AIPlayer extends GeneralPlayer{
 

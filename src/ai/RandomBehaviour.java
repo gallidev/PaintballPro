@@ -6,8 +6,9 @@ import java.util.Random;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import logic.LocalPlayer;
-import physics.GeneralPlayer;
+import players.AIPlayer;
+import players.GeneralPlayer;
+import players.LocalPlayer;
 
 public class RandomBehaviour {
 

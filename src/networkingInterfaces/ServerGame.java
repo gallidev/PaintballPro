@@ -7,11 +7,11 @@ import logic.CaptureTheFlagMode;
 import logic.EscortMode;
 import logic.GameMode;
 import logic.KingOfTheHillMode;
-import logic.ServerPlayer;
 import logic.Team;
 import logic.TeamMatchMode;
 import networkingServer.ServerMsgReceiver;
 import networkingShared.Message;
+import players.ServerPlayer;
 
 /**
  * Server side integration to play a game in a specific game mode. Will be

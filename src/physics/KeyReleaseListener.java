@@ -3,6 +3,7 @@ package physics;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import networkingInterfaces.ClientPlayerOld;
+import players.GeneralPlayer;
 
 public class KeyReleaseListener implements EventHandler<KeyEvent>{
 

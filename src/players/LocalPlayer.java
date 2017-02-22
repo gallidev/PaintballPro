@@ -1,4 +1,4 @@
-package logic;
+package players;
 
 import enums.TeamEnum;
 import javafx.scene.image.ImageView;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
-import static physics.GeneralPlayer.playerHeadX;
-import static physics.GeneralPlayer.playerHeadY;
+import static players.GeneralPlayer.playerHeadX;
+import static players.GeneralPlayer.playerHeadY;
 
 public class LocalPlayer extends ImageView
 {

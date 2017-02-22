@@ -2,6 +2,8 @@ package networkingServer;
 
 import java.util.concurrent.*;
 
+import players.ServerBasicPlayer;
+
 /**
  * Class to store important client-related information used by Client and
  * Server.
@@ -31,20 +33,20 @@ public class LobbyTable {
 	// run a thread to check if a lobby has 0 players, if it does, remove it
 	public synchronized void removeLobby(int lobbyID) {
 		// We reset the allocated lobby to each of our players.
-		for (Player player : lobbyList.get(lobbyID).getPlayers()) {
+		for (ServerBasicPlayer player : lobbyList.get(lobbyID).getPlayers()) {
 			player.setAllocatedLobby(-1);
 		}
 		// We then remove the lobby from the list.
 		lobbyList.remove(lobbyID);
 	}
 
-	public synchronized void removePlayer(Player playerToRemove) {
+	public synchronized void removePlayer(ServerBasicPlayer playerToRemove) {
 		Lobby allocatedLobby = lobbyList.get(playerToRemove.getAllocatedLobby());
 		allocatedLobby.removePlayer(playerToRemove);
 	}
 
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	public synchronized void addPlayerToLobby(Player player, int gameMode, ServerMsgReceiver receiver) {
+	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerMsgReceiver receiver) {
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
 		for (Lobby lobby : lobbyList.values()) {
@@ -79,7 +81,7 @@ public class LobbyTable {
 		return lobbyList.get(lobbyId);
 	}
 
-	public synchronized void switchTeams(Player player, ServerMsgReceiver receiver) {
+	public synchronized void switchTeams(ServerBasicPlayer player, ServerMsgReceiver receiver) {
 		lobbyList.get(player.getAllocatedLobby()).switchTeam(player, receiver);
 	}
 }

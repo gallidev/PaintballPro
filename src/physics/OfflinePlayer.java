@@ -4,10 +4,11 @@ import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import logic.LocalPlayer;
 import logic.Team;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
+import players.GeneralPlayer;
+import players.LocalPlayer;
 import rendering.Map;
 
 import java.util.ArrayList;

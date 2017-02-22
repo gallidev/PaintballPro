@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
-import logic.LocalPlayer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import physics.Bullet;
-import physics.ClientPlayer;
+import players.LocalPlayer;
+import players.PhysicsClientPlayer;
 import rendering.Map;
 
 // Gets messages from client and puts them in a queue, for another
@@ -27,7 +27,7 @@ public class ClientReceiver extends Thread {
 	private MessageQueue myMsgQueue;
 	private Message msg;
 	private GUIManager m;
-	private ClientPlayer cPlayer;
+	private PhysicsClientPlayer cPlayer;
 	private ArrayList<LocalPlayer> myTeam;
 	private ArrayList<LocalPlayer> enemies;
 	
@@ -199,10 +199,10 @@ public class ClientReceiver extends Thread {
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
-			cPlayer = new ClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
+			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
 					clientID, false, map, m.getAudioManager(), TeamEnum.RED, this);
 		else
-			cPlayer = new ClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
+			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
 					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this);
 
 		// extract the other members
@@ -321,7 +321,7 @@ public class ClientReceiver extends Thread {
 		return sender;
 	}
 
-	public ClientPlayer getClientPlayer() {
+	public PhysicsClientPlayer getClientPlayer() {
 		return cPlayer;
 	}
 }

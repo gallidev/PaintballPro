@@ -1,13 +1,13 @@
-package physics;
+package players;
 
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import logic.LocalPlayer;
 import logic.Team;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
+import physics.Bullet;
 import rendering.Map;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import static gui.GUIManager.redPlayerImage;
 /**
  * The player, represented by an ImageView that should be running
  */
-public class ClientPlayer extends GeneralPlayer
+public class PhysicsClientPlayer extends GeneralPlayer
 {
 
 	private double mx, my;
@@ -38,7 +38,7 @@ public class ClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-	public ClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
+	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
 	{
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		this.audio = audio;
@@ -50,7 +50,7 @@ public class ClientPlayer extends GeneralPlayer
 		this.sender = receiver.getSender();
 	}
 
-	public ClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver)
+	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver)
 	{
 		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;

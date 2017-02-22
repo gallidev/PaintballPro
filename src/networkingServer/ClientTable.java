@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.concurrent.*;
 
 import networkingShared.MessageQueue;
+import players.ServerBasicPlayer;
 
 /**
  * Class to store important client-related information used by Client and Server.
@@ -19,7 +20,7 @@ public class ClientTable {
 	//Each client has a game score.
 	private ConcurrentMap<Integer,Integer> Scores = new ConcurrentHashMap<Integer,Integer>();
 	//Each client has a Player object..
-	private ConcurrentMap<Integer, Player> playerInstances = new ConcurrentHashMap<Integer, Player>();
+	private ConcurrentMap<Integer, ServerBasicPlayer> playerInstances = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	
 	//Each user will have an incrementing unique id - allows multiple people with the same nickname.
 	private int id = 1;
@@ -34,7 +35,7 @@ public class ClientTable {
 		queueTable.put(id, new MessageQueue()); //Make a new queue for the client.
 		inGameStatus.put(id, false); //Set initial in-game status as false.
 		Scores.put(id, 0); //Set score as 0.
-		Player player = new Player(id);
+		ServerBasicPlayer player = new ServerBasicPlayer(id);
 		player.setUsername(nickname);
 		playerInstances.put(id,player);
 		id++; //Increment current id value for next client to connect.
@@ -42,7 +43,7 @@ public class ClientTable {
 		return (id-1); //Return this client's id value.
 	}
 	
-	public synchronized Player getPlayer(int clientID)
+	public synchronized ServerBasicPlayer getPlayer(int clientID)
 	{
 		return playerInstances.get(clientID);
 	}

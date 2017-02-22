@@ -2,9 +2,9 @@ package logic;
 
 import java.util.ArrayList;
 
-import ai.AIPlayer;
-import physics.GeneralPlayer;
 import physics.OfflinePlayer;
+import players.AIPlayer;
+import players.GeneralPlayer;
 
 public abstract class OfflineGameMode {
 

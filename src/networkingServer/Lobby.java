@@ -6,9 +6,10 @@ import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
 import logic.RoundTimer;
-import logic.ServerPlayer;
 import logic.Team;
 import networkingInterfaces.ServerGame;
+import players.ServerBasicPlayer;
+import players.ServerPlayer;
 
 /**
  * Class to represent a lobby.
@@ -34,8 +35,8 @@ public class Lobby {
 	// Team information
 	private int currPlayerBlueNum;
 	private int currPlayerRedNum;
-	private ConcurrentMap<Integer, Player> blueTeam = new ConcurrentHashMap<Integer, Player>();
-	private ConcurrentMap<Integer, Player> redTeam = new ConcurrentHashMap<Integer, Player>();
+	private ConcurrentMap<Integer, ServerBasicPlayer> blueTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
+	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	private Team red;
 	private Team blue;
 
@@ -75,7 +76,7 @@ public class Lobby {
 	// Add player to teams - alternate teams unless specified (when a client
 	// requests to switch teams).
 	// We check in LobbyTable if max players is reached.
-	public void addPlayer(Player playerToAdd, int specific) {
+	public void addPlayer(ServerBasicPlayer playerToAdd, int specific) {
 		// Specific - 0 = random, 1 = blue, 2 = red;
 		int totPlayers = getCurrPlayerTotal();
 		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers / 2))) {
@@ -89,10 +90,10 @@ public class Lobby {
 
 	// remove player from team and alter everyone's respective positions in the
 	// lobby to accomodate
-	public void removePlayer(Player playerToRemove) {
+	public void removePlayer(ServerBasicPlayer playerToRemove) {
 		boolean removed = false;
 		int counter = 0;
-		for (Player player : blueTeam.values()) {
+		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
 			 * We look through until we find the player we are looking for, we
 			 * then remove this player from the team and shift all of the items
@@ -113,7 +114,7 @@ public class Lobby {
 		}
 		if (!removed) {
 			counter = 0;
-			for (Player player : redTeam.values()) {
+			for (ServerBasicPlayer player : redTeam.values()) {
 				/*
 				 * We look through until we find the player we are looking for,
 				 * we then remove this player from the team and shift all of the
@@ -135,9 +136,9 @@ public class Lobby {
 	}
 
 	// switch player's team
-	public void switchTeam(Player playerToSwitch, ServerMsgReceiver receiver) {
+	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerMsgReceiver receiver) {
 		boolean switched = false;
-		for (Player player : blueTeam.values()) {
+		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
 			 * We look through until we find the player we are looking for, we
 			 * then remove them from their original team and add them to the
@@ -153,7 +154,7 @@ public class Lobby {
 			}
 		}
 		if (!switched) {
-			for (Player player : redTeam.values()) {
+			for (ServerBasicPlayer player : redTeam.values()) {
 				/*
 				 * We look through until we find the player we are looking for,
 				 * we then remove them from their original team and add them to
@@ -178,11 +179,11 @@ public class Lobby {
 	public String getTeam(int teamNum) {
 		String retStr = "";
 		if (teamNum == 1) {
-			for (Player player : blueTeam.values()) {
+			for (ServerBasicPlayer player : blueTeam.values()) {
 				retStr = retStr + player.getUsername() + "-";
 			}
 		} else {
-			for (Player player : redTeam.values()) {
+			for (ServerBasicPlayer player : redTeam.values()) {
 				retStr = retStr + player.getUsername() + "-";
 			}
 		}
@@ -192,18 +193,18 @@ public class Lobby {
 			return "";
 	}
 
-	public Player[] getPlayers() {
-		ArrayList<Player> playArr = new ArrayList<>();
+	public ServerBasicPlayer[] getPlayers() {
+		ArrayList<ServerBasicPlayer> playArr = new ArrayList<>();
 		playArr.addAll(blueTeam.values());
 		playArr.addAll(redTeam.values());
-		Player[] playArrReturn = new Player[playArr.size()];
+		ServerBasicPlayer[] playArrReturn = new ServerBasicPlayer[playArr.size()];
 		playArr.toArray(playArrReturn);
 		return playArrReturn;
 	}
 
-	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, Player> team, int teamNum) {
+	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team();
-		for (Player origPlayer : team.values()) {
+		for (ServerBasicPlayer origPlayer : team.values()) {
 			ServerPlayer player = null;
 			if (teamNum == 1)
 				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.BLUE);
@@ -226,7 +227,7 @@ public class Lobby {
 		blue = convertTeam(receiver, blueTeam, 1);
 
 		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
-		Player[] allPlayers = getPlayers();
+		ServerBasicPlayer[] allPlayers = getPlayers();
 
 		// String to be sent needs to contain:
 		// StartGame:<myID><myTeam>...8 times
@@ -295,12 +296,12 @@ public class Lobby {
 	}
 
 	private String getTeamAssoc(int playerID) {
-		for (Player player : redTeam.values()) {
+		for (ServerBasicPlayer player : redTeam.values()) {
 			if (player.getID() == playerID) {
 				return "Red";
 			}
 		}
-		for (Player player : blueTeam.values()) {
+		for (ServerBasicPlayer player : blueTeam.values()) {
 			if (player.getID() == playerID) {
 				return "Blue";
 			}

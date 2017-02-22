@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import networkingShared.Message;
 import networkingShared.MessageQueue;
+import players.ServerBasicPlayer;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -196,8 +197,8 @@ public class ServerMsgReceiver extends Thread {
 
 	public void sendToAll(String text) {
 		// System.out.println("Sending to all: " + text);
-		Player[] gamePlayers = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby()).getPlayers();
-		for (Player player : gamePlayers) {
+		ServerBasicPlayer[] gamePlayers = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby()).getPlayers();
+		for (ServerBasicPlayer player : gamePlayers) {
 			MessageQueue queue = clientTable.getQueue(player.getID());
 			queue.offer(new Message(text));
 		}
@@ -211,7 +212,7 @@ public class ServerMsgReceiver extends Thread {
 	/* System methods */
 
 	private void exitGame() {
-		Player myPlayer = clientTable.getPlayer(myClientsID);
+		ServerBasicPlayer myPlayer = clientTable.getPlayer(myClientsID);
 		gameLobby.removePlayer(myPlayer);
 		myPlayer.setAllocatedLobby(-1);
 	}
@@ -221,7 +222,7 @@ public class ServerMsgReceiver extends Thread {
 		myMsgQueue.offer(new Message("Exit:Client"));
 
 		// Remove client from any game lobbies.
-		Player myPlayer = clientTable.getPlayer(myClientsID);
+		ServerBasicPlayer myPlayer = clientTable.getPlayer(myClientsID);
 		gameLobby.removePlayer(myPlayer);
 
 		// Remove client from client table data as they are exiting the system.

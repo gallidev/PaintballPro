@@ -2,7 +2,6 @@ package rendering;
 
 import java.util.ArrayList;
 
-import ai.AIPlayer;
 import audio.AudioManager;
 import enums.TeamEnum;
 
@@ -12,9 +11,12 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import logic.LocalPlayer;
 import networkingClient.ClientReceiver;
 import physics.*;
+import players.AIPlayer;
+import players.GeneralPlayer;
+import players.LocalPlayer;
+import players.PhysicsClientPlayer;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -48,7 +50,7 @@ public class Renderer extends Scene
 
 		Map.load("res/maps/" + mapName + ".json");
 
-		ClientPlayer player = receiver.getClientPlayer();
+		PhysicsClientPlayer player = receiver.getClientPlayer();
 		player.setCache(true);
 		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		view.getChildren().add(player);

@@ -2,6 +2,7 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import players.GeneralPlayer;
 
 public class KeyPressListener implements EventHandler<KeyEvent>{
 

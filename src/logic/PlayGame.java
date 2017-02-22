@@ -2,7 +2,8 @@ package logic;
 
 import java.util.ArrayList;
 
-import physics.ClientPlayer;
+import players.PhysicsClientPlayer;
+import players.ServerPlayer;
 import rendering.Map;
 
 /**
