@@ -26,7 +26,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	private ClientSender sender;
 	private AudioManager audio;
 	private ClientReceiver receiver;
-	private ArrayList<LocalPlayer> clientEnemies;
+	private ArrayList<ClientLocalPlayer> clientEnemies;
 
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
@@ -101,7 +101,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 
 	protected void handleBulletCollision()
 	{
-		for(LocalPlayer enemy : clientEnemies)
+		for(ClientLocalPlayer enemy : clientEnemies)
 		{
 			for(Bullet bullet : enemy.getFiredBullets())
 			{
@@ -265,12 +265,12 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		this.audio = audio;
 	}
 
-	public ArrayList<LocalPlayer> getClientEnemies()
+	public ArrayList<ClientLocalPlayer> getClientEnemies()
 	{
 		return clientEnemies;
 	}
 
-	public void setClientEnemies(ArrayList<LocalPlayer> clientEnemies)
+	public void setClientEnemies(ArrayList<ClientLocalPlayer> clientEnemies)
 	{
 		this.clientEnemies = clientEnemies;
 	}

@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.AIPlayer;
 import players.GeneralPlayer;
-import players.LocalPlayer;
+import players.ClientLocalPlayer;
 
 public class RandomBehaviour {
 

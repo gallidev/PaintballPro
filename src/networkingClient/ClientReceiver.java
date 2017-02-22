@@ -10,7 +10,7 @@ import javafx.application.Platform;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import physics.Bullet;
-import players.LocalPlayer;
+import players.ClientLocalPlayer;
 import players.PhysicsClientPlayer;
 import rendering.Map;
 
@@ -28,8 +28,8 @@ public class ClientReceiver extends Thread {
 	private Message msg;
 	private GUIManager m;
 	private PhysicsClientPlayer cPlayer;
-	private ArrayList<LocalPlayer> myTeam;
-	private ArrayList<LocalPlayer> enemies;
+	private ArrayList<ClientLocalPlayer> myTeam;
+	private ArrayList<ClientLocalPlayer> enemies;
 	
 	private boolean debug = false;
 
@@ -152,7 +152,7 @@ public class ClientReceiver extends Thread {
 		int id = Integer.parseInt(data[2]);
 		String t = data[3];
 
-		LocalPlayer p = getPlayerWithID(id);
+		ClientLocalPlayer p = getPlayerWithID(id);
 
 		if (p != null) // the player is not us
 		{
@@ -171,7 +171,7 @@ public class ClientReceiver extends Thread {
 		if(debug)
 		{
 			 System.out.print("my Team players: " );
-			 for(LocalPlayer pq : myTeam)
+			 for(ClientLocalPlayer pq : myTeam)
 			 System.out.print(pq.getPlayerId() + " ");
 			 System.out.println();
 			 System.out.print("my enemy players: " );
@@ -210,17 +210,17 @@ public class ClientReceiver extends Thread {
 			int id = Integer.parseInt(data[i]);
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red"))
-					myTeam.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
+					myTeam.add(new ClientLocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
 							TeamEnum.RED));
 				else
-					myTeam.add(new LocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+					myTeam.add(new ClientLocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
 							TeamEnum.BLUE));
 			} else {
 				if (clientTeam.equals("Red"))
-					enemies.add(new LocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+					enemies.add(new ClientLocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
 							TeamEnum.BLUE));
 				else
-					enemies.add(new LocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
+					enemies.add(new ClientLocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
 							TeamEnum.RED));
 			}
 		}
@@ -259,14 +259,14 @@ public class ClientReceiver extends Thread {
 
 		if(debug)
 		{
-			for(LocalPlayer p : myTeam)
+			for(ClientLocalPlayer p : myTeam)
 				System.out.println(p.getPlayerId());
 		}
 
 
 		if (id != clientID) {
 			// find the player that need to be updated
-			LocalPlayer p = getPlayerWithID(id);
+			ClientLocalPlayer p = getPlayerWithID(id);
 			p.tick(x, y, angle);
 		}
 	}
@@ -281,14 +281,14 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	private LocalPlayer getPlayerWithID(int id) {
+	private ClientLocalPlayer getPlayerWithID(int id) {
 		// Check if the Player is in my team
-		for (LocalPlayer p : myTeam)
+		for (ClientLocalPlayer p : myTeam)
 			if (p.getPlayerId() == id)
 				return p;
 
 		// otherwise, player is in the enemy team
-		for (LocalPlayer p : enemies)
+		for (ClientLocalPlayer p : enemies)
 			if (p.getPlayerId() == id)
 				return p;
 
@@ -302,7 +302,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<LocalPlayer> getMyTeam() {
+	public ArrayList<ClientLocalPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -313,7 +313,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<LocalPlayer> getEnemies() {
+	public ArrayList<ClientLocalPlayer> getEnemies() {
 		return enemies;
 	}
 

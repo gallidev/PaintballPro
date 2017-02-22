@@ -15,7 +15,7 @@ import networkingClient.ClientReceiver;
 import physics.*;
 import players.AIPlayer;
 import players.GeneralPlayer;
-import players.LocalPlayer;
+import players.ClientLocalPlayer;
 import players.PhysicsClientPlayer;
 
 /**
@@ -97,9 +97,9 @@ public class Renderer extends Scene
 					if(pellet.isActive())
 						pellets.add(pellet);
 				}
-				for(LocalPlayer player : receiver.getMyTeam())
+				for(ClientLocalPlayer player : receiver.getMyTeam())
 					pellets.addAll(player.getFiredBullets());
-				for(LocalPlayer player : receiver.getEnemies())
+				for(ClientLocalPlayer player : receiver.getEnemies())
 					pellets.addAll(player.getFiredBullets());
 				view.getChildren().addAll(pellets);
 				player.tick();

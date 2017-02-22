@@ -8,7 +8,7 @@ import logic.Team;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import players.GeneralPlayer;
-import players.LocalPlayer;
+import players.ClientLocalPlayer;
 import rendering.Map;
 
 import java.util.ArrayList;
