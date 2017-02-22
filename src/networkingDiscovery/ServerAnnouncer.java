@@ -39,8 +39,7 @@ public class ServerAnnouncer implements Runnable {
 
                 // Keep broadcasting the server, every 2 seconds
                 while (true) {
-                    DatagramPacket broadcast = new DatagramPacket(messageToClients.getBytes(), messageToClients.length(),
-                            broadcastAddress, 5000);
+                    DatagramPacket broadcast = new DatagramPacket(messageToClients.getBytes(), messageToClients.length(), broadcastAddress, 5000);
                     socket.send(broadcast);
                     Thread.sleep(2000);
                 }
