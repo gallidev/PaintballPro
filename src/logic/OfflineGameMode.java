@@ -6,6 +6,8 @@ import ai.AIPlayer;
 import enums.TeamEnum;
 import physics.GeneralPlayer;
 import physics.OfflinePlayer;
+import players.AIPlayer;
+import players.GeneralPlayer;
 
 /**
  * Represents a game mode played in a Single Player game. The game contains 

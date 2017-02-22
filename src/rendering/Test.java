@@ -9,7 +9,7 @@ public class Test extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		stage.setScene(new Renderer("elimination", (new GUIManager()).getAudioManager(), null));
+		stage.setScene(new Renderer("elimination", (new GUIManager()).getAudioManager()));
 		stage.setTitle("Paintball Pro");
 		stage.show();
 	}

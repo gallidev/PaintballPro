@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/ai/AIPlayer.java
 package ai;
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
@@ -11,6 +12,18 @@ import logic.OfflineGameMode;
 import logic.OfflineTeam;
 import physics.GeneralPlayer;
 import rendering.Map;
+=======
+package players;
+import audio.AudioManager;
+import javafx.scene.image.Image;
+import rendering.*;
+import enums.TeamEnum;
+
+import static gui.GUIManager.bluePlayerImage;
+import static gui.GUIManager.redPlayerImage;
+
+import ai.RandomBehaviour;
+>>>>>>> 32ad1e201d00ce6a669921a8fafd3a8134a47d0d:src/players/AIPlayer.java
 
 public class AIPlayer extends GeneralPlayer{
 

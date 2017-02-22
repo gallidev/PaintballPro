@@ -31,7 +31,7 @@ public class GUIManager {
     // Load the user's settings
     // When set methods are called for this class/object, the class will
     // automatically save the changed preferences
-    private UserSettings user = UserSettingsManager.loadSettings();
+    private static UserSettings user = UserSettingsManager.loadSettings();
     private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
 
     private AudioManager audio;
@@ -52,7 +52,7 @@ public class GUIManager {
      *
      * @return user settings object
      */
-    public UserSettings getUserSettings() {
+    public static UserSettings getUserSettings() {
         return user;
     }
 

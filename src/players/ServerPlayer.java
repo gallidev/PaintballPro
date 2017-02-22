@@ -1,11 +1,10 @@
-package logic;
+package players;
 import java.util.ArrayList;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.scene.image.Image;
 import networkingServer.ServerMsgReceiver;
 import physics.Bullet;
-import physics.GeneralPlayer;
 import rendering.Map;
 /**
  * Class to represent the server version of a player currently in a game. Stores

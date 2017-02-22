@@ -2,8 +2,8 @@ package networkingInterfaces;
 
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
-import networkingSharedStuff.MessageQueue;
-import physics.GeneralPlayer;
+import networkingShared.MessageQueue;
+import players.GeneralPlayer;
 
 /**
  * Client-sided version of a player, which stores the information required by each player to perform in the game.\

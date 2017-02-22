@@ -1,5 +1,4 @@
-package networkingSharedStuff;
-
+package networkingShared;
 
 import java.util.concurrent.*;
 
@@ -13,7 +12,9 @@ public class MessageQueue {
 
 	/**
 	 * Inserts the specified message into this queue.
-	 * @param m Message to add to the queue.
+	 * 
+	 * @param m
+	 *            Message to add to the queue.
 	 */
 	public void offer(Message m) {
 		queue.offer(m);
@@ -21,14 +22,14 @@ public class MessageQueue {
 
 	/**
 	 * Retrieve messages from the queue.
+	 * 
 	 * @return Next message in the queue.
 	 */
 	public Message take() {
 		while (true) {
 			try {
-				return(queue.take());
-			}
-			catch (InterruptedException e) {
+				return (queue.take());
+			} catch (InterruptedException e) {
 				// This can in principle be triggered by queue.take().
 				// But this would only happen if we had interrupt() in our code,
 				// which we don't for this thread.

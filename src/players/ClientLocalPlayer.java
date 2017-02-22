@@ -1,4 +1,4 @@
-package logic;
+package players;
 
 import enums.TeamEnum;
 import javafx.scene.image.ImageView;
@@ -9,17 +9,17 @@ import java.util.ArrayList;
 
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
-import static physics.GeneralPlayer.playerHeadX;
-import static physics.GeneralPlayer.playerHeadY;
+import static players.GeneralPlayer.playerHeadX;
+import static players.GeneralPlayer.playerHeadY;
 
-public class LocalPlayer extends ImageView
+public class ClientLocalPlayer extends ImageView
 {
 	private int id;
 	private final ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private TeamEnum team;
 
-	public LocalPlayer(double x, double y, int id, TeamEnum team)
+	public ClientLocalPlayer(double x, double y, int id, TeamEnum team)
 	{
 		super(team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		setLayoutX(x);

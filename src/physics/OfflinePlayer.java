@@ -10,6 +10,12 @@ import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import logic.OfflineTeam;
+import javafx.scene.image.Image;
+import logic.Team;
+import networkingClient.ClientReceiver;
+import networkingClient.ClientSender;
+import players.GeneralPlayer;
+import players.ClientLocalPlayer;
 import rendering.Map;
 
 /**

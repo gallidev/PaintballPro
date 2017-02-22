@@ -1,4 +1,4 @@
-package physics;
+package players;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +13,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import logic.Team;
+import physics.Bullet;
 import rendering.Map;
 /**
  *  The player, represented by an ImageView

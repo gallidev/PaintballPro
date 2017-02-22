@@ -2,22 +2,27 @@ package rendering;
 
 import java.util.ArrayList;
 
-import ai.AIPlayer;
 import audio.AudioManager;
 import enums.TeamEnum;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+<<<<<<< HEAD
 import logic.LocalPlayer;
 import logic.OfflineGameMode;
 import logic.OfflineTeamMatchMode;
+=======
+>>>>>>> 32ad1e201d00ce6a669921a8fafd3a8134a47d0d
 import networkingClient.ClientReceiver;
 import physics.*;
-
-import static gui.GUIManager.redPlayerImage;
+import players.AIPlayer;
+import players.GeneralPlayer;
+import players.ClientLocalPlayer;
+import players.PhysicsClientPlayer;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -49,21 +54,26 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		Map map = Map.load("res/maps/" + mapName + ".json");
+		Map.load("res/maps/" + mapName + ".json");
 
-		ClientPlayer player;
-		if(receiver != null)
-		{
-			player = receiver.getClientPlayer();
-			view.getChildren().addAll(receiver.getMyTeam());
-			view.getChildren().addAll(receiver.getEnemies());
-		}
-		else
-		{
-			player = new ClientPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, null);
-			player.setClientEnemies(new ArrayList<>());
-		}
+		PhysicsClientPlayer player = receiver.getClientPlayer();
+		player.setCache(true);
+		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		view.getChildren().add(player);
+
+		receiver.getMyTeam().forEach(localPlayer ->
+		{
+			localPlayer.setCache(true);
+			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+		view.getChildren().addAll(receiver.getMyTeam());
+
+		receiver.getEnemies().forEach(localPlayer ->
+		{
+			localPlayer.setCache(true);
+			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+		view.getChildren().addAll(receiver.getEnemies());
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
@@ -93,9 +103,9 @@ public class Renderer extends Scene
 					if(pellet.isActive())
 						pellets.add(pellet);
 				}
-				for(LocalPlayer player : receiver.getMyTeam())
+				for(ClientLocalPlayer player : receiver.getMyTeam())
 					pellets.addAll(player.getFiredBullets());
-				for(LocalPlayer player : receiver.getEnemies())
+				for(ClientLocalPlayer player : receiver.getEnemies())
 					pellets.addAll(player.getFiredBullets());
 				view.getChildren().addAll(pellets);
 				player.tick();
@@ -125,11 +135,12 @@ public class Renderer extends Scene
 
 		Map map = Map.load("res/maps/" + mapName + ".json");
 
-		ArrayList<GeneralPlayer> players = new ArrayList<GeneralPlayer>();
+		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
 		OfflinePlayer player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
 		view.getChildren().add(player);
 		players.add(player);
+
 		
 		for (GeneralPlayer p : player.getTeamPlayers()){
 			players.add((AIPlayer) p);
@@ -155,6 +166,12 @@ public class Renderer extends Scene
 //		AIPlayer ai3 = new AIPlayer(map.getSpawns()[1].x * 64, map.getSpawns()[1].y * 64, 1, map, TeamEnum.RED, audio);
 //		view.getChildren().add(ai3);
 //		players.add(ai3);
+		
+		players.forEach(p -> {
+			p.setCache(true);
+			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+
 		//provisional way to differ enemies and team players
 		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
 		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();

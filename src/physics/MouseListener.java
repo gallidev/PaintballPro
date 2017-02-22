@@ -3,6 +3,8 @@ package physics;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import networkingInterfaces.ClientPlayerOld;
+import players.GeneralPlayer;
+import players.PhysicsClientPlayer;
 
 public class MouseListener implements EventHandler<MouseEvent>{
 
@@ -12,7 +14,7 @@ public class MouseListener implements EventHandler<MouseEvent>{
 		this.player = player;
 	}
 
-	public MouseListener(ClientPlayer player){
+	public MouseListener(PhysicsClientPlayer player){
 		this.player = player;
 	}
 
