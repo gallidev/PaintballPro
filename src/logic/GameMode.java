@@ -1,5 +1,7 @@
 package logic;
 
+import serverLogic.Team;
+
 /**
  * Abstraction of all possible game modes. Contains the basic functionality that is needed in all the game modes.
  * @author Alexandra Paduraru

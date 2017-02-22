@@ -2,13 +2,11 @@ package physics;
 
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
-
 import java.util.ArrayList;
-
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
-import logic.OfflineTeam;
+import offlineLogic.OfflineTeam;
 import players.AIPlayer;
 import players.GeneralPlayer;
 import rendering.Map;
@@ -43,6 +41,8 @@ public class OfflinePlayer extends GeneralPlayer
 		this.controlScheme = controlScheme;
 		angle = 0.0;
 		this.team = team;
+		teamPlayers = new ArrayList<>();
+		enemies = new ArrayList<>();
 		
 		//populating the players team and creating a corresponding OfflineTeam for the members
 		ArrayList<AIPlayer> myTeamMembers = new ArrayList<AIPlayer>();
@@ -119,7 +119,10 @@ public class OfflinePlayer extends GeneralPlayer
 		}
 	}
 
-	
+	/**
+	 * Updates the score of the opponent team when the current player has been eliminated.
+	 * @author atp575
+	 */
 	@Override
 	public void updateScore() {
 		oppTeam.incrementScore();

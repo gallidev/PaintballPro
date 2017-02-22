@@ -1,7 +1,8 @@
-package logic;
+package serverLogic;
 
 import java.util.ArrayList;
 
+import logic.GameMode;
 import players.PhysicsClientPlayer;
 import players.ServerPlayer;
 import rendering.Map;

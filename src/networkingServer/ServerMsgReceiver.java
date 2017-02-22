@@ -24,7 +24,7 @@ public class ServerMsgReceiver extends Thread {
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
 	
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.

@@ -3,7 +3,7 @@ package players;
 import ai.RandomBehaviour;
 import audio.AudioManager;
 import enums.TeamEnum;
-import logic.OfflineTeam;
+import offlineLogic.OfflineTeam;
 import rendering.Map;
 
 import static gui.GUIManager.bluePlayerImage;
@@ -68,6 +68,10 @@ public class AIPlayer extends GeneralPlayer{
 	}
 	
 
+	/**
+	 * Updates the opponent team score, when the current player has been eliminated.
+	 * @author atp575
+	 */
 	public void updateScore(){
 		
 		oppTeam.incrementScore();

@@ -12,9 +12,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
-import logic.Team;
 import physics.Bullet;
 import rendering.Map;
+import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
  */
@@ -69,9 +69,6 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		eliminated = false;
 		invincible = false;
 		updatePlayerBounds();
-		
-		teamPlayers = new ArrayList<>();
-		enemies = new ArrayList<>();
 		
 	}
 

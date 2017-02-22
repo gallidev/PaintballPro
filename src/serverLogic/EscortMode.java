@@ -1,8 +1,10 @@
-package logic;
+package serverLogic;
 
-public class KingOfTheHillMode extends GameMode {
+import logic.GameMode;
 
-	public KingOfTheHillMode(Team t1, Team t2) {
+public class EscortMode extends GameMode {
+
+	public EscortMode(Team t1, Team t2) {
 		super(t1, t2);
 		// TODO Auto-generated constructor stub
 	}

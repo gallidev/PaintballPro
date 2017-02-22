@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
 import logic.RoundTimer;
-import logic.Team;
 import networkingInterfaces.ServerGame;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
+import serverLogic.Team;
 
 /**
  * Class to represent a lobby.

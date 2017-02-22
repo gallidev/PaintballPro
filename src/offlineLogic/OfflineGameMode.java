@@ -1,4 +1,4 @@
-package logic;
+package offlineLogic;
 
 import java.util.ArrayList;
 
@@ -49,6 +49,10 @@ public abstract class OfflineGameMode {
 			
 		}
 		
+		/**
+		 * Checks if a member of the opponent team has been eliminated.
+		 * @return Whether or not one opponent has been eliminated.
+		 */
 		public boolean isOpponentEliminated(){
 			for(AIPlayer p : enemies.getMembers())
 				if (p.isEliminated())
@@ -74,28 +78,53 @@ public abstract class OfflineGameMode {
 		public abstract TeamEnum whoWon();
 		
 		
+		
 		/** Getters and setters */
 		
+		/**
+		 * Returns the player controlled by the user.
+		 * @return The only user-controlled player in the game.
+		 */
 		public OfflinePlayer getPlayer() {
 			return player;
 		}
 		
+		/**
+		 * Sets the player controlled by the user.
+		 * @param player
+		 */
 		public void setPlayer(OfflinePlayer player) {
 			this.player = player;
 		}
 		
+		/**
+		 * Returns all AI players in the same team as the user player.
+		 * @return The team containing only the players in the same team as the user.
+		 */
 		public OfflineTeam getMyTeam() {
 			return myTeam;
 		}
 		
+		/**
+		 * Changes the team of the user player.
+		 * @param myTeam The new team of AI players that will play together with the user.
+		 */
 		public void setMyTeam(OfflineTeam myTeam) {
 			this.myTeam = myTeam;
 		}
 		
+		/**
+		 * Returns a team of AI players playing against the user player.
+		 * @return The opponent team.
+		 */
 		public OfflineTeam getEnemies() {
 			return enemies;
 		}
 		
+		/**
+		 * Changes the opponent team.
+		 * @param enemies A team of AI players that will play agains the user player.
+		 */
 		public void setEnemies(OfflineTeam enemies) {
 			this.enemies = enemies;
 		}

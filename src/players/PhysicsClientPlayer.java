@@ -4,11 +4,11 @@ import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import logic.Team;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import physics.Bullet;
 import rendering.Map;
+import serverLogic.Team;
 
 import java.util.ArrayList;
 
@@ -213,7 +213,6 @@ public class PhysicsClientPlayer extends GeneralPlayer
 			msg += "Blue";
 		else
 			msg += "Red";
-
 		sender.sendMessage(msg);
 	}
 

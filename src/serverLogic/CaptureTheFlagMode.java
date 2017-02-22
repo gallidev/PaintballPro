@@ -1,4 +1,6 @@
-package logic;
+package serverLogic;
+
+import logic.GameMode;
 
 public class CaptureTheFlagMode extends GameMode {
 

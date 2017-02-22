@@ -1,4 +1,7 @@
-package logic;
+package serverLogic;
+
+import logic.GameMode;
+import logic.RoundTimer;
 
 /**
  * Creates a new game in the Team Match mode. In the Team Match mode, the teams
