@@ -2,9 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 
-import ai.AIPlayer;
 import enums.TeamEnum;
-import physics.GeneralPlayer;
 import physics.OfflinePlayer;
 import players.AIPlayer;
 import players.GeneralPlayer;

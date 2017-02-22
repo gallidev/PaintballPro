@@ -4,24 +4,23 @@ import java.util.ArrayList;
 
 import audio.AudioManager;
 import enums.TeamEnum;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-<<<<<<< HEAD
-import logic.LocalPlayer;
 import logic.OfflineGameMode;
 import logic.OfflineTeamMatchMode;
-=======
->>>>>>> 32ad1e201d00ce6a669921a8fafd3a8134a47d0d
 import networkingClient.ClientReceiver;
-import physics.*;
+import physics.Bullet;
+import physics.KeyPressListener;
+import physics.KeyReleaseListener;
+import physics.MouseListener;
+import physics.OfflinePlayer;
 import players.AIPlayer;
-import players.GeneralPlayer;
 import players.ClientLocalPlayer;
+import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
 
 /**

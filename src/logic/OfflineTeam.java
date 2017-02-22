@@ -2,8 +2,8 @@ package logic;
 
 import java.util.ArrayList;
 
-import ai.AIPlayer;
 import enums.TeamEnum;
+import players.AIPlayer;
 
 public class OfflineTeam {
 
