@@ -4,14 +4,14 @@ public class Player {
 	private int ID;
 	private int allocatedLobby;
 	private String username;
-	
-	public Player(int id)
-	{
+
+	public Player(int id) {
 		this.ID = id;
+		// Set default values.
 		this.allocatedLobby = -1;
-		this.username = "USER"+id;
+		this.username = "USER" + id;
 	}
-	
+
 	public int getID() {
 		return ID;
 	}
@@ -35,5 +35,5 @@ public class Player {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 }
