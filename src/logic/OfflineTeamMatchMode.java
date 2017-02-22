@@ -1,5 +1,6 @@
 package logic;
 
+import enums.TeamEnum;
 import physics.OfflinePlayer;
 
 public class OfflineTeamMatchMode extends OfflineGameMode {
@@ -23,4 +24,27 @@ public class OfflineTeamMatchMode extends OfflineGameMode {
 		return timer.isTimeElapsed();
 	}
 
+
+	@Override
+	public TeamEnum whoWon() {
+		if (getMyTeam().getScore() > getEnemies().getScore())
+			return getMyTeam().getColour();
+		else if (getMyTeam().getScore() < getEnemies().getScore())
+			return getEnemies().getColour();
+		else{
+			//allocate 30 more seconds to the game.
+			RoundTimer delay = new RoundTimer(30);
+			delay.startTimer();
+			while (!delay.isTimeElapsed()){}
+			return whoWon();
+		}
+	}
+
+	/**
+	 * Returns the remaining time to play in the game.(in seconds)
+	 * @return The number of seconds until the game finishes.
+	 */
+	public long remainingTime(){
+		return timer.getTimeLeft();
+	}
 }

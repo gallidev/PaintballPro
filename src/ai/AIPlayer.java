@@ -1,12 +1,16 @@
 package ai;
-import audio.AudioManager;
-import javafx.scene.image.Image;
-import physics.GeneralPlayer;
-import rendering.*;
-import enums.TeamEnum;
-
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
+
+import java.util.ArrayList;
+
+import audio.AudioManager;
+import enums.TeamEnum;
+import logic.GameMode;
+import logic.OfflineGameMode;
+import logic.OfflineTeam;
+import physics.GeneralPlayer;
+import rendering.Map;
 
 public class AIPlayer extends GeneralPlayer{
 
@@ -14,6 +18,8 @@ public class AIPlayer extends GeneralPlayer{
 	private AudioManager audio;
 	private double movementAngle;
 	private Map map;
+	private OfflineTeam oppTeam;
+	private OfflineTeam myTeam;
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio){
@@ -25,6 +31,7 @@ public class AIPlayer extends GeneralPlayer{
 		rb = new RandomBehaviour(this);
 		this.audio = audio;
 		this.map = map;
+		
 	}
 
 	/**
@@ -62,7 +69,16 @@ public class AIPlayer extends GeneralPlayer{
 		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) setLayoutY(getLayoutY() - yToReduce);
 		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) setLayoutX(getLayoutX() + xToAdd);
 	}
+	
 
+	public void updateScore(){
+		
+		oppTeam.incrementScore();
+		System.out.println( "My team score: " + myTeam.getScore());
+		System.out.println( "Opp team score: " + oppTeam.getScore());
+		
+	}
+	
 	@Override
 	protected void updateAngle(){
 		rotation.setAngle(Math.toDegrees(angle));
@@ -75,5 +91,12 @@ public class AIPlayer extends GeneralPlayer{
 	public Map getMap(){
 		return this.map;
 	}
-
+	
+	public void setOppTeam(OfflineTeam t){
+		oppTeam = t;
+	}
+	
+	public void setMyTeam(OfflineTeam t){
+		myTeam = t;
+	}
 }

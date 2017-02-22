@@ -37,6 +37,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
 	protected ArrayList<Rectangle> propsWalls;
+	protected boolean scoreChanged = false;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -67,7 +68,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		eliminated = false;
 		invincible = false;
 		updatePlayerBounds();
-
+		
+		teamPlayers = new ArrayList<>();
+		enemies = new ArrayList<>();
+		
 	}
 
 	/**
@@ -183,13 +187,23 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 					eliminated = true;
 					setVisible(false);
 					bullet.setActive(false);
-
+					updateScore();
 					return;
 				}
 			}
 		}
 
 	}
+	
+	/**
+	 * Method to update the team score once a player has been eliminated. 
+	 * Will be implemented differently depending on the player type:
+	 * 		- The client player will have to send the updated information to the server
+	 * 		- The offline player will have to update the internal score of the team
+	 * 		- The AI player will have to adjust its behaviour depending on the the game type (single player or online)
+	 * 
+	 */
+	public abstract void updateScore();
 
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
@@ -319,6 +333,14 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	    return avg_d;
 	  }
+	  
+	  public void addTeamPlayer(GeneralPlayer p){
+		  teamPlayers.add(p);
+	  }
+	  
+	  public void addEnemy(GeneralPlayer p){
+		  enemies.add(p);
+	  }
 
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
@@ -382,6 +404,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	public void setMX(double newX) {
 	}
 	public void setMY(double newY){
+	}
+	
+	public boolean isEliminated(){
+		return eliminated;
 	}
 
 }

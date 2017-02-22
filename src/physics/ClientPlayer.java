@@ -109,7 +109,7 @@ public class ClientPlayer extends GeneralPlayer
 				{
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
-					sendServerNewScore();
+					updateScore();
 					setVisible(false);
 					bullet.setActive(false);
 					return;
@@ -203,7 +203,7 @@ public class ClientPlayer extends GeneralPlayer
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public void sendServerNewScore()
+	public void updateScore()
 	{
 		//Protocol: Scored:<team>
 		String msg = "Scored:";

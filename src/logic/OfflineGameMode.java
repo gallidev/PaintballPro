@@ -3,50 +3,62 @@ package logic;
 import java.util.ArrayList;
 
 import ai.AIPlayer;
+import enums.TeamEnum;
 import physics.GeneralPlayer;
 import physics.OfflinePlayer;
 
+/**
+ * Represents a game mode played in a Single Player game. The game contains 
+ * just one actual player(controlled by a user) and two teams consisting only of AI players.
+ * @author Alexandra Paduraru
+ *
+ */
 public abstract class OfflineGameMode {
 
+		
 		private OfflinePlayer player;
-		private ArrayList<AIPlayer> myTeam;
-		private ArrayList<AIPlayer> enemies;
-		private int myTeamScore;
-		private int enemiesScore;
+		private OfflineTeam myTeam;
+		private OfflineTeam enemies;
+
 				
+		/**
+		 * Creates a new game mode which contains only one actual player and
+		 * fills the rest of the player's team and the opponent team with AI players.
+		 * @param player The player which will be controlled by the user in this game.
+		 */
 		public OfflineGameMode(OfflinePlayer player) {
 			super();
 			this.player = player;
-			myTeam = new ArrayList<>();
-			enemies = new ArrayList<>();
-
 			
-			for(GeneralPlayer p : player.getTeamPlayers())
-				myTeam.add((AIPlayer) p);
+			//create the player's team
+			ArrayList<AIPlayer> myTeamMembers = new ArrayList<>();
+			
+			for(GeneralPlayer p : player.getTeamPlayers()){
+				myTeamMembers.add((AIPlayer)p);
+			}
+			
+			myTeam = new OfflineTeam(myTeamMembers, myTeamMembers.get(0).getTeam());
+			
+			//create the opponent team
+			ArrayList<AIPlayer> enemiesMembers = new ArrayList<>();
 			
 			for(GeneralPlayer p : player.getEnemies())
-				enemies.add((AIPlayer) p);
+				enemiesMembers.add((AIPlayer)p);
 			
-			myTeamScore = 0;
-			enemiesScore = 0;
+			enemies = new OfflineTeam(enemiesMembers, enemiesMembers.get(0).getTeam());
+			
 		}
 		
-		public void updateMyTeamScore(int additionalScore){
-			myTeamScore += additionalScore;
+		public boolean isOpponentEliminated(){
+			for(AIPlayer p : enemies.getMembers())
+				if (p.isEliminated())
+					return true;
+			return false;
 		}
 		
-		public void updateEnemiesScore(int additionalScore){
-			enemiesScore += additionalScore;
-		}
-		
-		public void incrementMyTeamScore(){
-			myTeamScore++;
-		}
-		
-		public void incrementEnemiesScore(){
-			enemiesScore++;
-		}
-		
+		/**
+		 * Starts a game in the chosen game mode.
+		 */
 		public abstract void start();
 		
 		/**
@@ -55,45 +67,37 @@ public abstract class OfflineGameMode {
 		 */
 		public abstract boolean isGameFinished();
 
+		/**
+		 * Computes the winning team in the game.
+		 * @return The colour of the winning team.
+		 */
+		public abstract TeamEnum whoWon();
+		
+		
 		/** Getters and setters */
 		
 		public OfflinePlayer getPlayer() {
 			return player;
 		}
+		
 		public void setPlayer(OfflinePlayer player) {
 			this.player = player;
 		}
-		public ArrayList<AIPlayer> getMyTeam() {
+		
+		public OfflineTeam getMyTeam() {
 			return myTeam;
 		}
-		public void setMyTeam(ArrayList<AIPlayer> myTeam) {
+		
+		public void setMyTeam(OfflineTeam myTeam) {
 			this.myTeam = myTeam;
 		}
-		public ArrayList<AIPlayer> getEnemies() {
+		
+		public OfflineTeam getEnemies() {
 			return enemies;
 		}
-		public void setEnemies(ArrayList<AIPlayer> enemies) {
+		
+		public void setEnemies(OfflineTeam enemies) {
 			this.enemies = enemies;
 		}
-
-		public int getMyTeamScore() {
-			return myTeamScore;
-		}
-
-		public void setMyTeamScore(int myTeamScore) {
-			this.myTeamScore = myTeamScore;
-		}
-
-		public int getEnemiesScore() {
-			return enemiesScore;
-		}
-
-		public void setEnemiesScore(int eneimiesScore) {
-			this.enemiesScore = eneimiesScore;
-		}
-		
-		
-		
-		
 		
 }

@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import logic.LocalPlayer;
+import logic.OfflineGameMode;
+import logic.OfflineTeamMatchMode;
 import networkingClient.ClientReceiver;
 import physics.*;
 
@@ -128,15 +130,31 @@ public class Renderer extends Scene
 		OfflinePlayer player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
 		view.getChildren().add(player);
 		players.add(player);
-		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 1, map, TeamEnum.BLUE, audio);
-		view.getChildren().add(ai);
-		players.add(ai);
-		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map, TeamEnum.BLUE,audio);
-		view.getChildren().add(ai2);
-		players.add(ai2);
-		AIPlayer ai3 = new AIPlayer(map.getSpawns()[1].x * 64, map.getSpawns()[1].y * 64, 1, map, TeamEnum.RED, audio);
-		view.getChildren().add(ai3);
-		players.add(ai3);
+		
+		for (GeneralPlayer p : player.getTeamPlayers()){
+			players.add((AIPlayer) p);
+			view.getChildren().add((AIPlayer) p);
+		}
+		
+		for (GeneralPlayer p : player.getEnemies()){
+			players.add((AIPlayer) p);
+			view.getChildren().add((AIPlayer) p);
+		}
+		
+		OfflineGameMode game = new OfflineTeamMatchMode(player);
+		game.start();
+		//player.setGame(new OfflineTeamMatchMode(player));
+
+		
+//		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 1, map, TeamEnum.BLUE, audio);
+//		view.getChildren().add(ai);
+//		players.add(ai);
+//		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map, TeamEnum.BLUE,audio);
+//		view.getChildren().add(ai2);
+//		players.add(ai2);
+//		AIPlayer ai3 = new AIPlayer(map.getSpawns()[1].x * 64, map.getSpawns()[1].y * 64, 1, map, TeamEnum.RED, audio);
+//		view.getChildren().add(ai3);
+//		players.add(ai3);
 		//provisional way to differ enemies and team players
 		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
 		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();
