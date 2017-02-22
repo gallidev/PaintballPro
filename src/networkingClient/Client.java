@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import gui.GUIManager;
-import networkingSharedStuff.MessageQueue;
+import networkingShared.MessageQueue;
 
 public class Client {
 	ClientSender sender;

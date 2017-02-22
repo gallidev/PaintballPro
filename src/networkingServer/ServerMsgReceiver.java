@@ -3,8 +3,8 @@ package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import networkingSharedStuff.Message;
-import networkingSharedStuff.MessageQueue;
+import networkingShared.Message;
+import networkingShared.MessageQueue;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.

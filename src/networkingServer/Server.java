@@ -8,8 +8,8 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import networkingSharedStuff.Message;
-import networkingSharedStuff.MessageQueue;
+import networkingShared.Message;
+import networkingShared.MessageQueue;
 
 /**
  * Class to represent a running server that connects to multiple clients via

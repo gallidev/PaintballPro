@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import networkingSharedStuff.Message;
-import networkingSharedStuff.MessageQueue;
+import networkingShared.Message;
+import networkingShared.MessageQueue;
 
 // Continuously reads from message queue for a particular client,
 // forwarding to the client.

@@ -1,4 +1,4 @@
-package networkingSharedStuff;
+package networkingShared;
 
 import java.util.concurrent.*;
 

@@ -1,4 +1,4 @@
-package networkingSharedStuff;
+package networkingShared;
 
 /**
  * Store message information to send to a client.

@@ -2,7 +2,7 @@ package networkingInterfaces;
 
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
-import networkingSharedStuff.MessageQueue;
+import networkingShared.MessageQueue;
 import physics.GeneralPlayer;
 
 /**

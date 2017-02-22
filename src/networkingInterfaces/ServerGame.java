@@ -11,7 +11,7 @@ import logic.ServerPlayer;
 import logic.Team;
 import logic.TeamMatchMode;
 import networkingServer.ServerMsgReceiver;
-import networkingSharedStuff.Message;
+import networkingShared.Message;
 
 /**
  * Server side integration to play a game in a specific game mode. Will be

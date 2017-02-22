@@ -4,7 +4,7 @@ package networkingServer;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
-import networkingSharedStuff.MessageQueue;
+import networkingShared.MessageQueue;
 
 /**
  * Class to store important client-related information used by Client and Server.
