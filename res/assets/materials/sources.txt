@@ -2,6 +2,7 @@ crate.png
 http://opengameart.org/node/8762
 
 sand.png
-http://opengameart.org/content/generic-tileable-sand-texture
+http://www.textures.com/download/soilsand0200/51849
 
 sand_brick.png
+http://www.textures.com/download/brickmedievalblocks0001/67002

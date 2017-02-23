@@ -128,7 +128,7 @@ public class Renderer extends Scene
 		{
 			scale = getWidth() / 1024;
 			view.setScaleX(scale);
-			//view.setScaleY((getWidth() * 0.5625) / 576);
+			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
 		Map map = Map.load("res/maps/" + mapName + ".json");
