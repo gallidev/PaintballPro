@@ -38,7 +38,7 @@ public class Renderer extends Scene
 	 *
 	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String mapName, AudioManager audio, ClientReceiver receiver)
+	public Renderer(String mapName, ClientReceiver receiver)
 	{
 		super(view, 1024, 576);
 		setFill(Color.BLACK);
@@ -142,13 +142,13 @@ public class Renderer extends Scene
 
 		
 		for (GeneralPlayer p : player.getTeamPlayers()){
-			players.add((AIPlayer) p);
-			view.getChildren().add((AIPlayer) p);
+			players.add(p);
+			view.getChildren().add(p);
 		}
 		
 		for (GeneralPlayer p : player.getEnemies()){
-			players.add((AIPlayer) p);
-			view.getChildren().add((AIPlayer) p);
+			players.add(p);
+			view.getChildren().add(p);
 		}
 		
 		OfflineGameMode game = new OfflineTeamMatchMode(player);

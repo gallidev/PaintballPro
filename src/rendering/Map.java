@@ -50,7 +50,7 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
 			for(Material material : map.materials)
-				material.image = new Image("assets/" + material.name + ".png", 64, 64, true, true);
+				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, true);
 
 			map.spawnGroup[0] = new Group();
 			map.spawnGroup[1] = new Group();
@@ -78,12 +78,12 @@ public class Map
 			}
 			map.spawnGroup[0].setEffect(new DropShadow(32, 0, 0, Color.RED));
 			map.spawnGroup[0].setCache(true);
-			map.spawnGroup[0].setCacheHint(CacheHint.SPEED);
+			map.spawnGroup[0].setCacheHint(CacheHint.SCALE);
 			map.spawnGroup[1].setEffect(new DropShadow(32, 0, 0, Color.BLUE));
 			map.spawnGroup[1].setCache(true);
-			map.spawnGroup[1].setCacheHint(CacheHint.SPEED);
+			map.spawnGroup[1].setCacheHint(CacheHint.SCALE);
 			map.floorGroup.setCache(true);
-			map.floorGroup.setCacheHint(CacheHint.SPEED);
+			map.floorGroup.setCacheHint(CacheHint.SCALE);
 			view.getChildren().add(map.floorGroup);
 			view.getChildren().add(map.spawnGroup[0]);
 			view.getChildren().add(map.spawnGroup[1]);
@@ -100,7 +100,7 @@ public class Map
 				map.propGroup.getChildren().add(image);
 			}
 			map.propGroup.setCache(true);
-			map.propGroup.setCacheHint(CacheHint.SPEED);
+			map.propGroup.setCacheHint(CacheHint.SCALE);
 			map.propGroup.setEffect(propShadow);
 			view.getChildren().add(map.propGroup);
 
@@ -120,8 +120,8 @@ public class Map
 				}
 			}
 			map.wallGroup.setCache(true);
-			map.wallGroup.setCacheHint(CacheHint.SPEED);
 			map.wallGroup.setEffect(wallShadow);
+			map.wallGroup.setCacheHint(CacheHint.SCALE);
 			view.getChildren().add(map.wallGroup);
 
 			//turn on lighting if the user has it enabled
