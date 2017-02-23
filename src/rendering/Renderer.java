@@ -18,10 +18,8 @@ import physics.KeyPressListener;
 import physics.KeyReleaseListener;
 import physics.MouseListener;
 import physics.OfflinePlayer;
-import players.AIPlayer;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
-import players.PhysicsClientPlayer;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -32,6 +30,7 @@ public class Renderer extends Scene
 {
 	static Pane view = new Pane();
 	private double scale = 1;
+	private GeneralPlayer player;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
@@ -55,7 +54,7 @@ public class Renderer extends Scene
 
 		Map.load("res/maps/" + mapName + ".json");
 
-		PhysicsClientPlayer player = receiver.getClientPlayer();
+		player = receiver.getClientPlayer();
 		player.setCache(true);
 		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		view.getChildren().add(player);
@@ -91,8 +90,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
-				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
+				updateView();
 
 				view.getChildren().removeAll(pellets);
 				pellets.clear();
@@ -107,6 +105,7 @@ public class Renderer extends Scene
 				for(ClientLocalPlayer player : receiver.getEnemies())
 					pellets.addAll(player.getFiredBullets());
 				view.getChildren().addAll(pellets);
+
 				player.tick();
 			}
 		}.start();
@@ -129,51 +128,27 @@ public class Renderer extends Scene
 		{
 			scale = getWidth() / 1024;
 			view.setScaleX(scale);
-			view.setScaleY((getWidth() * 0.5625) / 576);
+			//view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
 		Map map = Map.load("res/maps/" + mapName + ".json");
 
 		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
-		OfflinePlayer player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
-		view.getChildren().add(player);
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
+
 		players.add(player);
-
-		
-		for (GeneralPlayer p : player.getTeamPlayers()){
-			players.add(p);
-			view.getChildren().add(p);
-		}
-		
-		for (GeneralPlayer p : player.getEnemies()){
-			players.add(p);
-			view.getChildren().add(p);
-		}
-		
-		OfflineGameMode game = new OfflineTeamMatchMode(player);
-		game.start();
-		//player.setGame(new OfflineTeamMatchMode(player));
-
-		
-//		AIPlayer ai = new AIPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 1, map, TeamEnum.BLUE, audio);
-//		view.getChildren().add(ai);
-//		players.add(ai);
-//		AIPlayer ai2 = new AIPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map, TeamEnum.BLUE,audio);
-//		view.getChildren().add(ai2);
-//		players.add(ai2);
-//		AIPlayer ai3 = new AIPlayer(map.getSpawns()[1].x * 64, map.getSpawns()[1].y * 64, 1, map, TeamEnum.RED, audio);
-//		view.getChildren().add(ai3);
-//		players.add(ai3);
-		
+		players.addAll(player.getTeamPlayers());
+		players.addAll(player.getEnemies());
 		players.forEach(p -> {
 			p.setCache(true);
 			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		});
+		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> teamRed = new ArrayList<GeneralPlayer>();
-		ArrayList<GeneralPlayer> teamBlue = new ArrayList<GeneralPlayer>();
+		ArrayList<GeneralPlayer> teamRed = new ArrayList<>();
+		ArrayList<GeneralPlayer> teamBlue = new ArrayList<>();
 		for(GeneralPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED)
@@ -194,6 +169,10 @@ public class Renderer extends Scene
 				p.setTeamPlayers(teamBlue);
 			}
 		}
+
+//		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
+//		game.start();
+
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
 		MouseListener mouseListener = new MouseListener(player);
@@ -209,8 +188,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
-				view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
+				updateView();
 
 				for(GeneralPlayer player : players)
 				{
@@ -228,6 +206,12 @@ public class Renderer extends Scene
 				}
 			}
 		}.start();
+	}
+
+	private void updateView()
+	{
+		view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
+		view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
 	}
 
 }

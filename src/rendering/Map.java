@@ -92,13 +92,7 @@ public class Map
 			propShadow.setSpread(0.5);
 			propShadow.setHeight(64);
 
-			for(Prop prop : map.props)
-			{
-				ImageView image = new ImageView(new Image("assets/" + prop.material + ".png", 64, 64, true, true));
-				image.setX(prop.x * 64);
-				image.setY(prop.y * 64);
-				map.propGroup.getChildren().add(image);
-			}
+			map.loadProps();
 			map.propGroup.setCache(true);
 			map.propGroup.setCacheHint(CacheHint.SCALE);
 			map.propGroup.setEffect(propShadow);
@@ -108,17 +102,7 @@ public class Map
 			wallShadow.setSpread(0.5);
 			wallShadow.setHeight(64);
 
-			//Wall orientation: true for horizontal, false for vertical
-			for(Wall wall : map.walls)
-			{
-				for(int i = 0; i < wall.length; i++)
-				{
-					ImageView block = new ImageView(map.getMaterialImage(wall.material));
-					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
-					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
-					map.wallGroup.getChildren().add(block);
-				}
-			}
+			map.loadWalls();
 			map.wallGroup.setCache(true);
 			map.wallGroup.setEffect(wallShadow);
 			map.wallGroup.setCacheHint(CacheHint.SCALE);
@@ -174,25 +158,8 @@ public class Map
 				}
 			}
 
-			for(Prop prop : map.props)
-			{
-				ImageView image = new ImageView(new Image("assets/" + prop.material + ".png", 64, 64, true, true));
-				image.setX(prop.x * 64);
-				image.setY(prop.y * 64);
-				map.propGroup.getChildren().add(image);
-			}
-
-			//Wall orientation: true for horizontal, false for vertical
-			for(Wall wall : map.walls)
-			{
-				for(int i = 0; i < wall.length; i++)
-				{
-					ImageView block = new ImageView(map.getMaterialImage(wall.material));
-					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
-					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
-					map.wallGroup.getChildren().add(block);
-				}
-			}
+			map.loadProps();
+			map.loadWalls();
 		}
 		catch(FileNotFoundException e)
 		{
@@ -241,6 +208,31 @@ public class Map
 			if(m.name.equals(material))
 				return m.image;
 		return null;
+	}
+
+	private void loadProps()
+	{
+		for(Prop prop : props)
+		{
+			ImageView image = new ImageView(new Image("assets/materials/" + prop.material + ".png", 64, 64, true, true));
+			image.setX(prop.x * 64);
+			image.setY(prop.y * 64);
+			propGroup.getChildren().add(image);
+		}
+	}
+
+	private void loadWalls()
+	{
+		for(Wall wall : walls)
+		{
+			for(int i = 0; i < wall.length; i++)
+			{
+				ImageView block = new ImageView(getMaterialImage(wall.material));
+				block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
+				block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
+				wallGroup.getChildren().add(block);
+			}
+		}
 	}
 
 }

@@ -10,11 +10,7 @@ public class MouseListener implements EventHandler<MouseEvent>{
 
 	private GeneralPlayer player;
 
-	public MouseListener(OfflinePlayer player){
-		this.player = player;
-	}
-
-	public MouseListener(PhysicsClientPlayer player){
+	public MouseListener(GeneralPlayer player){
 		this.player = player;
 	}
 
