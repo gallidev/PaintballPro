@@ -41,4 +41,10 @@ public class ClientListener {
 			}
 		}
 	}
+
+	public static void main(String[] args) {
+		Thread t = new Thread(new ServerAnnouncer(5000));
+		t.start();
+		System.out.println(ClientListener.findServer());
+	}
 }
