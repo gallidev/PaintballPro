@@ -1,9 +1,11 @@
 package networkingDiscovery;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 /**
  * Class to listen out for servers in the LAN
@@ -19,9 +21,18 @@ public class ClientListener {
 		while (true) {
 			try {
 				InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
-
+				System.setProperty("java.net.preferIPv4Stack", "true");
 				MulticastSocket socket = new MulticastSocket(5000);
-				socket.setNetworkInterface(NetworkInterface.getByName("wlan1"));
+				Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+		        while (networkInterfaces.hasMoreElements()) {
+		            NetworkInterface iface = networkInterfaces.nextElement();
+		            try {
+		                socket.setNetworkInterface(iface);
+		            } catch (IOException e) {
+		            	//e.printStackTrace();
+		            }
+		        }
+				//socket.setNetworkInterface(NetworkInterface.getByName("wlan0"));
 				socket.joinGroup(broadcastAddress);
 
 				byte[] buf = new byte[1023];

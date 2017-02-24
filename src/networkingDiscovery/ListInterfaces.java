@@ -6,12 +6,12 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
-
+// List all network interfaces on the device.
 public class ListInterfaces 
 {
     public static void main(String args[]) throws SocketException {
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-        
+        System.setProperty("java.net.preferIPv4Stack", "true");
         for (NetworkInterface netIf : Collections.list(nets)) {
             out.printf("Display name: %s\n", netIf.getDisplayName());
             out.printf("Name: %s\n", netIf.getName());
