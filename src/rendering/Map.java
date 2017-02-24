@@ -9,8 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -34,7 +33,7 @@ public class Map
 	private Prop[] props;
 	private Spawn[] spawns;
 
-	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group(), spawnGroup[] = new Group[2];
+	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -49,68 +48,91 @@ public class Map
 		{
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
+			//load materials
 			for(Material material : map.materials)
-				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, true);
+				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, false);
 
-			map.spawnGroup[0] = new Group();
-			map.spawnGroup[1] = new Group();
+			//load the ground
 			for(Floor floor : map.floors)
 			{
+				WritableImage tiles = new WritableImage(floor.width * 64, floor.height * 64);
+				Image tile = map.getMaterialImage(floor.material);
 				for(int i = 0; i < floor.width; i++)
 				{
-					floorLoop:
 					for(int j = 0; j < floor.height; j++)
 					{
-						ImageView tile = new ImageView(map.getMaterialImage(floor.material));
-						tile.setX((i + floor.x) * 64);
-						tile.setY((j + floor.y) * 64);
-						for(Spawn spawn : map.spawns)
-						{
-							if(spawn.x == i + floor.x && spawn.y == j + floor.y)
-							{
-								map.spawnGroup[spawn.team == TeamEnum.RED ? 0 : 1].getChildren().add(tile);
-								continue floorLoop;
-							}
-						}
-						map.floorGroup.getChildren().add(tile);
+						tiles.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, tile.getPixelReader(), 0, 0);
 					}
 				}
+				ImageView tilesView = new ImageView(tiles);
+				tilesView.relocate(floor.x * 64, floor.y * 64);
+				map.floorGroup.getChildren().add(tilesView);
 			}
-			map.spawnGroup[0].setEffect(new DropShadow(32, 0, 0, Color.RED));
-			map.spawnGroup[0].setCache(true);
-			map.spawnGroup[0].setCacheHint(CacheHint.SCALE);
-			map.spawnGroup[1].setEffect(new DropShadow(32, 0, 0, Color.BLUE));
-			map.spawnGroup[1].setCache(true);
-			map.spawnGroup[1].setCacheHint(CacheHint.SCALE);
 			map.floorGroup.setCache(true);
 			map.floorGroup.setCacheHint(CacheHint.SCALE);
-			view.getChildren().add(map.floorGroup);
-			view.getChildren().add(map.spawnGroup[0]);
-			view.getChildren().add(map.spawnGroup[1]);
 
-			DropShadow propShadow = new DropShadow(16, 0, 0, Color.BLACK);
-			propShadow.setSpread(0.5);
-			propShadow.setHeight(64);
+			//load spawns
+			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
+			Image spawnTile = map.getMaterialImage(map.floors[0].material);
 
+			for(int i = 0; i < 2; i++)
+			{
+				for(int j = 0; j < 2; j++)
+				{
+					redSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, spawnTile.getPixelReader(), 0, 0);
+					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, spawnTile.getPixelReader(), 0, 0);
+				}
+			}
+
+			ImageView redSpawnView = new ImageView(redSpawn), blueSpawnView = new ImageView(blueSpawn);
+			redSpawnView.relocate(map.spawns[0].x * 64, map.spawns[0].y * 64);
+			redSpawnView.setEffect(new DropShadow(32, 0, 0, Color.RED));
+			blueSpawnView.relocate(map.spawns[4].x * 64, map.spawns[4].y * 64);
+			blueSpawnView.setEffect(new DropShadow(32, 0, 0, Color.BLUE));
+
+			//load props
 			map.loadProps();
 			map.propGroup.setCache(true);
 			map.propGroup.setCacheHint(CacheHint.SCALE);
-			map.propGroup.setEffect(propShadow);
-			view.getChildren().add(map.propGroup);
 
-			DropShadow wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
-			wallShadow.setSpread(0.5);
-			wallShadow.setHeight(64);
-
-			map.loadWalls();
+			//load walls
+			for(Wall wall : map.walls)
+			{
+				for(int i = 0; i < wall.length; i++)
+				{
+					ImageView block = new ImageView(map.getMaterialImage(wall.material));
+					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
+					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
+					map.wallGroup.getChildren().add(block);
+				}
+			}
+//			for(Wall wall : map.walls)
+//			{
+//				WritableImage blocks = new WritableImage(wall.orientation ? wall.length * 64 : 64, wall.orientation ? 64 : wall.length * 64);
+//				Image block = map.getMaterialImage(wall.material);
+//				for(int i = 0; i < wall.length; i++)
+//					blocks.getPixelWriter().setPixels(wall.orientation ? i * 64 : 0, wall.orientation ? 0 : i * 64, 64, 64, block.getPixelReader(), 0, 0);
+//				ImageView blocksView = new ImageView(blocks);
+//				blocksView.setX(wall.x * 64);
+//				blocksView.setY(wall.y * 64);
+//				map.wallGroup.getChildren().add(blocksView);
+//			}
 			map.wallGroup.setCache(true);
-			map.wallGroup.setEffect(wallShadow);
 			map.wallGroup.setCacheHint(CacheHint.SCALE);
-			view.getChildren().add(map.wallGroup);
 
-			//turn on lighting if the user has it enabled
+			view.getChildren().addAll(map.floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
+
+			//turn on shading if the user has it enabled
 			if(GUIManager.getUserSettings().getShading())
 			{
+				DropShadow propShadow = new DropShadow(16, 0, 0, Color.BLACK);
+				propShadow.setSpread(0.5);
+				propShadow.setHeight(64);
+
+				DropShadow wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
+				wallShadow.setSpread(0.5);
+				wallShadow.setHeight(64);
+
 				Light.Distant light = new Light.Distant();
 				light.setAzimuth(145.0);
 				light.setElevation(40);
@@ -125,6 +147,8 @@ public class Map
 
 				propShadow.setInput(propLighting);
 				wallShadow.setInput(wallLighting);
+				map.propGroup.setEffect(propShadow);
+				map.wallGroup.setEffect(wallShadow);
 			}
 		}
 		catch(FileNotFoundException e)
@@ -159,7 +183,17 @@ public class Map
 			}
 
 			map.loadProps();
-			map.loadWalls();
+
+			for(Wall wall : map.walls)
+			{
+				for(int i = 0; i < wall.length; i++)
+				{
+					ImageView block = new ImageView(map.getMaterialImage(wall.material));
+					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
+					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
+					map.wallGroup.getChildren().add(block);
+				}
+			}
 		}
 		catch(FileNotFoundException e)
 		{
@@ -220,19 +254,4 @@ public class Map
 			propGroup.getChildren().add(image);
 		}
 	}
-
-	private void loadWalls()
-	{
-		for(Wall wall : walls)
-		{
-			for(int i = 0; i < wall.length; i++)
-			{
-				ImageView block = new ImageView(getMaterialImage(wall.material));
-				block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
-				block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
-				wallGroup.getChildren().add(block);
-			}
-		}
-	}
-
 }
