@@ -21,7 +21,7 @@ public class ClientListener {
 				InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 
 				MulticastSocket socket = new MulticastSocket(5000);
-				socket.setNetworkInterface(NetworkInterface.getByName("en0"));
+				socket.setNetworkInterface(NetworkInterface.getByName("wlan1"));
 				socket.joinGroup(broadcastAddress);
 
 				byte[] buf = new byte[1023];
