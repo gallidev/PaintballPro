@@ -5,4 +5,7 @@ sand.png
 http://www.textures.com/download/soilsand0200/51849
 
 sand_brick.png
+http://www.textures.com/download/brickoldrounded0084/26161
+
+clean_brick.png
 http://www.textures.com/download/brickmedievalblocks0001/67002
