@@ -21,7 +21,7 @@ public class ClientListener {
 				InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 
 				MulticastSocket socket = new MulticastSocket(5000);
-				socket.setNetworkInterface(NetworkInterface.getByName("en0"));
+				socket.setNetworkInterface(NetworkInterface.getByName("wlan1"));
 				socket.joinGroup(broadcastAddress);
 
 				byte[] buf = new byte[1023];
@@ -40,5 +40,11 @@ public class ClientListener {
 				System.err.println("Socket Client Exception!" + e);
 			}
 		}
+	}
+
+	public static void main(String[] args) {
+		Thread t = new Thread(new ServerAnnouncer(5000));
+		t.start();
+		System.out.println(ClientListener.findServer());
 	}
 }
