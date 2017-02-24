@@ -142,7 +142,7 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + url + ".json"), Map.class);
 
 			for(Material material : map.materials)
-				material.image = new Image("assets/" + material.name + ".png", 64, 64, true, true);
+				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, true);
 
 			for(Floor floor : map.floors)
 			{
