@@ -1,6 +1,6 @@
 package players;
 
-import ai.RandomBehaviour;
+import ai.*;
 import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
@@ -11,7 +11,7 @@ import static gui.GUIManager.redPlayerImage;
 
 public class AIPlayer extends GeneralPlayer{
 
-	private RandomBehaviour rb;
+	private Behaviour rb;
 	private AudioManager audio;
 	private double movementAngle;
 	private Map map;

@@ -2,15 +2,16 @@ package ai;
 import java.util.ArrayList;
 
 /**
- * A Path is a list of Steps leading towards some target. This path is computed bya path finding algorithm (i.e A*)
+ * A Path is a list of Nodes leading towards some target. This path is computed bya path finding algorithm (i.e A*)
  */
 public class Path {
-    private ArrayList steps = new ArrayList();
+    private ArrayList<Node> Nodes;
 
     /**
      * Create an empty Path
      */
     public Path() {
+        Nodes = new ArrayList<Node>();
     }
 
     /**
@@ -18,61 +19,55 @@ public class Path {
      * @return Length of path
      */
     public int getLength() {
-        return steps.size();
+        return Nodes.size();
     }
 
     /**
-     * Returns the step of the path at the index
+     * Returns the Node of the path at the index
      * @param index
-     * @return The step at the given index
+     * @return The Node at the given index
      */
-    public Step getStep(int index) {
-        return (Step) steps.get(index);
+    public Node getNode(int index) {
+        return Nodes.get(index);
     }
 
     /**
-     * Returns the x coordinate of the step at the given index
+     * Returns the x coordinate of the Node at the given index
      * @param index
-     * @return x coordinate of step
+     * @return x coordinate of Node
      */
     public int getX(int index) {
-        return getStep(index).getX();
+        return getNode(index).x;
     }
 
     /**
-     * Returns the y coordinate of the step at the given index
+     * Returns the y coordinate of the Node at the given index
      * @param index
-     * @return y coordinate of step
+     * @return y coordinate of Node
      */
     public int getY(int index) {
-        return getStep(index).getY();
+        return getNode(index).y;
     }
 
     /**
-     * Add a step to the end of the path
-     * @param x
-     * @param y
+     * Add a Node to the end of the path
      */
-    public void appendStep(int x, int y) {
-        steps.add(new Step(x,y));
+    public void appendNode(Node n) {
+        Nodes.add(n);
     }
 
     /**
-     * Add a step to the beginning of the path
-     * @param x
-     * @param y
+     * Add a Node to the beginning of the path
      */
-    public void prependStep(int x, int y) {
-        steps.add(0, new Step(x, y));
+    public void prependNode(Node n) {
+        Nodes.add(0, n);
     }
 
     /**
-     * Check if a given step is already in the path
-     * @param x
-     * @param y
+     * Check if a given Node is already in the path
      * @return
      */
-    public boolean contains(int x, int y) {
-        return steps.contains(new Step(x,y));
+    public boolean contains(Node n) {
+        return Nodes.contains(n);
     }
 }
