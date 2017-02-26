@@ -125,9 +125,18 @@ public class OfflinePlayer extends GeneralPlayer
 	 */
 	@Override
 	public void updateScore() {
+		
 		oppTeam.incrementScore();
-		System.out.println( "My team score: " + myTeam.getScore());
-		System.out.println( "Opp team score: " + oppTeam.getScore());
+		
+		if (myTeam.getColour() == TeamEnum.RED){
+			System.out.println( "Red team score: " + myTeam.getScore());
+			System.out.println( "Blue team score: " + oppTeam.getScore());
+		}
+		else{
+			System.out.println( "Blue team score: " + myTeam.getScore());
+			System.out.println( "Red team score: " + oppTeam.getScore());
+		}
+		
 	}
 
 	@Override
