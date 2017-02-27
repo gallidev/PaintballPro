@@ -9,6 +9,8 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.image.ImageView;
 
+import javax.swing.*;
+
 /**
  * Main Menu scene class
  */
@@ -20,6 +22,8 @@ public class MainMenu {
 	 * @return main menu scene
 	 */
 	public static Scene getScene(GUIManager m) {
+
+		JOptionPane.showMessageDialog(null, "Cannot find any LAN servers running.", "No LAN server.", JOptionPane.ERROR_MESSAGE);
 
 		Image i = new Image("assets/paintballlogo.png");
 		ImageView iv = new ImageView(i);
