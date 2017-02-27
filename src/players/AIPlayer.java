@@ -1,6 +1,6 @@
 package players;
 
-import ai.RandomBehaviour;
+import ai.*;
 import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
@@ -11,7 +11,7 @@ import static gui.GUIManager.redPlayerImage;
 
 public class AIPlayer extends GeneralPlayer{
 
-	private RandomBehaviour rb;
+	private Behaviour rb;
 	private AudioManager audio;
 	private double movementAngle;
 	private Map map;
@@ -20,7 +20,7 @@ public class AIPlayer extends GeneralPlayer{
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio){
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -73,10 +73,17 @@ public class AIPlayer extends GeneralPlayer{
 	 * @author atp575
 	 */
 	public void updateScore(){
-		
 		oppTeam.incrementScore();
-		System.out.println( "My team score: " + myTeam.getScore());
-		System.out.println( "Opp team score: " + oppTeam.getScore());
+		
+		if (myTeam.getColour() == TeamEnum.RED){
+			System.out.println( "Red team score: " + myTeam.getScore());
+			System.out.println( "Blue team score: " + oppTeam.getScore());
+		}
+		else{
+			System.out.println( "Blue team score: " + myTeam.getScore());
+			System.out.println( "Red team score: " + oppTeam.getScore());
+		}
+		
 		
 	}
 	

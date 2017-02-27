@@ -1,9 +1,16 @@
+@font-face {
+    font-family: 'Roboto Slab';
+    src: url('fonts/roboto-slab/RobotoSlab-Regular.ttf');
+}
+
 .root {
-    /*-fx-background-image: url('../assets/sand.png');*/
+    /*-fx-background-image: url('../assets/materials/sand.png');*/
+    -fx-background-size: 64px;
     -fx-background-color: white;
 }
 
 * {
+    -fx-font-family: 'Roboto Slab';
     -fx-font-size: 16px;
 }
 
@@ -16,8 +23,23 @@
     -fx-text-fill: black;
     -fx-font-size: 16px;
     -fx-cursor: hand;
+    -fx-padding: 10px 40px;
+    /*-fx-background-image: url('../assets/materials/clean_brick.png');*/
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.button#primary {
+    -fx-background-color: #D8D8D8;
+    -fx-border-color: #979797;
 }
 
 .button:hover {
-    -fx-background-color: #808080;
+    -fx-background-color: #909090;
+    -fx-border-color: #060606;
+}
+
+.button#primary:hover {
+    -fx-background-color: #B2B2B2;
+    -fx-border-color: #262626;
 }

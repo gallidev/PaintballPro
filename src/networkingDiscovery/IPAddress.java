@@ -17,10 +17,10 @@ public class IPAddress {
 	public static String getLAN() {
 		while (true) {
 			try {
-				Enumeration en = NetworkInterface.getNetworkInterfaces();
+				Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
 				while (en.hasMoreElements()) {
 					NetworkInterface ni = (NetworkInterface) en.nextElement();
-					Enumeration ee = ni.getInetAddresses();
+					Enumeration<InetAddress> ee = ni.getInetAddresses();
 					while (ee.hasMoreElements()) {
 						InetAddress ia = (InetAddress) ee.nextElement();
 						if (!ia.isLinkLocalAddress() && !ia.isMulticastAddress() && !ia.isLoopbackAddress()) {

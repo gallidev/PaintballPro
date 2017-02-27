@@ -14,6 +14,9 @@ public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
 	private static final long gameTime = 180; // in seconds
+	
+	//debugging
+	private boolean debug = false;
 
 	/**
 	 * Initialises the game with two teams and starts the count-down.
@@ -25,8 +28,8 @@ public class TeamMatchMode extends GameMode {
 	 */
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
-		System.out.println("First team colour is : " + t1.getColour());
-		System.out.println("second team colour is : " + t2.getColour());
+		if (debug) System.out.println("First team colour is : " + t1.getColour());
+		if (debug) System.out.println("second team colour is : " + t2.getColour());
 		timer = new RoundTimer(gameTime);
 	}
 

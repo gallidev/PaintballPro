@@ -1,8 +1,23 @@
+clean_brick.png
+http://www.textures.com/download/brickmedievalblocks0001/67002
+
 crate.png
 http://opengameart.org/node/8762
+
+dirty_brick.png
+http://www.textures.com/download/brickolddirty0132/66156
+
+gravel_cobble.png
+http://www.textures.com/download/gravelcobble0027/64659
+
+mossy_brick.png
+http://www.textures.com/download/brickoldovergrown0018/53671
+
+mossy_floor.png
+http://www.textures.com/download/floorsmedieval0063/24636
 
 sand.png
 http://www.textures.com/download/soilsand0200/51849
 
 sand_brick.png
-http://www.textures.com/download/brickmedievalblocks0001/67002
+http://www.textures.com/download/brickoldrounded0084/26161

@@ -9,6 +9,8 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.image.ImageView;
 
+import javax.swing.*;
+
 /**
  * Main Menu scene class
  */
@@ -21,6 +23,8 @@ public class MainMenu {
 	 */
 	public static Scene getScene(GUIManager m) {
 
+//		JOptionPane.showMessageDialog(null, "Cannot find any LAN servers running.", "No LAN server.", JOptionPane.ERROR_MESSAGE);
+
 		Image i = new Image("assets/paintballlogo.png");
 		ImageView iv = new ImageView(i);
 		iv.setId("logo");
@@ -28,18 +32,18 @@ public class MainMenu {
 		iv.setFitWidth(400);
 		
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Single player", new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Single player", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo("Singleplayer", null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
-		}), new MenuOption("Multiplayer", new EventHandler<ActionEvent>() {
+		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.establishConnection();
-		    	m.transitionTo("Multiplayer", null);
+		    	m.transitionTo("Nickname", null);
+//		    	m.transitionTo("Multiplayer", null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
-		}), new MenuOption("Settings", new EventHandler<ActionEvent>() {
+		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo("Settings", null);
 		        System.out.println("ActionEvent: " + event);
@@ -59,6 +63,7 @@ public class MainMenu {
 		view.add(grid, 0, 1);
 
 		// Create the scene and return it
+		m.addButtonHoverSounds(view);
 		Scene s = new Scene(view, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
 		return s;

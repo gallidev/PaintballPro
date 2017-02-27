@@ -15,10 +15,19 @@ import rendering.Map;
 public class ServerPlayer{
 	private ServerMsgReceiver receiver;
 
-	private int id, x, y;
+	private double x, y;
+	private int id;
 	private double angle;
 	private TeamEnum team;
 
+	/**
+	 * Creates a new server player with a given id, location and an assigned team colour.
+	 * @param id The player's id.
+	 * @param receiver The server receiver.
+	 * @param x The x coordinate of the player.
+	 * @param y The y coordinate of the player.
+	 * @param color The player's team colour.
+	 */
 	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
 		this.id = id;
 		this.receiver = receiver;
@@ -28,27 +37,60 @@ public class ServerPlayer{
 		angle = 0.0;
 	}
 
+	/**
+	 * Changes the x coordinate of the player.
+	 * @param x The new x coordinate of the player's location.
+	 */
+	public void setX(double x){
+		this.x = x;
+	}
+	
+	/**
+	 * Changes the y coordinate of the player.
+	 * @param x The new y coordinate of the player's location.
+	 */
+	public void setY(double y){
+		this.y = y;
+	}
+	
+	/**
+	 * Changes the player's angle.
+	 * @param newAngle The new angle of the player.
+	 */
+	public void setAngle(double newAngle){
+		angle = newAngle;
+	}
+	
+	
+	/**
+	 * Changes the team's colour.
+	 * @param team The new team colour.
+	 */
 	public void setTeam (TeamEnum team){
 		this.team = team;
 	}
 	
-	//@Override
-	protected void updatePosition() {
-		// TODO Auto-generated method stub
-	}
-	//@Override
-	protected void updateAngle() {
-		// TODO Auto-generated method stub
-	}
-	//@Override
-	public void tick() {
-		// TODO Auto-generated method stub
-	}
+	/**
+	 * Retrieves the player's server receiver.
+	 * @return The server receiver.
+	 */
 	public ServerMsgReceiver getServerReceiver(){
 		return receiver;
 	}
 	
+	/**
+	 * Retrieves the colour of the team that the player is playing in.
+	 * @return The player's team colour.
+	 */
 	public TeamEnum getColour(){
 		return team;
+	}
+	
+	/**
+	 * Retrieves the player's id.
+	 * @return The player id.
+	 */
+	public int getPlayerId(){
+		return id;
 	}
 }

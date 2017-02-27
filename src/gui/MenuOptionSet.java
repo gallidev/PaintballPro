@@ -33,6 +33,9 @@ public class MenuOptionSet {
 			btn.setText(opts[i].getName());
 			btn.setOnAction(opts[i].getHandler());
 			btn.setMaxWidth(Double.MAX_VALUE);
+			if (opts[i].isPrimary()) {
+				btn.setId("primary");
+			}
 			gp.add(btn, 0, i + 1);
 		}
 		

@@ -34,7 +34,7 @@ public class OfflinePlayer extends GeneralPlayer
 	 */
 	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
@@ -125,9 +125,18 @@ public class OfflinePlayer extends GeneralPlayer
 	 */
 	@Override
 	public void updateScore() {
+		
 		oppTeam.incrementScore();
-		System.out.println( "My team score: " + myTeam.getScore());
-		System.out.println( "Opp team score: " + oppTeam.getScore());
+		
+		if (myTeam.getColour() == TeamEnum.RED){
+			System.out.println( "Red team score: " + myTeam.getScore());
+			System.out.println( "Blue team score: " + oppTeam.getScore());
+		}
+		else{
+			System.out.println( "Blue team score: " + myTeam.getScore());
+			System.out.println( "Red team score: " + oppTeam.getScore());
+		}
+		
 	}
 
 	@Override

@@ -12,6 +12,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -54,6 +56,13 @@ public class SettingsMenu {
 		musicSlider.setMajorTickUnit(50);
 		musicSlider.setMinorTickCount(5);
 		musicSlider.setBlockIncrement(10);
+		musicSlider.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
+			@Override
+			public void handle(InputEvent event) {
+				s.setMusicVolume((int) musicSlider.getValue());
+				m.notifySettingsObservers();
+			}
+		});
 		
 		// Create the sound FX label and slider
 		Label sfxLabel = new Label("SFX Volume");
@@ -67,61 +76,82 @@ public class SettingsMenu {
 		sfxSlider.setMajorTickUnit(50);
 		sfxSlider.setMinorTickCount(5);
 		sfxSlider.setBlockIncrement(10);
+		sfxSlider.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
+			@Override
+			public void handle(InputEvent event) {
+				s.setSfxVolume((int) sfxSlider.getValue());
+				m.notifySettingsObservers();
+			}
+		});
 		
 		// Create the username label and text field
 		Label usernameLabel = new Label("Username");
 		
 		TextField usernameText = new TextField();
 		usernameText.setText(s.getUsername());
+		usernameText.addEventHandler(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				s.setUsername(usernameText.getText());
+				m.notifySettingsObservers();
+			}
+		});
 		
 		// Create the shading option label and checkbox
 		Label shadingLabel = new Label("Use shading (default on)");
 		
 		CheckBox shadingCheckbox = new CheckBox();
 		shadingCheckbox.setSelected(s.getShading());
+		shadingCheckbox.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
+			@Override
+			public void handle(InputEvent event) {
+				s.setShading(shadingCheckbox.isSelected());
+				m.notifySettingsObservers();
+			}
+		});
 		
 		
-		// Get the current character resource
-		String currentCharacter = s.getCharacterStyle();
-		// Create the current character image view, and set the
-		// ID (the string containing the path to the resource)
-		ImageView characterImage = new ImageView(currentCharacter);
-		characterImage.setId(currentCharacter);
-		
-		// Create the button to change the look of the character
-		Button characterButton = new Button();
-		// Add the text to the button
-		characterButton.setText("Change");
-		// Set the event handler for the button
-		characterButton.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	// Update the ID to be the next possible ID
-		    	characterImage.setId(CharacterStyles.getNext(characterImage.getId()));
-		    	// Change the image to be the new ID (path to resource)
-		    	characterImage.setImage(new Image(characterImage.getId()));
-		    }     
-		});		
-		
-		// Get the current weapon resource
-		String currentWeapon = s.getWeaponStyle();
-		// Create the current weapon image view, and set the
-		// ID (the string containing the path to the resource)
-		ImageView weaponImage = new ImageView(currentWeapon);
-		weaponImage.setId(currentWeapon);
-		
-		// Create the button to change the look of the weapon
-		Button weaponButton = new Button();
-		// Add the text to the button
-		weaponButton.setText("Change");
-		// Set the event handler for the button
-		weaponButton.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	// Update the ID to be the next possible ID
-		    	weaponImage.setId(WeaponStyles.getNext(weaponImage.getId()));
-		    	// Change the image to be the new ID (path to resource)
-		    	weaponImage.setImage(new Image(weaponImage.getId()));
-		    }     
-		});	
+//		// Get the current character resource
+//		String currentCharacter = s.getCharacterStyle();
+//		// Create the current character image view, and set the
+//		// ID (the string containing the path to the resource)
+//		ImageView characterImage = new ImageView(currentCharacter);
+//		characterImage.setId(currentCharacter);
+//
+//		// Create the button to change the look of the character
+//		Button characterButton = new Button();
+//		// Add the text to the button
+//		characterButton.setText("Change");
+//		// Set the event handler for the button
+//		characterButton.setOnAction(new EventHandler<ActionEvent>() {
+//		    @Override public void handle(ActionEvent event) {
+//		    	// Update the ID to be the next possible ID
+//		    	characterImage.setId(CharacterStyles.getNext(characterImage.getId()));
+//		    	// Change the image to be the new ID (path to resource)
+//		    	characterImage.setImage(new Image(characterImage.getId()));
+//		    }
+//		});
+//
+//		// Get the current weapon resource
+//		String currentWeapon = s.getWeaponStyle();
+//		// Create the current weapon image view, and set the
+//		// ID (the string containing the path to the resource)
+//		ImageView weaponImage = new ImageView(currentWeapon);
+//		weaponImage.setId(currentWeapon);
+//
+//		// Create the button to change the look of the weapon
+//		Button weaponButton = new Button();
+//		// Add the text to the button
+//		weaponButton.setText("Change");
+//		// Set the event handler for the button
+//		weaponButton.setOnAction(new EventHandler<ActionEvent>() {
+//		    @Override public void handle(ActionEvent event) {
+//		    	// Update the ID to be the next possible ID
+//		    	weaponImage.setId(WeaponStyles.getNext(weaponImage.getId()));
+//		    	// Change the image to be the new ID (path to resource)
+//		    	weaponImage.setImage(new Image(weaponImage.getId()));
+//		    }
+//		});
 		
 		// Add all of the options to the options grid
 		topGrid.add(musicLabel, 0, 0);
@@ -132,28 +162,19 @@ public class SettingsMenu {
 		topGrid.add(usernameText, 1, 2);
 		topGrid.add(shadingLabel, 0, 3);
 		topGrid.add(shadingCheckbox, 1, 3);
-		topGrid.add(MenuControls.centreInPane(characterImage), 0, 4);
-		topGrid.add(MenuControls.centreInPane(characterButton), 0, 5);
-		topGrid.add(MenuControls.centreInPane(weaponImage), 1, 4);
-		topGrid.add(MenuControls.centreInPane(weaponButton), 1, 5);
+//		topGrid.add(MenuControls.centreInPane(characterImage), 0, 4);
+//		topGrid.add(MenuControls.centreInPane(characterButton), 0, 5);
+//		topGrid.add(MenuControls.centreInPane(weaponImage), 1, 4);
+//		topGrid.add(MenuControls.centreInPane(weaponButton), 1, 5);
 		
 		// Create a array of options for the cancel and apply buttons
-		MenuOption[] set = {new MenuOption("Cancel", new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	// Cancel - so transition back to the main menu without setting anything
-		    	m.transitionTo("Main", null);
-		    }     
-		}), new MenuOption("Apply", new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	// Update the preferences (these will automatically be saved
 		    	// when set is called)
-		    	s.setCharacterStyle(characterImage.getId());
-		    	s.setWeaponStyle(weaponImage.getId());
-		    	s.setUsername(usernameText.getText());
-		    	s.setMusicVolume((int) musicSlider.getValue());
-		    	s.setSfxVolume((int) sfxSlider.getValue());
-		    	s.setShading(shadingCheckbox.isSelected());
-		    	m.notifySettingsObservers();
+//		    	s.setCharacterStyle(characterImage.getId());
+//		    	s.setWeaponStyle(weaponImage.getId());
+//		    	m.notifySettingsObservers();
 		    	// Transition back to the main menu
 		    	m.transitionTo("Main", null);
 		    }     
@@ -167,6 +188,7 @@ public class SettingsMenu {
 		mainGrid.add(buttonGrid, 0, 1);
 		
 		// Create a new scene using the main grid
+		m.addButtonHoverSounds(mainGrid);
 		Scene scene = new Scene(mainGrid, m.width, m.height);
 		scene.getStylesheets().add("styles/menu.css");
 		return scene;

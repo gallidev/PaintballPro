@@ -9,16 +9,18 @@ import javafx.event.ActionEvent;
 public class MenuOption {
 	String name;
 	EventHandler<ActionEvent> handler;
+	boolean primary;
 	
 	/**
 	 * Create a menu option, with a given name and event handler
 	 * @param name
 	 * @param handler
 	 */
-	public MenuOption(String name, EventHandler<ActionEvent> handler) {
+	public MenuOption(String name, boolean primary, EventHandler<ActionEvent> handler) {
 		super();
 		this.name = name;
 		this.handler = handler;
+		this.primary = primary;
 	}
 
 	/**
@@ -37,4 +39,7 @@ public class MenuOption {
 		return handler;
 	}
 
+	public boolean isPrimary() {
+		return primary;
+	}
 }

@@ -74,7 +74,7 @@ public class GameLobbyMenu {
 		Label timeLabel = new Label("Waiting for more players to join...");
 
 		GridPane optionsSection = new GridPane();
-		MenuOption[] set = {new MenuOption("Change Team", new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				m.getClient().getSender().sendMessage("SwitchTeam");
 				m.fetchLobbyUpdates();
@@ -134,6 +134,7 @@ public class GameLobbyMenu {
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
 
+		m.addButtonHoverSounds(mainGrid);
 		Scene s = new Scene(mainGrid, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
 		return s;

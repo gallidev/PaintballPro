@@ -221,6 +221,7 @@ public class Lobby {
 	 * 
 	 * @param sender
 	 * @param receiver
+	 * @author Alexandra Paduraru
 	 */
 	public void playGame(ServerMsgReceiver receiver) {
 		red = convertTeam(receiver, redTeam, 2);
@@ -248,10 +249,10 @@ public class Lobby {
 
 		currentSessionGame.startGame();
 
-		// sends the end game signal to all clients
-		while (!currentSessionGame.getGame().isGameFinished()) {
-		}
+		
+		while (!currentSessionGame.getGame().isGameFinished()) {}
 
+		// sends the end game signal to all clients
 		currentSessionGame.endGame(getWinner());
 		// currentSessionGame.endGame();
 	}

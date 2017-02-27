@@ -6,6 +6,7 @@ import java.io.IOException;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;
+import players.ServerPlayer;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -197,10 +198,41 @@ public class ServerMsgReceiver extends Thread {
 
 	public void sendToAll(String text) {
 		// System.out.println("Sending to all: " + text);
-		ServerBasicPlayer[] gamePlayers = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby()).getPlayers();
+		
+		//extract the lobby which contains only the players that should receive the message
+		Lobby currentLobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+		
+		ServerBasicPlayer[] gamePlayers = currentLobby.getPlayers();
 		for (ServerBasicPlayer player : gamePlayers) {
 			MessageQueue queue = clientTable.getQueue(player.getID());
 			queue.offer(new Message(text));
+		}
+		
+		//Given a move, the server player's location needs to be updated
+		
+		if (text.contains("Move")){
+			//extract the id of the server player with a new location
+			String[] parsedMsg = text.split(":");
+			int id = Integer.parseInt(parsedMsg[2]);
+			double x = Double.parseDouble(parsedMsg[3]);
+			double y = Double.parseDouble(parsedMsg[4]);
+			double angle = Double.parseDouble(parsedMsg[5]);
+
+			//get that server player from the lobby
+			ServerPlayer currentPlayer = null;
+			for(ServerPlayer p : lobby.getRedTeam().getMembers())
+				if( id == p.getPlayerId())
+					currentPlayer = p;
+			
+			if (currentPlayer == null){
+				for(ServerPlayer p : lobby.getBlueTeam().getMembers())
+					if( id == p.getPlayerId())
+						currentPlayer = p;
+			}
+			//update its location
+			currentPlayer.setX(x);
+			currentPlayer.setY(y);
+			currentPlayer.setAngle(angle);
 		}
 	}
 
