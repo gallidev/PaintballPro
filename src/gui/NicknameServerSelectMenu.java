@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -60,7 +61,12 @@ public class NicknameServerSelectMenu {
             	if(ipAddr.compareTo("") != 0)
             		ipText.setText(ipAddr);
             	else 
-            		JOptionPane.showMessageDialog(null, "Cannot find any LAN servers running.", "No LAN server.", JOptionPane.ERROR_MESSAGE);
+            	{
+            		Alert alert = new Alert(AlertType.ERROR);
+            		alert.setTitle("No LAN server");
+            		alert.setContentText("Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+            		alert.showAndWait();
+            	}
             }
         }),new MenuOption("Connect", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
