@@ -1,13 +1,20 @@
 package gui;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import audio.AudioManager;
+import audio.MusicResources;
+import audio.SFXResources;
 import enums.GameLocation;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
@@ -63,6 +70,7 @@ public class GUIManager {
      * @param o    an object to be passed to the target scene (usually null)
      */
     public void transitionTo(String menu, Object o) {
+        audio.stopMusic();
         if (!menu.equals(currentScene)) {
             currentScene = menu;
             switch (menu) {
@@ -87,9 +95,11 @@ public class GUIManager {
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
                 case "EliminationSingle":
+                    audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", audio));
                     break;
                 case "Elimination":
+                    audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
                 case "EndGame":
@@ -217,5 +227,27 @@ public class GUIManager {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public void addButtonHoverSounds(Node n) {
+        if (n instanceof Pane) {
+            for (Node p : ((Pane) n).getChildren()) {
+                addButtonHoverSounds(p);
+            }
+        }
+        if (n instanceof Button) {
+            n.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_ENTERED, new EventHandler<javafx.scene.input.MouseEvent>() {
+                @Override
+                public void handle(javafx.scene.input.MouseEvent event) {
+                    audio.playSFX(new SFXResources().clickSound, (float)1.0);
+                }
+            });
+            n.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_PRESSED, new EventHandler<javafx.scene.input.MouseEvent>() {
+                @Override
+                public void handle(javafx.scene.input.MouseEvent event) {
+                    audio.playSFX(new SFXResources().getRandomPaintball(), (float)1.0);
+                }
+            });
+        }
     }
 }

@@ -24,7 +24,6 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	private double mx, my;
 	private boolean controlScheme;
 	private ClientSender sender;
-	private AudioManager audio;
 	private ClientReceiver receiver;
 	private ArrayList<ClientLocalPlayer> clientEnemies;
 
@@ -40,8 +39,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 */
 	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
-		this.audio = audio;
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
@@ -107,6 +105,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 			{
 				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated)
 				{
+					audio.playSFX(audio.sfx.splat, (float) 1.0);
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
 					updateScore();
@@ -257,11 +256,6 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	public void setMY(double my)
 	{
 		this.my = my;
-	}
-
-	public void setAudio(AudioManager audio)
-	{
-		this.audio = audio;
 	}
 
 	public ArrayList<ClientLocalPlayer> getClientEnemies()

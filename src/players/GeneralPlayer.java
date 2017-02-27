@@ -2,6 +2,7 @@ package players;
 import java.util.ArrayList;
 import java.util.List;
 
+import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected Polygon bounds = new Polygon();
 	protected ArrayList<Rectangle> propsWalls;
 	protected boolean scoreChanged = false;
+	protected AudioManager audio;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -50,7 +52,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image){
+	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
@@ -68,6 +70,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	    propsWalls.addAll(map.getRecWalls());
 		eliminated = false;
 		invincible = false;
+		this.audio = audio;
 		updatePlayerBounds();
 		
 	}
@@ -181,6 +184,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 			for(Bullet bullet : enemy.getBullets()){
 				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated){
+					audio.playSFX(audio.sfx.splat, (float) 1.0);
 					spawnTimer = System.currentTimeMillis();
 					eliminated = true;
 					setVisible(false);

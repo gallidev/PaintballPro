@@ -134,6 +134,7 @@ public class GameLobbyMenu {
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
 
+		m.addButtonHoverSounds(mainGrid);
 		Scene s = new Scene(mainGrid, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
 		return s;

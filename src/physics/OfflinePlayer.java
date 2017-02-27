@@ -34,7 +34,7 @@ public class OfflinePlayer extends GeneralPlayer
 	 */
 	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;

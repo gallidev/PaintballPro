@@ -40,6 +40,7 @@ public class GameTypeMenu {
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
 		
 		// Create the scene and return it
+		m.addButtonHoverSounds(grid);
 		Scene s = new Scene(grid, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
 		return s;

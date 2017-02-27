@@ -20,7 +20,7 @@ public class AIPlayer extends GeneralPlayer{
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio){
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
