@@ -39,6 +39,12 @@ public class AudioManager implements gui.UserSettingsObserver {
     public void startMusic(Media media) {
         musicPlayer = new MediaPlayer(media);
         musicPlayer.setVolume(musicVolume);
+        musicPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                startMusic(media);
+            }
+        });
         musicPlayer.play();
     }
 

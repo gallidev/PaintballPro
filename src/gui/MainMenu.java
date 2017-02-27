@@ -59,6 +59,7 @@ public class MainMenu {
 		view.add(grid, 0, 1);
 
 		// Create the scene and return it
+		m.addButtonHoverSounds(view);
 		Scene s = new Scene(view, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
 		return s;
