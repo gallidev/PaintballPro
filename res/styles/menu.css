@@ -29,6 +29,17 @@
     -fx-background-position: center;
 }
 
+.button#primary {
+    -fx-background-color: #D8D8D8;
+    -fx-border-color: #979797;
+}
+
 .button:hover {
-    -fx-background-color: #808080;
+    -fx-background-color: #909090;
+    -fx-border-color: #060606;
+}
+
+.button#primary:hover {
+    -fx-background-color: #B2B2B2;
+    -fx-border-color: #262626;
 }

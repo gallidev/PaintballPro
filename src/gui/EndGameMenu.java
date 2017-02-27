@@ -23,7 +23,7 @@ public class EndGameMenu {
 
         Label endLabel = new Label("Game Ended");
 
-        MenuOption[] set = {new MenuOption("Main Menu", new EventHandler<ActionEvent>() {
+        MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 m.transitionTo("Main", null);
                 System.out.println("ActionEvent: " + event);

@@ -54,7 +54,7 @@ public class NicknameServerSelectMenu {
         topGrid.add(ipText, 1, 1);
 
         // Create a array of options for the cancel and apply buttons
-        MenuOption[] set = {new MenuOption("Search LAN for server", new EventHandler<ActionEvent>() {
+        MenuOption[] set = {new MenuOption("Search LAN for server", false, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
             	String ipAddr = ClientListener.findServer().split(":")[0];
             	if(ipAddr.compareTo("") != 0)
@@ -62,7 +62,7 @@ public class NicknameServerSelectMenu {
             	else 
             		JOptionPane.showMessageDialog(null, "Cannot find any LAN servers running.", "No LAN server.", JOptionPane.ERROR_MESSAGE);
             }
-        }),new MenuOption("Connect", new EventHandler<ActionEvent>() {
+        }),new MenuOption("Connect", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 // Update the preferences (these will automatically be saved
                 // when set is called)
@@ -73,7 +73,7 @@ public class NicknameServerSelectMenu {
                 m.establishConnection();
                 m.transitionTo("Multiplayer", null);
             }
-        }), new MenuOption("Back", new EventHandler<ActionEvent>() {
+        }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 m.transitionTo("Main", null);

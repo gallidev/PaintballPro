@@ -19,7 +19,7 @@ public class GameTypeMenu {
 	public static Scene getScene(GUIManager m, GameLocation loc) {
 		
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Elimination", new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Elimination", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	if (loc == GameLocation.MultiplayerServer) {
 					m.transitionTo("Lobby", "Elimination");
@@ -29,7 +29,7 @@ public class GameTypeMenu {
 
 		        System.out.println("ActionEvent: (Elimination) " + event);
 		    }     
-		}), new MenuOption("Back", new EventHandler<ActionEvent>() {
+		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo("Main", null);
 		        System.out.println("ActionEvent: " + event);

@@ -74,7 +74,7 @@ public class GameLobbyMenu {
 		Label timeLabel = new Label("Waiting for more players to join...");
 
 		GridPane optionsSection = new GridPane();
-		MenuOption[] set = {new MenuOption("Change Team", new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				m.getClient().getSender().sendMessage("SwitchTeam");
 				m.fetchLobbyUpdates();

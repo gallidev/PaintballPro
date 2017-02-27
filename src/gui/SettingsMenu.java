@@ -168,7 +168,7 @@ public class SettingsMenu {
 //		topGrid.add(MenuControls.centreInPane(weaponButton), 1, 5);
 		
 		// Create a array of options for the cancel and apply buttons
-		MenuOption[] set = {new MenuOption("Back", new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	// Update the preferences (these will automatically be saved
 		    	// when set is called)
