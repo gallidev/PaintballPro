@@ -73,6 +73,11 @@ public class NicknameServerSelectMenu {
                 m.establishConnection();
                 m.transitionTo("Multiplayer", null);
             }
+        }), new MenuOption("Back", new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                m.transitionTo("Main", null);
+            }
         })};
 
         // Turn the array into a grid pane

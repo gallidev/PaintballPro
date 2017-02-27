@@ -1,9 +1,16 @@
+@font-face {
+    font-family: 'Roboto Slab';
+    src: url('fonts/roboto-slab/RobotoSlab-Regular.ttf');
+}
+
 .root {
-    /*-fx-background-image: url('../assets/sand.png');*/
+    /*-fx-background-image: url('../assets/materials/sand.png');*/
+    -fx-background-size: 64px;
     -fx-background-color: white;
 }
 
 * {
+    -fx-font-family: 'Roboto Slab';
     -fx-font-size: 16px;
 }
 
@@ -16,6 +23,10 @@
     -fx-text-fill: black;
     -fx-font-size: 16px;
     -fx-cursor: hand;
+    -fx-padding: 10px 40px;
+    /*-fx-background-image: url('../assets/materials/clean_brick.png');*/
+    -fx-background-size: cover;
+    -fx-background-position: center;
 }
 
 .button:hover {
