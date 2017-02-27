@@ -70,7 +70,7 @@ public class GUIManager {
                     s.setScene(MainMenu.getScene(this));
                     break;
                 case "Nickname":
-                    s.setScene(NicknameMenu.getScene(this));
+                    s.setScene(NicknameServerSelectMenu.getScene(this));
                     break;
                 case "Settings":
                     s.setScene(SettingsMenu.getScene(this));

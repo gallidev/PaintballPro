@@ -1,5 +1,7 @@
 package gui;
 
+import javax.swing.JOptionPane;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +17,7 @@ import networkingDiscovery.ClientListener;
 /**
  * Created by jack on 12/02/2017.
  */
-public class NicknameMenu {
+public class NicknameServerSelectMenu {
 
     public static Scene getScene(GUIManager m) {
         // Obtain the user's settings
@@ -54,7 +56,13 @@ public class NicknameMenu {
         // Create a array of options for the cancel and apply buttons
         MenuOption[] set = {new MenuOption("Search LAN for server", new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                ipText.setText(ClientListener.findServer().split(":")[0]);
+            	System.out.print("searching");
+            	String ipAddr = ClientListener.findServer().split(":")[0];
+            	System.out.println("returned:" + ipAddr);
+            	if(ipAddr.compareTo("") != 0)
+            		ipText.setText(ipAddr);
+            	else 
+            		JOptionPane.showMessageDialog(null, "Cannot find any LAN servers running.", "No LAN server.", JOptionPane.ERROR_MESSAGE);
             }
         }),new MenuOption("Connect", new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
