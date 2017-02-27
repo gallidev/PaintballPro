@@ -11,7 +11,7 @@ public class SFXResources {
 	public Media paintball2 = new Media(new File("res/assets/sfx/paintball-02.wav").toURI().toString());
 	public Media paintball3 = new Media(new File("res/assets/sfx/paintball-03.wav").toURI().toString());
 	public Media clickSound = new Media(new File("res/assets/sfx/click.wav").toURI().toString());
-
+	// Splat from http://www.freesound.org/people/gprosser/sounds/360942/ 
 	public Media splat = new Media(new File("res/assets/sfx/splat.wav").toURI().toString());
 
 
