@@ -56,9 +56,7 @@ public class NicknameServerSelectMenu {
         // Create a array of options for the cancel and apply buttons
         MenuOption[] set = {new MenuOption("Search LAN for server", new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-            	System.out.print("searching");
             	String ipAddr = ClientListener.findServer().split(":")[0];
-            	System.out.println("returned:" + ipAddr);
             	if(ipAddr.compareTo("") != 0)
             		ipText.setText(ipAddr);
             	else 
@@ -85,7 +83,6 @@ public class NicknameServerSelectMenu {
         mainGrid.add(buttonGrid, 0, 1);
 
         // Create a new scene using the main grid
-        m.addButtonHoverSounds(mainGrid);
         Scene scene = new Scene(mainGrid, m.width, m.height);
         scene.getStylesheets().add("styles/menu.css");
         return scene;
