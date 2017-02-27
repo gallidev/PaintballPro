@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import networkingDiscovery.ClientListener;
 
 /**
  * Created by jack on 12/02/2017.
@@ -42,7 +43,7 @@ public class NicknameMenu {
 
         Label ipLabel = new Label("Server IP Address");
 
-        TextField ipText = new TextField("10.20.201.220");
+        TextField ipText = new TextField("127.0.0.1");
 
         topGrid.add(usernameLabel, 0, 0);
         topGrid.add(usernameText, 1, 0);
@@ -51,7 +52,11 @@ public class NicknameMenu {
         topGrid.add(ipText, 1, 1);
 
         // Create a array of options for the cancel and apply buttons
-        MenuOption[] set = {new MenuOption("Connect", new EventHandler<ActionEvent>() {
+        MenuOption[] set = {new MenuOption("Search LAN for server", new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                ipText.setText(ClientListener.findServer().split(":")[0]);
+            }
+        }),new MenuOption("Connect", new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 // Update the preferences (these will automatically be saved
                 // when set is called)

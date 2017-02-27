@@ -27,7 +27,8 @@ public class ClientListener {
 		        while (networkInterfaces.hasMoreElements()) {
 		            NetworkInterface iface = networkInterfaces.nextElement();
 		            try {
-		                socket.setNetworkInterface(iface);
+		            	if (!iface.isLoopback())
+							socket.setNetworkInterface(iface);
 		            } catch (IOException e) {
 		            	//e.printStackTrace();
 		            }
