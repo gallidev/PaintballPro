@@ -69,6 +69,9 @@ public class GUIManager {
                 case "Main":
                     s.setScene(MainMenu.getScene(this));
                     break;
+                case "Nickname":
+                    s.setScene(NicknameMenu.getScene(this));
+                    break;
                 case "Settings":
                     s.setScene(SettingsMenu.getScene(this));
                     break;
@@ -122,7 +125,7 @@ public class GUIManager {
         // TODO: Remove this method once integrated with Game.java
         s = primaryStage;
         s.setTitle("Paintball Pro");
-        s.setScene(NicknameMenu.getScene(this));
+        s.setScene(MainMenu.getScene(this));
         s.show();
     }
 

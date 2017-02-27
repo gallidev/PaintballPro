@@ -59,7 +59,8 @@ public class NicknameMenu {
                 m.notifySettingsObservers();
                 // Transition back to the main menu
                 m.setIpAddress(ipText.getText());
-                m.transitionTo("Main", null);
+                m.establishConnection();
+                m.transitionTo("Multiplayer", null);
             }
         })};
 
