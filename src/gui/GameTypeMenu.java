@@ -29,6 +29,16 @@ public class GameTypeMenu {
 
 		        System.out.println("ActionEvent: (Elimination) " + event);
 		    }     
+		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent event) {
+				if (loc == GameLocation.MultiplayerServer) {
+					m.transitionTo("Lobby", "CTF");
+				} else {
+					m.transitionTo("CTFSingle", null);
+				}
+
+				System.out.println("ActionEvent: (CTF) " + event);
+			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo("Main", null);
