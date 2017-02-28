@@ -18,6 +18,16 @@
 	],
 	"floors": [
 		{"material": "gravel_cobble", "width": 4, "height": 4, "x": 2, "y": 22},
-		{"material": "gravel_cobble", "width": 2, "height": 5, "x": 3, "y": 17}
+		{"material": "gravel_cobble", "width": 2, "height": 5, "x": 3, "y": 17},
+		{"material": "mossy_floor", "width": 3, "height": 2, "x": 3, "y": 19}
+	],
+	"walls": [
+		{"material": "dirty_brick", "orientation": false, "length": 5, "x": 1, "y": 21},
+		{"material": "dirty_brick", "orientation": false, "length": 7, "x": 2, "y": 15},
+		{"material": "dirty_brick", "orientation": true, "length": 6, "x": 1, "y": 26},
+		{"material": "dirty_brick", "orientation": true, "length": 6, "x": 6, "y": 25}
+	],
+	"props": [
+
 	]
 }
