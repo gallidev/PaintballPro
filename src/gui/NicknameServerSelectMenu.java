@@ -3,6 +3,8 @@ package gui;
 import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
 import javafx.scene.layout.GridPane;
 import networkingDiscovery.ClientListener;
 
@@ -44,38 +47,81 @@ public class NicknameServerSelectMenu {
         TextField usernameText = new TextField();
         usernameText.setText(s.getUsername());
 
-        Label ipLabel = new Label("Server IP Address");
-
-        TextField ipText = new TextField("127.0.0.1");
+        final ToggleGroup group = new ToggleGroup();
 
         topGrid.add(usernameLabel, 0, 0);
         topGrid.add(usernameText, 1, 0);
 
-        topGrid.add(ipLabel, 0, 1);
-        topGrid.add(ipText, 1, 1);
 
-        // Create a array of options for the cancel and apply buttons
-        MenuOption[] set = {new MenuOption("Search LAN for server", false, new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-            	String ipAddr = ClientListener.findServer().split(":")[0];
-            	if(ipAddr.compareTo("") != 0)
-            		ipText.setText(ipAddr);
-            	else 
-            	{
-            		Alert alert = new Alert(AlertType.ERROR);
-            		alert.setTitle("No LAN server");
-            		alert.setContentText("Cannot find any LAN servers running. Please try again or enter a server IP manually.");
-            		alert.showAndWait();
-            	}
+        RadioButton automatic = new RadioButton();
+        automatic.setToggleGroup(group);
+        automatic.setSelected(true);
+
+        Label automaticLabel = new Label("Search LAN for a Server");
+        topGrid.add(automatic, 0, 1);
+        topGrid.add(automaticLabel, 1, 1);
+
+        RadioButton manual = new RadioButton();
+        manual.setToggleGroup(group);
+
+        Label ipLabel = new Label("Manually Enter IP Address");
+        TextField ipText = new TextField("127.0.0.1");
+
+        GridPane manualField = new GridPane();
+        manualField.add(ipLabel, 0, 0);
+        manualField.add(ipText, 0, 1);
+
+        topGrid.add(manual, 0, 2);
+        topGrid.add(manualField, 1, 2);
+
+        automaticLabel.setStyle("-fx-opacity: 1.0;");
+        ipLabel.setStyle("-fx-opacity: 0.5;");
+        ipText.setStyle("-fx-opacity: 0.5;");
+
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (automatic.isSelected()) {
+                    automaticLabel.setStyle("-fx-opacity: 1.0;");
+                    ipLabel.setStyle("-fx-opacity: 0.5;");
+                    ipText.setStyle("-fx-opacity: 0.5;");
+                } else {
+                    automaticLabel.setStyle("-fx-opacity: 0.5;");
+                    ipLabel.setStyle("-fx-opacity: 1.0;");
+                    ipText.setStyle("-fx-opacity: 1.0;");
+                }
             }
-        }),new MenuOption("Connect", true, new EventHandler<ActionEvent>() {
+        });
+
+        ipText.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                manual.setSelected(true);
+            }
+        });
+
+
+        ipText.editableProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                manual.setSelected(true);
+            }
+        });
+
+        MenuOption[] connect = {new MenuOption("Connect", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 // Update the preferences (these will automatically be saved
                 // when set is called)
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
+
+                if (automatic.isSelected()) {
+                    m.setIpAddress(ClientListener.findServer().split(":")[0]);
+                } else {
+                    m.setIpAddress(ipText.getText());
+                }
+
                 // Transition back to the main menu
-                m.setIpAddress(ipText.getText());
                 m.establishConnection();
                 m.transitionTo("Multiplayer", null);
             }
@@ -87,11 +133,11 @@ public class NicknameServerSelectMenu {
         })};
 
         // Turn the array into a grid pane
-        GridPane buttonGrid = MenuOptionSet.optionSetToGridPane(set);
+        GridPane connectGrid = MenuOptionSet.optionSetToGridPane(connect);
 
         // Add the options grid and the button grid to the main grid
         mainGrid.add(topGrid, 0, 0);
-        mainGrid.add(buttonGrid, 0, 1);
+        mainGrid.add(connectGrid, 0, 1);
 
         // Create a new scene using the main grid
         Scene scene = new Scene(mainGrid, m.width, m.height);
