@@ -57,7 +57,7 @@ public class OfflinePlayer extends GeneralPlayer
 		
 		//populating the opponent team and creating a corresponding OfflineTeam for the members
 		ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
-		
+
 		for (int i = 0; i < 4; i++){
 				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio);
 				oppTeamMembers.add(p);
