@@ -14,6 +14,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
+import physics.CollisionsHandler;
 import rendering.Map;
 import serverLogic.Team;
 /**
@@ -41,6 +42,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected ArrayList<Rectangle> propsWalls;
 	protected boolean scoreChanged = false;
 	protected AudioManager audio;
+	protected CollisionsHandler collisionsHandler;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -52,7 +54,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio){
+	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
@@ -71,8 +73,9 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		eliminated = false;
 		invincible = false;
 		this.audio = audio;
+		this.collisionsHandler = collisionsHandler;
 		updatePlayerBounds();
-		
+
 	}
 
 	/**
@@ -88,6 +91,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		setLayoutX(x);
 		setLayoutY(y);
 		this.id = id;
+	}
+
+	public GeneralPlayer(Image image) {
+		super(image);
 	}
 
 	protected abstract void updatePosition();
@@ -109,101 +116,13 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
 
-	protected void handlePropWallCollision(){
-		collUp = false;
-		collDown = false;
-		collRight = false;
-		collLeft = false;
-		ArrayList<Double> angles = new ArrayList<>();
-		for(Rectangle propWall : propsWalls){
-			//it returns a path with the collision with walls
-			Path tmp = (Path) Shape.intersect(bounds, propWall);
-			if(tmp.getBoundsInLocal().isEmpty() == false) {
-				double propX =propWall.getX();
-				double propY = propWall.getY();
-				double propWidth = propWall.getWidth();
-				double propHeight = propWall.getHeight();
-
-				//find angle between center of player and center of the prop
-				//MoveTo moveToValues = (MoveTo) tmp.getElements().get(0);
-				double propCenterX = (propX +propWidth/2);
-				double propCenterY = (propY + propHeight/2);
-				double playerCenterX = getLayoutX() + getImage().getWidth()/2;
-				double playerCenterY = getLayoutY() + getImage().getHeight()/2;
-				double deltax = propCenterX - playerCenterX;
-				double deltay = playerCenterY - propCenterY;
-
-				double tempAngle = Math.atan2(deltay, deltax);
-				double propAngle = Math.toDegrees(tempAngle);
-
-				angles.add(propAngle);
-				if(propAngle < 135 && propAngle >= 45){
-					collUp = true;
-				}
-				if( propAngle < 45 && propAngle >= -45){
-					collRight = true;
-				}
-				if(propAngle < -45 && propAngle >= -135){
-					collDown = true;
-				}
-				if(propAngle < -135 || propAngle >= 135 ){
-					collLeft = true;
-				}
-			}
-			for(Bullet bullet : firedBullets){
-				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
-					bullet.setActive(false);
-				}
-			}
-		}
-		if(!angles.isEmpty()){
-			double mean = getMeanAngle(angles);
-			//System.out.println("mean: " + mean);
-			if(mean < 135 && mean >= 45){
-				collUp = true;
-			}
-			if( mean < 45 && mean >= -45){
-				collRight = true;
-			}
-			if(mean < -45 && mean >= -135){
-				collDown = true;
-			}
-			if(mean < -135 || mean >= 135 ){
-				collLeft = true;
-			}
-		}
-
-	}
-
 	/**
-	 * handles the bullet collisions from enemies, if the player has been shot then it goes to the respawn point
-	 */
-	protected void handleBulletCollision()
-	{
-		for(GeneralPlayer enemy : enemies){
-
-			for(Bullet bullet : enemy.getBullets()){
-				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated){
-					audio.playSFX(audio.sfx.splat, (float) 1.0);
-					spawnTimer = System.currentTimeMillis();
-					eliminated = true;
-					setVisible(false);
-					bullet.setActive(false);
-					updateScore();
-					return;
-				}
-			}
-		}
-
-	}
-	
-	/**
-	 * Method to update the team score once a player has been eliminated. 
+	 * Method to update the team score once a player has been eliminated.
 	 * Will be implemented differently depending on the player type:
 	 * 		- The client player will have to send the updated information to the server
 	 * 		- The offline player will have to update the internal score of the team
 	 * 		- The AI player will have to adjust its behaviour depending on the the game type (single player or online)
-	 * 
+	 *
 	 */
 	public abstract void updateScore();
 
@@ -315,31 +234,19 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		firedBullets.add(bullet);
 	}
 
-	// source file can be found here https://rosettacode.org/wiki/Averages/Mean_angle#Java
-	  private double getMeanAngle(List<Double> sample) {
+	public void beenShot() {
+		audio.playSFX(audio.sfx.splat, (float) 1.0);
+		spawnTimer = System.currentTimeMillis();
+		eliminated = true;
+		setVisible(false);
+		updateScore();
+	}
 
-	    double x_component = 0.0;
-	    double y_component = 0.0;
-	    double avg_d, avg_r;
 
-	    for (double angle_d : sample) {
-	      double angle_r;
-	      angle_r = Math.toRadians(angle_d);
-	      x_component += Math.cos(angle_r);
-	      y_component += Math.sin(angle_r);
-	    }
-	    x_component /= sample.size();
-	    y_component /= sample.size();
-	    avg_r = Math.atan2(y_component, x_component);
-	    avg_d = Math.toDegrees(avg_r);
-
-	    return avg_d;
-	  }
-	  
 	  public void addTeamPlayer(GeneralPlayer p){
 		  teamPlayers.add(p);
 	  }
-	  
+
 	  public void addEnemy(GeneralPlayer p){
 		  enemies.add(p);
 	  }
@@ -402,14 +309,32 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	public ArrayList<GeneralPlayer> getTeamPlayers(){
 		return teamPlayers;
 	}
-	
+
 	public void setMX(double newX) {
 	}
 	public void setMY(double newY){
 	}
-	
+
 	public boolean isEliminated(){
 		return eliminated;
 	}
+
+	public Polygon getPolygonBounds() {
+		return bounds;
+	}
+
+	public void setCollUp(boolean collUp) {
+		this.collUp = collUp;
+	}
+	public void setCollDown(boolean collDown) {
+		this.collDown = collDown;
+	}
+	public void setCollLeft(boolean collLeft) {
+		this.collLeft = collLeft;
+	}
+	public void setCollRight(boolean collRight) {
+		this.collRight = collRight;
+	}
+
 
 }

@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import physics.Bullet;
+import physics.CollisionsHandler;
 import rendering.Map;
 import serverLogic.Team;
 
@@ -37,9 +38,9 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver)
+	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver, CollisionsHandler collisionHandler)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionHandler);
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
@@ -66,7 +67,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	{
 		// handle the collisions with walls and props before moving the position
 		// of the player so to understand if he can move or not in a specific direction
-		handlePropWallCollision();
+		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated)
 		{
 			lastX = getLayoutX();
@@ -89,7 +90,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 
 		if(!invincible)
 		{
-			handleBulletCollision();
+			collisionsHandler.handleBulletCollision(this);
 		}
 		else
 		{

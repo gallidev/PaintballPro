@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import physics.Bullet;
+import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.PhysicsClientPlayer;
 import rendering.Map;
@@ -30,12 +31,12 @@ public class ClientReceiver extends Thread {
 	private PhysicsClientPlayer cPlayer;
 	private ArrayList<ClientLocalPlayer> myTeam;
 	private ArrayList<ClientLocalPlayer> enemies;
-	
+
 	private boolean debug = false;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
-	 * 
+	 *
 	 * @param Cid
 	 *            The ID of the client.
 	 * @param reader
@@ -137,7 +138,7 @@ public class ClientReceiver extends Thread {
 	/**
 	 * Action starting when a player fires a bullet. It renders the bullet and
 	 * also detects when a player has been eliminated.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol text containing information about the coordinates
 	 *            and angle of the bullet, as well as the player id which shot
@@ -182,7 +183,7 @@ public class ClientReceiver extends Thread {
 	 * Contains everything that needs to be done when a player receives the
 	 * start signal: take the client's id and team, then form the team and the
 	 * enemy team. This information is then used by the renderer.
-	 * 
+	 *
 	 * @param text
 	 *            The text received from the server.
 	 *
@@ -196,14 +197,17 @@ public class ClientReceiver extends Thread {
 		String clientTeam = data[2];
 		Map map = Map.loadRaw("elimination");
 
+
+		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.RED, this);
+					clientID, false, map, m.getAudioManager(), TeamEnum.RED, this, collisionsHandler);
 		else
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this);
+					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this, collisionsHandler);
 
 		// extract the other members
 		for (int i = 3; i < data.length - 1; i = i + 2) {
@@ -241,7 +245,7 @@ public class ClientReceiver extends Thread {
 	 * Gets a move signal from the server about a specific player. The method
 	 * finds that player and updates the player's position on the map
 	 * accordingly.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the new x and y coordinates,
 	 *            as well as the angle of the player.
@@ -274,7 +278,7 @@ public class ClientReceiver extends Thread {
 	/* Getters and setters */
 	/**
 	 * Retrieves a player with a specific id from the current game.
-	 * 
+	 *
 	 * @param id
 	 *            The player's id.
 	 * @return The player with the given id.
@@ -297,7 +301,7 @@ public class ClientReceiver extends Thread {
 
 	/**
 	 * Returns the players that are in this Player's team.
-	 * 
+	 *
 	 * @return All the other players in the user's team, except himself.
 	 *
 	 * @author Alexandra Paduraru
@@ -308,7 +312,7 @@ public class ClientReceiver extends Thread {
 
 	/**
 	 * Return all the players that are not in this Player's team.
-	 * 
+	 *
 	 * @return All opponent players.
 	 *
 	 * @author Alexandra Paduraru

@@ -12,19 +12,14 @@ import static gui.GUIManager.redPlayerImage;
 import static players.GeneralPlayer.playerHeadX;
 import static players.GeneralPlayer.playerHeadY;
 
-public class ClientLocalPlayer extends ImageView
+public class ClientLocalPlayer extends GeneralPlayer
 {
-	private int id;
-	private final ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private TeamEnum team;
 
 	public ClientLocalPlayer(double x, double y, int id, TeamEnum team)
 	{
-		super(team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
-		setLayoutX(x);
-		setLayoutY(y);
-		this.id = id;
+		super(x,y,id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		rotation = new Rotate(Math.toDegrees(0.0), 0, 0, 0, Rotate.Z_AXIS);
 		getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
@@ -64,6 +59,30 @@ public class ClientLocalPlayer extends ImageView
 	public TeamEnum getTeam()
 	{
 		return team;
+	}
+
+	@Override
+	public void tick() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void updatePosition() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void updateAngle() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateScore() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -10,23 +10,18 @@ import javafx.scene.shape.Shape;
 import players.GeneralPlayer;
 import rendering.Map;
 
-public class CollisionsController {
+public class CollisionsHandler {
 
 
 	private ArrayList<Rectangle> propsWalls;
-	protected ArrayList<GeneralPlayer> redTeam;
-	protected ArrayList<GeneralPlayer> blueTeam;
+	private ArrayList<GeneralPlayer> redTeam;
+	private ArrayList<GeneralPlayer> blueTeam;
 
-	public CollisionsController(Map map, ArrayList<GeneralPlayer> players){
+	public CollisionsHandler(Map map){
 		this.propsWalls = map.getRecProps();
 	    this.propsWalls.addAll(map.getRecWalls());
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-				redTeam.add(p);
-			else
-				blueTeam.add(p);
-		}
+	    this.redTeam = new ArrayList<>();
+	    this.blueTeam = new ArrayList<>();
 	}
 
 	public void handlePropWallCollision(GeneralPlayer p){
@@ -41,7 +36,9 @@ public class CollisionsController {
 			//it returns a path with the collision with walls
 			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
 			if(tmp.getBoundsInLocal().isEmpty() == false) {
-				double propX =propWall.getX();
+
+				//System.out.println("Collisionssss ");
+				double propX = propWall.getX();
 				double propY = propWall.getY();
 				double propWidth = propWall.getWidth();
 				double propHeight = propWall.getHeight();
@@ -92,6 +89,8 @@ public class CollisionsController {
 				collLeft = true;
 			}
 		}
+		//System.out.println("CollisionsHandler collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
+
 		p.setCollUp(collUp);
 		p.setCollDown(collDown);
 		p.setCollLeft(collLeft);
@@ -149,4 +148,31 @@ public class CollisionsController {
 
 	    return avg_d;
 	  }
+
+	public ArrayList<GeneralPlayer> getRedTeam() {
+		return redTeam;
+	}
+
+	public void setRedTeam(ArrayList<GeneralPlayer> redTeam) {
+		this.redTeam = redTeam;
+	}
+
+	public ArrayList<GeneralPlayer> getBlueTeam() {
+		return blueTeam;
+	}
+
+	public void setBlueTeam(ArrayList<GeneralPlayer> blueTeam) {
+		this.blueTeam = blueTeam;
+	}
+
+	public void setPlayers(ArrayList<GeneralPlayer> players){
+		for(GeneralPlayer p : players)
+		{
+			if(p.getTeam() == TeamEnum.RED)
+				redTeam.add(p);
+			else
+				blueTeam.add(p);
+		}
+	}
+
 }

@@ -14,6 +14,7 @@ import networkingClient.ClientReceiver;
 import offlineLogic.OfflineGameMode;
 import offlineLogic.OfflineTeamMatchMode;
 import physics.Bullet;
+import physics.CollisionsHandler;
 import physics.KeyPressListener;
 import physics.KeyReleaseListener;
 import physics.MouseListener;
@@ -135,7 +136,9 @@ public class Renderer extends Scene
 
 		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED);
+		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, collisionsHandler);
 
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
@@ -147,28 +150,31 @@ public class Renderer extends Scene
 		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> teamRed = new ArrayList<>();
-		ArrayList<GeneralPlayer> teamBlue = new ArrayList<>();
+		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
+		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
 		for(GeneralPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED)
-				teamRed.add(p);
+				redTeam.add(p);
 			else
-				teamBlue.add(p);
+				blueTeam.add(p);
 		}
 		for(GeneralPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED)
 			{
-				p.setEnemies(teamBlue);
-				p.setTeamPlayers(teamRed);
+				p.setEnemies(blueTeam);
+				p.setTeamPlayers(redTeam);
 			}
 			else
 			{
-				p.setEnemies(teamRed);
-				p.setTeamPlayers(teamBlue);
+				p.setEnemies(redTeam);
+				p.setTeamPlayers(blueTeam);
 			}
 		}
+
+		collisionsHandler.setBlueTeam(blueTeam);
+		collisionsHandler.setRedTeam(redTeam);
 
 //		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
 //		game.start();
