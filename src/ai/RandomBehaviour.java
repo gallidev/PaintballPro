@@ -9,8 +9,6 @@ public class RandomBehaviour extends Behaviour{
 	}
 
 	private void randomMovement(){
-		//0 = Up, 1 = Down, 2 = Vertically stationary
-		//0 = Left, 1 = Right, 2 = Horizontally stationary
 		double targetX = (double)rand.nextInt(1900);
 		double targetY = (double)rand.nextInt(800);
 		double deltaX = targetX - ai.getLayoutX();

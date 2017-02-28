@@ -9,4 +9,20 @@ public class Floor
 {
 	String material;
 	int width, height, x, y;
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
 }

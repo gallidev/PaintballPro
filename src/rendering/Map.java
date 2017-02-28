@@ -237,6 +237,8 @@ public class Map
 		return props;
 	}
 
+	public Wall[] getWalls() { return walls; }
+
 	/**
 	 * @return The spawn points of both teams
 	 * @author Filippo Galli

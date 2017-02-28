@@ -15,9 +15,21 @@ import javafx.scene.Group;
  * </ul>
  * and starts at (<i>x</i>,<i>y</i>).<br>
  */
-class Wall
+public class Wall
 {
 	String material;
 	boolean orientation;
 	int length, x, y;
+
+	public int getLength() {
+		return length;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getX() { return x; }
+
+	public boolean getOrientation() { return orientation; }
 }

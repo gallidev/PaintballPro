@@ -1,5 +1,6 @@
 package ai;
 
+
 /**
  * A node stores a set coordinate, which can be linked with other nodes to form a path
  */
@@ -8,7 +9,7 @@ public class Node {
     public int y;
     public Node parent;
     public float heuristicCost = 0;
-    public float finalCost = 0;
+    public float finalCost = 99999;
 
     /**
      * Create a node with the given coordinates
@@ -41,5 +42,10 @@ public class Node {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return "(" + x + ", " + y + ", Cost: " + finalCost + ")";
     }
 }
