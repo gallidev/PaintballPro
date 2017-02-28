@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class RoundTimer {
 	
 	private static int interval = 1;
-	private static Timer timer;
+	private Timer timer;
 	private long timeLeft;
 	
 	/**
@@ -38,7 +38,7 @@ public class RoundTimer {
 	 * @return Whether or not the game round has finished.
 	 */
 	public boolean isTimeElapsed(){
-		return (timeLeft == 0);
+		return (timeLeft <= 0);
 	}
 	
 	/**

@@ -170,8 +170,8 @@ public class Renderer extends Scene
 			}
 		}
 
-//		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
-//		game.start();
+		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
+		game.start();
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
