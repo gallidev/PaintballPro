@@ -1,0 +1,23 @@
+{
+	"name": "Capture the Flag",
+	"materials": [
+		{"name": "dirty_brick"},
+		{"name": "gravel_cobble"},
+		{"name": "mossy_brick"},
+		{"name": "mossy_floor"}
+	],
+	"spawns": [
+		{"x": 3, "y": 23, "team": "RED"},
+		{"x": 3, "y": 24, "team": "RED"},
+		{"x": 4, "y": 23, "team": "RED"},
+		{"x": 4, "y": 24, "team": "RED"},
+		{"x": 25, "y": 5, "team": "BLUE"},
+		{"x": 25, "y": 6, "team": "BLUE"},
+		{"x": 26, "y": 5, "team": "BLUE"},
+		{"x": 26, "y": 6, "team": "BLUE"}
+	],
+	"floors": [
+		{"material": "gravel_cobble", "width": 4, "height": 4, "x": 2, "y": 22},
+		{"material": "gravel_cobble", "width": 2, "height": 5, "x": 3, "y": 17}
+	]
+}

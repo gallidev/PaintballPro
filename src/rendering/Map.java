@@ -227,6 +227,16 @@ public class Map
 		return getCollisions(propGroup);
 	}
 
+	public Floor[] getFloors()
+	{
+		return floors;
+	}
+
+	public Prop[] getProps()
+	{
+		return props;
+	}
+
 	/**
 	 * @return The spawn points of both teams
 	 * @author Filippo Galli
