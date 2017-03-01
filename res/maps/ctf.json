@@ -37,9 +37,13 @@
 		{"material": "gravel_cobble", "width": 4, "height": 2, "x": 26, "y": 15},
 		{"material": "gravel_cobble", "width": 5, "height": 1, "x": 25, "y": 17},
 		{"material": "gravel_cobble", "width": 6, "height": 2, "x": 24, "y": 18},
-		{"material": "mossy_floor", "width": 14, "height": 2, "x": 17, "y": 19},
-		{"material": "mossy_floor", "width": 15, "height": 2, "x": 17, "y": 21},
-		{"material": "gravel_cobble", "width": 6, "height": 2, "x": 24, "y": 18}
+		{"material": "mossy_floor", "width": 14, "height": 2, "x": 17, "y": 20},
+		{"material": "mossy_floor", "width": 15, "height": 2, "x": 17, "y": 22},
+		{"material": "gravel_cobble", "width": 12, "height": 1, "x": 20, "y": 24},
+		{"material": "gravel_cobble", "width": 7, "height": 1, "x": 24, "y": 25},
+		{"material": "gravel_cobble", "width": 5, "height": 3, "x": 12, "y": 21},
+		{"material": "gravel_cobble", "width": 1, "height": 4, "x": 12, "y": 21},
+		{"material": "gravel_cobble", "width": 6, "height": 3, "x": 6, "y": 22}
 	],
 	"walls": [
 		{"material": "dirty_brick", "orientation": false, "length": 5, "x": 1, "y": 21},
