@@ -23,11 +23,11 @@
 		{"material": "mossy_floor", "width": 6, "height": 1, "x": 3, "y": 14},
 		{"material": "mossy_floor", "width": 9, "height": 1, "x": 3, "y": 13},
 		{"material": "mossy_floor", "width": 12, "height": 1, "x": 2, "y": 12},
-		{"material": "mossy_floor", "width": 18, "height": 7, "x": 2, "y": 5},
-		{"material": "mossy_floor", "width": 17, "height": 1, "x": 3, "y": 4},
-		{"material": "mossy_floor", "width": 16, "height": 1, "x": 4, "y": 3},
-		{"material": "mossy_floor", "width": 11, "height": 1, "x": 5, "y": 2},
-		{"material": "mossy_floor", "width": 7, "height": 1, "x": 6, "y": 1}
+		{"material": "mossy_floor", "width": 18, "height": 7, "x": 1, "y": 5},
+		{"material": "mossy_floor", "width": 17, "height": 1, "x": 2, "y": 4},
+		{"material": "mossy_floor", "width": 16, "height": 1, "x": 3, "y": 3},
+		{"material": "mossy_floor", "width": 11, "height": 1, "x": 4, "y": 2},
+		{"material": "mossy_floor", "width": 7, "height": 1, "x": 5, "y": 1}
 	],
 	"walls": [
 		{"material": "dirty_brick", "orientation": false, "length": 5, "x": 1, "y": 21},
