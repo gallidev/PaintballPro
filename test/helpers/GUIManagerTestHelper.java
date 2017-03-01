@@ -24,7 +24,7 @@ public class GUIManagerTestHelper extends GUIManager {
         currentMenu = menu;
     }
 
-    public static ArrayList<Button> navigateParentForButtons(Parent root) {
+    private static ArrayList<Button> navigateParentForButtons(Parent root) {
         ArrayList<Button> returnArr = new ArrayList<>();
         for (Node n : root.getChildrenUnmodifiable()) {
             if (n instanceof Button) {
