@@ -1,5 +1,4 @@
 package rendering;
-
 import com.google.gson.Gson; //add gson-2.8.0.jar to the project libraries!
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -12,13 +11,10 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-
 import static rendering.Renderer.view;
-
 /**
  * A representation of a game map. All information is deserialised into this class from a JSON map file. All assets are placed in a grid format, where each space on a grid is 64x64 pixels. A map does not have a fixed size, therefore it should be treated as being infinite.<br>
  * Each map object stores its name, an array of walls, floor tile groups, props and spawn points for each team.
@@ -32,9 +28,7 @@ public class Map
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
-
 	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
-
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
 	 *
@@ -47,11 +41,9 @@ public class Map
 		try
 		{
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
-
 			//load materials
 			for(Material material : map.materials)
 				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, false);
-
 			//load the ground
 			for(Floor floor : map.floors)
 			{
@@ -70,11 +62,9 @@ public class Map
 			}
 			map.floorGroup.setCache(true);
 			map.floorGroup.setCacheHint(CacheHint.SCALE);
-
 			//load spawns
 			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
 			Image spawnTile = map.getMaterialImage(map.floors[0].material);
-
 			for(int i = 0; i < 2; i++)
 			{
 				for(int j = 0; j < 2; j++)
@@ -83,18 +73,15 @@ public class Map
 					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, spawnTile.getPixelReader(), 0, 0);
 				}
 			}
-
 			ImageView redSpawnView = new ImageView(redSpawn), blueSpawnView = new ImageView(blueSpawn);
 			redSpawnView.relocate(map.spawns[0].x * 64, map.spawns[0].y * 64);
 			redSpawnView.setEffect(new DropShadow(32, 0, 0, Color.RED));
 			blueSpawnView.relocate(map.spawns[4].x * 64, map.spawns[4].y * 64);
 			blueSpawnView.setEffect(new DropShadow(32, 0, 0, Color.BLUE));
-
 			//load props
 			map.loadProps();
 			map.propGroup.setCache(true);
 			map.propGroup.setCacheHint(CacheHint.SCALE);
-
 			//load walls
 			for(Wall wall : map.walls)
 			{
@@ -119,32 +106,25 @@ public class Map
 //			}
 			map.wallGroup.setCache(true);
 			map.wallGroup.setCacheHint(CacheHint.SCALE);
-
 			view.getChildren().addAll(map.floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
-
 			//turn on shading if the user has it enabled
 			if(GUIManager.getUserSettings().getShading())
 			{
 				DropShadow propShadow = new DropShadow(16, 0, 0, Color.BLACK);
 				propShadow.setSpread(0.5);
 				propShadow.setHeight(64);
-
 				DropShadow wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
 				wallShadow.setSpread(0.5);
 				wallShadow.setHeight(64);
-
 				Light.Distant light = new Light.Distant();
 				light.setAzimuth(145.0);
 				light.setElevation(40);
-
 				Lighting propLighting = new Lighting();
 				propLighting.setLight(light);
 				propLighting.setSurfaceScale(3.0);
-
 				Lighting wallLighting = new Lighting();
 				wallLighting.setLight(light);
 				wallLighting.setSurfaceScale(5.0);
-
 				propShadow.setInput(propLighting);
 				wallShadow.setInput(wallLighting);
 				map.propGroup.setEffect(propShadow);
@@ -157,17 +137,14 @@ public class Map
 		}
 		return map;
 	}
-
 	public static Map loadRaw(String url)
 	{
 		Map map = null;
 		try
 		{
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + url + ".json"), Map.class);
-
 			for(Material material : map.materials)
 				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, true);
-
 			for(Floor floor : map.floors)
 			{
 				for(int i = 0; i < floor.width; i++)
@@ -181,9 +158,7 @@ public class Map
 					}
 				}
 			}
-
 			map.loadProps();
-
 			for(Wall wall : map.walls)
 			{
 				for(int i = 0; i < wall.length; i++)
@@ -201,7 +176,6 @@ public class Map
 		}
 		return map;
 	}
-
 	private ArrayList<Rectangle> getCollisions(Group group)
 	{
 		ArrayList<Rectangle> rectangles = new ArrayList<>();
@@ -216,29 +190,23 @@ public class Map
 		}
 		return rectangles;
 	}
-
 	public ArrayList<Rectangle> getRecWalls()
 	{
 		return getCollisions(wallGroup);
 	}
-
 	public ArrayList<Rectangle> getRecProps()
 	{
 		return getCollisions(propGroup);
 	}
-
 	public Floor[] getFloors()
 	{
 		return floors;
 	}
-
 	public Prop[] getProps()
 	{
 		return props;
 	}
-
 	public Wall[] getWalls() { return walls; }
-
 	/**
 	 * @return The spawn points of both teams
 	 * @author Filippo Galli
@@ -247,7 +215,6 @@ public class Map
 	{
 		return spawns;
 	}
-
 	private Image getMaterialImage(String material)
 	{
 		for(Material m : materials)
@@ -255,7 +222,6 @@ public class Map
 				return m.image;
 		return null;
 	}
-
 	private void loadProps()
 	{
 		for(Prop prop : props)

@@ -1,15 +1,11 @@
 package networkingShared;
-
 import java.util.concurrent.*;
-
 /**
  * Class to store messages pending for a particular client.
  */
 public class MessageQueue {
-
 	// We choose the LinkedBlockingQueue implementation of BlockingQueue:
 	private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>();
-
 	/**
 	 * Inserts the specified message into this queue.
 	 * 
@@ -19,7 +15,6 @@ public class MessageQueue {
 	public void offer(Message m) {
 		queue.offer(m);
 	}
-
 	/**
 	 * Retrieve messages from the queue.
 	 * 

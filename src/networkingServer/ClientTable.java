@@ -1,12 +1,8 @@
 package networkingServer;
-
-
 import java.util.ArrayList;
 import java.util.concurrent.*;
-
 import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;
-
 /**
  * Class to store important client-related information used by Client and Server.
  */
@@ -29,7 +25,6 @@ public class ClientTable {
 	
 	//Each user will have an incrementing unique id - allows multiple people with the same nickname.
 	private int id = 1;
-
 	/**
 	 * Add client information to all of the data structures.
 	 * @param nickname The nickname of the Client.
@@ -44,7 +39,6 @@ public class ClientTable {
 		player.setUsername(nickname);
 		playerInstances.put(id,player);
 		id++; //Increment current id value for next client to connect.
-
 		return (id-1); //Return this client's id value.
 	}
 	
@@ -117,7 +111,6 @@ public class ClientTable {
 		inGameStatus.replace(player1, false);
 		inGameStatus.replace(player2, false);
 	}
-
 	/**
 	 * Increment the score of the winning client in a game.
 	 * @param clientID The ID of the client who won the game.
@@ -126,7 +119,6 @@ public class ClientTable {
 	{
 		Scores.replace(clientID,((this.getScore(clientID))+1));  
 	}
-
 	/**
 	 * Get the score of a client.
 	 * @param clientID The id of the client to get the score of.
@@ -136,7 +128,6 @@ public class ClientTable {
 	{
 		return Scores.get(clientID);
 	}
-
 	/**
 	 * Returns all of the scores stored in the table score data structure.
 	 * @return ArrayList of all scores.
@@ -150,7 +141,6 @@ public class ClientTable {
 		}
 		return scores;
 	}
-
 	/**
 	 * Get the game status of a particular client.
 	 * @param clientID The id of the client.
@@ -160,7 +150,6 @@ public class ClientTable {
 	{
 		return inGameStatus.get(clientID); 
 	}
-
 	/**
 	 * Get the message queue of a client. 
 	 * @param clientID The id of the client to get the message id for.
@@ -170,7 +159,6 @@ public class ClientTable {
 		//Null if not in the table.
 		return queueTable.get(clientID);
 	}
-
 	public MessageQueue getUDPqueue(int clientID) {
 		return UDPqueueTable.get(clientID);
 	}

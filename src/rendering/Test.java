@@ -1,9 +1,7 @@
 package rendering;
-
 import gui.GUIManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
 public class Test extends Application
 {
 	@Override
@@ -12,7 +10,6 @@ public class Test extends Application
 		stage.setScene(new Renderer("ctf", new GUIManager().getAudioManager()));
 		stage.show();
 	}
-
 	public static void main(String[] args)
 	{
 		launch(args);

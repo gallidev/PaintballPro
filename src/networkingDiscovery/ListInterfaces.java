@@ -1,7 +1,5 @@
 package networkingDiscovery;
-
 import static java.lang.System.out;
-
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
@@ -19,7 +17,6 @@ public class ListInterfaces
             out.printf("\n");
         }
     }
-
     static void displaySubInterfaces(NetworkInterface netIf) throws SocketException {
         Enumeration<NetworkInterface> subIfs = netIf.getSubInterfaces();
         

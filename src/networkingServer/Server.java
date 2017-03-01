@@ -1,19 +1,15 @@
 package networkingServer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import networkingGame.UDPServer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
-
 /**
  * Class to represent a running server that connects to multiple clients via
  * sockets.
@@ -28,20 +24,15 @@ public class Server {
 	 *            1 - listen address
 	 */
 	public static void main(String[] args) {
-
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();
-
 		// Create a new lobby instance.
 		LobbyTable gameLobbies = new LobbyTable();
-
 		// Open a server socket:
 		ServerSocket serverSocket = null;
-
 		// Port number to connect through to.
 		int portNumber;
 		InetAddress listenAddress;
-
 		// If number of arguments does not match expected, provide correct
 		// usage.
 		if (args.length != 2) {
@@ -55,7 +46,6 @@ public class Server {
 				throw new RuntimeException(e.getMessage());
 			}
 		}
-
 		// We must try because it may fail with a checked exception:
 		try {
 			// Open server socket
@@ -64,20 +54,16 @@ public class Server {
 			System.err.println("Couldn't listen on port " + portNumber);
 			System.exit(1); // Exit.
 		}
-
 		// Good. We succeeded. But we must try again for the same reason:
-
 		boolean isRunning = true;
 		
 		// We start a new UDP server receiver to receive all UDP messages.
 		UDPServer udpReceiver = new UDPServer(clientTable, gameLobbies);
 		udpReceiver.start();
-
 		while (isRunning) {
 			try {
 				// We loop for ever, as servers usually do, we can exit by
 				// typing Exit into command line though.
-
 				// Server input stream.
 				BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 				// Creates a thread which looks for messages of a certain format
@@ -86,31 +72,22 @@ public class Server {
 				listener.start();
 				
 				while (true && listener.isAlive()) {
-
 					// Listen to the socket, accepting connections from new
 					// clients:
 					Socket socket = serverSocket.accept();
-
 					listener.addSocket(socket);
-
 					// This is so that we can use readLine():
 					BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
 					// We ask the client what its name is:
 					String clientName = fromClient.readLine();
-
 					PrintStream toClient = new PrintStream(socket.getOutputStream());
-
 					String text = "";
 					int clientID;
-
 					// For debugging:
 					System.out.println(clientName + " connected");
-
 					// We add the client to the table. Returns a unique client
 					// id
 					clientID = clientTable.add(clientName);
-
 					// We create and start a new thread to write to the client:
 					ServerMsgSender sender = new ServerMsgSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
 					sender.start();
@@ -121,11 +98,9 @@ public class Server {
 					// We create and start a new thread to read from the client:
 					ServerMsgReceiver reciever = new ServerMsgReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver);
 					reciever.start();
-
 					// For debugging
 					text = "UserID is:" + clientID;
 					System.out.println(text);
-
 					// Sends a message to the client detailing their unique user
 					// id.
 					Message msg = new Message(text);

@@ -1,17 +1,14 @@
 package networkingDiscovery;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-
 /**
  * Class to listen out for servers in the LAN
  */
 public class DiscoveryClientListener {
-
 	/**
 	 * Get the IP address and port of the first server found
 	 * 
@@ -50,16 +47,13 @@ public class DiscoveryClientListener {
 			String data = new String(packetFromServer.getData(), packetFromServer.getOffset(),
 					packetFromServer.getLength());
 			socket.leaveGroup(broadcastAddress);
-
 			socket.close();
 			return data;
-
 		} catch (Exception e) {
 			System.err.println("Socket Client Exception!" + e);
 		}
 		return "";
 	}
-
 //	public static void main(String[] args) {
 //		Thread t = new Thread(new ServerAnnouncer(5000));
 //		t.start();

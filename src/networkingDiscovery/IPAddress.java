@@ -1,14 +1,11 @@
 package networkingDiscovery;
-
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-
 /**
  * Class to get the LAN IP for a user
  */
 public class IPAddress {
-
 	/**
 	 * Get the LAN IP for the current machine
 	 * 
