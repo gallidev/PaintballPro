@@ -5,13 +5,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -28,7 +25,7 @@ public class SettingsMenu {
 	 */
 	public static Scene getScene(GUIManager m) {
 		// Obtain the user's settings
-		UserSettings s = m.getUserSettings();
+		UserSettings s = GUIManager.getUserSettings();
 		
 		// Create the main grid (to contain the options grid, and the apply/cancel buttons)
 		GridPane mainGrid = new GridPane();
