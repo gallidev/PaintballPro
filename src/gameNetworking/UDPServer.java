@@ -26,8 +26,7 @@ public class UDPServer extends Thread{
 	{
 		try {
 			serverSocket = new DatagramSocket(9876);
-			byte[] receiveData = new byte[2048];
-			//byte[] sendData = new byte[2048];
+			byte[] receiveData = new byte[1024];
 			while(true)
 			{
 			      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -69,7 +68,7 @@ public class UDPServer extends Thread{
 
 	// Let's broadcast to all members of the same game - given a lobby id.
 	public void sendToAll(String toBeSent, int lobbyID) {
-		byte[] sendData = new byte[2048];
+		byte[] sendData = new byte[1024];
 		sendData = toBeSent.getBytes();
 		
 		// We get all players in the same game as the transmitting player.

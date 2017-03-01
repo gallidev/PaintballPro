@@ -38,7 +38,7 @@ public class UDPClientReceiver extends Thread {
 	public void run()
 	{
 		try{
-			byte[] receiveData = new byte[2048];
+			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			clientSocket.receive(receivePacket);
 			String sendSentence = new String(receivePacket.getData());
@@ -55,7 +55,7 @@ public class UDPClientReceiver extends Thread {
 	public void sendMessage(String msg) 
 	{	
 		try{
-			byte[] sendData = new byte[2048];
+			byte[] sendData = new byte[1024];
 			sendData = msg.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
 			clientSocket.send(sendPacket);
