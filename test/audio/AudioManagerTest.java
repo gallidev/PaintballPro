@@ -5,6 +5,7 @@ import audio.MusicResources;
 import audio.SFXResources;
 import gui.GUIManager;
 import gui.UserSettings;
+import helpers.JavaFXTestHelper;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.MediaPlayer;
 import org.junit.After;
@@ -29,9 +30,7 @@ public class AudioManagerTest {
     @Before
     public void setUp() throws Exception {
         // Setup JavaFX
-        Thread t = new Thread(() -> new JFXPanel());
-        t.start();
-        t.join();
+        JavaFXTestHelper.setupApplication();
 
         // Setup the GUI Manager and User Settings
         m = new GUIManager();

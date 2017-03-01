@@ -1,12 +1,11 @@
 package gui;
 
+import helpers.GUIManagerTestHelper;
+import helpers.JavaFXTestHelper;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
@@ -18,9 +17,7 @@ public class MainMenuTest {
     @Before
     public void setUp() throws Exception {
         // Setup JavaFX
-        Thread t = new Thread(() -> new JFXPanel());
-        t.start();
-        t.join();
+        JavaFXTestHelper.setupApplication();
     }
 
     @Test
