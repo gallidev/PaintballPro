@@ -67,4 +67,9 @@ public class UDPClientReceiver extends Thread {
 			if(debug) System.err.println(e.getStackTrace());
 		}
 	}
+	
+	// -------------------------------------
+	// -----------Game Methods--------------
+	// -------------------------------------
+	
 }

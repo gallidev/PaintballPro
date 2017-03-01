@@ -75,15 +75,16 @@ public class ClientReceiver extends Thread {
 					if (text.contains("Move"))
 						moveAction(text);
 
-					if (text.contains("Bullet"))
+					else if (text.contains("Bullet"))
 						bulletAction(text);
 
 					// UI Requests
-					if (text.contains("Ret:Red:")) {
+					else if (text.contains("Ret:Red:")) {
 						if(debug) System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
 						m.updateRedLobby(red);
-					} else if (text.contains("Ret:Blue:")) {
+					} 
+					else if (text.contains("Ret:Blue:")) {
 						if(debug) System.out.println("Got blue");
 						String[] blue = text.substring(9).split("-");
 						m.updateBlueLobby(blue);
@@ -109,9 +110,10 @@ public class ClientReceiver extends Thread {
 					}
 
 					// Game status
-					else if (text.contains("StartGame")) {
+					else if (text.contains("StartGame"))
 						startGameAction(text);
-					} else if (text.contains("EndGame")) {
+					
+					else if (text.contains("EndGame")) {
 						if(debug) System.out.println("Game has ended for player with ID " + clientID);
 						// Get data about scores, and pass into transition
 						// method
