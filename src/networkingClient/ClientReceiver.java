@@ -10,7 +10,7 @@ import javafx.application.Platform;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import physics.Bullet;
-import physics.CollisionsHandler;
+import physics.CollisionsHandlerGeneralPlayer;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
@@ -199,7 +199,7 @@ public class ClientReceiver extends Thread {
 		Map map = Map.loadRaw("elimination");
 
 
-		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+		CollisionsHandlerGeneralPlayer collisionsHandler = new CollisionsHandlerGeneralPlayer(map);
 
 		// add myself to my team
 		// create my client

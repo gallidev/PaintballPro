@@ -4,7 +4,7 @@ import ai.*;
 import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
-import physics.CollisionsHandler;
+import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
 
 import static gui.GUIManager.bluePlayerImage;
@@ -19,7 +19,7 @@ public class AIPlayer extends GeneralPlayer{
 	private OfflineTeam myTeam;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler){
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
 		this.audio = audio;
 		angle = Math.toRadians(90);

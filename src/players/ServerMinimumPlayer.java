@@ -15,6 +15,7 @@ import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
 import serverLogic.Team;
 /**
@@ -31,6 +32,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected boolean up, down, left, right, shoot, eliminated, invincible, visible;
 	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle, lastAngle;
+	protected double mouseX, mouseY;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
 	protected Map map;
@@ -68,6 +70,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		visible = true;
 		this.collisionsHandler = collisionsHandler;
 		updatePlayerBounds();
+		bounds.getTransforms().add(rotation);
 
 	}
 
@@ -217,6 +220,30 @@ public abstract class ServerMinimumPlayer implements GameObject{
 
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
+
+	public double getX(){
+		return this.x;
+	}
+
+	public double getY(){
+		return this.y;
+	}
+
+	public void setX(double x){
+		this.x = x;
+	}
+
+	public void setY(double y){
+		this.y = y;
+	}
+
+	public double getWidth(){
+		return this.width;
+	}
+
+	public double getHeight(){
+		return this.height;
+	}
 
 	public List<Bullet> getBullets(){
 		return this.firedBullets;

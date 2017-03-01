@@ -15,7 +15,7 @@ import networkingClient.ClientReceiver;
 import offlineLogic.OfflineGameMode;
 import offlineLogic.OfflineTeamMatchMode;
 import physics.Bullet;
-import physics.CollisionsHandler;
+import physics.CollisionsHandlerGeneralPlayer;
 import physics.InputHandler;
 import physics.KeyPressListener;
 import physics.KeyReleaseListener;
@@ -140,7 +140,7 @@ public class Renderer extends Scene
 
 		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
-		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+		CollisionsHandlerGeneralPlayer collisionsHandler = new CollisionsHandlerGeneralPlayer(map);
 
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, collisionsHandler);
 

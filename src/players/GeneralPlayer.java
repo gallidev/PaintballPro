@@ -14,7 +14,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
-import physics.CollisionsHandler;
+import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
 import serverLogic.Team;
 /**
@@ -42,7 +42,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected ArrayList<Rectangle> propsWalls;
 	protected boolean scoreChanged = false;
 	protected AudioManager audio;
-	protected CollisionsHandler collisionsHandler;
+	protected CollisionsHandlerGeneralPlayer collisionsHandler;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -54,7 +54,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
+	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);

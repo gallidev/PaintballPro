@@ -32,7 +32,7 @@ public class OfflinePlayer extends GeneralPlayer
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene         The scene in which the player will be displayed
 	 */
-	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, CollisionsHandler collisionsHandler)
+	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, CollisionsHandlerGeneralPlayer collisionsHandler)
 	{
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
 		this.audio = audio;

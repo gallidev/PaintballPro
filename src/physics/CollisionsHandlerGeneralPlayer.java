@@ -8,31 +8,30 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.GeneralPlayer;
-import players.ServerMinimumPlayer;
 import rendering.Map;
 
-public class CollisionsHandler {
+public class CollisionsHandlerGeneralPlayer {
 
 
 	private ArrayList<Rectangle> propsWalls;
-	private ArrayList<ServerMinimumPlayer> redTeam;
-	private ArrayList<ServerMinimumPlayer> blueTeam;
+	private ArrayList<GeneralPlayer> redTeam;
+	private ArrayList<GeneralPlayer> blueTeam;
 
-	public CollisionsHandler(Map map){
+	public CollisionsHandlerGeneralPlayer(Map map){
 		this.propsWalls = map.getRecProps();
 	    this.propsWalls.addAll(map.getRecWalls());
 	    this.redTeam = new ArrayList<>();
 	    this.blueTeam = new ArrayList<>();
 	}
 
-	public void handlePropWallCollision(ServerMinimumPlayer p){
+	public void handlePropWallCollision(GeneralPlayer p){
 		boolean collUp = false;
 		boolean collDown = false;
 		boolean collRight = false;
 		boolean collLeft = false;
 		ArrayList<Double> angles = new ArrayList<>();
-		double playerCenterX = p.getX() + p.getWidth()/2;
-		double playerCenterY = p.getY() + p.getHeight()/2;
+		double playerCenterX = p.getLayoutX() + p.getImage().getWidth()/2;
+		double playerCenterY = p.getLayoutY() + p.getImage().getHeight()/2;
 		for(Rectangle propWall : propsWalls){
 			//it returns a path with the collision with walls
 			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
@@ -99,7 +98,7 @@ public class CollisionsHandler {
 
 	}
 
-	public void handleBulletCollision(ServerMinimumPlayer p)
+	public void handleBulletCollision(GeneralPlayer p)
 	{
 		switch(p.getTeam()){
 		case RED:{
@@ -116,8 +115,8 @@ public class CollisionsHandler {
 
 	}
 
-	private void checkBulletsAgainstATeam(ServerMinimumPlayer p, ArrayList<ServerMinimumPlayer> opponents){
-		for(ServerMinimumPlayer enemy : opponents){
+	private void checkBulletsAgainstATeam(GeneralPlayer p, ArrayList<GeneralPlayer> opponents){
+		for(GeneralPlayer enemy : opponents){
 
 			for(Bullet bullet : enemy.getBullets()){
 				if(bullet.isActive() && p.getPolygonBounds().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
@@ -150,24 +149,24 @@ public class CollisionsHandler {
 	    return avg_d;
 	  }
 
-	public ArrayList<ServerMinimumPlayer> getRedTeam() {
+	public ArrayList<GeneralPlayer> getRedTeam() {
 		return redTeam;
 	}
 
-	public void setRedTeam(ArrayList<ServerMinimumPlayer> redTeam) {
+	public void setRedTeam(ArrayList<GeneralPlayer> redTeam) {
 		this.redTeam = redTeam;
 	}
 
-	public ArrayList<ServerMinimumPlayer> getBlueTeam() {
+	public ArrayList<GeneralPlayer> getBlueTeam() {
 		return blueTeam;
 	}
 
-	public void setBlueTeam(ArrayList<ServerMinimumPlayer> blueTeam) {
+	public void setBlueTeam(ArrayList<GeneralPlayer> blueTeam) {
 		this.blueTeam = blueTeam;
 	}
 
-	public void setPlayers(ArrayList<ServerMinimumPlayer> players){
-		for(ServerMinimumPlayer p : players)
+	public void setPlayers(ArrayList<GeneralPlayer> players){
+		for(GeneralPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED)
 				redTeam.add(p);

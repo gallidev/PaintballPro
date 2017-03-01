@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
 import physics.Bullet;
-import physics.CollisionsHandler;
+import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
 import serverLogic.Team;
 
@@ -38,7 +38,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver, CollisionsHandler collisionHandler)
+	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver, CollisionsHandlerGeneralPlayer collisionHandler)
 	{
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionHandler);
 		this.mx = x;
