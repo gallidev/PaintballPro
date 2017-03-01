@@ -1,5 +1,6 @@
 package gui;
 
+import enums.MenuEnum;
 import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
 import javafx.embed.swing.JFXPanel;
@@ -27,7 +28,7 @@ public class MainMenuTest {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Single player", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu.equals("Singleplayer"));
+        assertTrue(m.currentMenu == MenuEnum.SingleplayerGameType);
     }
 
     @Test
@@ -37,7 +38,7 @@ public class MainMenuTest {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Multiplayer", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu.equals("Nickname"));
+        assertTrue(m.currentMenu == MenuEnum.NicknameServerConnection);
     }
 
     @Test
@@ -47,7 +48,7 @@ public class MainMenuTest {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Settings", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu.equals("Settings"));
+        assertTrue(m.currentMenu == MenuEnum.Settings);
     }
 
 }
