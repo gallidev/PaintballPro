@@ -50,9 +50,6 @@ public class GUIManager {
     public final int width = 800;
     public final int height = 600;
 
-    public static final Image redPlayerImage = new Image("assets/characters/player_red.png", 30, 64, true, true);
-    public static final Image bluePlayerImage = new Image("assets/characters/player_blue.png", 30, 64, true, true);
-
     public GUIManager() {
         audio = new AudioManager(user, this);
     }

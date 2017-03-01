@@ -1,11 +1,5 @@
 {
 	"name": "Capture the Flag",
-	"materials": [
-		{"name": "dirty_brick"},
-		{"name": "gravel_cobble"},
-		{"name": "mossy_brick"},
-		{"name": "mossy_floor"}
-	],
 	"spawns": [
 		{"x": 3, "y": 23, "team": "RED"},
 		{"x": 3, "y": 24, "team": "RED"},
@@ -56,19 +50,18 @@
 		{"material": "dirty_brick", "orientation": false, "length": 7, "x": 2, "y": 15},
 		{"material": "mossy_brick", "orientation": true, "length": 2, "x": 3, "y": 1},
 		{"material": "mossy_brick", "orientation": true, "length": 9, "x": 4, "y": 0},
-		{"material": "dirty_brick", "orientation": false, "length": 4, "x": 5, "y": 17},
-		{"material": "dirty_brick", "orientation": true, "length": 6, "x": 5, "y": 21},
+		{"material": "clean_brick", "orientation": false, "length": 4, "x": 5, "y": 17},
+		{"material": "clean_brick", "orientation": true, "length": 6, "x": 5, "y": 21},
 		{"material": "dirty_brick", "orientation": true, "length": 4, "x": 6, "y": 15},
 		{"material": "dirty_brick", "orientation": false, "length": 2, "x": 6, "y": 16},
 		{"material": "dirty_brick", "orientation": true, "length": 6, "x": 6, "y": 25},
 		{"material": "dirty_brick", "orientation": true, "length": 4, "x": 9, "y": 14},
-		{"material": "dirty_brick", "orientation": false, "length": 2, "x": 11, "y": 20},
+		{"material": "clean_brick", "orientation": false, "length": 2, "x": 11, "y": 20},
 		{"material": "mossy_brick", "orientation": true, "length": 4, "x": 12, "y": 1},
 		{"material": "dirty_brick", "orientation": true, "length": 3, "x": 12, "y": 13},
-		{"material": "dirty_brick", "orientation": true, "length": 5, "x": 12, "y": 20},
+		{"material": "clean_brick", "orientation": true, "length": 6, "x": 12, "y": 20},
 		{"material": "dirty_brick", "orientation": false, "length": 2, "x": 12, "y": 24},
-		{"material": "dirty_brick", "orientation": true, "length": 5, "x": 13, "y": 20},
-		{"material": "dirty_brick", "orientation": true, "length": 7, "x": 13, "y": 24},
+		{"material": "clean_brick", "orientation": true, "length": 7, "x": 13, "y": 24},
 		{"material": "dirty_brick", "orientation": true, "length": 5, "x": 14, "y": 12},
 		{"material": "mossy_brick", "orientation": true, "length": 4, "x": 15, "y": 2},
 		{"material": "mossy_brick", "orientation": true, "length": 7, "x": 17, "y": 19},
@@ -93,6 +86,11 @@
 		{"material": "dirty_brick", "orientation": false, "length": 6, "x": 32, "y": 21}
 	],
 	"props": [
-
+		{"material": "metal_crate", "x": 27, "y": 26},
+		{"material": "crate", "x": 4, "y": 7},
+		{"material": "crate", "x": 4, "y": 8},
+		{"material": "metal_crate", "x": 10, "y": 7},
+		{"material": "metal_crate", "x": 7, "y": 11},
+		{"material": "crate", "x": 8, "y": 12}
 	]
 }

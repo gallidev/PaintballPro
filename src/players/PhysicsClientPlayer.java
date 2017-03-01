@@ -6,12 +6,10 @@ import javafx.geometry.Point2D;
 import networkingGame.UDPClientReceiver;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import rendering.ImageFactory;
 import rendering.Map;
 
 import java.util.ArrayList;
-
-import static gui.GUIManager.bluePlayerImage;
-import static gui.GUIManager.redPlayerImage;
 
 /**
  * The player, represented by an ImageView that should be running
@@ -36,7 +34,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 */
 	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClientReceiver sender, CollisionsHandler collisionHandler)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionHandler);
+		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionHandler);
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
@@ -46,7 +44,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 
 	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, UDPClientReceiver sender)
 	{
-		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x, y, id, ImageFactory.getPlayerImage(team));
 		controlScheme = false;
 		this.team = team;
 		this.sender = sender;

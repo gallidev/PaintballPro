@@ -1,10 +1,5 @@
 {
 	"name": "Elimination",
-	"materials": [
-		{"name": "sand"},
-		{"name": "sand_brick"},
-		{"name": "crate"}
-	],
 	"spawns": [
 		{"x": 2, "y": 7, "team": "RED"},
 		{"x": 2, "y": 8, "team": "RED"},
