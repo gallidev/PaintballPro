@@ -71,11 +71,6 @@ public class ServerMsgReceiver extends Thread {
 					// 	  Protocols
 					// ---------------- //
 
-					// In-Game Status'
-					// ---------------
-					if (text.contains("Scored"))
-						newScoreAction(text);
-
 					// UI Client Actions.
 					// ------------------
 					// When user specifies a game mode to play, add them to a
@@ -173,30 +168,6 @@ public class ServerMsgReceiver extends Thread {
 		clientTable.getPlayer(myClientsID).setUsername(username);
 	}
 
-	/**
-	 * Updates a team's score based on the information got from a client. Helps
-	 * the server keep track of each team's score(the teams are stored in the
-	 * Lobby).
-	 * 
-	 * @param text
-	 *            The protocol message for updating a team's score.
-	 * 
-	 * @author Alexandra Paduraru
-	 */
-	public void newScoreAction(String text) {
-		// Protocol : "Scored:<Team>"
-		String teamColour = text.split(":")[1];
-
-		if (teamColour.equals("Red"))
-			lobby.getRedTeam().incrementScore(1);
-		else
-			lobby.getBlueTeam().incrementScore(1);
-
-		// debugging code
-		if(debug) System.out.println("Red team score: " + lobby.getRedTeam().getScore());
-		if(debug) System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
-	}
-
 	/* Methods to communicate between client and sender */
 
 	public void sendToAll(String text) {
@@ -211,32 +182,32 @@ public class ServerMsgReceiver extends Thread {
 			queue.offer(new Message(text));
 		}
 		
-		//Given a move, the server player's location needs to be updated
-		
-		if (text.contains("Move")){
-			//extract the id of the server player with a new location
-			String[] parsedMsg = text.split(":");
-			int id = Integer.parseInt(parsedMsg[2]);
-			double x = Double.parseDouble(parsedMsg[3]);
-			double y = Double.parseDouble(parsedMsg[4]);
-			double angle = Double.parseDouble(parsedMsg[5]);
-
-			//get that server player from the lobby
-			ServerPlayer currentPlayer = null;
-			for(ServerPlayer p : lobby.getRedTeam().getMembers())
-				if( id == p.getPlayerId())
-					currentPlayer = p;
-			
-			if (currentPlayer == null){
-				for(ServerPlayer p : lobby.getBlueTeam().getMembers())
-					if( id == p.getPlayerId())
-						currentPlayer = p;
-			}
-			//update its location
-			currentPlayer.setX(x);
-			currentPlayer.setY(y);
-			currentPlayer.setAngle(angle);
-		}
+//		//Given a move, the server player's location needs to be updated
+//		
+//		if (text.contains("Move")){
+//			//extract the id of the server player with a new location
+//			String[] parsedMsg = text.split(":");
+//			int id = Integer.parseInt(parsedMsg[2]);
+//			double x = Double.parseDouble(parsedMsg[3]);
+//			double y = Double.parseDouble(parsedMsg[4]);
+//			double angle = Double.parseDouble(parsedMsg[5]);
+//
+//			//get that server player from the lobby
+//			ServerPlayer currentPlayer = null;
+//			for(ServerPlayer p : lobby.getRedTeam().getMembers())
+//				if( id == p.getPlayerId())
+//					currentPlayer = p;
+//			
+//			if (currentPlayer == null){
+//				for(ServerPlayer p : lobby.getBlueTeam().getMembers())
+//					if( id == p.getPlayerId())
+//						currentPlayer = p;
+//			}
+//			//update its location
+//			currentPlayer.setX(x);
+//			currentPlayer.setY(y);
+//			currentPlayer.setAngle(angle);
+//		}
 	}
 
 	public void sendToSpec(int id, String text) {
