@@ -41,16 +41,6 @@ public class ClientLocalPlayer extends GeneralPlayer
 		return id;
 	}
 
-	public ArrayList<Bullet> getFiredBullets()
-	{
-		ArrayList<Bullet> tmp;
-		synchronized(firedBullets)
-		{
-			tmp = new ArrayList<>(firedBullets);
-		}
-		return tmp;
-	}
-
 	public TeamEnum getTeam()
 	{
 		return team;

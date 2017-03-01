@@ -9,6 +9,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import networkingClient.ClientReceiver;
@@ -147,6 +148,7 @@ public class Renderer extends Scene
 		players.forEach(p -> {
 			p.setCache(true);
 			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+			p.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
 		});
 		view.getChildren().addAll(players);
 
