@@ -2,8 +2,8 @@ package players;
 
 import audio.AudioManager;
 import enums.TeamEnum;
-import gameNetworking.UDPClientReceiver;
 import javafx.geometry.Point2D;
+import networkingGame.UDPClientReceiver;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Map;

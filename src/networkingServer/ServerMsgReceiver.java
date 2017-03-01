@@ -3,7 +3,7 @@ package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import gameNetworking.UDPServer;
+import networkingGame.UDPServer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;

@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
-import gameNetworking.UDPClientReceiver;
 import gui.GUIManager;
 import javafx.application.Platform;
+import networkingGame.UDPClientReceiver;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import physics.CollisionsHandler;

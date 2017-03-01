@@ -1,4 +1,4 @@
-package gameNetworking;
+package networkingGame;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

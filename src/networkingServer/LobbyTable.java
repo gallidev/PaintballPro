@@ -2,7 +2,7 @@ package networkingServer;
 
 import java.util.concurrent.*;
 
-import gameNetworking.UDPServer;
+import networkingGame.UDPServer;
 import players.ServerBasicPlayer;
 
 /**

@@ -7,8 +7,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import gameNetworking.UDPClientReceiver;
 import gui.GUIManager;
+import networkingGame.UDPClientReceiver;
 import networkingShared.MessageQueue;
 
 public class Client {

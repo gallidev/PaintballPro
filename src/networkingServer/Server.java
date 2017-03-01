@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import gameNetworking.UDPServer;
+import networkingGame.UDPServer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 

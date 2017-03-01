@@ -3,8 +3,8 @@ package networkingInterfaces;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
-import gameNetworking.UDPServer;
 import logic.GameMode;
+import networkingGame.UDPServer;
 import networkingServer.ServerMsgReceiver;
 import networkingShared.Message;
 import players.ServerPlayer;

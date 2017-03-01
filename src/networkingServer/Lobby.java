@@ -5,8 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
-import gameNetworking.UDPServer;
 import logic.RoundTimer;
+import networkingGame.UDPServer;
 import networkingInterfaces.ServerGame;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
