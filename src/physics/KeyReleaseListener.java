@@ -2,34 +2,27 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import networkingInterfaces.ClientPlayerOld;
-import players.GeneralPlayer;
 
 public class KeyReleaseListener implements EventHandler<KeyEvent>{
 
-	private GeneralPlayer player;
-	//Provisional. Need to discuss about keeping the Player or replacing it with ClientPlayer.
-	private ClientPlayerOld cPlayer;
+	private InputHandler inputHandler;
 
-	public KeyReleaseListener(GeneralPlayer player){
-		this.player = player;
+	public KeyReleaseListener(InputHandler inputHandler){
+		this.inputHandler = inputHandler;
 	}
 
-	public KeyReleaseListener(ClientPlayerOld cPlayer){
-		this.cPlayer = cPlayer;
-	}
 
 	@Override
     public void handle(KeyEvent event) {
 		switch (event.getCode()) {
-        case UP:    player.setUp(false); break;
-        case DOWN:  player.setDown(false); break;
-        case LEFT:  player.setLeft(false); break;
-        case RIGHT: player.setRight(false); break;
-        case W:     player.setUp(false); break;
-        case S:     player.setDown(false); break;
-        case A:     player.setLeft(false); break;
-        case D:     player.setRight(false); break;
+        case UP:    inputHandler.setUp(false); break;
+        case DOWN:  inputHandler.setDown(false); break;
+        case LEFT:  inputHandler.setLeft(false); break;
+        case RIGHT: inputHandler.setRight(false); break;
+        case W:     inputHandler.setUp(false); break;
+        case S:     inputHandler.setDown(false); break;
+        case A:     inputHandler.setLeft(false); break;
+        case D:     inputHandler.setRight(false); break;
 		default:
 			break;
     }

@@ -16,6 +16,7 @@ import offlineLogic.OfflineGameMode;
 import offlineLogic.OfflineTeamMatchMode;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import physics.InputHandler;
 import physics.KeyPressListener;
 import physics.KeyReleaseListener;
 import physics.MouseListener;
@@ -75,9 +76,11 @@ public class Renderer extends Scene
 		});
 		view.getChildren().addAll(receiver.getEnemies());
 
-		KeyPressListener keyPressListener = new KeyPressListener(player);
-		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
-		MouseListener mouseListener = new MouseListener(player);
+		InputHandler inputHandler = new InputHandler();
+
+		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+		MouseListener mouseListener = new MouseListener(inputHandler);
 
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);
@@ -179,9 +182,11 @@ public class Renderer extends Scene
 		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
 		game.start();
 
-		KeyPressListener keyPressListener = new KeyPressListener(player);
-		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
-		MouseListener mouseListener = new MouseListener(player);
+		InputHandler inputHandler = new InputHandler();
+
+		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+		MouseListener mouseListener = new MouseListener(inputHandler);
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);
 		setOnMouseDragged(mouseListener);

@@ -8,18 +8,18 @@ import players.PhysicsClientPlayer;
 
 public class MouseListener implements EventHandler<MouseEvent>{
 
-	private GeneralPlayer player;
+	private InputHandler inputHandler;
 
-	public MouseListener(GeneralPlayer player){
-		this.player = player;
+	public MouseListener(InputHandler inputHandler){
+		this.inputHandler = inputHandler;
 	}
 
 	@Override
     public void handle(MouseEvent event) {
 		double newX = event.getX();
 		double newY = event.getY();
-		player.setMX(newX);
-		player.setMY(newY);
-		player.setShoot(event.isPrimaryButtonDown());
+		inputHandler.setMouseX(newX);
+		inputHandler.setMouseY(newY);
+		inputHandler.setShoot(event.isPrimaryButtonDown());
     }
 }
