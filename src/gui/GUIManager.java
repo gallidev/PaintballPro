@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
+import networkingDiscovery.ServerAnnouncer;
+import networkingServer.Server;
 import rendering.Renderer;
 
 /**
@@ -103,6 +105,7 @@ public class GUIManager {
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
                 case "EliminationSingle":
+                    establishLocalSingleServerConnection();
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", audio));
                     break;
@@ -111,6 +114,7 @@ public class GUIManager {
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
                 case "CTFSingle":
+                    establishLocalSingleServerConnection();
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("ctf", audio));
                     break;
@@ -125,6 +129,18 @@ public class GUIManager {
                     throw new RuntimeException("Menu '" + menu + "' is not a valid transition");
             }
         }
+    }
+
+    private void establishLocalSingleServerConnection() {
+        ipAddress = "0.0.0.0";
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int portNo = 25566;
+                String[] serverArgs = {portNo + "", ipAddress};
+                Server.main(serverArgs);
+            }
+        })).start();
     }
 
     public void establishConnection() {
