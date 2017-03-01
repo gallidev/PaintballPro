@@ -7,6 +7,7 @@ import audio.AudioManager;
 import audio.MusicResources;
 import audio.SFXResources;
 import enums.GameLocation;
+import enums.MenuEnum;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +20,8 @@ import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
+import networkingDiscovery.ServerAnnouncer;
+import networkingServer.Server;
 import rendering.Renderer;
 
 /**
@@ -28,7 +31,7 @@ public class GUIManager {
 
     private Stage s;
     private Client c;
-    private String currentScene = "";
+    private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
@@ -69,27 +72,27 @@ public class GUIManager {
      * @param menu the string representation of the menu to switch to
      * @param o    an object to be passed to the target scene (usually null)
      */
-    public void transitionTo(String menu, Object o) {
+    public void transitionTo(MenuEnum menu, Object o) {
         audio.stopMusic();
         if (!menu.equals(currentScene)) {
             currentScene = menu;
             switch (menu) {
-                case "Main":
+                case MainMenu:
                     s.setScene(MainMenu.getScene(this));
                     break;
-                case "Nickname":
+                case NicknameServerConnection:
                     s.setScene(NicknameServerSelectMenu.getScene(this));
                     break;
-                case "Settings":
+                case Settings:
                     s.setScene(SettingsMenu.getScene(this));
                     break;
-                case "Multiplayer":
+                case MultiplayerGameType:
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
-                case "Singleplayer":
+                case SingleplayerGameType:
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
-                case "Lobby":
+                case Lobby:
                     timerStarted = false;
                     if (o instanceof String) {
                         if (o.equals("CTF")) {
@@ -102,23 +105,25 @@ public class GUIManager {
                     }
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
-                case "EliminationSingle":
+                case EliminationSingle:
+                    establishLocalSingleServerConnection();
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", audio));
                     break;
-                case "Elimination":
+                case EliminationMulti:
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
-                case "CTFSingle":
+                case CTFSingle:
+                    establishLocalSingleServerConnection();
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("ctf", audio));
                     break;
-                case "CTF":
+                case CTFMulti:
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("ctf", c.getReceiver()));
                     break;
-                case "EndGame":
+                case EndGame:
                     s.setScene(EndGameMenu.getScene(this));
                     break;
                 default:
@@ -127,17 +132,27 @@ public class GUIManager {
         }
     }
 
+    private void establishLocalSingleServerConnection() {
+        ipAddress = "0.0.0.0";
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int portNo = 25566;
+                String[] serverArgs = {portNo + "", ipAddress};
+                Server.main(serverArgs);
+            }
+        })).start();
+        establishConnection();
+    }
+
     public void establishConnection() {
         if (c == null) {
             String nickname = user.getUsername(); // We ask the user what their nickname is.
 
-//        String serverLocation = networkingDiscovery.ClientListener.findServer();
+		    String serverLocation = ipAddress + ":25566";
 
-		String serverLocation = ipAddress + ":25566";
-
-        
-        int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
-        String machName = serverLocation.split(":")[0]; // The machine has a particular name.
+            int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
+            String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
             // This loads up the client code.
             c = new Client(nickname, portNumber, machName, this);
@@ -231,7 +246,7 @@ public class GUIManager {
         return timerStarted;
     }
 
-    public String getCurrentScene() {
+    public MenuEnum getCurrentScene() {
         return currentScene;
     }
 

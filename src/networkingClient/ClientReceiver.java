@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
@@ -116,7 +117,7 @@ public class ClientReceiver extends Thread {
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
-								m.transitionTo("EndGame", someScore);
+								m.transitionTo(MenuEnum.EndGame, someScore);
 							}
 
 						});
@@ -244,7 +245,7 @@ public class ClientReceiver extends Thread {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				m.transitionTo("Elimination", null);
+				m.transitionTo(MenuEnum.EliminationMulti, null);
 			}
 		});
 	}
