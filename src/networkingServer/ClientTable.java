@@ -15,12 +15,17 @@ public class ClientTable {
 	
 	//Each client has a message queue.
 	private ConcurrentMap<Integer,MessageQueue> queueTable  = new ConcurrentHashMap<Integer,MessageQueue>();
+	//Each client has a udp message queue.
+	private ConcurrentMap<String,MessageQueue> UDPqueueTable  = new ConcurrentHashMap<String,MessageQueue>();
 	//Each client has a status relating to whether or not they are in a game.
 	private ConcurrentMap<Integer,Boolean> inGameStatus = new ConcurrentHashMap<Integer,Boolean>();
 	//Each client has a game score.
 	private ConcurrentMap<Integer,Integer> Scores = new ConcurrentHashMap<Integer,Integer>();
 	//Each client has a Player object..
 	private ConcurrentMap<Integer, ServerBasicPlayer> playerInstances = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
+	
+	private ConcurrentMap<String, Integer> clientIPTable = new ConcurrentHashMap<String, Integer>();
+	private ConcurrentMap<Integer, String> clientIPTableIDKEY = new ConcurrentHashMap<Integer, String>();
 	
 	//Each user will have an incrementing unique id - allows multiple people with the same nickname.
 	private int id = 1;
@@ -41,6 +46,37 @@ public class ClientTable {
 		id++; //Increment current id value for next client to connect.
 
 		return (id-1); //Return this client's id value.
+	}
+	
+	public synchronized void addUDPQueue(String ip)
+	{
+		UDPqueueTable.put(ip, new MessageQueue());
+	}
+	
+	public synchronized MessageQueue getUDPQueueWithID(int clientID)
+	{
+		return UDPqueueTable.get(clientIPTable.get(clientID));
+	}
+	
+	public synchronized MessageQueue getUDPQueueWithIP(String ip)
+	{
+		return UDPqueueTable.get(ip);
+	}
+	
+	public synchronized void addNewIP(String ip, int clientID)
+	{
+		clientIPTable.put(ip,clientID);
+		clientIPTableIDKEY.putIfAbsent(clientID, ip);
+	}
+	
+	public synchronized int getID(String ip)
+	{
+		return clientIPTable.get(ip);
+	}
+	
+	public synchronized String getIP(int id)
+	{
+		return clientIPTableIDKEY.get(id);
 	}
 	
 	public synchronized ServerBasicPlayer getPlayer(int clientID)
@@ -133,5 +169,9 @@ public class ClientTable {
 	public MessageQueue getQueue(int clientID) {
 		//Null if not in the table.
 		return queueTable.get(clientID);
+	}
+
+	public MessageQueue getUDPqueue(int clientID) {
+		return UDPqueueTable.get(clientID);
 	}
 }

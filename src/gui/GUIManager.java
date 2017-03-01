@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import networkingClient.Client;
 import networkingClient.ClientReceiver;
 import networkingClient.ClientSender;
-import networkingDiscovery.ServerAnnouncer;
 import networkingServer.Server;
 import rendering.Renderer;
 

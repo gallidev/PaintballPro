@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import networkingGame.UDPServer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 
@@ -67,6 +68,10 @@ public class Server {
 		// Good. We succeeded. But we must try again for the same reason:
 
 		boolean isRunning = true;
+		
+		// We start a new UDP server receiver to receive all UDP messages.
+		UDPServer udpReceiver = new UDPServer(clientTable, gameLobbies);
+		udpReceiver.start();
 
 		while (isRunning) {
 			try {
@@ -79,7 +84,7 @@ public class Server {
 				// and acts accordingly if they match.
 				ServerExitListener listener = new ServerExitListener(input);
 				listener.start();
-
+				
 				while (true && listener.isAlive()) {
 
 					// Listen to the socket, accepting connections from new
@@ -107,13 +112,14 @@ public class Server {
 					clientID = clientTable.add(clientName);
 
 					// We create and start a new thread to write to the client:
-					ServerMsgSender sender = new ServerMsgSender(clientTable.getQueue(clientID), toClient, socket,
-							clientName, clientID);
+					ServerMsgSender sender = new ServerMsgSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
 					sender.start();
-
+					
+					// We start a new UDP server sender to send messages to a client.
+					// UDPServerSender udpSender = new UDPServerSender(clientTable.getUDPqueue(clientID));
+					
 					// We create and start a new thread to read from the client:
-					ServerMsgReceiver reciever = new ServerMsgReceiver(clientID, fromClient, clientTable, sender,
-							gameLobbies);
+					ServerMsgReceiver reciever = new ServerMsgReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver);
 					reciever.start();
 
 					// For debugging

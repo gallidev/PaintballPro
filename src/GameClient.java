@@ -3,9 +3,6 @@ import gui.GUIManager;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import rendering.Renderer;
-
-import javax.swing.*;
 
 public class GameClient extends Application {
 	GUIManager m = new GUIManager();
@@ -18,7 +15,6 @@ public class GameClient extends Application {
 //		stage.setTitle("Paintball Pro");
 //		stage.show();
 	}
-
 	public static void main(String[] args) {
 		launch(args);
 	}

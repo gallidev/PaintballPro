@@ -1,5 +1,4 @@
 package gui;
-
 /**
  * Class to store the user's preferences
  */

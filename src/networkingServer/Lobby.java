@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
 import logic.RoundTimer;
+import networkingGame.UDPServer;
 import networkingInterfaces.ServerGame;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
@@ -223,11 +224,11 @@ public class Lobby {
 	 * @param receiver
 	 * @author Alexandra Paduraru
 	 */
-	public void playGame(ServerMsgReceiver receiver) {
+	public void playGame(ServerMsgReceiver receiver, UDPServer udpReceiver) {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
-		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
+		currentSessionGame = new ServerGame(GameType, red, blue, udpReceiver, id);
 		ServerBasicPlayer[] allPlayers = getPlayers();
 
 		// String to be sent needs to contain:
@@ -258,7 +259,7 @@ public class Lobby {
 	}
 
 	// A timer, accessed by the client for game countdown.
-	public void timerStart(ServerMsgReceiver receiver) {
+	public void timerStart(ServerMsgReceiver receiver, UDPServer udpReceiver) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -278,7 +279,7 @@ public class Lobby {
 
 					}
 				}
-				playGame(receiver);
+				playGame(receiver,udpReceiver);
 			}
 		});
 		t.start();

@@ -3,13 +3,10 @@ package players;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import networkingClient.ClientReceiver;
-import networkingClient.ClientSender;
+import networkingGame.UDPClientReceiver;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Map;
-import serverLogic.Team;
 
 import java.util.ArrayList;
 
@@ -24,9 +21,8 @@ public class PhysicsClientPlayer extends GeneralPlayer
 
 	private double mx, my;
 	private boolean controlScheme;
-	private ClientSender sender;
-	private ClientReceiver receiver;
-	private ArrayList<GeneralPlayer> clientEnemies;
+	private UDPClientReceiver sender;
+	private ArrayList<ClientLocalPlayer> clientEnemies;
 
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
@@ -38,23 +34,22 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, ClientReceiver receiver, CollisionsHandler collisionHandler)
+	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClientReceiver sender, CollisionsHandler collisionHandler)
 	{
 		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionHandler);
 		this.mx = x;
 		this.my = y;
 		this.controlScheme = controlScheme;
 		angle = 0.0;
-		this.receiver = receiver;
-		this.sender = receiver.getSender();
+		this.sender = sender;
 	}
 
-	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, ClientReceiver receiver)
+	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, UDPClientReceiver sender)
 	{
 		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
 		controlScheme = false;
 		this.team = team;
-		this.receiver = receiver;
+		this.sender = sender;
 	}
 
 
@@ -259,12 +254,12 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		this.my = my;
 	}
 
-	public ArrayList<GeneralPlayer> getClientEnemies()
+	public ArrayList<ClientLocalPlayer> getClientEnemies()
 	{
 		return clientEnemies;
 	}
 
-	public void setClientEnemies(ArrayList<GeneralPlayer> enemies)
+	public void setClientEnemies(ArrayList<ClientLocalPlayer> enemies)
 	{
 		this.clientEnemies = enemies;
 	}
