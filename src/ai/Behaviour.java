@@ -51,11 +51,15 @@ public abstract class Behaviour {
             }
             double deltaX = closestX - ai.getLayoutX();
             double deltaY = ai.getLayoutY() - closestY;
-            angle = Math.atan2(deltaX, deltaY);
+            //if(minDistance > 300) {
+            //    angle = ai.getMovementAngle();
+            //} else {
+                angle = Math.atan2(deltaX, deltaY);
+            //}
         }
 
         public boolean canSee(double x, double y){
-            Line line = new Line(ai.getLayoutX(), ai.getLayoutY(), x, y);
+            Line line = new Line(ai.getLayoutX() + ai.getImage().getWidth()/2, ai.getLayoutY() + ai.getImage().getHeight()/2, x, y);
             ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
             propsWalls.addAll(ai.getMap().getRecWalls());
             for(Rectangle propWall : propsWalls){
