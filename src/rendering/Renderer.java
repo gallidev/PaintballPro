@@ -161,10 +161,10 @@ public class Renderer extends Scene
 			{
 				updateView();
 
-				for(GeneralPlayer player : players)
+				for(GeneralPlayer p : players)
 				{
-					player.tick();
-					for(Bullet pellet : player.getBullets())
+					p.tick();
+					for(Bullet pellet : p.getBullets())
 					{
 						if(pellet.isActive())
 						{
@@ -197,8 +197,8 @@ public class Renderer extends Scene
 
 		//Adding the enemies to the view
 		for (int i = 0; i < 4; i++){
-				GeneralPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, player.getTeam() == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, player.getCollisionsHandler());
-				players.add(p);
+			GeneralPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, player.getTeam() == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, player.getCollisionsHandler());
+			players.add(p);
 		}
 
 		players.forEach(p -> {
@@ -217,20 +217,6 @@ public class Renderer extends Scene
 			else
 				blueTeam.add(p);
 		}
-		
-//		for(GeneralPlayer p : players)
-//		{
-//			if(p.getTeam() == TeamEnum.RED)
-//			{
-//				p.setEnemies(blueTeam);
-//				p.setTeamPlayers(redTeam);
-//			}
-//			else
-//			{
-//				p.setEnemies(redTeam);
-//				p.setTeamPlayers(blueTeam);
-//			}
-//		}
 
 		player.getCollisionsHandler().setBlueTeam(blueTeam);
 		player.getCollisionsHandler().setRedTeam(redTeam);
