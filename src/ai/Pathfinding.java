@@ -79,6 +79,7 @@ public class Pathfinding {
         start.finalCost = 0;
         Node current;
         Node goal = nodes[tx][ty];
+        if(goal == null) return;
 
         while(true){
             current = open.poll();
