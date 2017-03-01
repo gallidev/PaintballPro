@@ -19,13 +19,13 @@ public class ImageFactory
 		return team == TeamEnum.RED ? redPlayerImage : bluePlayerImage;
 	}
 
-	public static Image getMaterialImage(String material)
+	static Image getMaterialImage(String material)
 	{
 		materials.computeIfAbsent(material, m -> new Image("assets/materials/" + material + ".png", 64, 64, true, true));
 		return materials.get(material);
 	}
 
-	public static Image getSpawnTile(TeamEnum team)
+	static Image getSpawnTile(TeamEnum team)
 	{
 		return team == TeamEnum.RED ? redSpawnTile : blueSpawnTile;
 	}

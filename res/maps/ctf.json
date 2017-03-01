@@ -91,6 +91,12 @@
 		{"material": "crate", "x": 4, "y": 8},
 		{"material": "metal_crate", "x": 10, "y": 7},
 		{"material": "metal_crate", "x": 7, "y": 11},
-		{"material": "crate", "x": 8, "y": 12}
+		{"material": "crate", "x": 8, "y": 12},
+		{"material": "metal_crate", "x": 7, "y": 4},
+		{"material": "crate", "x": 12, "y": 4},
+		{"material": "crate", "x": 12, "y": 5},
+		{"material": "crate", "x": 13, "y": 5},
+		{"material": "metal_crate", "x": 15, "y": 8},
+		{"material": "metal_crate", "x": 16, "y": 9}
 	]
 }

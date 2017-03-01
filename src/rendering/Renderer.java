@@ -196,8 +196,8 @@ public class Renderer extends Scene
 			{
 				updateView();
 
-//				for(GeneralPlayer player : players)
-//				{
+				for(GeneralPlayer player : players)
+				{
 					player.tick();
 					for(Bullet pellet : player.getBullets())
 					{
@@ -209,7 +209,7 @@ public class Renderer extends Scene
 						else if(view.getChildren().contains(pellet))
 							view.getChildren().remove((pellet));
 					}
-//				}
+				}
 			}
 		}.start();
 	}
