@@ -7,6 +7,7 @@ import enums.TeamEnum;
 import javafx.animation.AnimationTimer;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -175,9 +176,8 @@ public class Renderer extends Scene
 
 		collisionsHandler.setBlueTeam(blueTeam);
 		collisionsHandler.setRedTeam(redTeam);
-
-//		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
-//		game.start();
+		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
+		game.start();
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);

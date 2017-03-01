@@ -20,14 +20,12 @@ public abstract class Behaviour {
     protected ArrayList<GeneralPlayer> enemies;
     protected double angle;
     protected double closestX, closestY;
-    protected Pathfinding pathfinder;
 
     public Behaviour(AIPlayer ai){
         this.ai = ai;
         this.map = ai.getMap();
         this.angle = 0.0;
         this.enemies = new ArrayList<GeneralPlayer>();
-        this.pathfinder = new Pathfinding(map);
         rand = new Random();
     }
 

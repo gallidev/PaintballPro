@@ -12,10 +12,9 @@ import static gui.GUIManager.redPlayerImage;
 
 public class AIPlayer extends GeneralPlayer{
 
-	private Behaviour rb;
+	private BehaviourManager bManager;
 	private AudioManager audio;
 	private double movementAngle;
-	private Map map;
 	private OfflineTeam oppTeam;
 	private OfflineTeam myTeam;
 
@@ -26,10 +25,9 @@ public class AIPlayer extends GeneralPlayer{
 		angle = Math.toRadians(90);
 		movementAngle = 0;
 		right = true;
-		rb = new RandomBehaviour(this);
-		this.audio = audio;
 		this.map = map;
-
+		bManager = new BehaviourManager(this);
+		this.audio = audio;
 	}
 
 	/**
@@ -38,7 +36,7 @@ public class AIPlayer extends GeneralPlayer{
 	 */
 	@Override
 	public void tick() {
-		rb.tick();
+		bManager.tick();
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
 			updatePosition();
@@ -59,7 +57,7 @@ public class AIPlayer extends GeneralPlayer{
 
 	@Override
 	protected void updatePosition(){
-		if(collUp || collLeft || collRight || collDown) rb.change();
+		if(collUp || collLeft || collRight || collDown) bManager.change();
 
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
