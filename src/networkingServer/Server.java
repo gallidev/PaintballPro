@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import networkingShared.Message;
 import networkingShared.MessageQueue;
@@ -21,6 +23,8 @@ public class Server {
 	 * 
 	 * @param args
 	 *            Command line arguments passed through from the user.
+	 *            0 - port number
+	 *            1 - listen address
 	 */
 	public static void main(String[] args) {
 
@@ -35,20 +39,26 @@ public class Server {
 
 		// Port number to connect through to.
 		int portNumber;
+		InetAddress listenAddress;
 
 		// If number of arguments does not match expected, provide correct
 		// usage.
-		if (args.length != 1) {
+		if (args.length != 2) {
 			throw new IllegalArgumentException("Usage: java Server portNumber");
 		} else {
 			// Parse passed string to an Integer for port number.
 			portNumber = Integer.parseInt(args[0]);
+			try {
+				listenAddress = InetAddress.getByName(args[1]);
+			} catch (UnknownHostException e) {
+				throw new RuntimeException(e.getMessage());
+			}
 		}
 
 		// We must try because it may fail with a checked exception:
 		try {
 			// Open server socket
-			serverSocket = new ServerSocket(portNumber);
+			serverSocket = new ServerSocket(portNumber, 1, listenAddress);
 		} catch (IOException e) {
 			System.err.println("Couldn't listen on port " + portNumber);
 			System.exit(1); // Exit.
