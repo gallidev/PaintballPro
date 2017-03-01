@@ -31,6 +31,7 @@ public class GUIManager {
 
     private Stage s;
     private Client c;
+    private Thread localServer;
     private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
 
@@ -78,6 +79,10 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
+                    if (localServer != null) {
+                        localServer.interrupt();
+                        localServer = null;
+                    }
                     s.setScene(MainMenu.getScene(this));
                     break;
                 case NicknameServerConnection:
@@ -134,14 +139,15 @@ public class GUIManager {
 
     private void establishLocalSingleServerConnection() {
         ipAddress = "0.0.0.0";
-        (new Thread(new Runnable() {
+        localServer = new Thread(new Runnable() {
             @Override
             public void run() {
                 int portNo = 25566;
                 String[] serverArgs = {portNo + "", ipAddress};
                 Server.main(serverArgs);
             }
-        })).start();
+        });
+        localServer.start();
         establishConnection();
     }
 
