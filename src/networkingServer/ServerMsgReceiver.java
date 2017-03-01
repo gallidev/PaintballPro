@@ -3,6 +3,7 @@ package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import integrationServer.ClientInputReceiver;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;
@@ -24,6 +25,8 @@ public class ServerMsgReceiver extends Thread {
 	private LobbyTable gameLobby;
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
+	
+	private ClientInputReceiver inputReceiver;
 	
 	private boolean debug = true;
 
@@ -117,6 +120,21 @@ public class ServerMsgReceiver extends Thread {
 					// Includes : sending moves, bullets
 					if (text.contains("SendToAll:"))
 						sendToAll(text);
+					
+					
+					//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
+					//							NEW INTEGRATION BELOW
+					if(text.contains("Action:")){
+						String[] action = text.split(":");
+						
+						switch(action[2]){
+							case "Up"    : inputReceiver.moveUpAction();
+							case "Down"  : inputReceiver.moveDownAction();
+							case "Left"  : inputReceiver.moveLeftAction(); 
+							case "Right" : inputReceiver.moveRightAction();
+							case "Mouse" : inputReceiver.mouseMovedAction();
+						}
+					}
 
 				} else // if the client wants to exit the system.
 				{

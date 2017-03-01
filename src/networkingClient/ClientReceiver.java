@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import gui.GUIManager;
+import integrationClient.ClientActionReceiver;
 import javafx.application.Platform;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
@@ -32,6 +33,7 @@ public class ClientReceiver extends Thread {
 	private PhysicsClientPlayer cPlayer;
 	private ArrayList<GeneralPlayer> myTeam;
 	private ArrayList<GeneralPlayer> enemies;
+	private ClientActionReceiver actionReceiver;
 
 	private boolean debug = false;
 
@@ -121,6 +123,12 @@ public class ClientReceiver extends Thread {
 
 						});
 					}
+					
+					//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
+					//							NEW INTEGRATION BELOW
+					
+					//initialize the ClientActionReceiver!!!! 
+					//do stuff here according to new protocols for actions that update the client-sided player
 
 				} else // if the client wants to exit the system.
 				{
