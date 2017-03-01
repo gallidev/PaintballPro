@@ -3,6 +3,7 @@ package networkingInterfaces;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
+import gameNetworking.UDPServerReceiver;
 import logic.GameMode;
 import networkingServer.ServerMsgReceiver;
 import networkingShared.Message;
@@ -23,7 +24,8 @@ import serverLogic.TeamMatchMode;
 public class ServerGame {
 
 	private GameMode game;
-	private ServerMsgReceiver serverReceiver;
+	private UDPServerReceiver serverReceiver;
+	private int lobbyID;
 
 	/**
 	 * The server will run a specific game mode, given as an integer argument in
@@ -33,7 +35,8 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team red, Team blue, ServerMsgReceiver receiver) {
+	public ServerGame(int gameMode, Team red, Team blue, UDPServerReceiver receiver, int lobbyID) {
+		this.lobbyID = lobbyID;
 		switch (gameMode) {
 		case 1:
 			game = new TeamMatchMode(red, blue);
@@ -80,14 +83,14 @@ public class ServerGame {
 		}
 		
 		if (game.isGameFinished())
-			serverReceiver.sendToAll(toBeSent);
+			serverReceiver.sendToAll(toBeSent,lobbyID);
 		
 		
 	}
 	
 	public void endGame(){
 		if (game.isGameFinished())
-			serverReceiver.sendToAll("EndGame");
+			serverReceiver.sendToAll("EndGame",lobbyID);
 	}
 	
 	/*Getters and setters*/

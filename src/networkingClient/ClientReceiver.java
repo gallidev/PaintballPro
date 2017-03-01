@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
+import gameNetworking.UDPClientReceiver;
+import gameNetworking.UDPClientSender;
 import gui.GUIManager;
 import javafx.application.Platform;
 import networkingShared.Message;
@@ -30,6 +32,7 @@ public class ClientReceiver extends Thread {
 	private PhysicsClientPlayer cPlayer;
 	private ArrayList<ClientLocalPlayer> myTeam;
 	private ArrayList<ClientLocalPlayer> enemies;
+	private UDPClientSender udpSender;
 	
 	private boolean debug = false;
 
@@ -43,7 +46,7 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientSender udpSender) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
@@ -51,6 +54,7 @@ public class ClientReceiver extends Thread {
 		myMsgQueue = msgQueue;
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
+		this.udpSender = udpSender;
 	}
 
 	/**
@@ -196,14 +200,15 @@ public class ClientReceiver extends Thread {
 		String clientTeam = data[2];
 		Map map = Map.loadRaw("elimination");
 
+		
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.RED, this);
+					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpSender);
 		else
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this);
+					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpSender);
 
 		// extract the other members
 		for (int i = 3; i < data.length - 1; i = i + 2) {

@@ -7,6 +7,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import gameNetworking.UDPClientReceiver;
+import gameNetworking.UDPClientSender;
 import gui.GUIManager;
 import networkingShared.MessageQueue;
 
@@ -76,9 +78,15 @@ public class Client {
 			}
 			// Sanity output.
 			System.out.println("Client has id:" + clientID);
+			
+			
+			//Make a UDP Receiver and Sender for low-latency in-game.
+			UDPClientReceiver udpReceiver = new UDPClientReceiver();
+			UDPClientSender udpSender = new UDPClientSender();
+			
 
 			// We can now set up the message received for the client.
-			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m);
+			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m, udpSender);
 			receiver.start();
 
 

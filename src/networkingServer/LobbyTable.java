@@ -2,6 +2,7 @@ package networkingServer;
 
 import java.util.concurrent.*;
 
+import gameNetworking.UDPServerReceiver;
 import players.ServerBasicPlayer;
 
 /**
@@ -46,7 +47,7 @@ public class LobbyTable {
 	}
 
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerMsgReceiver receiver) {
+	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerMsgReceiver receiver, UDPServerReceiver udpReceiver) {
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
 		for (Lobby lobby : lobbyList.values()) {
@@ -68,7 +69,7 @@ public class LobbyTable {
 		}
 		player.setAllocatedLobby(lobbyAllocated);
 		if (this.getLobby(lobbyAllocated).isMaxPlayersReached()) {
-			this.getLobby(lobbyAllocated).timerStart(receiver);
+			this.getLobby(lobbyAllocated).timerStart(receiver,udpReceiver);
 			receiver.sendToAll("TimerStart");
 		}
 		String redMems = "Ret:Red:" + this.getLobby(lobbyAllocated).getTeam(2);

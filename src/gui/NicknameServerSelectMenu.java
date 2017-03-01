@@ -13,7 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import networkingDiscovery.ClientListener;
+import networkingDiscovery.DiscoveryClientListener;
 
 /**
  * Created by jack on 12/02/2017.
@@ -57,7 +57,7 @@ public class NicknameServerSelectMenu {
         // Create a array of options for the cancel and apply buttons
         MenuOption[] set = {new MenuOption("Search LAN for server", false, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-            	String ipAddr = ClientListener.findServer().split(":")[0];
+            	String ipAddr = DiscoveryClientListener.findServer().split(":")[0];
             	if(ipAddr.compareTo("") != 0)
             		ipText.setText(ipAddr);
             	else 

@@ -3,6 +3,7 @@ package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import gameNetworking.UDPServerReceiver;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;
@@ -24,6 +25,7 @@ public class ServerMsgReceiver extends Thread {
 	private LobbyTable gameLobby;
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
+	private UDPServerReceiver udpReceiver;
 	
 	private boolean debug = true;
 
@@ -40,13 +42,14 @@ public class ServerMsgReceiver extends Thread {
 	 *            Sender class for sending messages to the client.
 	 */
 	public ServerMsgReceiver(int clientID, BufferedReader reader, ClientTable table, ServerMsgSender sender,
-			LobbyTable passedGameLobby) {
+			LobbyTable passedGameLobby, UDPServerReceiver udpReceiver) {
 		myClientsID = clientID;
 		myClient = reader;
 		clientTable = table;
 		this.sender = sender;
 		gameLobby = passedGameLobby;
 		myMsgQueue = clientTable.getQueue(myClientsID);
+		this.udpReceiver = udpReceiver;
 	}
 
 	/**
@@ -155,13 +158,13 @@ public class ServerMsgReceiver extends Thread {
 
 	private void playModeAction(String text) {
 		int gameMode = Integer.parseInt(text.substring(10));
-		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this);
+		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 		int curTotal = lobby.getCurrPlayerTotal();
 		// lobby.timerStart(this);
 		if (curTotal == 2) {
 			lobby.switchGameStatus();
-			lobby.timerStart(this);
+			lobby.timerStart(this, udpReceiver);
 		}
 	}
 
