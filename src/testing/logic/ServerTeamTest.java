@@ -1,10 +1,11 @@
 package testing.logic;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import enums.TeamEnum;
 import serverLogic.Team;
 
 public class ServerTeamTest {
@@ -18,8 +19,21 @@ public class ServerTeamTest {
 
 	@Test
 	public void test() {
+		//test initial team score
+		assertEquals(team.getScore(), 0);
+		
 		//methods to be tested: 
 		
+		//setColour && getColour
+		team.setColour(TeamEnum.RED);
+		assertTrue(team.getColour() == TeamEnum.RED);
+		
+		team.setColour(TeamEnum.BLUE);
+		assertTrue(team.getColour() == TeamEnum.BLUE);
+		
+		//getScore &; setScore
+		//for(int i = 0; i < )
+		//assertEquals(team.getScore(), actual);
 		//increment score
 		
 		//addMember
@@ -28,15 +42,12 @@ public class ServerTeamTest {
 		
 		//getMembers
 		
-		//getScore
 		
-		//setScore
 		
 		//getColour
 		
 		//getMemberNo
 		
-		fail("Not yet implemented");
 	}
 
 }

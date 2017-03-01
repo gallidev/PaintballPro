@@ -3,9 +3,9 @@ package offlineLogic;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
-import physics.OfflinePlayer;
 import players.AIPlayer;
 import players.GeneralPlayer;
+import players.OfflinePlayer;
 
 /**
  * Represents a game mode played in a Single Player game. The game contains 
@@ -30,23 +30,23 @@ public abstract class OfflineGameMode {
 			super();
 			this.player = player;
 			
-			//create the player's team
-			ArrayList<AIPlayer> myTeamMembers = new ArrayList<>();
-			
-			for(GeneralPlayer p : player.getTeamPlayers()){
-				myTeamMembers.add((AIPlayer)p);
-			}
-			
-			myTeam = new OfflineTeam(myTeamMembers, myTeamMembers.get(0).getTeam());
-			
-			//create the opponent team
-			ArrayList<AIPlayer> enemiesMembers = new ArrayList<>();
-			
-			for(GeneralPlayer p : player.getEnemies())
-				enemiesMembers.add((AIPlayer)p);
-			
-			enemies = new OfflineTeam(enemiesMembers, enemiesMembers.get(0).getTeam());
-			
+//			//create the player's team
+//			ArrayList<AIPlayer> myTeamMembers = new ArrayList<>();
+//			
+//			for(GeneralPlayer p : player.getTeamPlayers()){
+//				myTeamMembers.add((AIPlayer)p);
+//			}
+//			
+//			myTeam = new OfflineTeam(myTeamMembers, myTeamMembers.get(0).getTeam());
+//			
+//			//create the opponent team
+//			ArrayList<AIPlayer> enemiesMembers = new ArrayList<>();
+//			
+//			for(GeneralPlayer p : player.getEnemies())
+//				enemiesMembers.add((AIPlayer)p);
+//			
+//			enemies = new OfflineTeam(enemiesMembers, enemiesMembers.get(0).getTeam());
+//			
 		}
 		
 		/**

@@ -335,6 +335,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	public void setCollRight(boolean collRight) {
 		this.collRight = collRight;
 	}
+	
+	public CollisionsHandler getCollisionsHandler(){
+		return collisionsHandler;
+	}
 
 
 }

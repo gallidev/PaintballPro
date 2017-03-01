@@ -96,6 +96,10 @@ public class Team {
 //			p.setMap(map);
 //		}
 //	}
+	
+	public void setColour(TeamEnum c){
+		colour = c;
+	}
 
 
 }

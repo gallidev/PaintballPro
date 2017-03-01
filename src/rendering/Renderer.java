@@ -7,7 +7,6 @@ import enums.TeamEnum;
 import javafx.animation.AnimationTimer;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -19,9 +18,9 @@ import physics.CollisionsHandler;
 import physics.KeyPressListener;
 import physics.KeyReleaseListener;
 import physics.MouseListener;
-import physics.OfflinePlayer;
-import players.ClientLocalPlayer;
+import players.AIPlayer;
 import players.GeneralPlayer;
+import players.OfflinePlayer;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -33,6 +32,8 @@ public class Renderer extends Scene
 	static Pane view = new Pane();
 	private double scale = 1;
 	private GeneralPlayer player;
+	private AudioManager audio;
+	private Map map;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
@@ -125,6 +126,8 @@ public class Renderer extends Scene
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
 
+		this.audio = audio;
+		
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
 		{
@@ -133,51 +136,13 @@ public class Renderer extends Scene
 			view.setScaleY((getWidth() * 0.5625) / 576);
 		});
 
-		Map map = Map.load("res/maps/" + mapName + ".json");
-
-		ArrayList<GeneralPlayer> players = new ArrayList<>();
+		map = Map.load("res/maps/" + mapName + ".json");
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, collisionsHandler);
 
-		players.add(player);
-		players.addAll(player.getTeamPlayers());
-		players.addAll(player.getEnemies());
-		players.forEach(p -> {
-			p.setCache(true);
-			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		});
-		view.getChildren().addAll(players);
-
-		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
-		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-				redTeam.add(p);
-			else
-				blueTeam.add(p);
-		}
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-			{
-				p.setEnemies(blueTeam);
-				p.setTeamPlayers(redTeam);
-			}
-			else
-			{
-				p.setEnemies(redTeam);
-				p.setTeamPlayers(blueTeam);
-			}
-		}
-
-		collisionsHandler.setBlueTeam(blueTeam);
-		collisionsHandler.setRedTeam(redTeam);
-		OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
-		game.start();
+		ArrayList<GeneralPlayer> players = setUpOfflineGame(player, new OfflineTeamMatchMode((OfflinePlayer) player));
 
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
@@ -218,6 +183,62 @@ public class Renderer extends Scene
 	{
 		view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 		view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
+	}
+	
+	private ArrayList<GeneralPlayer> setUpOfflineGame(GeneralPlayer player, OfflineGameMode game){
+		ArrayList<GeneralPlayer> players = new ArrayList<>();
+		players.add(player);
+		
+		//Adding the player's team mates to the view
+		for(int i = 1; i < 4; i++){
+			GeneralPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, player.getTeam(), audio, player.getCollisionsHandler());
+			players.add(p);
+		}
+
+		//Adding the enemies to the view
+		for (int i = 0; i < 4; i++){
+				GeneralPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, player.getTeam() == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, player.getCollisionsHandler());
+				players.add(p);
+		}
+
+		players.forEach(p -> {
+			p.setCache(true);
+			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		});
+		view.getChildren().addAll(players);
+
+		//provisional way to differ enemies and team players
+		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
+		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
+		for(GeneralPlayer p : players)
+		{
+			if(p.getTeam() == TeamEnum.RED)
+				redTeam.add(p);
+			else
+				blueTeam.add(p);
+		}
+		
+//		for(GeneralPlayer p : players)
+//		{
+//			if(p.getTeam() == TeamEnum.RED)
+//			{
+//				p.setEnemies(blueTeam);
+//				p.setTeamPlayers(redTeam);
+//			}
+//			else
+//			{
+//				p.setEnemies(redTeam);
+//				p.setTeamPlayers(blueTeam);
+//			}
+//		}
+
+		player.getCollisionsHandler().setBlueTeam(blueTeam);
+		player.getCollisionsHandler().setRedTeam(redTeam);
+		
+		game.start();
+		
+		return players;
+
 	}
 
 }

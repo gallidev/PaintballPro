@@ -1,14 +1,16 @@
-package physics;
+package players;
 
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
+
 import java.util.ArrayList;
+
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
 import offlineLogic.OfflineTeam;
-import players.AIPlayer;
-import players.GeneralPlayer;
+import physics.Bullet;
+import physics.CollisionsHandler;
 import rendering.Map;
 
 /**
@@ -44,37 +46,16 @@ public class OfflinePlayer extends GeneralPlayer
 		teamPlayers = new ArrayList<>();
 		enemies = new ArrayList<>();
 
-		//populating the players team and creating a corresponding OfflineTeam for the members
-		ArrayList<AIPlayer> myTeamMembers = new ArrayList<AIPlayer>();
-
-		for(int i = 1; i < 4; i++){
-			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, audio, collisionsHandler);
-			teamPlayers.add(p);
-			myTeamMembers.add(p);
-		}
-
-		myTeam = new OfflineTeam(myTeamMembers, team);
-
-		//populating the opponent team and creating a corresponding OfflineTeam for the members
-		ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
-
-		for (int i = 0; i < 4; i++){
-				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, collisionsHandler);
-				oppTeamMembers.add(p);
-				enemies.add(p);
-		}
-
-		oppTeam = new OfflineTeam(oppTeamMembers, oppTeamMembers.get(0).getTeam());
-
-		for(AIPlayer p : myTeam.getMembers()){
-			p.setOppTeam(oppTeam);
-			p.setMyTeam(myTeam);
-		}
-
-		for(AIPlayer p : oppTeam.getMembers()){
-			p.setOppTeam(myTeam);
-			p.setMyTeam(oppTeam);
-		}
+		
+//		for(AIPlayer p : myTeam.getMembers()){
+//			p.setOppTeam(oppTeam);
+//			p.setMyTeam(myTeam);
+//		}
+//
+//		for(AIPlayer p : oppTeam.getMembers()){
+//			p.setOppTeam(myTeam);
+//			p.setMyTeam(oppTeam);
+//		}
 
 	}
 
