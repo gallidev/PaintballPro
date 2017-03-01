@@ -43,6 +43,8 @@ public class UDPClientReceiver extends Thread {
 			clientSocket.receive(receivePacket);
 			String sendSentence = new String(receivePacket.getData());
 			
+			// Do any extra processing here for in-game commands.
+			
 		}
 		catch (Exception e)
 		{
