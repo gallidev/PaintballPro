@@ -12,6 +12,7 @@ public class Bullet extends Circle{
 	private double angle;
 	private float speed = 10f;
 	private double x, y;
+	private double originX, originY;
 	private boolean active;
 
 	/**
@@ -23,6 +24,8 @@ public class Bullet extends Circle{
 	public Bullet(double x, double y, double angle, TeamEnum team) {
 		this.x = x;
 		this.y = y;
+		this.originX = x;
+		this.originY = y;
 		this.angle = angle;
 		active = true;
 		setCenterX(x);
@@ -44,6 +47,8 @@ public class Bullet extends Circle{
 		x += speed * Math.sin(angle);
 		setCenterX(x);
 		setCenterY(y);
+		double distance = Math.sqrt(Math.pow((x-originX), 2) + Math.pow((originY-y), 2));
+		if(distance > 400) active = false;
 	}
 	
 	//Getters and setters for the coordinates

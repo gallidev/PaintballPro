@@ -10,7 +10,7 @@ import java.util.Enumeration;
 /**
  * Class to announce a server's presence to a LAN
  */
-public class DiscoveryServerAnnouncer implements Runnable {
+public class ServerAnnouncer implements Runnable {
 
     private int portNo;
 
@@ -18,7 +18,7 @@ public class DiscoveryServerAnnouncer implements Runnable {
      * Create a new announcer
      * @param portNo TCP port that the game is running on
      */
-    public DiscoveryServerAnnouncer(int portNo) {
+    public ServerAnnouncer(int portNo) {
         this.portNo = portNo;
     }
 

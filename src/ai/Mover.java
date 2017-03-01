@@ -4,36 +4,63 @@ import players.AIPlayer;
 /**
  * Moves an AI Player along a path
  */
-public class Mover {
+public class Mover extends Behaviour{
 
     private Path path;
-    private AIPlayer ai;
+    private Path originalPath;
+    private Node target;
     private boolean targetReached;
+    private boolean finished = false;
 
     public Mover(AIPlayer ai){
-        this.ai = ai;
+        super(ai);
     }
 
-    public void followPath(Path path){
+    public void setPath(Path path){
         this.path = path;
-        while(path.getLength() > 0){
-            targetReached = false;
-            Node current = path.getNode(0);
-            move(current);
-            if(targetReached){
-                path.removeFirst();
-            }
+        this.originalPath = path;
+    }
 
+    public void followPath(){
+        finished = false;
+        if(path.getLength() == 0) {
+            finished = true;
+            return;
+        }
+        //System.out.println(path.getNode(0).toString());
+        targetReached = false;
+        target = path.getNode(0);
+        move();
+        if(targetReached){
+            path.removeFirst();
         }
     }
 
-    private void move(Node n){
-        double targetX = n.x * 64;
-        double targetY = n.y * 64;
+    private void move(){
+        double targetX = target.x * 64;
+        double targetY = target.y * 64;
         double deltaX = targetX - ai.getLayoutX();
         double deltaY = ai.getLayoutY() - targetY;
-        if(Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) targetReached = true;
+        if(Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) targetReached = true;
         double movementAngle = Math.atan2(deltaX, deltaY);
         ai.setMovementAngle(movementAngle);
+    }
+
+    public void tick(){
+        enemies = ai.getEnemies();
+        updateAngle();
+        ai.setAngle(angle);
+
+        ai.setShoot(updateShooting(closestX, closestY));
+        timer = System.currentTimeMillis();
+        if(ai.isEliminated()) {
+            finished = false;
+            path = originalPath;
+        }
+        followPath();
+    }
+
+    public boolean isFinished(){
+        return this.finished;
     }
 }

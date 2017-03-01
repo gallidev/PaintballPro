@@ -26,8 +26,8 @@ public class RoundTimerTest {
 	@Test
 	public void test() {
 		long noInterval = 0;
-		long smallInterval = 5;
-		long gameInterval = 180;
+		long smallInterval = 2;
+		long gameInterval = 4;
 
 		RoundTimer noTimer = new RoundTimer(noInterval);
 		RoundTimer smallTimer = new RoundTimer(smallInterval);
@@ -44,12 +44,12 @@ public class RoundTimerTest {
 		assertFalse(gameTimer.isTimeElapsed());
 
 		// getTimeLeft
-		assertTrue(smallTimer.getTimeLeft() <= 5);
-		assertTrue(gameTimer.getTimeLeft() <= 180);
+		assertTrue(smallTimer.getTimeLeft() <= 2);
+		assertTrue(gameTimer.getTimeLeft() <= 4);
 		assertTrue(noTimer.getTimeLeft() == 0);
 
 		try {
-			Thread.sleep(5500);
+			Thread.sleep(2500);
 			assertTrue(noTimer.isTimeElapsed());
 			assertTrue(smallTimer.isTimeElapsed());
 			assertFalse(gameTimer.isTimeElapsed());
@@ -64,7 +64,7 @@ public class RoundTimerTest {
 		gameTimer.startTimer();
 
 		try {
-			Thread.sleep(180000);
+			Thread.sleep(4500);
 			assertTrue(noTimer.isTimeElapsed());
 			assertTrue(smallTimer.isTimeElapsed());
 			assertTrue(gameTimer.isTimeElapsed());

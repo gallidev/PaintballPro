@@ -95,6 +95,8 @@ public class AIPlayer extends GeneralPlayer{
 		this.movementAngle = angle;
 	}
 
+	public double getMovementAngle() { return this.movementAngle;}
+
 	public Map getMap(){
 		return this.map;
 	}

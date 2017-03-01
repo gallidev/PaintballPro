@@ -4,12 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
-import networkingGame.UDPClientReceiver;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
+import physics.Bullet;
 import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
@@ -30,11 +31,9 @@ public class ClientReceiver extends Thread {
 	private Message msg;
 	private GUIManager m;
 	private PhysicsClientPlayer cPlayer;
-	private ArrayList<ClientLocalPlayer> myTeam;
-	private ArrayList<ClientLocalPlayer> enemies;
-	private UDPClientReceiver udpReceiver;
-	private TeamTable teams;
-	
+	private ArrayList<GeneralPlayer> myTeam;
+	private ArrayList<GeneralPlayer> enemies;
+
 	private boolean debug = false;
 
 	/**
@@ -47,7 +46,7 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientReceiver udpReceiver, TeamTable teams) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
@@ -55,8 +54,6 @@ public class ClientReceiver extends Thread {
 		myMsgQueue = msgQueue;
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
-		this.udpReceiver = udpReceiver;
-		this.teams = teams;
 	}
 
 	/**
@@ -72,13 +69,19 @@ public class ClientReceiver extends Thread {
 				if (text != null && text.compareTo("Exit:Client") != 0) {
 					if(debug) System.out.println("Received: " + text);
 
+					// In-game messages
+					if (text.contains("Move"))
+						moveAction(text);
+
+					if (text.contains("Bullet"))
+						bulletAction(text);
+
 					// UI Requests
 					if (text.contains("Ret:Red:")) {
 						if(debug) System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
 						m.updateRedLobby(red);
-					} 
-					else if (text.contains("Ret:Blue:")) {
+					} else if (text.contains("Ret:Blue:")) {
 						if(debug) System.out.println("Got blue");
 						String[] blue = text.substring(9).split("-");
 						m.updateBlueLobby(blue);
@@ -104,10 +107,9 @@ public class ClientReceiver extends Thread {
 					}
 
 					// Game status
-					else if (text.contains("StartGame"))
+					else if (text.contains("StartGame")) {
 						startGameAction(text);
-					
-					else if (text.contains("EndGame")) {
+					} else if (text.contains("EndGame")) {
 						if(debug) System.out.println("Game has ended for player with ID " + clientID);
 						// Get data about scores, and pass into transition
 						// method
@@ -115,7 +117,7 @@ public class ClientReceiver extends Thread {
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
-								m.transitionTo("EndGame", someScore);
+								m.transitionTo(MenuEnum.EndGame, someScore);
 							}
 
 						});
@@ -136,6 +138,50 @@ public class ClientReceiver extends Thread {
 
 	// Different actions to handle the server messages
 	/**
+	 * Action starting when a player fires a bullet. It renders the bullet and
+	 * also detects when a player has been eliminated.
+	 *
+	 * @param text
+	 *            The protocol text containing information about the coordinates
+	 *            and angle of the bullet, as well as the player id which shot
+	 *            it.
+	 *
+	 * @author Alexandra Paduraru
+	 */
+	private void bulletAction(String text) {
+		// Protocol message: SendToAll:Bullet:id:team:x:y:angle:
+		String[] data = text.split(":");
+
+		int id = Integer.parseInt(data[2]);
+		String t = data[3];
+
+		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
+
+		if (p != null) // the player is not us
+		{
+			ArrayList<Bullet> firedBullets = new ArrayList<>();
+			for (int i = 4; i < data.length - 2; i = i + 3) {
+
+				double x = Double.parseDouble(data[i]);
+				double y = Double.parseDouble(data[i + 1]);
+				double angle = Double.parseDouble(data[i + 2]);
+
+				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
+			}
+			p.tickBullets(firedBullets);
+		}
+
+		if(debug)
+		{
+			 System.out.print("my Team players: " );
+			 for(GeneralPlayer pq : myTeam)
+			 System.out.print(pq.getPlayerId() + " ");
+			 System.out.println();
+			 System.out.print("my enemy players: " );
+		}
+	}
+
+	/**
 	 * Contains everything that needs to be done when a player receives the
 	 * start signal: take the client's id and team, then form the team and the
 	 * enemy team. This information is then used by the renderer.
@@ -153,16 +199,17 @@ public class ClientReceiver extends Thread {
 		String clientTeam = data[2];
 		Map map = Map.loadRaw("elimination");
 
+
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpReceiver, collisionsHandler);
+					clientID, false, map, m.getAudioManager(), TeamEnum.RED, this, collisionsHandler);
 		else
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpReceiver,collisionsHandler);
+					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this, collisionsHandler);
 
 		ArrayList<GeneralPlayer> allplayers = new ArrayList<GeneralPlayer>();
 		// extract the other members
@@ -190,21 +237,77 @@ public class ClientReceiver extends Thread {
 		collisionsHandler.setPlayers(allplayers);
 		cPlayer.setClientEnemies(enemies);
 
-		teams.setEnemies(enemies);
-		teams.setMyTeam(myTeam);
-		
+
+
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				m.transitionTo("Elimination", null);
+				m.transitionTo(MenuEnum.EliminationMulti, null);
 			}
 		});
 	}
 
+	/**
+	 * Gets a move signal from the server about a specific player. The method
+	 * finds that player and updates the player's position on the map
+	 * accordingly.
+	 *
+	 * @param text
+	 *            The protocol message containing the new x and y coordinates,
+	 *            as well as the angle of the player.
+	 *
+	 * @author Alexandra Paduraru
+	 */
+	public void moveAction(String text) {
+		String[] msg = text.split(":");
+		// System.out.println("Text move action: " + Arrays.toString(msg));
+
+		int id = Integer.parseInt(msg[2]);
+		double x = Double.parseDouble(msg[3]);
+		double y = Double.parseDouble(msg[4]);
+		double angle = Double.parseDouble(msg[5]);
+
+		if(debug)
+		{
+			for(GeneralPlayer p : myTeam)
+				System.out.println(p.getPlayerId());
+		}
+
+
+		if (id != clientID) {
+			// find the player that need to be updated
+			ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
+			p.tick(x, y, angle);
+		}
+	}
+
 	/* Getters and setters */
+	/**
+	 * Retrieves a player with a specific id from the current game.
+	 *
+	 * @param id
+	 *            The player's id.
+	 * @return The player with the given id.
+	 *
+	 * @author Alexandra Paduraru
+	 */
+	private GeneralPlayer getPlayerWithID(int id) {
+		// Check if the Player is in my team
+		for (GeneralPlayer p : myTeam)
+			if (p.getPlayerId() == id)
+				return p;
+
+		// otherwise, player is in the enemy team
+		for (GeneralPlayer p : enemies)
+			if (p.getPlayerId() == id)
+				return p;
+
+		return null;
+	}
+
 	/**
 	 * Returns the players that are in this Player's team.
 	 *
@@ -212,7 +315,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<ClientLocalPlayer> getMyTeam() {
+	public ArrayList<GeneralPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -223,7 +326,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<ClientLocalPlayer> getEnemies() {
+	public ArrayList<GeneralPlayer> getEnemies() {
 		return enemies;
 	}
 

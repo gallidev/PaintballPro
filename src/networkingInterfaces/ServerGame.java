@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import logic.GameMode;
-import networkingGame.UDPServer;
 import networkingServer.ServerMsgReceiver;
 import networkingShared.Message;
 import players.ServerPlayer;
@@ -24,8 +23,7 @@ import serverLogic.TeamMatchMode;
 public class ServerGame {
 
 	private GameMode game;
-	private UDPServer serverReceiver;
-	private int lobbyID;
+	private ServerMsgReceiver serverReceiver;
 
 	/**
 	 * The server will run a specific game mode, given as an integer argument in
@@ -35,8 +33,7 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team red, Team blue, UDPServer receiver, int lobbyID) {
-		this.lobbyID = lobbyID;
+	public ServerGame(int gameMode, Team red, Team blue, ServerMsgReceiver receiver) {
 		switch (gameMode) {
 		case 1:
 			game = new TeamMatchMode(red, blue);
@@ -83,14 +80,14 @@ public class ServerGame {
 		}
 		
 		if (game.isGameFinished())
-			serverReceiver.sendToAll(toBeSent,lobbyID);
+			serverReceiver.sendToAll(toBeSent);
 		
 		
 	}
 	
 	public void endGame(){
 		if (game.isGameFinished())
-			serverReceiver.sendToAll("EndGame",lobbyID);
+			serverReceiver.sendToAll("EndGame");
 	}
 	
 	/*Getters and setters*/

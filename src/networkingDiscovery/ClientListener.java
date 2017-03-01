@@ -10,7 +10,7 @@ import java.util.Enumeration;
 /**
  * Class to listen out for servers in the LAN
  */
-public class DiscoveryClientListener {
+public class ClientListener {
 
 	/**
 	 * Get the IP address and port of the first server found
