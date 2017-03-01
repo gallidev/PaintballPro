@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import gameNetworking.UDPServerReceiver;
+import gameNetworking.UDPServer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 
@@ -60,7 +60,7 @@ public class Server {
 		boolean isRunning = true;
 		
 		// We start a new UDP server receiver to receive all UDP messages.
-		UDPServerReceiver udpReceiver = new UDPServerReceiver(clientTable, gameLobbies);
+		UDPServer udpReceiver = new UDPServer(clientTable, gameLobbies);
 		udpReceiver.start();
 
 		while (isRunning) {

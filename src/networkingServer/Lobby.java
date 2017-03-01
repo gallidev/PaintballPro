@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
-import gameNetworking.UDPServerReceiver;
+import gameNetworking.UDPServer;
 import logic.RoundTimer;
 import networkingInterfaces.ServerGame;
 import players.ServerBasicPlayer;
@@ -224,7 +224,7 @@ public class Lobby {
 	 * @param receiver
 	 * @author Alexandra Paduraru
 	 */
-	public void playGame(ServerMsgReceiver receiver, UDPServerReceiver udpReceiver) {
+	public void playGame(ServerMsgReceiver receiver, UDPServer udpReceiver) {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
@@ -259,7 +259,7 @@ public class Lobby {
 	}
 
 	// A timer, accessed by the client for game countdown.
-	public void timerStart(ServerMsgReceiver receiver, UDPServerReceiver udpReceiver) {
+	public void timerStart(ServerMsgReceiver receiver, UDPServer udpReceiver) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {

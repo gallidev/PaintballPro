@@ -9,7 +9,7 @@ import networkingServer.LobbyTable;
 import players.ServerBasicPlayer;
 
 // One per server.
-public class UDPServerReceiver extends Thread{
+public class UDPServer extends Thread{
 
 	private boolean debug = false;
 	private ClientTable clients;
@@ -17,7 +17,7 @@ public class UDPServerReceiver extends Thread{
 	private DatagramSocket serverSocket;
 	
 	// when we get a new connection, add ip to client table 
-	public UDPServerReceiver(ClientTable clientTable, LobbyTable lobby) {
+	public UDPServer(ClientTable clientTable, LobbyTable lobby) {
 		clients = clientTable;
 		this.lobby = lobby;
 	}
@@ -36,7 +36,6 @@ public class UDPServerReceiver extends Thread{
 			      String sentence = new String( receivePacket.getData());
 			      
 			      if(debug)System.out.println("RECEIVED: " + sentence);
-			      
 			      
 			      InetAddress IPAddress;
 			      int port;
@@ -60,12 +59,12 @@ public class UDPServerReceiver extends Thread{
 			    	  
 			      }
 			}
-			serverSocket.close();
 		} catch(Exception e)
 		{
-			if(debug) System.err.println(e);
+			if(debug) System.err.println(e.getStackTrace());
 		}
-		
+		// TODO - Let's do some closing stuff here.
+		serverSocket.close();
 	}
 
 	// Let's broadcast to all members of the same game - given a lobby id.
@@ -73,7 +72,9 @@ public class UDPServerReceiver extends Thread{
 		byte[] sendData = new byte[2048];
 		sendData = toBeSent.getBytes();
 		
+		// We get all players in the same game as the transmitting player.
 		ServerBasicPlayer[] players = lobby.getLobby(lobbyID).getPlayers();
+		// Let's send a message to them all.
 		for(ServerBasicPlayer player : players)
 		{
 			int id = player.getID();
@@ -82,6 +83,7 @@ public class UDPServerReceiver extends Thread{
 			String ipAddr = playerIP.split(":")[0];
 			String ipPort = playerIP.split(":")[1];
 			try{
+				// Let's send the message.
 				InetAddress sendAddress = InetAddress.getByName(ipAddr);
 				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, Integer.parseInt(ipPort));
 				serverSocket.send(sendPacket);

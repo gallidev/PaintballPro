@@ -3,7 +3,7 @@ package networkingServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import gameNetworking.UDPServerReceiver;
+import gameNetworking.UDPServer;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;
@@ -25,7 +25,7 @@ public class ServerMsgReceiver extends Thread {
 	private LobbyTable gameLobby;
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
-	private UDPServerReceiver udpReceiver;
+	private UDPServer udpReceiver;
 	
 	private boolean debug = true;
 
@@ -42,7 +42,7 @@ public class ServerMsgReceiver extends Thread {
 	 *            Sender class for sending messages to the client.
 	 */
 	public ServerMsgReceiver(int clientID, BufferedReader reader, ClientTable table, ServerMsgSender sender,
-			LobbyTable passedGameLobby, UDPServerReceiver udpReceiver) {
+			LobbyTable passedGameLobby, UDPServer udpReceiver) {
 		myClientsID = clientID;
 		myClient = reader;
 		clientTable = table;

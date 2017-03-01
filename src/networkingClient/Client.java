@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import gameNetworking.UDPClientReceiver;
-import gameNetworking.UDPClientSender;
 import gui.GUIManager;
 import networkingShared.MessageQueue;
 
@@ -81,12 +80,11 @@ public class Client {
 			
 			
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClientReceiver udpReceiver = new UDPClientReceiver();
-			UDPClientSender udpSender = new UDPClientSender();
-			
+			UDPClientReceiver udpReceiver = new UDPClientReceiver(clientID,hostname);
+			udpReceiver.start();
 
 			// We can now set up the message received for the client.
-			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m, udpSender);
+			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m, udpReceiver);
 			receiver.start();
 
 

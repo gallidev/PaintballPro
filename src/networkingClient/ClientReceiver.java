@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import gameNetworking.UDPClientReceiver;
-import gameNetworking.UDPClientSender;
 import gui.GUIManager;
 import javafx.application.Platform;
 import networkingShared.Message;
@@ -34,7 +33,7 @@ public class ClientReceiver extends Thread {
 	private PhysicsClientPlayer cPlayer;
 	private ArrayList<ClientLocalPlayer> myTeam;
 	private ArrayList<ClientLocalPlayer> enemies;
-	private UDPClientSender udpSender;
+	private UDPClientReceiver udpReceiver;
 	
 	private boolean debug = false;
 
@@ -48,7 +47,7 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientSender udpSender) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientReceiver udpReceiver) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
@@ -56,7 +55,7 @@ public class ClientReceiver extends Thread {
 		myMsgQueue = msgQueue;
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
-		this.udpSender = udpSender;
+		this.udpReceiver = udpReceiver;
 	}
 
 	/**
@@ -208,10 +207,10 @@ public class ClientReceiver extends Thread {
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpSender, collisionsHandler);
+					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpReceiver, collisionsHandler);
 		else
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpSender,collisionsHandler);
+					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpReceiver,collisionsHandler);
 
 		ArrayList<GeneralPlayer> allplayers = new ArrayList<GeneralPlayer>();
 		// extract the other members

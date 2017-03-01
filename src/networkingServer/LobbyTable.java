@@ -2,7 +2,7 @@ package networkingServer;
 
 import java.util.concurrent.*;
 
-import gameNetworking.UDPServerReceiver;
+import gameNetworking.UDPServer;
 import players.ServerBasicPlayer;
 
 /**
@@ -47,7 +47,7 @@ public class LobbyTable {
 	}
 
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerMsgReceiver receiver, UDPServerReceiver udpReceiver) {
+	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerMsgReceiver receiver, UDPServer udpReceiver) {
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
 		for (Lobby lobby : lobbyList.values()) {
