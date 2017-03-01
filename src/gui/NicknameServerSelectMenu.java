@@ -116,14 +116,27 @@ public class NicknameServerSelectMenu {
                 m.notifySettingsObservers();
 
                 if (automatic.isSelected()) {
-                    m.setIpAddress(ClientListener.findServer().split(":")[0]);
+                    String ipPort = ClientListener.findServer().split(":")[0];
+
+                    if (ipPort.equals("")) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("No LAN server");
+                        alert.setContentText("Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+                        alert.showAndWait();
+                    } else {
+                        m.setIpAddress(ipPort);
+                        // Transition back to the main menu
+                        m.establishConnection();
+                        m.transitionTo("Multiplayer", null);
+                    }
                 } else {
                     m.setIpAddress(ipText.getText());
+                    // Transition back to the main menu
+                    m.establishConnection();
+                    m.transitionTo("Multiplayer", null);
                 }
 
-                // Transition back to the main menu
-                m.establishConnection();
-                m.transitionTo("Multiplayer", null);
+
             }
         }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
             @Override
