@@ -14,6 +14,7 @@ public class UDPServerReceiver extends Thread{
 	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobby;
+	private DatagramSocket serverSocket;
 	
 	// when we get a new connection, add ip to client table 
 	public UDPServerReceiver(ClientTable clientTable, LobbyTable lobby) {
@@ -24,7 +25,7 @@ public class UDPServerReceiver extends Thread{
 	public void run()
 	{
 		try {
-			DatagramSocket serverSocket = new DatagramSocket(9876);
+			serverSocket = new DatagramSocket(9876);
 			byte[] receiveData = new byte[2048];
 			//byte[] sendData = new byte[2048];
 			while(true)
@@ -52,23 +53,17 @@ public class UDPServerReceiver extends Thread{
 			      }
 			      else
 			      {
-			    	  // We assume that all players in a game are connected and their ip addresses inserted.
+			    	  // We assume that all players in a game are now connected and their ip addresses inserted into clientTable.
+			    	  // if they are not, we will not be able to send messaged to them using sendToAll.
 			    	  
 			    	  // Do any extra processing here for in-game commands.
 			    	  
-			    	  /*
-				    	  String capitalizedSentence = sentence.toUpperCase();
-				    	  sendData = capitalizedSentence.getBytes();
-				    	  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-				    	  serverSocket.send(sendPacket);
-				    	  //.split(":")[0];
-			    	   */
 			      }
 			}
 			serverSocket.close();
 		} catch(Exception e)
 		{
-			//
+			if(debug) System.err.println(e);
 		}
 		
 	}
@@ -76,6 +71,7 @@ public class UDPServerReceiver extends Thread{
 	// Let's broadcast to all members of the same game - given a lobby id.
 	public void sendToAll(String toBeSent, int lobbyID) {
 		byte[] sendData = new byte[2048];
+		sendData = toBeSent.getBytes();
 		
 		ServerBasicPlayer[] players = lobby.getLobby(lobbyID).getPlayers();
 		for(ServerBasicPlayer player : players)
@@ -85,15 +81,24 @@ public class UDPServerReceiver extends Thread{
 			// Parse IP to get first part and port number.
 			String ipAddr = playerIP.split(":")[0];
 			String ipPort = playerIP.split(":")[1];
-			
+			try{
+				InetAddress sendAddress = InetAddress.getByName(ipAddr);
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, Integer.parseInt(ipPort));
+				serverSocket.send(sendPacket);
+			}
+			catch(Exception e)
+			{
+				if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
+			}
 		}
 		
 	}
 	// Let's broadcast to all members of the same game - given ip of member.
 	public void sendToAll(String toBeSent, String ip)
 	{
+		// we get the lobby id.
 		int lobbyID = clients.getPlayer(clients.getID(ip)).getAllocatedLobby();
+		// we can now send to all clients in the same lobby as the origin client.
 		sendToAll(toBeSent,lobbyID);
 	}
-
 }
