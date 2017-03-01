@@ -135,7 +135,7 @@ public class NicknameServerSelectMenu {
 						m.notifySettingsObservers();
 
 						if (automatic.isSelected()) {
-							String ipPort = ClientListener.findServer().split(":")[0];
+							String ipPort = DiscoveryClientListener.findServer().split(":")[0];
 
 							if (ipPort.equals("")) {
 								Alert alert = new Alert(AlertType.ERROR);
