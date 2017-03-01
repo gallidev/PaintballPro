@@ -20,13 +20,15 @@ import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
  */
-public abstract class GeneralPlayer extends ImageView implements GameObject{
+public abstract class ServerMinimumPlayer implements GameObject{
 
+	protected double x, y;
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected final double movementSpeed = 2;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
-	protected boolean up, down, left, right, shoot, eliminated, invincible;
+	protected double width, height;
+	protected boolean up, down, left, right, shoot, eliminated, invincible, visible;
 	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle, lastAngle;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
@@ -36,12 +38,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected long shootTimer, spawnTimer;
 	protected double lastX, lastY;
 	protected TeamEnum team;
-	protected ArrayList<GeneralPlayer> enemies;
-	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
-	protected ArrayList<Rectangle> propsWalls;
-	protected boolean scoreChanged = false;
-	protected AudioManager audio;
 	protected CollisionsHandler collisionsHandler;
 
 	/**
@@ -54,47 +51,24 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
-		super(image);
-		setLayoutX(x);
-		setLayoutY(y);
+	public ServerMinimumPlayer(double x, double y, int id, double width, double height,  Map map, TeamEnum team, CollisionsHandler collisionsHandler){
+		this.x = x;
+		this.y = y;
 		this.lastX = x;
 		this.lastY = y;
 		this.lastAngle = angle;
 		this.team = team;
 		this.id = id;
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
-	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		this.map = map;
-		propsWalls = map.getRecProps();
-	    propsWalls.addAll(map.getRecWalls());
 		eliminated = false;
 		invincible = false;
-		this.audio = audio;
+		visible = true;
 		this.collisionsHandler = collisionsHandler;
 		updatePlayerBounds();
 
-	}
-
-	/**
-	 * Constructor needed for the game logic.
-	 * @param x The x coordinate of the player.
-	 * @param y the y coordinate of the player.
-	 * @param nickname The player's nickname.
-	 *
-	 * @ atp575
-	 */
-	public GeneralPlayer(double x, double y, int id, Image image) {
-		super(image);
-		setLayoutX(x);
-		setLayoutY(y);
-		this.id = id;
-	}
-
-	public GeneralPlayer(Image image) {
-		super(image);
 	}
 
 	protected abstract void updatePosition();
@@ -130,13 +104,13 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
 			if(team == TeamEnum.BLUE) i = 4;
-			setLayoutX(map.getSpawns()[i].x * 64);
-			setLayoutY(map.getSpawns()[i].y * 64);
+			x = map.getSpawns()[i].x * 64 ;
+			y = map.getSpawns()[i].y * 64 ;
 			eliminated = false;
 			invincible = true;
 			spawnTimer = System.currentTimeMillis();
 			updatePosition();
-			setVisible(true);
+			visible = true;
 		}
 	}
 
@@ -144,23 +118,23 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		//Invincible animation
 		if(spawnTimer + spawnDelay > System.currentTimeMillis()){
 			if(System.currentTimeMillis() >= spawnTimer + spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay/8)
-				setVisible(false);
+				visible = false;
 			if(System.currentTimeMillis() >= spawnTimer + 2* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 3* spawnDelay/8)
-				setVisible(true);
+				visible = true;
 			if(System.currentTimeMillis() >= spawnTimer + 3* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 4* spawnDelay/8)
-				setVisible(false);
+				visible = false;
 			if(System.currentTimeMillis() >= spawnTimer + 4* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 5* spawnDelay/8)
-				setVisible(true);
+				visible = true;
 			if(System.currentTimeMillis() >= spawnTimer + 5* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 6* spawnDelay/8)
-				setVisible(false);
+				visible = false;
 			if(System.currentTimeMillis() >= spawnTimer + 6* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 7* spawnDelay/8)
-				setVisible(true);
+				visible = true;
 			if(System.currentTimeMillis() >= spawnTimer + 7* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 8* spawnDelay/8)
-				setVisible(false);
+				visible = false;
 
 		} else {
 			invincible = false;
-			setVisible(true);
+			visible = true;
 
 		}
 	}
@@ -168,40 +142,40 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	//Consists of 5 points around player
 	public void updatePlayerBounds(){
 		//Point1
-		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
-		double y1 = (5 * getImage().getHeight()/255) - playerHeadY;
+		double x1 = (83 * width/120) - playerHeadX;
+		double y1 = (5 * height/255) - playerHeadY;
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx1 = getLayoutX() + x2 + playerHeadX;
-		double boundy1 = getLayoutY() + y2 + playerHeadY;
+		double boundx1 = x + x2 + playerHeadX;
+		double boundy1 = y + y2 + playerHeadY;
 		//Point2
-		x1 = (getImage().getWidth()) - playerHeadX;
-		y1 = (233 * getImage().getHeight()/255) - playerHeadY;
+		x1 = (width) - playerHeadX;
+		y1 = (233 * height/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx2 = getLayoutX() + x2 + playerHeadX;
-		double boundy2 = getLayoutY() + y2 + playerHeadY;
+		double boundx2 = x + x2 + playerHeadX;
+		double boundy2 = y + y2 + playerHeadY;
 		//Point3
-		x1 = (57 * getImage().getWidth()/120) - playerHeadX;
-		y1 = (getImage().getHeight()) - playerHeadY;
+		x1 = (57 * width/120) - playerHeadX;
+		y1 = (height) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx3 = getLayoutX() + x2 + playerHeadX;
-		double boundy3 = getLayoutY() + y2 + playerHeadY;
+		double boundx3 = x + x2 + playerHeadX;
+		double boundy3 = x + y2 + playerHeadY;
 		//Point4
-		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
-		y1 = (183 * getImage().getHeight()/255) - playerHeadY;
+		x1 = (1 * width/120) - playerHeadX;
+		y1 = (183 * height/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx4 = getLayoutX() + x2 + playerHeadX;
-		double boundy4 = getLayoutY() + y2 + playerHeadY;
+		double boundx4 = x + x2 + playerHeadX;
+		double boundy4 = y + y2 + playerHeadY;
 		//Point5
-		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
-		y1 = (128 * getImage().getHeight()/255) - playerHeadY;
+		x1 = (1 * width/120) - playerHeadX;
+		y1 = (128 * height/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx5 = getLayoutX() + x2 + playerHeadX;
-		double boundy5 = getLayoutY() + y2 + playerHeadY;
+		double boundx5 = x + x2 + playerHeadX;
+		double boundy5 = y + y2 + playerHeadY;
 		bounds.getPoints().clear();
 		bounds.getPoints().addAll(boundx1, boundy1,
 				boundx2, boundy2,
@@ -212,7 +186,6 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	}
 
 
-
 	/**
 	 * Creates a bullet at the player's location that travels in the direction the player is facing.
 	 * The bullet is added to the arraylist "firedBullets"
@@ -220,14 +193,14 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 */
 	public void shoot(){
 
-		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
-		double y1 = (12 * getImage().getHeight()/255) - playerHeadY;
+		double x1 = (83 * width/120) - playerHeadX;
+		double y1 = (12 * height/255) - playerHeadY;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 
-		double bulletX = getLayoutX() + x2 + playerHeadX;
-		double bulletY = getLayoutY() + y2 + playerHeadY;
+		double bulletX = x + x2 + playerHeadX;
+		double bulletY = y + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
 
@@ -235,21 +208,12 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	}
 
 	public void beenShot() {
-		audio.playSFX(audio.sfx.splat, (float) 1.0);
 		spawnTimer = System.currentTimeMillis();
 		eliminated = true;
-		setVisible(false);
+		visible = false;
 		updateScore();
 	}
 
-
-	  public void addTeamPlayer(GeneralPlayer p){
-		  teamPlayers.add(p);
-	  }
-
-	  public void addEnemy(GeneralPlayer p){
-		  enemies.add(p);
-	  }
 
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
@@ -290,24 +254,8 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return team;
 	}
 
-	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
-		this.teamPlayers = teamPlayers;
-	}
-
-	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
-		this.enemies = enemies;
-	}
-
-	public ArrayList<GeneralPlayer> getEnemies(){
-		return this.enemies;
-	}
-
 	public int getPlayerId(){
 		return id;
-	}
-
-	public ArrayList<GeneralPlayer> getTeamPlayers(){
-		return teamPlayers;
 	}
 
 	public void setMX(double newX) {

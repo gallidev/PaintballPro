@@ -91,7 +91,15 @@ public class GUIManager {
                     break;
                 case "Lobby":
                     timerStarted = false;
-                    c.getSender().sendMessage("Play:Mode:1");
+                    if (o instanceof String) {
+                        if (o.equals("CTF")) {
+                            c.getSender().sendMessage("Play:Mode:2");
+                        } else {
+                            c.getSender().sendMessage("Play:Mode:1");
+                        }
+                    } else {
+                        c.getSender().sendMessage("Play:Mode:1");
+                    }
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
                 case "EliminationSingle":
@@ -101,6 +109,14 @@ public class GUIManager {
                 case "Elimination":
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
+                    break;
+                case "CTFSingle":
+                    audio.startMusic(MusicResources.track1);
+                    s.setScene(new Renderer("ctf", audio));
+                    break;
+                case "CTF":
+                    audio.startMusic(MusicResources.track1);
+                    s.setScene(new Renderer("ctf", c.getReceiver()));
                     break;
                 case "EndGame":
                     s.setScene(EndGameMenu.getScene(this));

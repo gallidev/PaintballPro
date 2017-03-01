@@ -4,6 +4,7 @@ import ai.*;
 import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
+import physics.CollisionsHandler;
 import rendering.Map;
 
 import static gui.GUIManager.bluePlayerImage;
@@ -11,24 +12,22 @@ import static gui.GUIManager.redPlayerImage;
 
 public class AIPlayer extends GeneralPlayer{
 
-	private Behaviour rb;
+	private BehaviourManager bManager;
 	private AudioManager audio;
 	private double movementAngle;
-	private Map map;
 	private OfflineTeam oppTeam;
 	private OfflineTeam myTeam;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio){
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler){
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
 		right = true;
-		rb = new RandomBehaviour(this);
-		this.audio = audio;
 		this.map = map;
-		
+		bManager = new BehaviourManager(this);
+		this.audio = audio;
 	}
 
 	/**
@@ -37,8 +36,8 @@ public class AIPlayer extends GeneralPlayer{
 	 */
 	@Override
 	public void tick() {
-		rb.tick();
-		handlePropWallCollision();
+		bManager.tick();
+		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
 			updatePosition();
 			updateAngle();
@@ -49,7 +48,7 @@ public class AIPlayer extends GeneralPlayer{
 		updatePlayerBounds();
 		updateBullets();
 		if(!invincible){
-			handleBulletCollision();
+			collisionsHandler.handleBulletCollision(this);
 		} else {
 			checkInvincibility();
 		}
@@ -58,7 +57,7 @@ public class AIPlayer extends GeneralPlayer{
 
 	@Override
 	protected void updatePosition(){
-		if(collUp || collLeft || collRight || collDown) rb.change();
+		if(collUp || collLeft || collRight || collDown) bManager.change();
 
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
@@ -66,7 +65,7 @@ public class AIPlayer extends GeneralPlayer{
 		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) setLayoutY(getLayoutY() - yToReduce);
 		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) setLayoutX(getLayoutX() + xToAdd);
 	}
-	
+
 
 	/**
 	 * Updates the opponent team score, when the current player has been eliminated.
@@ -74,7 +73,7 @@ public class AIPlayer extends GeneralPlayer{
 	 */
 	public void updateScore(){
 		oppTeam.incrementScore();
-		
+
 		if (myTeam.getColour() == TeamEnum.RED){
 			System.out.println( "Red team score: " + myTeam.getScore());
 			System.out.println( "Blue team score: " + oppTeam.getScore());
@@ -83,10 +82,10 @@ public class AIPlayer extends GeneralPlayer{
 			System.out.println( "Blue team score: " + myTeam.getScore());
 			System.out.println( "Red team score: " + oppTeam.getScore());
 		}
-		
-		
+
+
 	}
-	
+
 	@Override
 	protected void updateAngle(){
 		rotation.setAngle(Math.toDegrees(angle));
@@ -99,11 +98,11 @@ public class AIPlayer extends GeneralPlayer{
 	public Map getMap(){
 		return this.map;
 	}
-	
+
 	public void setOppTeam(OfflineTeam t){
 		oppTeam = t;
 	}
-	
+
 	public void setMyTeam(OfflineTeam t){
 		myTeam = t;
 	}

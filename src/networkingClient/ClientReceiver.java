@@ -12,7 +12,9 @@ import javafx.application.Platform;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
 import physics.Bullet;
+import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
+import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
 import rendering.Map;
 
@@ -38,7 +40,7 @@ public class ClientReceiver extends Thread {
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
-	 * 
+	 *
 	 * @param Cid
 	 *            The ID of the client.
 	 * @param reader
@@ -141,7 +143,7 @@ public class ClientReceiver extends Thread {
 	/**
 	 * Action starting when a player fires a bullet. It renders the bullet and
 	 * also detects when a player has been eliminated.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol text containing information about the coordinates
 	 *            and angle of the bullet, as well as the player id which shot
@@ -156,7 +158,7 @@ public class ClientReceiver extends Thread {
 		int id = Integer.parseInt(data[2]);
 		String t = data[3];
 
-		ClientLocalPlayer p = getPlayerWithID(id);
+		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
 
 		if (p != null) // the player is not us
 		{
@@ -175,7 +177,7 @@ public class ClientReceiver extends Thread {
 		if(debug)
 		{
 			 System.out.print("my Team players: " );
-			 for(ClientLocalPlayer pq : myTeam)
+			 for(GeneralPlayer pq : myTeam)
 			 System.out.print(pq.getPlayerId() + " ");
 			 System.out.println();
 			 System.out.print("my enemy players: " );
@@ -186,7 +188,7 @@ public class ClientReceiver extends Thread {
 	 * Contains everything that needs to be done when a player receives the
 	 * start signal: take the client's id and team, then form the team and the
 	 * enemy team. This information is then used by the renderer.
-	 * 
+	 *
 	 * @param text
 	 *            The text received from the server.
 	 *
@@ -200,16 +202,18 @@ public class ClientReceiver extends Thread {
 		String clientTeam = data[2];
 		Map map = Map.loadRaw("elimination");
 
-		
+		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpSender);
+					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpSender, collisionsHandler);
 		else
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpSender);
+					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpSender,collisionsHandler);
 
+		ArrayList<GeneralPlayer> allplayers = new ArrayList<GeneralPlayer>();
 		// extract the other members
 		for (int i = 3; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);
@@ -229,7 +233,13 @@ public class ClientReceiver extends Thread {
 							TeamEnum.RED));
 			}
 		}
+
+		allplayers.addAll(enemies);
+		allplayers.addAll(myTeam);
+		collisionsHandler.setPlayers(allplayers);
 		cPlayer.setClientEnemies(enemies);
+
+
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
@@ -246,7 +256,7 @@ public class ClientReceiver extends Thread {
 	 * Gets a move signal from the server about a specific player. The method
 	 * finds that player and updates the player's position on the map
 	 * accordingly.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the new x and y coordinates,
 	 *            as well as the angle of the player.
@@ -264,14 +274,14 @@ public class ClientReceiver extends Thread {
 
 		if(debug)
 		{
-			for(ClientLocalPlayer p : myTeam)
+			for(GeneralPlayer p : myTeam)
 				System.out.println(p.getPlayerId());
 		}
 
 
 		if (id != clientID) {
 			// find the player that need to be updated
-			ClientLocalPlayer p = getPlayerWithID(id);
+			ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
 			p.tick(x, y, angle);
 		}
 	}
@@ -279,21 +289,21 @@ public class ClientReceiver extends Thread {
 	/* Getters and setters */
 	/**
 	 * Retrieves a player with a specific id from the current game.
-	 * 
+	 *
 	 * @param id
 	 *            The player's id.
 	 * @return The player with the given id.
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	private ClientLocalPlayer getPlayerWithID(int id) {
+	private GeneralPlayer getPlayerWithID(int id) {
 		// Check if the Player is in my team
-		for (ClientLocalPlayer p : myTeam)
+		for (GeneralPlayer p : myTeam)
 			if (p.getPlayerId() == id)
 				return p;
 
 		// otherwise, player is in the enemy team
-		for (ClientLocalPlayer p : enemies)
+		for (GeneralPlayer p : enemies)
 			if (p.getPlayerId() == id)
 				return p;
 
@@ -302,7 +312,7 @@ public class ClientReceiver extends Thread {
 
 	/**
 	 * Returns the players that are in this Player's team.
-	 * 
+	 *
 	 * @return All the other players in the user's team, except himself.
 	 *
 	 * @author Alexandra Paduraru
@@ -313,7 +323,7 @@ public class ClientReceiver extends Thread {
 
 	/**
 	 * Return all the players that are not in this Player's team.
-	 * 
+	 *
 	 * @return All opponent players.
 	 *
 	 * @author Alexandra Paduraru

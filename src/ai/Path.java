@@ -70,4 +70,10 @@ public class Path {
     public boolean contains(Node n) {
         return Nodes.contains(n);
     }
+
+    public void clearPath(){
+        Nodes.clear();
+    }
+
+    public void removeFirst() { Nodes.remove(0);}
 }

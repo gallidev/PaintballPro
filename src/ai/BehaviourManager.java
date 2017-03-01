@@ -4,11 +4,12 @@ import players.AIPlayer;
 
 public class BehaviourManager {
     private AIPlayer ai;
-    private Behaviour aggressive = new AggressiveBehaviour(ai);
-    private Behaviour defensive = new DefensiveBehaviour(ai);
-    private Behaviour capture = new CaptureBehaviour(ai);
-    private Behaviour retreat = new RetreatBehaviour(ai);
-    private Behaviour random = new RandomBehaviour(ai);
+    private Pathfinding pathFinder;
+    private Behaviour aggressive;
+    private Behaviour defensive;
+    private Behaviour capture;
+    private Behaviour retreat;
+    private Behaviour random;
 
     //Behaviours
     //    Aggressive - Move a lot closer to enemies
@@ -19,13 +20,22 @@ public class BehaviourManager {
 
     public BehaviourManager(AIPlayer ai){
         this.ai = ai;
+        pathFinder = new Pathfinding(ai.getMap());
         aggressive = new AggressiveBehaviour(ai);
         defensive = new DefensiveBehaviour(ai);
         capture = new CaptureBehaviour(ai);
         retreat = new RetreatBehaviour(ai);
         random = new RandomBehaviour(ai);
-
+        //pathFinder.getPath(2, 7, 25, 7);
+        pathFinder.getPath(2, 7, 25, 7);
     }
 
+    public void tick(){
+        random.tick();
+    }
+
+    public void change(){
+        random.change();
+    }
     //TODO - Implement behaviours
 }

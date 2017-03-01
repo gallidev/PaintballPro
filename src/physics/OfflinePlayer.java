@@ -32,9 +32,9 @@ public class OfflinePlayer extends GeneralPlayer
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene         The scene in which the player will be displayed
 	 */
-	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team)
+	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, CollisionsHandler collisionsHandler)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio);
+		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
@@ -43,34 +43,34 @@ public class OfflinePlayer extends GeneralPlayer
 		this.team = team;
 		teamPlayers = new ArrayList<>();
 		enemies = new ArrayList<>();
-		
+
 		//populating the players team and creating a corresponding OfflineTeam for the members
 		ArrayList<AIPlayer> myTeamMembers = new ArrayList<AIPlayer>();
-		
+
 		for(int i = 1; i < 4; i++){
-			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, audio);
+			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, audio, collisionsHandler);
 			teamPlayers.add(p);
 			myTeamMembers.add(p);
 		}
-		
+
 		myTeam = new OfflineTeam(myTeamMembers, team);
-		
+
 		//populating the opponent team and creating a corresponding OfflineTeam for the members
 		ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
-		
+
 		for (int i = 0; i < 4; i++){
-				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio);
+				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, collisionsHandler);
 				oppTeamMembers.add(p);
 				enemies.add(p);
 		}
-		
+
 		oppTeam = new OfflineTeam(oppTeamMembers, oppTeamMembers.get(0).getTeam());
-		
+
 		for(AIPlayer p : myTeam.getMembers()){
 			p.setOppTeam(oppTeam);
 			p.setMyTeam(myTeam);
 		}
-		
+
 		for(AIPlayer p : oppTeam.getMembers()){
 			p.setOppTeam(myTeam);
 			p.setMyTeam(oppTeam);
@@ -95,7 +95,8 @@ public class OfflinePlayer extends GeneralPlayer
 	{
 		// handle the collisions with walls and props before moving the position
 		// of the player so to understand if he can move or not in a specific direction
-		handlePropWallCollision();
+		collisionsHandler.handlePropWallCollision(this);
+		//System.out.println("Collisionssss up : " + collUp);
 		if(!eliminated)
 		{
 			updatePosition();
@@ -111,7 +112,7 @@ public class OfflinePlayer extends GeneralPlayer
 
 		if(!invincible)
 		{
-			handleBulletCollision();
+			collisionsHandler.handleBulletCollision(this);
 		}
 		else
 		{
@@ -125,9 +126,9 @@ public class OfflinePlayer extends GeneralPlayer
 	 */
 	@Override
 	public void updateScore() {
-		
+
 		oppTeam.incrementScore();
-		
+
 		if (myTeam.getColour() == TeamEnum.RED){
 			System.out.println( "Red team score: " + myTeam.getScore());
 			System.out.println( "Blue team score: " + oppTeam.getScore());
@@ -136,7 +137,7 @@ public class OfflinePlayer extends GeneralPlayer
 			System.out.println( "Blue team score: " + myTeam.getScore());
 			System.out.println( "Red team score: " + oppTeam.getScore());
 		}
-		
+
 	}
 
 	@Override
@@ -192,7 +193,7 @@ public class OfflinePlayer extends GeneralPlayer
 
 		}
 	}
-	
+
 
 
 	//Calculates the angle the player is facing with respect to the mouse
@@ -226,7 +227,7 @@ public class OfflinePlayer extends GeneralPlayer
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
 	}
-	
+
 
 	public void setMX(double mx)
 	{
