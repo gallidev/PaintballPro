@@ -1,7 +1,6 @@
 package players;
 
 import enums.TeamEnum;
-import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import physics.Bullet;
 
@@ -9,8 +8,6 @@ import java.util.ArrayList;
 
 import static gui.GUIManager.bluePlayerImage;
 import static gui.GUIManager.redPlayerImage;
-import static players.GeneralPlayer.playerHeadX;
-import static players.GeneralPlayer.playerHeadY;
 
 public class ClientLocalPlayer extends GeneralPlayer
 {

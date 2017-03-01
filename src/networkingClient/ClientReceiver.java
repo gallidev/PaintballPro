@@ -12,6 +12,7 @@ import networkingShared.MessageQueue;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
+import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
 import rendering.Map;
 
@@ -29,8 +30,8 @@ public class ClientReceiver extends Thread {
 	private Message msg;
 	private GUIManager m;
 	private PhysicsClientPlayer cPlayer;
-	private ArrayList<ClientLocalPlayer> myTeam;
-	private ArrayList<ClientLocalPlayer> enemies;
+	private ArrayList<GeneralPlayer> myTeam;
+	private ArrayList<GeneralPlayer> enemies;
 
 	private boolean debug = false;
 
@@ -153,7 +154,7 @@ public class ClientReceiver extends Thread {
 		int id = Integer.parseInt(data[2]);
 		String t = data[3];
 
-		ClientLocalPlayer p = getPlayerWithID(id);
+		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
 
 		if (p != null) // the player is not us
 		{
@@ -172,7 +173,7 @@ public class ClientReceiver extends Thread {
 		if(debug)
 		{
 			 System.out.print("my Team players: " );
-			 for(ClientLocalPlayer pq : myTeam)
+			 for(GeneralPlayer pq : myTeam)
 			 System.out.print(pq.getPlayerId() + " ");
 			 System.out.println();
 			 System.out.print("my enemy players: " );
@@ -209,6 +210,7 @@ public class ClientReceiver extends Thread {
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
 					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, this, collisionsHandler);
 
+		ArrayList<GeneralPlayer> allplayers = new ArrayList<GeneralPlayer>();
 		// extract the other members
 		for (int i = 3; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);
@@ -228,7 +230,13 @@ public class ClientReceiver extends Thread {
 							TeamEnum.RED));
 			}
 		}
+
+		allplayers.addAll(enemies);
+		allplayers.addAll(myTeam);
+		collisionsHandler.setPlayers(allplayers);
 		cPlayer.setClientEnemies(enemies);
+
+
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
@@ -263,14 +271,14 @@ public class ClientReceiver extends Thread {
 
 		if(debug)
 		{
-			for(ClientLocalPlayer p : myTeam)
+			for(GeneralPlayer p : myTeam)
 				System.out.println(p.getPlayerId());
 		}
 
 
 		if (id != clientID) {
 			// find the player that need to be updated
-			ClientLocalPlayer p = getPlayerWithID(id);
+			ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
 			p.tick(x, y, angle);
 		}
 	}
@@ -285,14 +293,14 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	private ClientLocalPlayer getPlayerWithID(int id) {
+	private GeneralPlayer getPlayerWithID(int id) {
 		// Check if the Player is in my team
-		for (ClientLocalPlayer p : myTeam)
+		for (GeneralPlayer p : myTeam)
 			if (p.getPlayerId() == id)
 				return p;
 
 		// otherwise, player is in the enemy team
-		for (ClientLocalPlayer p : enemies)
+		for (GeneralPlayer p : enemies)
 			if (p.getPlayerId() == id)
 				return p;
 
@@ -306,7 +314,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<ClientLocalPlayer> getMyTeam() {
+	public ArrayList<GeneralPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -317,7 +325,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<ClientLocalPlayer> getEnemies() {
+	public ArrayList<GeneralPlayer> getEnemies() {
 		return enemies;
 	}
 

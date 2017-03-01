@@ -101,10 +101,10 @@ public class Renderer extends Scene
 					if(pellet.isActive())
 						pellets.add(pellet);
 				}
-				for(ClientLocalPlayer player : receiver.getMyTeam())
-					pellets.addAll(player.getFiredBullets());
-				for(ClientLocalPlayer player : receiver.getEnemies())
-					pellets.addAll(player.getFiredBullets());
+				for(GeneralPlayer player : receiver.getMyTeam())
+					pellets.addAll(player.getBullets());
+				for(GeneralPlayer player : receiver.getEnemies())
+					pellets.addAll(player.getBullets());
 				view.getChildren().addAll(pellets);
 
 				player.tick();

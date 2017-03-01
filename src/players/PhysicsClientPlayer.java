@@ -26,7 +26,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	private boolean controlScheme;
 	private ClientSender sender;
 	private ClientReceiver receiver;
-	private ArrayList<ClientLocalPlayer> clientEnemies;
+	private ArrayList<GeneralPlayer> clientEnemies;
 
 	//flag for keeping track of scores
 	boolean scoreChanged = true;
@@ -100,9 +100,9 @@ public class PhysicsClientPlayer extends GeneralPlayer
 
 	protected void handleBulletCollision()
 	{
-		for(ClientLocalPlayer enemy : clientEnemies)
+		for(GeneralPlayer enemy : clientEnemies)
 		{
-			for(Bullet bullet : enemy.getFiredBullets())
+			for(Bullet bullet : enemy.getBullets())
 			{
 				if(bullet.isActive() && bounds.intersects(bullet.getBoundsInParent()) && !eliminated)
 				{
@@ -259,13 +259,13 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		this.my = my;
 	}
 
-	public ArrayList<ClientLocalPlayer> getClientEnemies()
+	public ArrayList<GeneralPlayer> getClientEnemies()
 	{
 		return clientEnemies;
 	}
 
-	public void setClientEnemies(ArrayList<ClientLocalPlayer> clientEnemies)
+	public void setClientEnemies(ArrayList<GeneralPlayer> enemies)
 	{
-		this.clientEnemies = clientEnemies;
+		this.clientEnemies = enemies;
 	}
 }
