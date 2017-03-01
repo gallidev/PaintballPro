@@ -7,6 +7,7 @@ import audio.AudioManager;
 import audio.MusicResources;
 import audio.SFXResources;
 import enums.GameLocation;
+import enums.MenuEnum;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +31,7 @@ public class GUIManager {
 
     private Stage s;
     private Client c;
-    private String currentScene = "";
+    private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
@@ -71,27 +72,27 @@ public class GUIManager {
      * @param menu the string representation of the menu to switch to
      * @param o    an object to be passed to the target scene (usually null)
      */
-    public void transitionTo(String menu, Object o) {
+    public void transitionTo(MenuEnum menu, Object o) {
         audio.stopMusic();
         if (!menu.equals(currentScene)) {
             currentScene = menu;
             switch (menu) {
-                case "Main":
+                case MainMenu:
                     s.setScene(MainMenu.getScene(this));
                     break;
-                case "Nickname":
+                case Nickname:
                     s.setScene(NicknameServerSelectMenu.getScene(this));
                     break;
-                case "Settings":
+                case Settings:
                     s.setScene(SettingsMenu.getScene(this));
                     break;
-                case "Multiplayer":
+                case MultiplayerGameType:
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
-                case "Singleplayer":
+                case SingleplayerGameType:
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
-                case "Lobby":
+                case Lobby:
                     timerStarted = false;
                     if (o instanceof String) {
                         if (o.equals("CTF")) {
@@ -104,25 +105,25 @@ public class GUIManager {
                     }
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
-                case "EliminationSingle":
+                case EliminationSingle:
                     establishLocalSingleServerConnection();
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", audio));
                     break;
-                case "Elimination":
+                case EliminationMulti:
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
-                case "CTFSingle":
+                case CTFSingle:
                     establishLocalSingleServerConnection();
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("ctf", audio));
                     break;
-                case "CTF":
+                case CTFMulti:
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("ctf", c.getReceiver()));
                     break;
-                case "EndGame":
+                case EndGame:
                     s.setScene(EndGameMenu.getScene(this));
                     break;
                 default:
@@ -247,7 +248,7 @@ public class GUIManager {
         return timerStarted;
     }
 
-    public String getCurrentScene() {
+    public MenuEnum getCurrentScene() {
         return currentScene;
     }
 

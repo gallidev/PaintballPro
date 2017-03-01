@@ -1,5 +1,6 @@
 package helpers;
 
+import enums.MenuEnum;
 import gui.GUIManager;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -13,14 +14,14 @@ import java.util.ArrayList;
  */
 public class GUIManagerTestHelper extends GUIManager {
 
-    public String currentMenu = "Main";
+    public MenuEnum currentMenu = MenuEnum.MainMenu;
 
     public GUIManagerTestHelper() {
         super();
     }
 
     @Override
-    public void transitionTo(String menu, Object o) {
+    public void transitionTo(MenuEnum menu, Object o) {
         currentMenu = menu;
     }
 

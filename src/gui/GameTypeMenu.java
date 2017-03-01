@@ -1,6 +1,7 @@
 package gui;
 
 import enums.GameLocation;
+import enums.MenuEnum;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -22,9 +23,9 @@ public class GameTypeMenu {
 		MenuOption[] set = {new MenuOption("Elimination", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo("Lobby", "Elimination");
+					m.transitionTo(MenuEnum.Lobby, "Elimination");
 				} else {
-					m.transitionTo("EliminationSingle", null);
+					m.transitionTo(MenuEnum.EliminationSingle, null);
 				}
 
 		        System.out.println("ActionEvent: (Elimination) " + event);
@@ -32,16 +33,16 @@ public class GameTypeMenu {
 		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo("Lobby", "CTF");
+					m.transitionTo(MenuEnum.Lobby, "CTF");
 				} else {
-					m.transitionTo("CTFSingle", null);
+					m.transitionTo(MenuEnum.CTFSingle, null);
 				}
 
 				System.out.println("ActionEvent: (CTF) " + event);
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Main", null);
+		    	m.transitionTo(MenuEnum.MainMenu, null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		})};

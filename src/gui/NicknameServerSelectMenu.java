@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.JOptionPane;
 
+import enums.MenuEnum;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -127,13 +128,13 @@ public class NicknameServerSelectMenu {
                         m.setIpAddress(ipPort);
                         // Transition back to the main menu
                         m.establishConnection();
-                        m.transitionTo("Multiplayer", null);
+                        m.transitionTo(MenuEnum.MultiplayerGameType, null);
                     }
                 } else {
                     m.setIpAddress(ipText.getText());
                     // Transition back to the main menu
                     m.establishConnection();
-                    m.transitionTo("Multiplayer", null);
+                    m.transitionTo(MenuEnum.MultiplayerGameType, null);
                 }
 
 
@@ -141,7 +142,7 @@ public class NicknameServerSelectMenu {
         }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                m.transitionTo("Main", null);
+                m.transitionTo(MenuEnum.MainMenu, null);
             }
         })};
 

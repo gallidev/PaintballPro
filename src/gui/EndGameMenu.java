@@ -1,5 +1,6 @@
 package gui;
 
+import enums.MenuEnum;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,7 +26,7 @@ public class EndGameMenu {
 
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                m.transitionTo("Main", null);
+                m.transitionTo(MenuEnum.MainMenu, null);
                 System.out.println("ActionEvent: " + event);
             }
         })};
