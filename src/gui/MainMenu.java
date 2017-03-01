@@ -41,7 +41,7 @@ public class MainMenu {
 		    }     
 		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(MenuEnum.Nickname, null);
+		    	m.transitionTo(MenuEnum.NicknameServerConnection, null);
 //		    	m.transitionTo("Multiplayer", null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
