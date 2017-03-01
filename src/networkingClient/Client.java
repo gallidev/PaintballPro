@@ -78,13 +78,14 @@ public class Client {
 			// Sanity output.
 			System.out.println("Client has id:" + clientID);
 			
+			TeamTable teams = new TeamTable();
 			
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClientReceiver udpReceiver = new UDPClientReceiver(clientID,hostname);
+			UDPClientReceiver udpReceiver = new UDPClientReceiver(clientID,hostname,m,teams);
 			udpReceiver.start();
 
 			// We can now set up the message received for the client.
-			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m, udpReceiver);
+			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m, udpReceiver,teams);
 			receiver.start();
 
 

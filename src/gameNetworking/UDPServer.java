@@ -7,8 +7,6 @@ import java.net.InetAddress;
 import networkingServer.ClientTable;
 import networkingServer.Lobby;
 import networkingServer.LobbyTable;
-import networkingShared.Message;
-import networkingShared.MessageQueue;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
 

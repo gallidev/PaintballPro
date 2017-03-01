@@ -10,7 +10,6 @@ import gui.GUIManager;
 import javafx.application.Platform;
 import networkingShared.Message;
 import networkingShared.MessageQueue;
-import physics.Bullet;
 import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
@@ -34,6 +33,7 @@ public class ClientReceiver extends Thread {
 	private ArrayList<ClientLocalPlayer> myTeam;
 	private ArrayList<ClientLocalPlayer> enemies;
 	private UDPClientReceiver udpReceiver;
+	private TeamTable teams;
 	
 	private boolean debug = false;
 
@@ -47,7 +47,7 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientReceiver udpReceiver) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientReceiver udpReceiver, TeamTable teams) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
@@ -56,6 +56,7 @@ public class ClientReceiver extends Thread {
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
 		this.udpReceiver = udpReceiver;
+		this.teams = teams;
 	}
 
 	/**
@@ -71,15 +72,8 @@ public class ClientReceiver extends Thread {
 				if (text != null && text.compareTo("Exit:Client") != 0) {
 					if(debug) System.out.println("Received: " + text);
 
-					// In-game messages
-					if (text.contains("Move"))
-						moveAction(text);
-
-					else if (text.contains("Bullet"))
-						bulletAction(text);
-
 					// UI Requests
-					else if (text.contains("Ret:Red:")) {
+					if (text.contains("Ret:Red:")) {
 						if(debug) System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
 						m.updateRedLobby(red);
@@ -142,50 +136,6 @@ public class ClientReceiver extends Thread {
 
 	// Different actions to handle the server messages
 	/**
-	 * Action starting when a player fires a bullet. It renders the bullet and
-	 * also detects when a player has been eliminated.
-	 *
-	 * @param text
-	 *            The protocol text containing information about the coordinates
-	 *            and angle of the bullet, as well as the player id which shot
-	 *            it.
-	 *
-	 * @author Alexandra Paduraru
-	 */
-	private void bulletAction(String text) {
-		// Protocol message: SendToAll:Bullet:id:team:x:y:angle:
-		String[] data = text.split(":");
-
-		int id = Integer.parseInt(data[2]);
-		String t = data[3];
-
-		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
-
-		if (p != null) // the player is not us
-		{
-			ArrayList<Bullet> firedBullets = new ArrayList<>();
-			for (int i = 4; i < data.length - 2; i = i + 3) {
-
-				double x = Double.parseDouble(data[i]);
-				double y = Double.parseDouble(data[i + 1]);
-				double angle = Double.parseDouble(data[i + 2]);
-
-				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
-			}
-			p.tickBullets(firedBullets);
-		}
-
-		if(debug)
-		{
-			 System.out.print("my Team players: " );
-			 for(GeneralPlayer pq : myTeam)
-			 System.out.print(pq.getPlayerId() + " ");
-			 System.out.println();
-			 System.out.print("my enemy players: " );
-		}
-	}
-
-	/**
 	 * Contains everything that needs to be done when a player receives the
 	 * start signal: take the client's id and team, then form the team and the
 	 * enemy team. This information is then used by the renderer.
@@ -240,8 +190,9 @@ public class ClientReceiver extends Thread {
 		collisionsHandler.setPlayers(allplayers);
 		cPlayer.setClientEnemies(enemies);
 
-
-
+		teams.setEnemies(enemies);
+		teams.setMyTeam(myTeam);
+		
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
@@ -253,64 +204,7 @@ public class ClientReceiver extends Thread {
 		});
 	}
 
-	/**
-	 * Gets a move signal from the server about a specific player. The method
-	 * finds that player and updates the player's position on the map
-	 * accordingly.
-	 *
-	 * @param text
-	 *            The protocol message containing the new x and y coordinates,
-	 *            as well as the angle of the player.
-	 *
-	 * @author Alexandra Paduraru
-	 */
-	public void moveAction(String text) {
-		String[] msg = text.split(":");
-		// System.out.println("Text move action: " + Arrays.toString(msg));
-
-		int id = Integer.parseInt(msg[2]);
-		double x = Double.parseDouble(msg[3]);
-		double y = Double.parseDouble(msg[4]);
-		double angle = Double.parseDouble(msg[5]);
-
-		if(debug)
-		{
-			for(GeneralPlayer p : myTeam)
-				System.out.println(p.getPlayerId());
-		}
-
-
-		if (id != clientID) {
-			// find the player that need to be updated
-			ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
-			p.tick(x, y, angle);
-		}
-	}
-
 	/* Getters and setters */
-	/**
-	 * Retrieves a player with a specific id from the current game.
-	 *
-	 * @param id
-	 *            The player's id.
-	 * @return The player with the given id.
-	 *
-	 * @author Alexandra Paduraru
-	 */
-	private GeneralPlayer getPlayerWithID(int id) {
-		// Check if the Player is in my team
-		for (GeneralPlayer p : myTeam)
-			if (p.getPlayerId() == id)
-				return p;
-
-		// otherwise, player is in the enemy team
-		for (GeneralPlayer p : enemies)
-			if (p.getPlayerId() == id)
-				return p;
-
-		return null;
-	}
-
 	/**
 	 * Returns the players that are in this Player's team.
 	 *
