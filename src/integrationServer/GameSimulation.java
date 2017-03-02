@@ -5,23 +5,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
+import serverLogic.Team;
 import players.ServerMinimumPlayer;
 
 
 public class GameSimulation {
 
+	private Team redTeam;
+	private Team blueTeam;
+	
 	private long delayMilliseconds = 33;
 	private int frames = 0;
 
-//	public static void main(String[] args){
-//		new GameSimulation();
-//	}
+	public GameSimulation(Team redTeam, Team blueTeam){
+		
+		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		players.addAll(redTeam.getMembers());
+		players.addAll(blueTeam.getMembers());
 
-	public GameSimulation(ArrayList<ServerMinimumPlayer> players){
-
-
-
+		
+		this.redTeam = redTeam;
+		this.blueTeam = blueTeam;
+		
 		ScheduledExecutorService scheduler =
 			     Executors.newScheduledThreadPool(1);
 		Runnable game = new Runnable() {
@@ -50,9 +55,13 @@ public class GameSimulation {
 
 	}
 
+	//For testing purposes
+	//	public static void main(String[] args){
+	//	new GameSimulation();
+	//}
+
 	public void stopExecution(){
 
 	}
-
 
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import enums.TeamEnum;
 import logic.GameMode;
 import networkingServer.ServerMsgReceiver;
-import networkingShared.Message;
+import players.ServerMinimumPlayer;
 import players.ServerPlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.EscortMode;
@@ -95,17 +95,17 @@ public class ServerGame {
 		return game;
 	}
 	
-	public ArrayList<ServerPlayer> getRedTeamPlayers(){
+	public ArrayList<ServerMinimumPlayer> getRedTeamPlayers(){
 		return game.getFirstTeam().getMembers();
 	}
 	
-	public ArrayList<ServerPlayer> getBlueTeamPlayers(){
+	public ArrayList<ServerMinimumPlayer> getBlueTeamPlayers(){
 		return game.getSecondTeam().getMembers();
 	}
 	
-	public ArrayList<ServerPlayer> getAllPlayers(){
-		ArrayList<ServerPlayer> redTeam = getRedTeamPlayers();
-		ArrayList<ServerPlayer>  blueTeam = getBlueTeamPlayers();
+	public ArrayList<ServerMinimumPlayer> getAllPlayers(){
+		ArrayList<ServerMinimumPlayer> redTeam = getRedTeamPlayers();
+		ArrayList<ServerMinimumPlayer>  blueTeam = getBlueTeamPlayers();
 		
 		redTeam.addAll(blueTeam);
 		

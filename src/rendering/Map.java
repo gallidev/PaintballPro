@@ -41,7 +41,7 @@ public class Map
 	 * @param url File location of a map to load
 	 * @return Instance of a loaded map
 	 */
-	static Map load(String url)
+	public static Map load(String url)
 	{
 		Map map = null;
 		try
