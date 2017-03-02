@@ -88,20 +88,30 @@ public class ClientTable {
 	}
 	
 	/**
-	 * 
-	 * @param ip
-	 * @return
+	 * Get the id of a client given a corresponding ip.
+	 * @param ip IP of the connected client.
+	 * @return Id of the client.
 	 */
 	public synchronized int getID(String ip)
 	{
 		return clientIPTable.get(ip);
 	}
 	
+	/**
+	 * Get the ip of a client given a corresponding id.
+	 * @param id ID of client. 
+	 * @return IP of client.
+	 */
 	public synchronized String getIP(int id)
 	{
 		return clientIPTableIDKEY.get(id);
 	}
 	
+	/**
+	 * Get player instance of a particular client.
+	 * @param clientID ID of client to get their player instance for.
+	 * @return Player instance.
+	 */
 	public synchronized ServerBasicPlayer getPlayer(int clientID)
 	{
 		return playerInstances.get(clientID);
@@ -188,6 +198,11 @@ public class ClientTable {
 		//Null if not in the table.
 		return queueTable.get(clientID);
 	}
+	/**
+	 * Get the UDP message queue for a particular client.
+	 * @param clientID Client of ID.
+	 * @return UDP message queue.
+	 */
 	public MessageQueue getUDPqueue(int clientID) {
 		return UDPqueueTable.get(clientID);
 	}

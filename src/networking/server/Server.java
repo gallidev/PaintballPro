@@ -14,17 +14,20 @@ import networking.shared.MessageQueue;
 /**
  * Class to represent a running server that connects to multiple clients via
  * sockets.
+ * 
+ * @author MattW
  */
 public class Server {
 	/**
 	 * Main implementation method, handles connecting clients.
 	 * 
 	 * @param args
-	 *            Command line arguments passed through from the user.
+	 *            Arguments passed through from the user.
 	 *            0 - port number
 	 *            1 - listen address
 	 */
 	public static void main(String[] args) {
+		
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();
 		// Create a new lobby instance.

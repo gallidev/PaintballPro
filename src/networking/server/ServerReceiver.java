@@ -7,7 +7,6 @@ import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
 import players.ServerBasicPlayer;
-import players.ServerPlayer;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -15,6 +14,8 @@ import players.ServerPlayer;
 /**
  * Class to get messages from client, process and put appropriate message for a
  * client.
+ * 
+ * @author MattW
  */
 public class ServerReceiver extends Thread {
 
@@ -32,14 +33,12 @@ public class ServerReceiver extends Thread {
 	/**
 	 * Construct the class, setting passed variables to local objects.
 	 * 
-	 * @param clientID
-	 *            The ID of the client.
-	 * @param reader
-	 *            Input stream reader for data.
-	 * @param table
-	 *            Table storing client information.
-	 * @param sender
-	 *            Sender class for sending messages to the client.
+	 * @param clientID The ID of the client.
+	 * @param reader Input stream reader for data.
+	 * @param table Table storing client information.
+	 * @param sender Sender class for sending messages to the client.
+	 * @param passedGameLobby Table storing all lobby information.
+	 * @param udpReceiver UDP Server sender/receiver.
 	 */
 	public ServerReceiver(int clientID, BufferedReader reader, ClientTable table, ServerSender sender,
 			LobbyTable passedGameLobby, UDPServer udpReceiver) {
@@ -92,17 +91,17 @@ public class ServerReceiver extends Thread {
 					// Team 1 for blue, 2 for red.
 					// Get usernames of people currently in red team of lobby.
 					if (text.contains("Get:Red"))
-						getRedTeamAction(text);
+						getRedTeamAction();
 					
 
 					// Get usernames of people currently in blue team of lobby.
 					if (text.contains("Get:Blue")) 
-						getBlueTeamAction(text);
+						getBlueTeamAction();
 					
 
 					// Get the client's currently set username.
 					if (text.contains("Get:Username")) 
-						getUsernameAction(text);
+						getUsernameAction();
 					
 
 					// Reset the client when they exit the game.
@@ -134,23 +133,37 @@ public class ServerReceiver extends Thread {
 	 * clients.
 	 */
 
-	public void getUsernameAction(String text) {
+	/**
+	 * Retrieve the username for a particular client.
+	 */
+	public void getUsernameAction() {
 		String clientUsername = clientTable.getPlayer(myClientsID).getUsername();
 		myMsgQueue.offer(new Message("Ret:Username:" + clientUsername));
 	}
 
-	private void getBlueTeamAction(String text) {
+	/**
+	 * Retrieve members of Blue team.
+	 */
+	private void getBlueTeamAction() {
 		Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 		String blueMems = lobby.getTeam(1);
 		myMsgQueue.offer(new Message("Ret:Blue:" + blueMems));
 	}
 
-	private void getRedTeamAction(String text) {
+	/**
+	 * Retrieve members of Red team.
+	 * @param text
+	 */
+	private void getRedTeamAction() {
 		Lobby lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 		String redMems = lobby.getTeam(2);
 		myMsgQueue.offer(new Message("Ret:Red:" + redMems));
 	}
 
+	/**
+	 * Initialise playing a game, setting game status and starting a timer in the lobby.
+	 * @param text Text passed to server, parsed for input.
+	 */
 	private void playModeAction(String text) {
 		int gameMode = Integer.parseInt(text.substring(10));
 		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
@@ -163,6 +176,10 @@ public class ServerReceiver extends Thread {
 		}
 	}
 
+	/**
+	 * Set username for a given client.
+	 * @param text Text sent to server from client, containing new username.
+	 */
 	public void setUsernameAction(String text) {
 		String username = text.substring(13, text.length());
 		clientTable.getPlayer(myClientsID).setUsername(username);
@@ -170,6 +187,10 @@ public class ServerReceiver extends Thread {
 
 	/* Methods to communicate between client and sender */
 
+	/**
+	 * Send a message to all clients in a given game.
+	 * @param text Message to send to all clients.
+	 */
 	public void sendToAll(String text) {
 		// System.out.println("Sending to all: " + text);
 		
@@ -181,48 +202,31 @@ public class ServerReceiver extends Thread {
 			MessageQueue queue = clientTable.getQueue(player.getID());
 			queue.offer(new Message(text));
 		}
-		
-//		//Given a move, the server player's location needs to be updated
-//		
-//		if (text.contains("Move")){
-//			//extract the id of the server player with a new location
-//			String[] parsedMsg = text.split(":");
-//			int id = Integer.parseInt(parsedMsg[2]);
-//			double x = Double.parseDouble(parsedMsg[3]);
-//			double y = Double.parseDouble(parsedMsg[4]);
-//			double angle = Double.parseDouble(parsedMsg[5]);
-//
-//			//get that server player from the lobby
-//			ServerPlayer currentPlayer = null;
-//			for(ServerPlayer p : lobby.getRedTeam().getMembers())
-//				if( id == p.getPlayerId())
-//					currentPlayer = p;
-//			
-//			if (currentPlayer == null){
-//				for(ServerPlayer p : lobby.getBlueTeam().getMembers())
-//					if( id == p.getPlayerId())
-//						currentPlayer = p;
-//			}
-//			//update its location
-//			currentPlayer.setX(x);
-//			currentPlayer.setY(y);
-//			currentPlayer.setAngle(angle);
-//		}
 	}
 
+	/**
+	 * Send a message to a particular client.
+	 * @param id ID of client to send message to.
+	 * @param text Message to send to client.
+	 */
 	public void sendToSpec(int id, String text) {
 		MessageQueue queue = clientTable.getQueue(id);
 		queue.offer(new Message(text));
 	}
 
 	/* System methods */
-
+	/**
+	 * Method to exit game smoothly.
+	 */
 	private void exitGame() {
 		ServerBasicPlayer myPlayer = clientTable.getPlayer(myClientsID);
 		gameLobby.removePlayer(myPlayer);
 		myPlayer.setAllocatedLobby(-1);
 	}
 
+	/**
+	 * Method to exit system smoothly.
+	 */
 	private void exitSystem() {
 		// Send exit message to the client.
 		myMsgQueue.offer(new Message("Exit:Client"));
