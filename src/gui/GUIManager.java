@@ -7,6 +7,7 @@ import audio.AudioManager;
 import audio.MusicResources;
 import audio.SFXResources;
 import enums.GameLocation;
+import enums.MenuEnum;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import networkingClient.Client;
-import networkingClient.ClientReceiver;
-import networkingClient.ClientSender;
+import networking.client.Client;
+import networking.client.ClientReceiver;
+import networking.client.ClientSender;
+import networking.server.Server;
 import rendering.Renderer;
 
 /**
@@ -26,14 +28,17 @@ import rendering.Renderer;
  */
 public class GUIManager {
 
+    public static boolean localServerCode = false;
+
     private Stage s;
     private Client c;
-    private String currentScene = "";
+    private Thread localServer;
+    private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
-    private boolean timerStarted = false;
-    private int timeLeft = 10;
+    private boolean lobbyTimerStarted = false;
+    private int lobbyTimeLeft = 10;
 
     // Load the user's settings
     // When set methods are called for this class/object, the class will
@@ -41,14 +46,16 @@ public class GUIManager {
     private static UserSettings user = UserSettingsManager.loadSettings();
     private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
 
+    private ArrayList<GameObserver> gameObservers = new ArrayList<>();
+    private int gameTimeLeft = 0;
+    private int redScore = 0;
+    private int blueScore = 0;
+
     private AudioManager audio;
 
     // Set the width and height of the stage
     public final int width = 800;
     public final int height = 600;
-
-    public static final Image redPlayerImage = new Image("assets/characters/player_red.png", 30, 64, true, true);
-    public static final Image bluePlayerImage = new Image("assets/characters/player_blue.png", 30, 64, true, true);
 
     public GUIManager() {
         audio = new AudioManager(user, this);
@@ -69,28 +76,33 @@ public class GUIManager {
      * @param menu the string representation of the menu to switch to
      * @param o    an object to be passed to the target scene (usually null)
      */
-    public void transitionTo(String menu, Object o) {
+    public void transitionTo(MenuEnum menu, Object o) {
         audio.stopMusic();
         if (!menu.equals(currentScene)) {
             currentScene = menu;
             switch (menu) {
-                case "Main":
+                case MainMenu:
+                    if (localServer != null) {
+                        localServer.interrupt();
+                        localServer = null;
+                    }
                     s.setScene(MainMenu.getScene(this));
                     break;
-                case "Nickname":
+                case NicknameServerConnection:
                     s.setScene(NicknameServerSelectMenu.getScene(this));
                     break;
-                case "Settings":
+                case Settings:
                     s.setScene(SettingsMenu.getScene(this));
                     break;
-                case "Multiplayer":
+                case MultiplayerGameType:
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
-                case "Singleplayer":
+                case SingleplayerGameType:
+                    if (localServerCode) establishLocalSingleServerConnection();
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
-                case "Lobby":
-                    timerStarted = false;
+                case Lobby:
+                    lobbyTimerStarted = false;
                     if (o instanceof String) {
                         if (o.equals("CTF")) {
                             c.getSender().sendMessage("Play:Mode:2");
@@ -102,23 +114,35 @@ public class GUIManager {
                     }
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
-                case "EliminationSingle":
-                    audio.startMusic(MusicResources.track1);
-                    s.setScene(new Renderer("elimination", audio));
+                case EliminationSingle:
+                    if (localServerCode) {
+                        c.getSender().sendMessage("Play:Mode:1");
+                        audio.startMusic(audio.music.track1);
+                        s.setScene(new Renderer("elimination", c.getReceiver()));
+                    } else {
+                        audio.startMusic(audio.music.track1);
+                        s.setScene(new Renderer("elimination", audio));
+                    }
                     break;
-                case "Elimination":
-                    audio.startMusic(MusicResources.track1);
+                case EliminationMulti:
+                    audio.startMusic(audio.music.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
-                case "CTFSingle":
-                    audio.startMusic(MusicResources.track1);
-                    s.setScene(new Renderer("ctf", audio));
+                case CTFSingle:
+                    if (localServerCode) {
+                        c.getSender().sendMessage("Play:Mode:2");
+                        audio.startMusic(audio.music.track1);
+                        s.setScene(new Renderer("ctf", c.getReceiver()));
+                    } else {
+                        audio.startMusic(audio.music.track1);
+                        s.setScene(new Renderer("ctf", audio));
+                    }
                     break;
-                case "CTF":
-                    audio.startMusic(MusicResources.track1);
+                case CTFMulti:
+                    audio.startMusic(audio.music.track1);
                     s.setScene(new Renderer("ctf", c.getReceiver()));
                     break;
-                case "EndGame":
+                case EndGame:
                     s.setScene(EndGameMenu.getScene(this));
                     break;
                 default:
@@ -127,25 +151,49 @@ public class GUIManager {
         }
     }
 
-    public void establishConnection() {
-        if (c == null) {
+    private boolean establishLocalSingleServerConnection() {
+        if (localServerCode) {
+            ipAddress = "0.0.0.0";
+            localServer = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int portNo = 25566;
+                    String[] serverArgs = {portNo + "", ipAddress};
+                    Server.main(serverArgs);
+                }
+            });
+            localServer.start();
+            try {
+                Thread.sleep(1000);
+                boolean b = establishConnection();
+                Thread.sleep(1000);
+                return b;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean establishConnection() {
             String nickname = user.getUsername(); // We ask the user what their nickname is.
 
-//        String serverLocation = networkingDiscovery.ClientListener.findServer();
+		    String serverLocation = ipAddress + ":25566";
 
-		String serverLocation = ipAddress + ":25566";
-
-        
-        int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
-        String machName = serverLocation.split(":")[0]; // The machine has a particular name.
+            int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
+            String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
             // This loads up the client code.
-            c = new Client(nickname, portNumber, machName, this);
+            try {
+                c = new Client(nickname, portNumber, machName, this);
 
-            // We can then get the client sender and receiver threads.
-            ClientSender sender = c.getSender();
-            ClientReceiver receiver = c.getReceiver();
-        }
+                // We can then get the client sender and receiver threads.
+                ClientSender sender = c.getSender();
+                ClientReceiver receiver = c.getReceiver();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
     }
 
 
@@ -224,23 +272,23 @@ public class GUIManager {
     }
 
     public void setTimerStarted() {
-        timerStarted = true;
+        lobbyTimerStarted = true;
     }
 
     public boolean isTimerStarted() {
-        return timerStarted;
+        return lobbyTimerStarted;
     }
 
-    public String getCurrentScene() {
+    public MenuEnum getCurrentScene() {
         return currentScene;
     }
 
     public int getTimeLeft() {
-        return timeLeft;
+        return lobbyTimeLeft;
     }
 
     public void setTimeLeft(int timeLeft) {
-        this.timeLeft = timeLeft;
+        this.lobbyTimeLeft = timeLeft;
     }
 
     public void setIpAddress(String ipAddress) {
@@ -267,5 +315,28 @@ public class GUIManager {
                 }
             });
         }
+    }
+
+    public void addGameObserver(GameObserver obs) {
+        this.gameObservers.add(obs);
+    }
+
+    private void notifyGameChanged() {
+        this.gameObservers.forEach(obs -> obs.gameUpdated());
+    }
+
+    public void setGameTimeLeft(int gameTimeLeft) {
+        this.gameTimeLeft = gameTimeLeft;
+        notifyGameChanged();
+    }
+
+    public void setRedScore(int redScore) {
+        this.redScore = redScore;
+        notifyGameChanged();
+    }
+
+    public void setBlueScore(int blueScore) {
+        this.blueScore = blueScore;
+        notifyGameChanged();
     }
 }

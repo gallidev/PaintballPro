@@ -1,7 +1,5 @@
 package physics;
 
-import static gui.GUIManager.bluePlayerImage;
-import static gui.GUIManager.redPlayerImage;
 import java.util.ArrayList;
 import audio.AudioManager;
 import enums.TeamEnum;
@@ -9,6 +7,7 @@ import javafx.geometry.Point2D;
 import offlineLogic.OfflineTeam;
 import players.AIPlayer;
 import players.GeneralPlayer;
+import rendering.ImageFactory;
 import rendering.Map;
 
 /**
@@ -34,7 +33,7 @@ public class OfflinePlayer extends GeneralPlayer
 	 */
 	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, CollisionsHandlerGeneralPlayer collisionsHandler)
 	{
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
+		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
 		this.audio = audio;
 		this.mx = x;
 		this.my = y;
@@ -80,7 +79,7 @@ public class OfflinePlayer extends GeneralPlayer
 
 	public OfflinePlayer(double x, double y, int id, TeamEnum team)
 	{
-		super(x, y, id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x, y, id, ImageFactory.getPlayerImage(team));
 		controlScheme = false;
 		this.team = team;
 	}

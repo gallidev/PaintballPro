@@ -1,4 +1,5 @@
 package gui;
+import enums.MenuEnum;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.image.ImageView;
 
 import javax.swing.*;
+import java.util.Set;
 
 /**
  * Main Menu scene class
@@ -34,18 +36,18 @@ public class MainMenu {
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Single player", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Singleplayer", null);
+		    	m.transitionTo(MenuEnum.SingleplayerGameType, null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Nickname", null);
+		    	m.transitionTo(MenuEnum.NicknameServerConnection, null);
 //		    	m.transitionTo("Multiplayer", null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Settings", null);
+		    	m.transitionTo(MenuEnum.Settings, null);
 		        System.out.println("ActionEvent: " + event);
 		    }     
 		})};
