@@ -83,13 +83,8 @@ public class UserPlayer extends ServerMinimumPlayer{
 	@Override
 	protected void updateAngle()
 	{
-		//Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
-//		double x1 = getX() + (1.65*playerHeadX);
-//		double y1 = getY() + playerHeadY;
-		double x1 = getX() + getWidth()/2;
-		double y1 = getY() + getHeight()/2;
-		double deltax = mouseX - x1;
-		double deltay = y1 - mouseY;
+		double deltax = mouseX - (1.65 * playerHeadX);
+		double deltay = playerHeadY - mouseY;
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}
