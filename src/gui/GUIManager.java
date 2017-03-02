@@ -117,29 +117,29 @@ public class GUIManager {
                 case EliminationSingle:
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:1");
-                        audio.startMusic(MusicResources.track1);
+                        audio.startMusic(audio.music.track1);
                         s.setScene(new Renderer("elimination", c.getReceiver()));
                     } else {
-                        audio.startMusic(MusicResources.track1);
+                        audio.startMusic(audio.music.track1);
                         s.setScene(new Renderer("elimination", audio));
                     }
                     break;
                 case EliminationMulti:
-                    audio.startMusic(MusicResources.track1);
+                    audio.startMusic(audio.music.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
                 case CTFSingle:
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:2");
-                        audio.startMusic(MusicResources.track1);
+                        audio.startMusic(audio.music.track1);
                         s.setScene(new Renderer("ctf", c.getReceiver()));
                     } else {
-                        audio.startMusic(MusicResources.track1);
+                        audio.startMusic(audio.music.track1);
                         s.setScene(new Renderer("ctf", audio));
                     }
                     break;
                 case CTFMulti:
-                    audio.startMusic(MusicResources.track1);
+                    audio.startMusic(audio.music.track1);
                     s.setScene(new Renderer("ctf", c.getReceiver()));
                     break;
                 case EndGame:

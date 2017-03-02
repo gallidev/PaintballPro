@@ -38,7 +38,7 @@ public class AudioManagerTest {
         audio = m.getAudioManager();
         // Start and stop the music, so that a musicPlayer
         // is created in the audio manager
-        audio.startMusic(MusicResources.track1);
+        audio.startMusic(audio.music.getRandomTrack());
         audio.stopMusic();
         Thread.sleep(100);
     }
@@ -64,7 +64,7 @@ public class AudioManagerTest {
         // Check that the settings update correctly, by
         // changing the volume, notifying observers, and then
         // checking that the volume has changed
-        audio.startMusic(MusicResources.track1);
+        audio.startMusic(audio.music.track1);
         audio.musicPlayer.setVolume((float)100.0);
         userSettings.setMusicVolume(50);
         m.notifySettingsObservers();
@@ -80,7 +80,7 @@ public class AudioManagerTest {
     public void startMusic() throws Exception {
         // Check that the music starts correctly
         assertTrue(audio.musicPlayer.getStatus() != MediaPlayer.Status.PLAYING);
-        audio.startMusic(MusicResources.track1);
+        audio.startMusic(audio.music.track1);
         audio.musicPlayer.setVolume((float)1.0);
         Thread.sleep(1000);
         assertTrue(audio.musicPlayer.getStatus() == MediaPlayer.Status.PLAYING);
@@ -93,7 +93,7 @@ public class AudioManagerTest {
      */
     @Test
     public void stopMusic() throws Exception {
-        audio.startMusic(MusicResources.track1);
+        audio.startMusic(audio.music.track1);
         audio.musicPlayer.setVolume((float)0.0);
         Thread.sleep(1000);
         assertTrue(audio.musicPlayer.getStatus() == MediaPlayer.Status.PLAYING);

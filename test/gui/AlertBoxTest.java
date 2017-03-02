@@ -17,7 +17,7 @@ public class AlertBoxTest {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                AlertBox.showAlert("Failed", "Failed");
+                AlertBox.showAlert("Example Alert", "Press Ok");
             }
         });
 
