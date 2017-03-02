@@ -1,9 +1,14 @@
 package gui;
 
+import enums.MenuEnum;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class PauseOverlayMenu {
@@ -14,6 +19,23 @@ public class PauseOverlayMenu {
 
         Label title = new Label("Paused");
         p.add(title, 0, 0);
+
+        MenuOption[] set = {new MenuOption("Resume", true, new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                System.out.println("ActionEvent: " + event);
+            }
+        }), new MenuOption("Settings", true, new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                System.out.println("ActionEvent: " + event);
+            }
+        }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                System.out.println("ActionEvent: " + event);
+            }
+        })};
+
+        GridPane buttonSet = MenuOptionSet.optionSetToGridPane(set);
+        p.add(buttonSet, 0, 1);
 
         p.setAlignment(Pos.CENTER);
         p.setHgap(10);
