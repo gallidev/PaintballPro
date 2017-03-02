@@ -37,7 +37,7 @@ public class LobbyTable {
 		allocatedLobby.removePlayer(playerToRemove);
 	}
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerMsgReceiver receiver, UDPServer udpReceiver) {
+	public synchronized void addPlayerToLobby(ServerBasicPlayer player, int gameMode, ServerReceiver receiver, UDPServer udpReceiver) {
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
 		for (Lobby lobby : lobbyList.values()) {
@@ -69,7 +69,7 @@ public class LobbyTable {
 	public synchronized Lobby getLobby(int lobbyId) {
 		return lobbyList.get(lobbyId);
 	}
-	public synchronized void switchTeams(ServerBasicPlayer player, ServerMsgReceiver receiver) {
+	public synchronized void switchTeams(ServerBasicPlayer player, ServerReceiver receiver) {
 		lobbyList.get(player.getAllocatedLobby()).switchTeam(player, receiver);
 	}
 }

@@ -137,7 +137,7 @@ public class Lobby {
 	}
 
 	// switch player's team
-	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerMsgReceiver receiver) {
+	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
 		boolean switched = false;
 		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
@@ -203,7 +203,7 @@ public class Lobby {
 		return playArrReturn;
 	}
 
-	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
+	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team();
 		for (ServerBasicPlayer origPlayer : team.values()) {
 			ServerPlayer player = null;
@@ -224,7 +224,7 @@ public class Lobby {
 	 * @param receiver
 	 * @author Alexandra Paduraru
 	 */
-	public void playGame(ServerMsgReceiver receiver, UDPServer udpReceiver) {
+	public void playGame(ServerReceiver receiver, UDPServer udpReceiver) {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
@@ -259,7 +259,7 @@ public class Lobby {
 	}
 
 	// A timer, accessed by the client for game countdown.
-	public void timerStart(ServerMsgReceiver receiver, UDPServer udpReceiver) {
+	public void timerStart(ServerReceiver receiver, UDPServer udpReceiver) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {

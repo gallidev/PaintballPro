@@ -90,14 +90,14 @@ public class Server {
 					// id
 					clientID = clientTable.add(clientName);
 					// We create and start a new thread to write to the client:
-					ServerMsgSender sender = new ServerMsgSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
+					ServerSender sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
 					sender.start();
 					
 					// We start a new UDP server sender to send messages to a client.
 					// UDPServerSender udpSender = new UDPServerSender(clientTable.getUDPqueue(clientID));
 					
 					// We create and start a new thread to read from the client:
-					ServerMsgReceiver reciever = new ServerMsgReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver);
+					ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver);
 					reciever.start();
 					// For debugging
 					text = "UserID is:" + clientID;

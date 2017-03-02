@@ -17,7 +17,7 @@ import players.GeneralPlayer;
  * 
  * @author MattW
  */
-public class UDPClientReceiver extends Thread {
+public class UDPClient extends Thread {
 
 	private boolean debug = false;
 	private int clientID;
@@ -37,7 +37,7 @@ public class UDPClientReceiver extends Thread {
 	 * @param guiManager Manager of GUI.
 	 * @param teams Both client's and opposing teams.
 	 */
-	public UDPClientReceiver(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams)
+	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams)
 	{
 		this.clientID = clientID;
 		this.m = guiManager;

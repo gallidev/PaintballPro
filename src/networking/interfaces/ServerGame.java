@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import enums.TeamEnum;
 import logic.GameMode;
 import networking.game.UDPServer;
-import networking.server.ServerMsgReceiver;
+import networking.server.ServerReceiver;
 import networking.shared.Message;
 import players.ServerPlayer;
 import serverLogic.CaptureTheFlagMode;

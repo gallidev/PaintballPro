@@ -3,7 +3,7 @@ package players;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
-import networking.game.UDPClientReceiver;
+import networking.game.UDPClient;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
@@ -19,7 +19,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 
 	private double mx, my;
 	private boolean controlScheme;
-	private UDPClientReceiver sender;
+	private UDPClient sender;
 	private ArrayList<ClientLocalPlayer> clientEnemies;
 
 	//flag for keeping track of scores
@@ -32,7 +32,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClientReceiver sender, CollisionsHandler collisionHandler)
+	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClient sender, CollisionsHandler collisionHandler)
 	{
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionHandler);
 		this.mx = x;
@@ -42,7 +42,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		this.sender = sender;
 	}
 
-	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, UDPClientReceiver sender)
+	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, UDPClient sender)
 	{
 		super(x, y, id, ImageFactory.getPlayerImage(team));
 		controlScheme = false;

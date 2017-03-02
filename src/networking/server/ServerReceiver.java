@@ -16,12 +16,12 @@ import players.ServerPlayer;
  * Class to get messages from client, process and put appropriate message for a
  * client.
  */
-public class ServerMsgReceiver extends Thread {
+public class ServerReceiver extends Thread {
 
 	private int myClientsID;
 	private BufferedReader myClient;
 	private ClientTable clientTable;
-	private ServerMsgSender sender;
+	private ServerSender sender;
 	private LobbyTable gameLobby;
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
@@ -41,7 +41,7 @@ public class ServerMsgReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ServerMsgReceiver(int clientID, BufferedReader reader, ClientTable table, ServerMsgSender sender,
+	public ServerReceiver(int clientID, BufferedReader reader, ClientTable table, ServerSender sender,
 			LobbyTable passedGameLobby, UDPServer udpReceiver) {
 		myClientsID = clientID;
 		myClient = reader;

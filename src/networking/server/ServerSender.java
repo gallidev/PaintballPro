@@ -13,7 +13,7 @@ import networking.shared.MessageQueue;
 /**
  * Class to send messages to a client.
  */
-public class ServerMsgSender extends Thread {
+public class ServerSender extends Thread {
 
 	private MessageQueue queue;
 	private PrintStream client;
@@ -36,7 +36,7 @@ public class ServerMsgSender extends Thread {
 	 * @param ClientID
 	 *            ID of the client.
 	 */
-	public ServerMsgSender(MessageQueue queue, PrintStream clientStream, Socket socket, String clientName, int ClientID) {
+	public ServerSender(MessageQueue queue, PrintStream clientStream, Socket socket, String clientName, int ClientID) {
 		this.queue = queue;
 		this.client = clientStream;
 		this.socket = socket;

@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 import gui.AlertBox;
 import gui.GUIManager;
-import networking.game.UDPClientReceiver;
+import networking.game.UDPClient;
 import networking.shared.MessageQueue;
 
 /**
@@ -99,7 +99,7 @@ public class Client {
 			TeamTable teams = new TeamTable();
 			
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClientReceiver udpReceiver = new UDPClientReceiver(clientID,hostname,guiManager,teams);
+			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams);
 			udpReceiver.start();
 
 			// We can now set up the message received for the client.

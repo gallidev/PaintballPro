@@ -8,7 +8,7 @@ import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
-import networking.game.UDPClientReceiver;
+import networking.game.UDPClient;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
 import physics.CollisionsHandler;
@@ -33,7 +33,7 @@ public class ClientReceiver extends Thread {
 	private PhysicsClientPlayer cPlayer;
 	private ArrayList<ClientLocalPlayer> myTeam;
 	private ArrayList<ClientLocalPlayer> enemies;
-	private UDPClientReceiver udpReceiver;
+	private UDPClient udpReceiver;
 	private TeamTable teams;
 	
 	private boolean debug = false;
@@ -48,7 +48,7 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, GUIManager m, UDPClientReceiver udpReceiver, TeamTable teams) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, GUIManager m, UDPClient udpReceiver, TeamTable teams) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
