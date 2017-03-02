@@ -28,6 +28,8 @@ import rendering.Renderer;
  */
 public class GUIManager {
 
+    public static boolean localServerCode = false;
+
     private Stage s;
     private Client c;
     private Thread localServer;
@@ -91,6 +93,7 @@ public class GUIManager {
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
                 case SingleplayerGameType:
+                    if (localServerCode) establishLocalSingleServerConnection();
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
                 case Lobby:
@@ -107,18 +110,28 @@ public class GUIManager {
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
                 case EliminationSingle:
-                    establishLocalSingleServerConnection();
-                    audio.startMusic(MusicResources.track1);
-                    s.setScene(new Renderer("elimination", audio));
+                    if (localServerCode) {
+                        c.getSender().sendMessage("Play:Mode:1");
+                        audio.startMusic(MusicResources.track1);
+                        s.setScene(new Renderer("elimination", c.getReceiver()));
+                    } else {
+                        audio.startMusic(MusicResources.track1);
+                        s.setScene(new Renderer("elimination", audio));
+                    }
                     break;
                 case EliminationMulti:
                     audio.startMusic(MusicResources.track1);
                     s.setScene(new Renderer("elimination", c.getReceiver()));
                     break;
                 case CTFSingle:
-                    establishLocalSingleServerConnection();
-                    audio.startMusic(MusicResources.track1);
-                    s.setScene(new Renderer("ctf", audio));
+                    if (localServerCode) {
+                        c.getSender().sendMessage("Play:Mode:2");
+                        audio.startMusic(MusicResources.track1);
+                        s.setScene(new Renderer("ctf", c.getReceiver()));
+                    } else {
+                        audio.startMusic(MusicResources.track1);
+                        s.setScene(new Renderer("ctf", audio));
+                    }
                     break;
                 case CTFMulti:
                     audio.startMusic(MusicResources.track1);
@@ -134,21 +147,28 @@ public class GUIManager {
     }
 
     private void establishLocalSingleServerConnection() {
-        ipAddress = "0.0.0.0";
-        localServer = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int portNo = 25566;
-                String[] serverArgs = {portNo + "", ipAddress};
-                Server.main(serverArgs);
+        if (localServerCode) {
+            ipAddress = "0.0.0.0";
+            localServer = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int portNo = 25566;
+                    String[] serverArgs = {portNo + "", ipAddress};
+                    Server.main(serverArgs);
+                }
+            });
+            localServer.start();
+            try {
+                Thread.sleep(1000);
+                establishConnection();
+                Thread.sleep(1000);
+            } catch (Exception e) {
+
             }
-        });
-        localServer.start();
-        establishConnection();
+        }
     }
 
     public void establishConnection() {
-        if (c == null) {
             String nickname = user.getUsername(); // We ask the user what their nickname is.
 
 		    String serverLocation = ipAddress + ":25566";
@@ -162,7 +182,6 @@ public class GUIManager {
             // We can then get the client sender and receiver threads.
             ClientSender sender = c.getSender();
             ClientReceiver receiver = c.getReceiver();
-        }
     }
 
 
