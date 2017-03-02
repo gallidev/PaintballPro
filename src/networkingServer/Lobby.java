@@ -330,11 +330,15 @@ public class Lobby {
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		
 		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map, TeamEnum.RED, collisionsHandler);
-		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map, TeamEnum.BLUE, collisionsHandler);
+		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, imageWidth, imageHeight, map, TeamEnum.BLUE, collisionsHandler);
 
 		//add players to the teams
-		
-		
+		red.addMember(redPlayer);
+		blue.addMember(bluePlayer);
+
+		collisionsHandler.setRedTeam(red.getMembers());
+		collisionsHandler.setRedTeam(red.getMembers());
+
 		GameSimulation simulator = new GameSimulation(red, blue);
 	}
 	

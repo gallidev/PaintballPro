@@ -24,25 +24,5 @@ public class ClientActionReceiver {
 		this.player = player;
 	}
 
-	// can this be a user player as well?
-	// need to discuss what to do here to the GhostPlayer
-	
-	public void movePlayerDown(){
-		
-	}
-	
-	public void movePlayerUp(){
-		
-	}
-	
-	public void movePlayerLeft(){
-		
-	}
-
-	public void movePlayerRight(){
-	
-	}
-	
-	//+++method for the mouse
 
 }
