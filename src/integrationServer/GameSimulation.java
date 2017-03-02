@@ -1,26 +1,36 @@
 package integrationServer;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import players.ServerMinimumPlayer;
 
 
 public class GameSimulation {
 
 	private long delayMilliseconds = 33;
 	private int frames = 0;
-	public static void main(String[] args){
-		new GameSimulation();
-	}
 
-	public GameSimulation(){
+//	public static void main(String[] args){
+//		new GameSimulation();
+//	}
+
+	public GameSimulation(ArrayList<ServerMinimumPlayer> players){
+
+
+
 		ScheduledExecutorService scheduler =
 			     Executors.newScheduledThreadPool(1);
 		Runnable game = new Runnable() {
 		       public void run() {
-		    	   frames ++;
-
+				for(ServerMinimumPlayer player : players)
+				{
+					player.tick();
+				}
+		    	frames ++;
 		       }
 		     };
 
@@ -37,6 +47,10 @@ public class GameSimulation {
 
 		ScheduledFuture<?> frameCounterHandle =
 				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
+
+	}
+
+	public void stopExecution(){
 
 	}
 

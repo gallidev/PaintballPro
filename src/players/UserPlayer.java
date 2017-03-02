@@ -38,9 +38,9 @@ public class UserPlayer extends ServerMinimumPlayer{
 		}
 		//updatePlayerBounds();
 		updateBullets();
-		if(!(lastX == getX() && lastY == getY() && lastAngle == angle)){
-			//sendServerNewPosition(getX(), getY(), angle);
-		}
+//		if(!(lastX == getX() && lastY == getY() && lastAngle == angle)){
+//			//sendServerNewPosition(getX(), getY(), angle);
+//		}
 		//sendActiveBullets();
 
 		if(!invincible)
@@ -180,7 +180,7 @@ public class UserPlayer extends ServerMinimumPlayer{
 	@Override
 	public void updateScore() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
