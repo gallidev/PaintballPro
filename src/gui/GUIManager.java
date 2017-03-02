@@ -37,14 +37,19 @@ public class GUIManager {
     private String ipAddress = "";
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
-    private boolean timerStarted = false;
-    private int timeLeft = 10;
+    private boolean lobbyTimerStarted = false;
+    private int lobbyTimeLeft = 10;
 
     // Load the user's settings
     // When set methods are called for this class/object, the class will
     // automatically save the changed preferences
     private static UserSettings user = UserSettingsManager.loadSettings();
     private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
+
+    private ArrayList<GameObserver> gameObservers = new ArrayList<>();
+    private int gameTimeLeft = 0;
+    private int redScore = 0;
+    private int blueScore = 0;
 
     private AudioManager audio;
 
@@ -97,7 +102,7 @@ public class GUIManager {
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
                 case Lobby:
-                    timerStarted = false;
+                    lobbyTimerStarted = false;
                     if (o instanceof String) {
                         if (o.equals("CTF")) {
                             c.getSender().sendMessage("Play:Mode:2");
@@ -146,7 +151,7 @@ public class GUIManager {
         }
     }
 
-    private void establishLocalSingleServerConnection() {
+    private boolean establishLocalSingleServerConnection() {
         if (localServerCode) {
             ipAddress = "0.0.0.0";
             localServer = new Thread(new Runnable() {
@@ -160,15 +165,17 @@ public class GUIManager {
             localServer.start();
             try {
                 Thread.sleep(1000);
-                establishConnection();
+                boolean b = establishConnection();
                 Thread.sleep(1000);
+                return b;
             } catch (Exception e) {
-
+                return false;
             }
         }
+        return false;
     }
 
-    public void establishConnection() {
+    public boolean establishConnection() {
             String nickname = user.getUsername(); // We ask the user what their nickname is.
 
 		    String serverLocation = ipAddress + ":25566";
@@ -177,11 +184,16 @@ public class GUIManager {
             String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
             // This loads up the client code.
-            c = new Client(nickname, portNumber, machName, this);
+            try {
+                c = new Client(nickname, portNumber, machName, this);
 
-            // We can then get the client sender and receiver threads.
-            ClientSender sender = c.getSender();
-            ClientReceiver receiver = c.getReceiver();
+                // We can then get the client sender and receiver threads.
+                ClientSender sender = c.getSender();
+                ClientReceiver receiver = c.getReceiver();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
     }
 
 
@@ -260,11 +272,11 @@ public class GUIManager {
     }
 
     public void setTimerStarted() {
-        timerStarted = true;
+        lobbyTimerStarted = true;
     }
 
     public boolean isTimerStarted() {
-        return timerStarted;
+        return lobbyTimerStarted;
     }
 
     public MenuEnum getCurrentScene() {
@@ -272,11 +284,11 @@ public class GUIManager {
     }
 
     public int getTimeLeft() {
-        return timeLeft;
+        return lobbyTimeLeft;
     }
 
     public void setTimeLeft(int timeLeft) {
-        this.timeLeft = timeLeft;
+        this.lobbyTimeLeft = timeLeft;
     }
 
     public void setIpAddress(String ipAddress) {
@@ -303,5 +315,28 @@ public class GUIManager {
                 }
             });
         }
+    }
+
+    public void addGameObserver(GameObserver obs) {
+        this.gameObservers.add(obs);
+    }
+
+    private void notifyGameChanged() {
+        this.gameObservers.forEach(obs -> obs.gameUpdated());
+    }
+
+    public void setGameTimeLeft(int gameTimeLeft) {
+        this.gameTimeLeft = gameTimeLeft;
+        notifyGameChanged();
+    }
+
+    public void setRedScore(int redScore) {
+        this.redScore = redScore;
+        notifyGameChanged();
+    }
+
+    public void setBlueScore(int blueScore) {
+        this.blueScore = blueScore;
+        notifyGameChanged();
     }
 }
