@@ -26,7 +26,6 @@ import static rendering.Renderer.view;
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Map
 {
-	private String name;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
