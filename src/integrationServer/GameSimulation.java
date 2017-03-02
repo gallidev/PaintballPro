@@ -1,11 +1,12 @@
 package integrationServer;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
 import serverLogic.Team;
+import players.ServerMinimumPlayer;
 
 
 public class GameSimulation {
@@ -16,8 +17,12 @@ public class GameSimulation {
 	private long delayMilliseconds = 33;
 	private int frames = 0;
 
-
 	public GameSimulation(Team redTeam, Team blueTeam){
+		
+		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		players.addAll(redTeam.getMembers());
+		players.addAll(blueTeam.getMembers());
+
 		
 		this.redTeam = redTeam;
 		this.blueTeam = blueTeam;
@@ -26,8 +31,11 @@ public class GameSimulation {
 			     Executors.newScheduledThreadPool(1);
 		Runnable game = new Runnable() {
 		       public void run() {
-		    	   frames ++;
-
+				for(ServerMinimumPlayer player : players)
+				{
+					player.tick();
+				}
+		    	frames ++;
 		       }
 		     };
 
@@ -51,5 +59,9 @@ public class GameSimulation {
 	//	public static void main(String[] args){
 	//	new GameSimulation();
 	//}
+
+	public void stopExecution(){
+
+	}
 
 }

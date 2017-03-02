@@ -318,7 +318,7 @@ public class Lobby {
 	
 	//====================NEW INTEGRATION BELOW=================================
 	
-	public void playGame(){
+	public void playGame(ServerMsgReceiver receiver){
 		red = new Team();
 		blue = new Team();
 		
