@@ -1,42 +1,38 @@
 package ai;
 
-import enums.TeamEnum;
 import players.AIPlayer;
-import rendering.Map;
 
 public class BehaviourManager {
     private AIPlayer ai;
     private Pathfinding pathFinder;
     private Path path;
     private Mover mover;
-    private Behaviour aggressive;
-    private Behaviour defensive;
+    private Behaviour move;
+    private Behaviour tactical;
     private Behaviour capture;
     private Behaviour retreat;
     private Behaviour random;
+    private Behaviour defaultB;
 
     //Behaviours
-    //    Aggressive - Move a lot closer to enemies
-    //    Defensive  - Keep at a distance from the enemies, but still within range
+    //    Default - no movement, just shooting
+    //    Move - Move towards enemy
+    //    Tactical  - Move towards cover
     //    Capture - Goes to the flag
-    //    Retreat - Returns to base i.e after capturing the flag
+    //    Retreat - Goes to base
     //    Random - Random movement
 
     public BehaviourManager(AIPlayer ai){
         this.ai = ai;
         pathFinder = new Pathfinding(ai.getMap());
-        aggressive = new AggressiveBehaviour(ai);
-        defensive = new DefensiveBehaviour(ai);
-        capture = new CaptureBehaviour(ai);
-        retreat = new RetreatBehaviour(ai);
-        random = new RandomBehaviour(ai);
-        if(ai.getTeam() == TeamEnum.RED) {
-            path = pathFinder.getPath(ai.getMap().getSpawns()[0].x, ai.getMap().getSpawns()[0].y, 17, 10);
-        } else {
-            path = pathFinder.getPath(ai.getMap().getSpawns()[6].x, ai.getMap().getSpawns()[6].y, 13, 10);
-
-        }
-        mover = new Mover(ai);
+        defaultB = new DefaultBehaviour(ai, pathFinder);
+        move = new MoveBehaviour(ai, pathFinder);
+        tactical = new TacticalBehaviour(ai, pathFinder);
+        capture = new CaptureBehaviour(ai, pathFinder);
+        retreat = new RetreatBehaviour(ai, pathFinder);
+        random = new RandomBehaviour(ai, pathFinder);
+        mover = new Mover(ai, pathFinder);
+        path = pathFinder.getPath((int)ai.getLayoutX()/64, (int)ai.getLayoutY()/64, 15, 10);
         mover.setPath(path);
     }
 
@@ -44,13 +40,15 @@ public class BehaviourManager {
         if(!mover.isFinished()) {
             mover.tick();
         } else {
-            random.tick();
+            defaultB.tick();
         }
     }
 
     public void change(){
         if(mover.isFinished()) {
             random.change();
+        } else {
+            mover.change();
         }
     }
 

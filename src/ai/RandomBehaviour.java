@@ -4,8 +4,9 @@ import players.AIPlayer;
 
 public class RandomBehaviour extends Behaviour{
 
-	public RandomBehaviour(AIPlayer ai){
-		super(ai);
+	public RandomBehaviour(AIPlayer ai, Pathfinding pathfinder){
+
+		super(ai, pathfinder);
 	}
 
 	private void randomMovement(){

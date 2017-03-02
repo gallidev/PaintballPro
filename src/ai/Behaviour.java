@@ -21,13 +21,15 @@ public abstract class Behaviour {
     protected GeneralPlayer closestEnemy;
     protected double angle;
     protected double closestX, closestY;
+    protected Pathfinding pathfinder;
 
-    public Behaviour(AIPlayer ai){
+    public Behaviour(AIPlayer ai, Pathfinding pathfinder){
         this.ai = ai;
         this.map = ai.getMap();
         this.angle = 0.0;
         this.enemies = new ArrayList<GeneralPlayer>();
         rand = new Random();
+        this.pathfinder = pathfinder;
     }
 
         protected boolean updateShooting(double x, double y){
@@ -54,13 +56,15 @@ public abstract class Behaviour {
                     minDistance = temp;
                 }
             }
-            double deltaX = closestX - ai.getLayoutX();
-            double deltaY = ai.getLayoutY() - closestY;
-            //if(minDistance > 300) {
-            //    angle = ai.getMovementAngle();
-            //} else {
+
+            if(minDistance < 400){
+                double deltaX = closestX - ai.getLayoutX();
+                double deltaY = ai.getLayoutY() - closestY;
                 angle = Math.atan2(deltaX, deltaY);
-            //}
+
+            } else {
+                angle = ai.getMovementAngle();
+            }
         }
 
         public boolean canSee(double x, double y){

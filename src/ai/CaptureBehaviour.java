@@ -6,8 +6,8 @@ import rendering.Map;
 
 public class CaptureBehaviour extends Behaviour {
 
-    public CaptureBehaviour(AIPlayer ai){
-        super(ai);
+    public CaptureBehaviour(AIPlayer ai, Pathfinding pathfinder){
+        super(ai, pathfinder);
     }
 
 

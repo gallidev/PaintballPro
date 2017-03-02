@@ -95,9 +95,7 @@ public class AIPlayer extends GeneralPlayer{
 
 	public double getMovementAngle() { return this.movementAngle;}
 
-	public Map getMap(){
-		return this.map;
-	}
+	public Map getMap() {return this.map;}
 
 	public void setOppTeam(OfflineTeam t){
 		oppTeam = t;

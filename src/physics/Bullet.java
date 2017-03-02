@@ -48,7 +48,7 @@ public class Bullet extends Circle{
 		setCenterX(x);
 		setCenterY(y);
 		double distance = Math.sqrt(Math.pow((x-originX), 2) + Math.pow((originY-y), 2));
-		if(distance > 400) active = false;
+		if(distance > 500) active = false;
 	}
 	
 	//Getters and setters for the coordinates
