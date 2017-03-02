@@ -2,9 +2,8 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import networking.interfaces.ClientPlayerOld;
 import players.GeneralPlayer;
-import players.PhysicsClientPlayer;
+import rendering.Renderer;
 
 public class MouseListener implements EventHandler<MouseEvent>{
 
@@ -16,10 +15,13 @@ public class MouseListener implements EventHandler<MouseEvent>{
 
 	@Override
     public void handle(MouseEvent event) {
-		double newX = event.getX();
-		double newY = event.getY();
-		player.setMX(newX);
-		player.setMY(newY);
-		player.setShoot(event.isPrimaryButtonDown());
+		if(!Renderer.getPauseMenuState())
+		{
+			double newX = event.getX();
+			double newY = event.getY();
+			player.setMX(newX);
+			player.setMY(newY);
+			player.setShoot(event.isPrimaryButtonDown());
+		}
     }
 }

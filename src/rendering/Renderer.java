@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.animation.AnimationTimer;
-import javafx.scene.CacheHint;
-import javafx.scene.Cursor;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,7 +18,6 @@ import physics.KeyPressListener;
 import physics.KeyReleaseListener;
 import physics.MouseListener;
 import physics.OfflinePlayer;
-import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 
 /**
@@ -32,6 +28,7 @@ import players.GeneralPlayer;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
+	private static PauseMenu pauseMenu;
 	private double scale = 1;
 	private GeneralPlayer player;
 
@@ -46,6 +43,7 @@ public class Renderer extends Scene
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
+		pauseMenu = new PauseMenu();
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -125,6 +123,7 @@ public class Renderer extends Scene
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
+		pauseMenu = new PauseMenu();
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -184,6 +183,7 @@ public class Renderer extends Scene
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
 		MouseListener mouseListener = new MouseListener(player);
+
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);
 		setOnMouseDragged(mouseListener);
@@ -220,6 +220,24 @@ public class Renderer extends Scene
 	{
 		view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
 		view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
+		if(view.getChildren().contains(pauseMenu))
+		{
+			pauseMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
+			pauseMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
+		}
 	}
 
+	public static void togglePauseMenu()
+	{
+		if(!pauseMenu.opened)
+			view.getChildren().add(pauseMenu);
+		else
+			view.getChildren().remove(pauseMenu);
+		pauseMenu.opened = !pauseMenu.opened;
+	}
+
+	public static boolean getPauseMenuState()
+	{
+		return pauseMenu.opened;
+	}
 }

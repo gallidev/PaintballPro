@@ -169,12 +169,8 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	@Override
 	protected void updateAngle()
 	{
-		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
-		double x1 = temp.getX();
-		double y1 = temp.getY();
-
-		double deltax = mx - x1;
-		double deltay = y1 - my;
+		double deltax = mx - (1.65 * playerHeadX);
+		double deltay = playerHeadY - my;
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}

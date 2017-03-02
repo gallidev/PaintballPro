@@ -92,21 +92,18 @@ public class NicknameServerSelectMenu {
                 if (automatic.isSelected()) {
                     String ipPort = DiscoveryClientListener.findServer().split(":")[0];
                     if (ipPort.equals("")) {
-                        Alert alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("No LAN server");
-                        alert.setContentText("Cannot find any LAN servers running. Please try again or enter a server IP manually.");
-                        alert.showAndWait();
+                        AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
                     } else {
                         m.setIpAddress(ipPort);
                         // Transition back to the main menu
-                        m.establishConnection();
-                        m.transitionTo(MenuEnum.MultiplayerGameType, null);
+                        if (m.establishConnection())
+                            m.transitionTo(MenuEnum.MultiplayerGameType, null);
                     }
                 } else {
                     m.setIpAddress(ipText.getText());
                     // Transition back to the main menu
-                    m.establishConnection();
-                    m.transitionTo(MenuEnum.MultiplayerGameType, null);
+                    if (m.establishConnection())
+                        m.transitionTo(MenuEnum.MultiplayerGameType, null);
                 }
             }
         }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
