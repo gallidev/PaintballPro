@@ -45,8 +45,8 @@ public class PlayGame {
 	 *            All players that will form the first team.
 	 */
 	private void initializeTeamsWithPlayers(ArrayList<ServerPlayer> team1Players, ArrayList<ServerPlayer> team2Players) {
-		team1.setMembers(team1Players);
-		team2.setMembers(team2Players);
+		//team1.setMembers(team1Players);
+		//team2.setMembers(team2Players);
 	}
 
 	/**

@@ -5,11 +5,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
+import integrationServer.GameSimulation;
 import logic.RoundTimer;
 import networkingInterfaces.ServerGame;
+import physics.CollisionsHandler;
 import players.ServerBasicPlayer;
 import players.ServerMinimumPlayer;
 import players.UserPlayer;
+import rendering.Map;
 import serverLogic.Team;
 
 /**
@@ -319,7 +322,14 @@ public class Lobby {
 		red = new Team();
 		blue = new Team();
 		
-		//UserPlayer p1 = new UserPlayer(x, y, id, width, height, map, team, collisionsHandler);
+		Map map = new Map();
+		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, width, height, map, TeamEnum.RED, collisionsHandler);
+		
+		//add players to the teams
+		
+		
+		GameSimulation simulator = new GameSimulation(red, blue);
 	}
 	
 }
