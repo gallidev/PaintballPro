@@ -11,7 +11,7 @@ import rendering.Map;
 /**
  *  The player, represented by an ImageView
  */
-public abstract class UserPlayer extends ServerMinimumPlayer{
+public class UserPlayer extends ServerMinimumPlayer{
 
 	public UserPlayer(double x, double y, int id, double width, double height, Map map, TeamEnum team,
 			CollisionsHandler collisionsHandler) {
@@ -175,6 +175,12 @@ public abstract class UserPlayer extends ServerMinimumPlayer{
 	}
 	public void setCollRight(boolean collRight) {
 		this.collRight = collRight;
+	}
+
+	@Override
+	public void updateScore() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -3,8 +3,8 @@ package serverLogic;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
+import players.ServerMinimumPlayer;
 import players.ServerPlayer;
-import rendering.Map;
 
 /**
  * Class to represent a team of players in the game.
@@ -13,7 +13,7 @@ import rendering.Map;
  */
 public class Team {
 
-	private ArrayList<ServerPlayer> members;
+	private ArrayList<ServerMinimumPlayer> members;
 	private int score;
 	private TeamEnum colour;
 
@@ -37,7 +37,7 @@ public class Team {
 	 * Adds another player to the team and increments the number of team players.
 	 * @param p The new team player.
 	 */
-	public void addMember(ServerPlayer p){
+	public void addMember(ServerMinimumPlayer p){
 		members.add(p);
 		colour = p.getColour();
 	}
@@ -46,27 +46,12 @@ public class Team {
 	 * Adds players as a member of the team.
 	 * @param teamPlayers The array of players to team.
 	 */
-	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
-		for (ServerPlayer p : teamPlayers)
+	public void setMembers(ArrayList<ServerMinimumPlayer> teamPlayers) {
+		for (ServerMinimumPlayer p : teamPlayers)
 			addMember(p);
 		colour = teamPlayers.get(0).getColour();
 	}
-//	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
-//		p.getsetXCoord(newXCoord);
-//		p.setYCoord(newYCoord);
-//	}
 
-	// Probably not needed here.
-//	 /**
-//	 * Change one of the team player's location.
-//	 * @param p The player to be moved.
-//	 * @param newXCoord The new x coordinate of the player.
-//	 * @param newYCoord The new y coordinate of the player.
-//	 */
-//	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-//		p.setXCoordinate(newXCoord);
-//		p.setYCoordinate(newYCoord);
-//	}
 
 	/* Getters and setters */
 
@@ -83,7 +68,7 @@ public class Team {
 	}
 
 
-	public ArrayList<ServerPlayer> getMembers(){
+	public ArrayList<ServerMinimumPlayer> getMembers(){
 		return members;
 	}
 

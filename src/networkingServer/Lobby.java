@@ -8,7 +8,8 @@ import enums.TeamEnum;
 import logic.RoundTimer;
 import networkingInterfaces.ServerGame;
 import players.ServerBasicPlayer;
-import players.ServerPlayer;
+import players.ServerMinimumPlayer;
+import players.UserPlayer;
 import serverLogic.Team;
 
 /**
@@ -202,18 +203,18 @@ public class Lobby {
 		return playArrReturn;
 	}
 
-	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
-		Team newTeam = new Team();
-		for (ServerBasicPlayer origPlayer : team.values()) {
-			ServerPlayer player = null;
-			if (teamNum == 1)
-				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.BLUE);
-			else
-				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.RED);
-			newTeam.addMember(player);
-		}
-		return newTeam;
-	}
+//	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
+//		Team newTeam = new Team();
+//		for (ServerBasicPlayer origPlayer : team.values()) {
+//			ServerMinimumPlayer player = null;
+//			if (teamNum == 1)
+//				player = new UserPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.BLUE);
+//			else
+//				player = new UserPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.RED);
+//			newTeam.addMember(player);
+//		}
+//		return newTeam;
+//	}
 
 	/**
 	 * Method to be called from the GUI when the lobby ends to start the game
@@ -223,39 +224,39 @@ public class Lobby {
 	 * @param receiver
 	 * @author Alexandra Paduraru
 	 */
-	public void playGame(ServerMsgReceiver receiver) {
-		red = convertTeam(receiver, redTeam, 2);
-		blue = convertTeam(receiver, blueTeam, 1);
-
-		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
-		ServerBasicPlayer[] allPlayers = getPlayers();
-
-		// String to be sent needs to contain:
-		// StartGame:<myID><myTeam>...8 times
-
-		for (int i = 0; i < allPlayers.length; i++) {
-			String toBeSent = "StartGame:";
-
-			// the current player's info
-			toBeSent += allPlayers[i].getID() + ":" + getTeamAssoc(allPlayers[i].getID()) + ":";
-
-			// adding to the string the information about all the other players
-			for (int j = 0; j < allPlayers.length; j++)
-				if (allPlayers[j].getID() != allPlayers[i].getID())
-					toBeSent += allPlayers[j].getID() + ":" + getTeamAssoc(allPlayers[j].getID()) + ":";
-
-			receiver.sendToSpec(allPlayers[i].getID(), toBeSent);
-		}
-
-		currentSessionGame.startGame();
-
-		
-		while (!currentSessionGame.getGame().isGameFinished()) {}
-
-		// sends the end game signal to all clients
-		currentSessionGame.endGame(getWinner());
-		// currentSessionGame.endGame();
-	}
+//	public void playGame(ServerMsgReceiver receiver) {
+////		red = convertTeam(receiver, redTeam, 2);
+////		blue = convertTeam(receiver, blueTeam, 1);
+//
+//		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
+//		ServerBasicPlayer[] allPlayers = getPlayers();
+//
+//		// String to be sent needs to contain:
+//		// StartGame:<myID><myTeam>...8 times
+//
+//		for (int i = 0; i < allPlayers.length; i++) {
+//			String toBeSent = "StartGame:";
+//
+//			// the current player's info
+//			toBeSent += allPlayers[i].getID() + ":" + getTeamAssoc(allPlayers[i].getID()) + ":";
+//
+//			// adding to the string the information about all the other players
+//			for (int j = 0; j < allPlayers.length; j++)
+//				if (allPlayers[j].getID() != allPlayers[i].getID())
+//					toBeSent += allPlayers[j].getID() + ":" + getTeamAssoc(allPlayers[j].getID()) + ":";
+//
+//			receiver.sendToSpec(allPlayers[i].getID(), toBeSent);
+//		}
+////
+////		currentSessionGame.startGame();
+////
+////		
+////		while (!currentSessionGame.getGame().isGameFinished()) {}
+////
+////		// sends the end game signal to all clients
+////		currentSessionGame.endGame(getWinner());
+//		// currentSessionGame.endGame();
+//	}
 
 	// A timer, accessed by the client for game countdown.
 	public void timerStart(ServerMsgReceiver receiver) {
@@ -309,4 +310,16 @@ public class Lobby {
 		}
 		return "";
 	}
+	
+	
+	
+	//====================NEW INTEGRATION BELOW=================================
+	
+	public void playGame(){
+		red = new Team();
+		blue = new Team();
+		
+		//UserPlayer p1 = new UserPlayer(x, y, id, width, height, map, team, collisionsHandler);
+	}
+	
 }

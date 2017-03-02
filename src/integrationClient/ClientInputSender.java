@@ -1,5 +1,10 @@
 package integrationClient;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 import networkingClient.ClientSender;
 import physics.InputHandler;
 
@@ -14,6 +19,10 @@ public class ClientInputSender {
 	private InputHandler handler;
 	private int id;
 	
+	/* Dealing with sending the information */
+	private long delayMilliseconds = 33;
+	private int frames = 0;
+	
 	/**
 	 * Initialises a new input sender.
 	 * @param sender The client sender used by networking to send all information to the server.
@@ -24,6 +33,36 @@ public class ClientInputSender {
 		toServer = sender;
 		this.handler = handler;
 		id = playerId;
+	}
+	
+	public void startSending(){
+		
+		ScheduledExecutorService scheduler =
+			     Executors.newScheduledThreadPool(1);
+		Runnable sender = new Runnable() {
+		       public void run() {
+		    	   frames ++;
+		    	   sendServer();
+
+		       }
+		     };
+
+		ScheduledFuture<?> senderHandler =
+				scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
+
+		//for testing purposes:
+		
+//		Runnable frameCounter = new Runnable() {
+//		       public void run() {
+//		    	   System.out.println("server frames " + frames);
+//		    	   frames = 0;
+//
+//		       }
+//		     };
+//
+//		ScheduledFuture<?> frameCounterHandle =
+//				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
+
 	}
 	
 	/**

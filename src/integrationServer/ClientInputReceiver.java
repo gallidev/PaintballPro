@@ -29,38 +29,9 @@ public class ClientInputReceiver {
 		this.toClients = toClients;
 	}
 	
-	public void moveUpAction(){
-		//do sth here to update player location
-		//collision handling
-		//return an action that has to be sent to the client(through ServerActionSender)
-	}
-	
-	public void moveDownAction(){
-		//do sth here to update player location
-		//collision handling
-		//return an action that has to be sent to the client(through ServerActionSender)
-	}
-	
-	public void moveLeftAction(){
-		//do sth here to update player location
-		//collision handling
-		//return an action that has to be sent to the client(through ServerActionSender)
-	}
-	
-	public void moveRightAction(){
-		//do sth here to update player location
-		//collision handling
-		//return an action that has to be sent to the client(through ServerActionSender)
-	}
-	
-	public void mouseMovedAction(){
-		//do sth here to update player location
-		//collision handling
-		//return an action that has to be sent to the client(through ServerActionSender)
-	}
 
-	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shoot, double mX,
-			double mY) {
+	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, double mouseX,
+			double mouseY) {
 		// TODO Auto-generated method stub
 		
 	}

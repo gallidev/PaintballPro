@@ -312,6 +312,10 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	public void setCollRight(boolean collRight) {
 		this.collRight = collRight;
 	}
+	
+	public TeamEnum getColour(){
+		return team;
+	}
 
 
 }
