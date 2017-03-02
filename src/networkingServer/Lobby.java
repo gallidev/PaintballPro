@@ -12,6 +12,7 @@ import physics.CollisionsHandler;
 import players.ServerBasicPlayer;
 import players.ServerMinimumPlayer;
 import players.UserPlayer;
+import rendering.ImageFactory;
 import rendering.Map;
 import serverLogic.Team;
 
@@ -322,10 +323,15 @@ public class Lobby {
 		red = new Team();
 		blue = new Team();
 		
-		Map map = new Map();
-		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
-		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, width, height, map, TeamEnum.RED, collisionsHandler);
+		Map map = Map.load("res/maps/" + "elimination" + ".json");
 		
+		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
+		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+		
+		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map, TeamEnum.RED, collisionsHandler);
+		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map, TeamEnum.BLUE, collisionsHandler);
+
 		//add players to the teams
 		
 		
