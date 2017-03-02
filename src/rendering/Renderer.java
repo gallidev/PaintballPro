@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import audio.AudioManager;
 import enums.TeamEnum;
+import gui.GUIManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.*;
 import javafx.scene.effect.DropShadow;
@@ -37,13 +38,13 @@ public class Renderer extends Scene
 	 *
 	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String mapName, ClientReceiver receiver)
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager m)
 	{
 		super(view, 1024, 576);
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
-		pauseMenu = new PauseMenu();
+		pauseMenu = new PauseMenu(m);
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -117,13 +118,13 @@ public class Renderer extends Scene
 	 *
 	 * @param mapName Name of the selected map
 	 */
-	public Renderer(String mapName, AudioManager audio)
+	public Renderer(String mapName, AudioManager audio, GUIManager m)
 	{
 		super(view, 1024, 576);
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
-		pauseMenu = new PauseMenu();
+		pauseMenu = new PauseMenu(m);
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
