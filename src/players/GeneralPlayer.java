@@ -5,6 +5,7 @@ import java.util.Random;
 
 import audio.AudioManager;
 import enums.TeamEnum;
+import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.MoveTo;
@@ -57,6 +58,8 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 */
 	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
 		super(image);
+		setCache(true);
+		setCacheHint(CacheHint.SPEED);
 		setLayoutX(x);
 		setLayoutY(y);
 		this.lastX = x;
@@ -328,6 +331,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return eliminated;
 	}
 
+	public boolean isInvincible() {return invincible;}
 	public Polygon getPolygonBounds() {
 		return bounds;
 	}

@@ -1,6 +1,7 @@
 package physics;
 
 import enums.TeamEnum;
+import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -10,7 +11,7 @@ import javafx.scene.shape.Circle;
 public class Bullet extends Circle{
 	
 	private double angle;
-	private float speed = 10f;
+	private float speed = 7f;
 	private double x, y;
 	private double originX, originY;
 	private boolean active;
@@ -22,6 +23,8 @@ public class Bullet extends Circle{
 	 * @param angle The angle at which the bullet will travel
 	 */
 	public Bullet(double x, double y, double angle, TeamEnum team) {
+		setCache(true);
+		setCacheHint(CacheHint.SPEED);
 		this.x = x;
 		this.y = y;
 		this.originX = x;

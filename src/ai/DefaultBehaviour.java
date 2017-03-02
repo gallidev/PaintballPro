@@ -8,6 +8,7 @@ public class DefaultBehaviour extends Behaviour {
         super(ai, pathfinder);
     }
 
+    @Override
     public void tick(){
         enemies = ai.getEnemies();
         updateAngle();

@@ -40,6 +40,8 @@ public class Mover extends Behaviour{
         if (distance > 250) {
             Node last = path.getNode((path.getLength() - 1));
             path = pathfinder.getPath((int)ai.getLayoutX()/64, (int)ai.getLayoutY()/64, last.x, last.y);
+        } else {
+            ai.setMoving(true);
         }
 
 
@@ -50,11 +52,9 @@ public class Mover extends Behaviour{
     }
 
     private void move(){
-        double targetX = target.x * 64;
-        double targetY = target.y * 64;
-        double deltaX = targetX - ai.getLayoutX() - ai.getImage().getHeight()/2;
-        double deltaY = ai.getLayoutY() - targetY + ai.getImage().getHeight()/2;
-        if(Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) targetReached = true;
+        double deltaX = (target.x * 64) - ai.getLayoutX() + 16;
+        double deltaY = ai.getLayoutY() - (target.y * 64) + 16;
+        if(Math.abs(deltaX) < 20 && Math.abs(deltaY) < 20) targetReached = true;
         double movementAngle = Math.atan2(deltaX, deltaY);
         ai.setMovementAngle(movementAngle);
     }
@@ -65,15 +65,14 @@ public class Mover extends Behaviour{
         ai.setAngle(angle);
         ai.setShoot(updateShooting(closestX, closestY));
         timer = System.currentTimeMillis();
-        if(ai.isEliminated()) {
-            finished = false;
-            path = originalPath;
-        }
         followPath();
+        if(ai.isEliminated()) {
+            path = null;
+            finished = true;
+        }
     }
 
     public void change(){
-        ai.setAngle(angle--);
     }
 
     public boolean isFinished(){

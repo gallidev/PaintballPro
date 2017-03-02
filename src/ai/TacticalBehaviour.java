@@ -10,5 +10,12 @@ public class TacticalBehaviour extends Behaviour {
         super(ai, pathfinder);
     }
 
+    @Override
+    public void tick() {
+
+    }
+
+
+
 
 }

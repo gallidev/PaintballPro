@@ -76,4 +76,9 @@ public class Path {
     }
 
     public void removeFirst() { Nodes.remove(0);}
+
+    @Override
+    public String toString(){
+        return Nodes.toString();
+    }
 }

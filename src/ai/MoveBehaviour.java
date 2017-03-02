@@ -10,4 +10,9 @@ public class MoveBehaviour extends Behaviour {
         super(ai, pathfinder);
     }
 
+    @Override
+    public void tick() {
+
+    }
+
 }

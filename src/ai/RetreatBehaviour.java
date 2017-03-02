@@ -10,4 +10,9 @@ public class RetreatBehaviour extends Behaviour {
         super(ai, pathfinder);
     }
 
+    @Override
+    public void tick() {
+
+    }
+
 }

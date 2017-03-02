@@ -115,7 +115,7 @@ public class Pathfinding {
         Node goal = nodes[tx][ty];
         if(goal == null) return;
 
-        while(true){
+        while(true){ //use threading
             current = open.poll();
             if (current == null) break;
             closed.add(current);
@@ -128,33 +128,43 @@ public class Pathfinding {
             //Left
             if (current.x - 1 >= 0){
                 n = nodes[current.x-1][current.y];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Right
             if (current.x + 1 < nodes.length){
                 n = nodes[current.x+1][current.y];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Top
             if (current.y - 1 >= 0){
                 n = nodes[current.x][current.y-1];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Bottom
             if (current.y + 1 < nodes[0].length){
                 n = nodes[current.x][current.y+1];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Top Left
             if (current.x - 1 >= 0 && current.y - 1 >= 0){
-                //check of top and left are not obstacles
+                //check if top and left are not obstacles
                 if(nodes[current.x][current.y-1] != null && nodes[current.x-1][current.y] != null) {
                     n = nodes[current.x - 1][current.y - 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -163,7 +173,9 @@ public class Pathfinding {
                 //check if bottom and left are not obstacles
                 if(nodes[current.x][current.y+1] != null && nodes[current.x-1][current.y] != null) {
                     n = nodes[current.x - 1][current.y + 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -172,7 +184,9 @@ public class Pathfinding {
                 //check if top and right are not obstacles
                 if(nodes[current.x+1][current.y] != null && nodes[current.x][current.y-1] != null){
                     n = nodes[current.x + 1][current.y - 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -181,7 +195,9 @@ public class Pathfinding {
                 //check if bottom and right are not obstacles
                 if(nodes[current.x+1][current.y] != null && nodes[current.x][current.y+1] != null) {
                     n = nodes[current.x + 1][current.y + 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
         }

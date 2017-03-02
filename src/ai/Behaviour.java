@@ -42,7 +42,7 @@ public abstract class Behaviour {
         }
 
         public void change(){
-            timer = System.currentTimeMillis() - delay;
+            //timer = System.currentTimeMillis() - delay;
         }
 
         public void updateAngle(){
@@ -80,7 +80,7 @@ public abstract class Behaviour {
         }
 
 
-        public void tick() {}
+        public abstract void tick();
 }
 
 

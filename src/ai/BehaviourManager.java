@@ -2,7 +2,7 @@ package ai;
 
 import players.AIPlayer;
 
-public class BehaviourManager {
+public class BehaviourManager{
     private AIPlayer ai;
     private Pathfinding pathFinder;
     private Path path;
@@ -40,7 +40,7 @@ public class BehaviourManager {
         if(!mover.isFinished()) {
             mover.tick();
         } else {
-            defaultB.tick();
+            random.tick();
         }
     }
 
@@ -51,9 +51,6 @@ public class BehaviourManager {
             mover.change();
         }
     }
-
-
-
 
     //TODO - Implement behaviours
 }
