@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import gui.AlertBox;
 import gui.GUIManager;
 import networkingGame.UDPClientReceiver;
 import networkingShared.MessageQueue;
@@ -19,7 +20,7 @@ public class Client {
 	BufferedReader fromServer = null;
 	Socket server = null;
 
-	public Client(String passedNickname, int portNum, String machName, GUIManager m) {
+	public Client(String passedNickname, int portNum, String machName, GUIManager m) throws Exception {
 		
 		String nickname = passedNickname;
 
@@ -39,13 +40,17 @@ public class Client {
 			}
 			// If host cannot be found
 			catch (UnknownHostException e) {
+				AlertBox.showAlert("Connection Failed", "Please check that the server is running, and the IP address is correct.");
 				System.err.println("Unknown host: " + hostname);
-				System.exit(1); // Exit
+//				System.exit(1); // Exit
+				throw new Exception();
 			}
 			// If server isn't running.
 			catch (IOException e) {
+				AlertBox.showAlert("Connection Failed", "Please check that the server is running, and the IP address is correct.");
 				System.err.println("The server doesn't seem to be running " + e.getMessage());
-				System.exit(1); // Exit
+//				System.exit(1); // Exit
+				throw new Exception();
 			}
 
 			// Create two client threads, one for sending and one for receiving
@@ -121,7 +126,9 @@ public class Client {
 		// separator so cannot be in a nickname.
 		else {
 			System.out.println("Error: Username cannot contain character ':', please change it.");
-			System.exit(1);
+			AlertBox.showAlert("Username error", "Your username cannot contain a ':' character");
+			throw new Exception();
+//			System.exit(1);
 		}
 	}
 

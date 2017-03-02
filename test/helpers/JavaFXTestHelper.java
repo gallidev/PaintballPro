@@ -15,4 +15,5 @@ public class JavaFXTestHelper {
             throw new RuntimeException("JavaFXTestHelper thread interrupted");
         }
     }
+
 }
