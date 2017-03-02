@@ -32,7 +32,7 @@ public abstract class GhostPlayer extends ImageView {
 		super(image);
 		this.playerId = playerId;
 		this.audio = audio;
-	}
+	}	
 
 	public void beenShot() {
 		audio.playSFX(audio.sfx.splat, (float) 1.0);
