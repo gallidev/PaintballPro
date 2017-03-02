@@ -1,6 +1,5 @@
 package integrationClient;
 
-import integrationServer.ServerActionSender;
 import players.GhostPlayer;
 
 /**
