@@ -257,23 +257,23 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		this.angle = angle;
 	}
 
-	public void setUp(boolean up){
+	public synchronized void setUp(boolean up){
 		this.up = up;
 	}
 
-	public void setDown(boolean down){
+	public synchronized void setDown(boolean down){
 		this.down = down;
 	}
 
-	public void setLeft(boolean left){
+	public synchronized void setLeft(boolean left){
 		this.left = left;
 	}
 
-	public void setRight(boolean right){
+	public synchronized void setRight(boolean right){
 		this.right = right;
 	}
 
-	public void setShoot(boolean shoot){
+	public synchronized void setShoot(boolean shoot){
 		this.shoot = shoot;
 	}
 
@@ -285,9 +285,11 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		return id;
 	}
 
-	public void setMX(double newX) {
+	public synchronized void setMouseX(double newX) {
+		mouseX = newX;
 	}
-	public void setMY(double newY){
+	public synchronized void setMouseY(double newY){
+		mouseY = newY;
 	}
 
 	public boolean isEliminated(){

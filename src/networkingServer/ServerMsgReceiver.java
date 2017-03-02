@@ -124,16 +124,8 @@ public class ServerMsgReceiver extends Thread {
 					
 					//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 					//							NEW INTEGRATION BELOW
-					if(text.contains("Action:")){
-						String[] action = text.split(":");
-						
-						switch(action[2]){
-							case "Up"    : inputReceiver.moveUpAction();
-							case "Down"  : inputReceiver.moveDownAction();
-							case "Left"  : inputReceiver.moveLeftAction(); 
-							case "Right" : inputReceiver.moveRightAction();
-							case "Mouse" : inputReceiver.mouseMovedAction();
-						}
+					switch(text.charAt(0)){
+					case '0' : playerInputChanged(text);
 					}
 
 				} else // if the client wants to exit the system.
@@ -149,6 +141,73 @@ public class ServerMsgReceiver extends Thread {
 		}
 	}
 
+	
+	
+	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
+	//							NEW INTEGRATION BELOW
+	public void playerInputChanged(String text){
+		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
+		String[] actions = text.split(":");
+		boolean up = false;
+		boolean down = false;
+		boolean left = false;
+		boolean right = false;
+		boolean shoot = false;
+		double mX = 0;
+		double mY = 0;
+		
+		for(int i = 0; i < actions.length - 1; i++){
+			String act = actions[i];
+			switch(act){
+				case "Up"    : up = true;
+							   break;
+				case "Down"  : down = true;
+							   break;
+				case "Left"  : left = true;
+							   break;
+				case "Right" : right = true;
+				   			   break;
+				case "Mouse" : mX = Double.parseDouble(actions[i+1]);
+							   mY = Double.parseDouble(actions[i+2]);
+							   i = i + 3;
+							   break;
+				default		 : break;
+			}
+		}
+		
+		int id = Integer.parseInt(actions[actions.length - 1]);
+		
+		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//===================OLD INTEGRATION===============================================
+	
 	/*
 	 * Different actions performed depending on the messages received from
 	 * clients.

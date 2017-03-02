@@ -59,4 +59,10 @@ public class ClientInputReceiver {
 		//return an action that has to be sent to the client(through ServerActionSender)
 	}
 
+	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shoot, double mX,
+			double mY) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

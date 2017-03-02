@@ -55,7 +55,7 @@ public class ClientInputSender {
 			toBeSent += ":Shooting:" + id;
 		
 		//did the mouse move?
-			toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY() + ":" + id;
+		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY() + ":" + id;
 			
 		toServer.sendMessage(toBeSent);
 	}
