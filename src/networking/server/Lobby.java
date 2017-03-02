@@ -1,4 +1,4 @@
-package networkingServer;
+package networking.server;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
 import logic.RoundTimer;
-import networkingGame.UDPServer;
-import networkingInterfaces.ServerGame;
+import networking.game.UDPServer;
+import networking.interfaces.ServerGame;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
 import serverLogic.Team;

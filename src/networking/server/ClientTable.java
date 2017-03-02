@@ -1,10 +1,13 @@
-package networkingServer;
+package networking.server;
 import java.util.ArrayList;
 import java.util.concurrent.*;
-import networkingShared.MessageQueue;
+
+import networking.shared.MessageQueue;
 import players.ServerBasicPlayer;
 /**
  * Class to store important client-related information used by Client and Server.
+ * 
+ * @author MattW
  */
 public class ClientTable {
 	//Structures storing relevant data
@@ -19,14 +22,16 @@ public class ClientTable {
 	private ConcurrentMap<Integer,Integer> Scores = new ConcurrentHashMap<Integer,Integer>();
 	//Each client has a Player object..
 	private ConcurrentMap<Integer, ServerBasicPlayer> playerInstances = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
-	
+	//Stores table of IP addresses and corresponding Client IDs.
 	private ConcurrentMap<String, Integer> clientIPTable = new ConcurrentHashMap<String, Integer>();
+	//Stored table of Client IDs and their related IP addresses.
 	private ConcurrentMap<Integer, String> clientIPTableIDKEY = new ConcurrentHashMap<Integer, String>();
 	
 	//Each user will have an incrementing unique id - allows multiple people with the same nickname.
 	private int id = 1;
+	
 	/**
-	 * Add client information to all of the data structures.
+	 * Add client information to all of the relevant data structures.
 	 * @param nickname The nickname of the Client.
 	 * @return The id of the client that has just been added to the table.
 	 */
@@ -42,27 +47,51 @@ public class ClientTable {
 		return (id-1); //Return this client's id value.
 	}
 	
+	/**
+	 * Add an ip and message queue.
+	 * @param ip IP address to relate a message queue to.
+	 */
 	public synchronized void addUDPQueue(String ip)
 	{
 		UDPqueueTable.put(ip, new MessageQueue());
 	}
 	
+	/**
+	 * Get the UDP message queue for a client with particular ID.
+	 * @param clientID ID of the client.
+	 * @return UDP message queue.
+	 */
 	public synchronized MessageQueue getUDPQueueWithID(int clientID)
 	{
 		return UDPqueueTable.get(clientIPTable.get(clientID));
 	}
 	
+	/**
+	 * Get the UDP message queue for a client with particular IP.
+	 * @param ip IP of the client.
+	 * @return UDP message queue.
+	 */
 	public synchronized MessageQueue getUDPQueueWithIP(String ip)
 	{
 		return UDPqueueTable.get(ip);
 	}
 	
+	/**
+	 * Add a new IP address to relevant tables.
+	 * @param ip IP address to add.
+	 * @param clientID ID of the related client.
+	 */
 	public synchronized void addNewIP(String ip, int clientID)
 	{
 		clientIPTable.put(ip,clientID);
 		clientIPTableIDKEY.putIfAbsent(clientID, ip);
 	}
 	
+	/**
+	 * 
+	 * @param ip
+	 * @return
+	 */
 	public synchronized int getID(String ip)
 	{
 		return clientIPTable.get(ip);

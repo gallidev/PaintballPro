@@ -1,11 +1,11 @@
-package networkingServer;
+package networking.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import networkingGame.UDPServer;
-import networkingShared.Message;
-import networkingShared.MessageQueue;
+import networking.game.UDPServer;
+import networking.shared.Message;
+import networking.shared.MessageQueue;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
 

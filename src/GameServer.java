@@ -1,5 +1,5 @@
-import networkingDiscovery.DiscoveryServerAnnouncer;
-import networkingServer.Server;
+import networking.discovery.DiscoveryServerAnnouncer;
+import networking.server.Server;
 
 public class GameServer {
 	public static void main(String[] args) {

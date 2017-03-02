@@ -1,5 +1,5 @@
-import networkingDiscovery.DiscoveryServerAnnouncer;
-import networkingServer.Server;
+import networking.discovery.DiscoveryServerAnnouncer;
+import networking.server.Server;
 
 /**
  * Created by jack on 13/02/2017.

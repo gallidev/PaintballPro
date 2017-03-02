@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import networkingClient.ClientReceiver;
+import networking.client.ClientReceiver;
 import offlineLogic.OfflineGameMode;
 import offlineLogic.OfflineTeamMatchMode;
 import physics.Bullet;

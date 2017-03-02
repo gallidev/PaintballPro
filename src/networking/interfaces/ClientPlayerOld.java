@@ -1,8 +1,8 @@
-package networkingInterfaces;
+package networking.interfaces;
 
-import networkingClient.ClientReceiver;
-import networkingClient.ClientSender;
-import networkingShared.MessageQueue;
+import networking.client.ClientReceiver;
+import networking.client.ClientSender;
+import networking.shared.MessageQueue;
 import players.GeneralPlayer;
 
 /**
@@ -29,6 +29,10 @@ public class ClientPlayerOld {
 		this.sender = sender;
 	}
 	
+	/**
+	 * Get the client sender thread object. 
+	 * @return CLient sender thread.
+	 */
 	public ClientSender getSender(){
 		return sender;
 	}

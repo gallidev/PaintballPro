@@ -1,16 +1,21 @@
-package networkingGame;
+package networking.game;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import networkingServer.ClientTable;
-import networkingServer.Lobby;
-import networkingServer.LobbyTable;
+import networking.server.ClientTable;
+import networking.server.Lobby;
+import networking.server.LobbyTable;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
 
-// One per server.
+/**
+ * Server-side Sender and Receiver using UDP protocol for in-game transmission.
+ * One per server.
+ * 
+ * @author MattW
+ */
 public class UDPServer extends Thread{
 
 	private boolean debug = false;
@@ -18,12 +23,20 @@ public class UDPServer extends Thread{
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
 	
-	// when we get a new connection, add ip to client table 
+	/**
+	 * Constructor, sets global variables to those passed.
+	 * @param clientTable Table storing all necessary client information.
+	 * @param lobby Table storing all necessary lobby information.
+	 */
 	public UDPServer(ClientTable clientTable, LobbyTable lobby) {
 		clients = clientTable;
 		this.lobbyTab = lobby;
 	}
 	
+	/**
+	 * Loop through, reading messages from the server.
+	 * Main method, ran when the thread is started.
+	 */
 	public void run()
 	{
 		try {
@@ -82,7 +95,11 @@ public class UDPServer extends Thread{
 		serverSocket.close();
 	}
 
-	// Let's broadcast to all members of the same game - given a lobby id.
+	/**
+	 * Send a message to all clients in a game - based on Lobby.
+	 * @param toBeSent Message to be sent to all clients.
+	 * @param lobbyID ID of game lobby.
+	 */
 	public void sendToAll(String toBeSent, int lobbyID) {
 		byte[] sendData = new byte[1024];
 		sendData = toBeSent.getBytes();
@@ -116,7 +133,12 @@ public class UDPServer extends Thread{
 				makeMove(lobby,toBeSent);
 		}
 	}
-	// Let's broadcast to all members of the same game - given ip of member.
+	
+	/**
+	 * Send a message to all clients in a game - based on Lobby.
+	 * @param toBeSent Message to be sent to all clients.
+	 * @param ip IP of a particular client in the lobby we want to send messages to.
+	 */
 	public void sendToAll(String toBeSent, String ip)
 	{
 		// we get the lobby id.
@@ -133,8 +155,7 @@ public class UDPServer extends Thread{
 	 * the server keep track of each team's score(the teams are stored in the
 	 * Lobby).
 	 * 
-	 * @param text
-	 *            The protocol message for updating a team's score.
+	 * @param text The protocol message for updating a team's score.
 	 * 
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
@@ -153,12 +174,23 @@ public class UDPServer extends Thread{
 		if(debug) System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
 	}
 	
+	/**
+	 * We reset status of some objects storing game-specific information.
+	 * @param ip IP of a particular client to remove.
+	 */
 	private void exitGame(String ip) {
 		ServerBasicPlayer myPlayer = clients.getPlayer(clients.getID(ip));
 		lobbyTab.removePlayer(myPlayer);
 		myPlayer.setAllocatedLobby(-1);
 	}
 	
+	/**
+	 * We represent a move being made by a player.
+	 * @param lobby Lobby that the player is in.
+	 * @param text Text to parse movement information.
+	 * 
+	 * @author Alexandra Paduraru and Matthew Walters
+	 */
 	private void makeMove(Lobby lobby, String text)
 	{
 		//extract the id of the server player with a new location

@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
-import networkingDiscovery.DiscoveryClientListener;
+import networking.discovery.DiscoveryClientListener;
 /**
  * Created by jack on 12/02/2017.
  */

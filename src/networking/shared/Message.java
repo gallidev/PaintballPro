@@ -1,7 +1,9 @@
-package networkingShared;
+package networking.shared;
 
 /**
  * Store message information to send to a client.
+ * 
+ * @author MattW
  */
 public class Message {
 
@@ -10,8 +12,7 @@ public class Message {
 	/**
 	 * Set message text to be sent to the client.
 	 * 
-	 * @param text
-	 *            The text of the message.
+	 * @param text The text of the message.
 	 */
 	public Message(String text) {
 		this.text = text;

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.scene.image.Image;
-import networkingServer.ServerMsgReceiver;
+import networking.server.ServerMsgReceiver;
 import physics.Bullet;
 import rendering.Map;
 /**

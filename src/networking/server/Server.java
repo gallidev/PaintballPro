@@ -1,4 +1,4 @@
-package networkingServer;
+package networking.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,9 +7,10 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import networkingGame.UDPServer;
-import networkingShared.Message;
-import networkingShared.MessageQueue;
+
+import networking.game.UDPServer;
+import networking.shared.Message;
+import networking.shared.MessageQueue;
 /**
  * Class to represent a running server that connects to multiple clients via
  * sockets.

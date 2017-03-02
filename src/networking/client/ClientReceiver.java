@@ -1,4 +1,4 @@
-package networkingClient;
+package networking.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
-import networkingGame.UDPClientReceiver;
-import networkingShared.Message;
-import networkingShared.MessageQueue;
+import networking.game.UDPClientReceiver;
+import networking.shared.Message;
+import networking.shared.MessageQueue;
 import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
@@ -22,13 +22,13 @@ import rendering.Map;
 /**
  * Class to get messages from client, process and put appropriate message for a
  * client.
+ * 
+ * @author MattW
  */
 public class ClientReceiver extends Thread {
 	private int clientID;
 	private BufferedReader fromServer;
 	private ClientSender sender;
-	private MessageQueue myMsgQueue;
-	private Message msg;
 	private GUIManager m;
 	private PhysicsClientPlayer cPlayer;
 	private ArrayList<ClientLocalPlayer> myTeam;
@@ -48,12 +48,11 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, MessageQueue msgQueue, GUIManager m, UDPClientReceiver udpReceiver, TeamTable teams) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, GUIManager m, UDPClientReceiver udpReceiver, TeamTable teams) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
 		this.sender = sender;
-		myMsgQueue = msgQueue;
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
 		this.udpReceiver = udpReceiver;
@@ -228,10 +227,18 @@ public class ClientReceiver extends Thread {
 		return enemies;
 	}
 
+	/**
+	 * Return client sender object.
+	 * @return Sender thread.
+	 */
 	public ClientSender getSender() {
 		return sender;
 	}
 
+	/**
+	 * Return client player instantiation of player.
+	 * @return Client Player object.
+	 */
 	public PhysicsClientPlayer getClientPlayer() {
 		return cPlayer;
 	}

@@ -1,4 +1,4 @@
-package networkingClient;
+package networking.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,10 +8,16 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import gui.GUIManager;
-import networkingGame.UDPClientReceiver;
-import networkingShared.MessageQueue;
+import networking.game.UDPClientReceiver;
+import networking.shared.MessageQueue;
 
+/**
+ * Controls main client code - holds server sender and receiver threads.
+ * 
+ * @author MattW
+ */
 public class Client {
+	
 	ClientSender sender;
 	ClientReceiver receiver;
 	int clientID;
@@ -19,7 +25,14 @@ public class Client {
 	BufferedReader fromServer = null;
 	Socket server = null;
 
-	public Client(String passedNickname, int portNum, String machName, GUIManager m) {
+	/**
+	 * Sets up Client, starts up threads and connects to the server, retrieving an id for this client.
+	 * @param passedNickname Nickname that the user wants to be set as.
+	 * @param portNum Port number on server to connect to.
+	 * @param serverIP IP address of the server.
+	 * @param guiManager GUI Manager object.
+	 */
+	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager) {
 		
 		String nickname = passedNickname;
 
@@ -27,7 +40,7 @@ public class Client {
 		if (!nickname.contains(":") || !nickname.contains("-")) {
 			
 			int portNumber = portNum;
-			String hostname = machName;
+			String hostname = serverIP;
 
 			// Open sockets:
 			try {
@@ -81,11 +94,11 @@ public class Client {
 			TeamTable teams = new TeamTable();
 			
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClientReceiver udpReceiver = new UDPClientReceiver(clientID,hostname,m,teams);
+			UDPClientReceiver udpReceiver = new UDPClientReceiver(clientID,hostname,guiManager,teams);
 			udpReceiver.start();
 
 			// We can now set up the message received for the client.
-			receiver = new ClientReceiver(clientID, fromServer, sender, msgQueue, m, udpReceiver,teams);
+			receiver = new ClientReceiver(clientID, fromServer, sender, guiManager, udpReceiver,teams);
 			receiver.start();
 
 
@@ -117,22 +130,33 @@ public class Client {
 			t.start();
 
 		}
-		// If username contains the character : (used for a string information
-		// separator so cannot be in a nickname.
+		// If username contains the character : (used for a string information separator so cannot be in a nickname).
 		else {
 			System.out.println("Error: Username cannot contain character ':', please change it.");
 			System.exit(1);
 		}
 	}
 
+	/**
+	 * Returns the id given by server for the client.
+	 * @return Client's id.
+	 */
 	public int getClientID() {
 		return clientID;
 	}
 
+	/**
+	 * Returns the sender thread to send messages to the server.
+	 * @return Sender thread.
+	 */
 	public ClientSender getSender() {
 		return sender;
 	}
 
+	/**
+	 * Returns the receiver thread to receive messages from the server.
+	 * @return Receiver thread.
+	 */
 	public ClientReceiver getReceiver() {
 		return receiver;
 	}

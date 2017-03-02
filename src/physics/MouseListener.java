@@ -2,7 +2,7 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import networkingInterfaces.ClientPlayerOld;
+import networking.interfaces.ClientPlayerOld;
 import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
 

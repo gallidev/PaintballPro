@@ -1,11 +1,11 @@
-package networkingServer;
+package networking.server;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import networkingShared.Message;
-import networkingShared.MessageQueue;
+import networking.shared.Message;
+import networking.shared.MessageQueue;
 
 // Continuously reads from message queue for a particular client,
 // forwarding to the client.

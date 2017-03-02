@@ -17,10 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import networkingClient.Client;
-import networkingClient.ClientReceiver;
-import networkingClient.ClientSender;
-import networkingServer.Server;
+import networking.client.Client;
+import networking.client.ClientReceiver;
+import networking.client.ClientSender;
+import networking.server.Server;
 import rendering.Renderer;
 
 /**

@@ -1,4 +1,4 @@
-package networkingServer;
+package networking.server;
 
 import java.util.ArrayList;
 import java.io.BufferedReader;

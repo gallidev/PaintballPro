@@ -1,4 +1,4 @@
-package networkingGame;
+package networking.game;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -6,12 +6,17 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import gui.GUIManager;
-import networkingClient.TeamTable;
+import networking.client.TeamTable;
 import physics.Bullet;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 
-// One per client.
+/**
+ * Client-side Sender and Receiver using UDP protocol for in-game transmission.
+ * One per client.
+ * 
+ * @author MattW
+ */
 public class UDPClientReceiver extends Thread {
 
 	private boolean debug = false;
@@ -24,12 +29,18 @@ public class UDPClientReceiver extends Thread {
 	
 	TeamTable teams;
 	
-	// We establish a connection with the UDP server... we tell it we are connecting for the first time so that
-	// it stores our information server-side.
-	public UDPClientReceiver(int clientID, String udpServIP, GUIManager m, TeamTable teams)
+	/**
+	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
+	 * it stores our information server-side.
+	 * @param clientID ID allocated to the client.
+	 * @param udpServIP IP for the server-side UDP socket.
+	 * @param guiManager Manager of GUI.
+	 * @param teams Both client's and opposing teams.
+	 */
+	public UDPClientReceiver(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams)
 	{
 		this.clientID = clientID;
-		this.m = m;
+		this.m = guiManager;
 		this.teams = teams;
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
@@ -45,7 +56,10 @@ public class UDPClientReceiver extends Thread {
 		}
 	}
 	
-	// We loop, reading messages from the server.
+	/**
+	 * Loop through, reading messages from the server.
+	 * Main method, ran when the thread is started.
+	 */
 	public void run()
 	{
 		try{
@@ -56,7 +70,6 @@ public class UDPClientReceiver extends Thread {
 				clientSocket.receive(receivePacket);
 				String sentSentence = new String(receivePacket.getData());
 				
-				// Do any extra processing here for in-game commands.
 				// In-game messages
 				if (sentSentence.contains("Move"))
 					moveAction(sentSentence);
@@ -80,7 +93,10 @@ public class UDPClientReceiver extends Thread {
 		clientSocket.close();
 	}
 	
-	// We send messages to the server.
+	/**
+	 * Send messages to the server.
+	 * @param msg Message to send.
+	 */
 	public void sendMessage(String msg) 
 	{	
 		try{

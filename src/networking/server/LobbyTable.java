@@ -1,6 +1,7 @@
-package networkingServer;
+package networking.server;
 import java.util.concurrent.*;
-import networkingGame.UDPServer;
+
+import networking.game.UDPServer;
 import players.ServerBasicPlayer;
 /**
  * Class to store important client-related information used by Client and

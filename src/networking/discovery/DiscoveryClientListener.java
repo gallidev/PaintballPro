@@ -1,14 +1,19 @@
-package networkingDiscovery;
+package networking.discovery;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+
 /**
  * Class to listen out for servers in the LAN
+ * 
+ * @author MattW
  */
 public class DiscoveryClientListener {
+	
 	/**
 	 * Get the IP address and port of the first server found
 	 * 
@@ -32,7 +37,6 @@ public class DiscoveryClientListener {
 	            	//e.printStackTrace();
 	            }
 	        }
-			//socket.setNetworkInterface(NetworkInterface.getByName("wlan0"));
 			socket.joinGroup(broadcastAddress);
 			
 			byte[] buf = new byte[1023];
@@ -54,9 +58,4 @@ public class DiscoveryClientListener {
 		}
 		return "";
 	}
-//	public static void main(String[] args) {
-//		Thread t = new Thread(new ServerAnnouncer(5000));
-//		t.start();
-//		System.out.println(ClientListener.findServer());
-//	}
 }

@@ -1,12 +1,12 @@
-package networkingInterfaces;
+package networking.interfaces;
 
 import java.util.ArrayList;
 
 import enums.TeamEnum;
 import logic.GameMode;
-import networkingGame.UDPServer;
-import networkingServer.ServerMsgReceiver;
-import networkingShared.Message;
+import networking.game.UDPServer;
+import networking.server.ServerMsgReceiver;
+import networking.shared.Message;
 import players.ServerPlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.EscortMode;
@@ -69,7 +69,8 @@ public class ServerGame {
 	
 	/**
 	 * Checks to see when a game has ended and sends the appropriate message to all clients.
-	 */
+	 * @param t Enumeration of Team colours - Red and Blue.
+ 	 */
 	public void endGame(TeamEnum t){
 		String toBeSent = "EndGame:";
 		
@@ -88,24 +89,43 @@ public class ServerGame {
 		
 	}
 	
+	/**
+	 * Send a message to all clients that the game has ended.
+	 */
 	public void endGame(){
 		if (game.isGameFinished())
 			serverReceiver.sendToAll("EndGame",lobbyID);
 	}
 	
 	/*Getters and setters*/
+	/**
+	 * Get the game object.
+	 * @return Game object.
+	 */
 	public GameMode getGame() {
 		return game;
 	}
 	
+	/**
+	 * Get current players in the Red team.
+	 * @return Red team as an arraylist.
+	 */
 	public ArrayList<ServerPlayer> getRedTeamPlayers(){
 		return game.getFirstTeam().getMembers();
 	}
 	
+	/**
+	 * Get current players in the Blue team.
+	 * @return Blue team as an arraylist.
+	 */
 	public ArrayList<ServerPlayer> getBlueTeamPlayers(){
 		return game.getSecondTeam().getMembers();
 	}
 	
+	/**
+	 * Get current players in both the Red and Blue team.
+	 * @return Both teams as an arraylist.
+	 */
 	public ArrayList<ServerPlayer> getAllPlayers(){
 		ArrayList<ServerPlayer> redTeam = getRedTeamPlayers();
 		ArrayList<ServerPlayer>  blueTeam = getBlueTeamPlayers();
