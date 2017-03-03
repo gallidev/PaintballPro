@@ -54,7 +54,7 @@ public class UDPServer extends Thread{
 			      InetAddress IPAddress;
 			      int port;
 			     
-			      if(sentence.contains("Exit"))
+			      if(sentence.contains("ExitUDP"))
 			    	  break;
 			      else if(sentence.contains("Connect:"))
 			      {
@@ -91,8 +91,11 @@ public class UDPServer extends Thread{
 		{
 			if(debug) System.err.println(e.getStackTrace());
 		}
-		// TODO - Let's do some closing stuff here.
-		serverSocket.close();
+		finally
+		{
+			// TODO - Let's do some closing stuff here.
+			serverSocket.close();
+		}
 	}
 
 	/**
