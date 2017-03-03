@@ -24,7 +24,7 @@ public class ClientActionReceiver {
 	 * @param player
 	 *            The player upon which the actions take place.
 	 */
-	public ClientActionReceiver(ArrayList<GhostPlayer> player) {
+	public ClientActionReceiver(ArrayList<GhostPlayer> players) {
 		this.players = players;
 	}
 	
