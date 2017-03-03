@@ -5,12 +5,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
+import integrationServer.ClientInputReceiver;
 import integrationServer.GameSimulation;
+import integrationServer.ServerGameStateSender;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
 import physics.CollisionsHandler;
 import players.ServerBasicPlayer;
+import players.ServerMinimumPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
@@ -326,6 +329,7 @@ public class Lobby {
 		red = new Team();
 		blue = new Team();
 
+		
 		Map map = Map.load("res/maps/" + "elimination" + ".json");
 
 		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
@@ -340,10 +344,17 @@ public class Lobby {
 		blue.addMember(bluePlayer);
 
 		collisionsHandler.setRedTeam(red.getMembers());
-		collisionsHandler.setRedTeam(red.getMembers());
+		collisionsHandler.setBlueTeam(blue.getMembers());
+
+		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		players.addAll(red.getMembers());
+		players.addAll(blue.getMembers());
+		receiver.setInputReceiver(players);
+		ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
 
 		GameSimulation simulator = new GameSimulation(red, blue);
 		simulator.startExecution();
+		stateSender.startSending();
 	}
 
 }

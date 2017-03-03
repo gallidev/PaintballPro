@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import audio.AudioManager;
 import enums.TeamEnum;
+import integrationClient.ClientInputSender;
 import javafx.animation.AnimationTimer;
 import javafx.scene.*;
 import javafx.scene.effect.DropShadow;
@@ -33,7 +34,8 @@ public class Renderer extends Scene
 	private static PauseMenu pauseMenu;
 	private double scale = 1;
 	private GeneralPlayer player;
-	private GhostPlayer currentPlayer;
+	private GhostPlayer cPlayer;
+	private ClientInputSender inputSender;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
@@ -58,10 +60,11 @@ public class Renderer extends Scene
 
 		Map.load("res/maps/" + mapName + ".json");
 
-		player = receiver.getClientPlayer();
-		player.setCache(true);
-		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		view.getChildren().add(player);
+		cPlayer = receiver.getClientPlayer();
+
+		cPlayer.setCache(true);
+		cPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		view.getChildren().add(cPlayer);
 
 		receiver.getMyTeam().forEach(localPlayer ->
 		{
@@ -77,6 +80,7 @@ public class Renderer extends Scene
 		});
 		view.getChildren().addAll(receiver.getEnemies());
 
+
 		InputHandler inputHandler = new InputHandler();
 
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
@@ -90,29 +94,15 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		ArrayList<Bullet> pellets = new ArrayList<>();
+		inputSender = new ClientInputSender(receiver.getSender(),inputHandler, cPlayer.getPlayerId());
+		inputSender.startSending();
+
 		new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
 			{
 				updateView();
-
-				view.getChildren().removeAll(pellets);
-				pellets.clear();
-
-				for(Bullet pellet : player.getBullets())
-				{
-					if(pellet.isActive())
-						pellets.add(pellet);
-				}
-				for(GeneralPlayer player : receiver.getMyTeam())
-					pellets.addAll(player.getBullets());
-				for(GeneralPlayer player : receiver.getEnemies())
-					pellets.addAll(player.getBullets());
-				view.getChildren().addAll(pellets);
-
-				player.tick();
 			}
 		}.start();
 	}

@@ -8,6 +8,7 @@ import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
 import integrationClient.ClientActionReceiver;
+import integrationClient.ClientInputSender;
 import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.CollisionsHandlerGeneralPlayer;
@@ -128,7 +129,7 @@ public class ClientReceiver extends Thread {
 
 					//initialize the ClientActionReceiver!!!!
 					//do stuff here according to new protocols for actions that update the client-sided player
-					
+
 					switch(text.charAt(0)){
 						case '1' : updatePlayerAction(text) ;
 								   break;
@@ -150,25 +151,25 @@ public class ClientReceiver extends Thread {
 	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 	//							NEW INTEGRATION BELOW
 
-	
+
 	private void updatePlayerAction(String text) {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		String[] actions = text.split("1");
-		
+
 		int id = Integer.parseInt(actions[1]);
 		double x = Double.parseDouble(actions[2]);
 		double y = Double.parseDouble(actions[3]);
 		double angle = Double.parseDouble(actions[4]);
-		
+
 		boolean visibility = false;
 		if (actions[3].equals("true"))
 			visibility = true;
-		
+
 		;
-		
+
 		actionReceiver.updatePlayer(id, x, y, angle, visibility);
-		
-		
+
+
 	}
 
 	// Different actions to handle the server messages
@@ -197,7 +198,6 @@ public class ClientReceiver extends Thread {
 		else
 			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null);
 
-		ArrayList<GhostPlayer> allplayers = new ArrayList<GhostPlayer>();
 		// extract the other members
 		for (int i = 3; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);
@@ -218,11 +218,12 @@ public class ClientReceiver extends Thread {
 			}
 		}
 
-		allplayers.addAll(enemies);
-		allplayers.addAll(myTeam);
-
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
+
+
+		actionReceiver = new ClientActionReceiver(getAllPlayers());
+
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
@@ -273,4 +274,21 @@ public class ClientReceiver extends Thread {
 	public GhostPlayer getClientPlayer() {
 		return cPlayer;
 	}
+
+	/**
+	 * Return all the players that are not in this Player's team.
+	 *
+	 * @return All opponent players.
+	 *
+	 * @author Alexandra Paduraru
+	 */
+	public ArrayList<GhostPlayer> getAllPlayers() {
+		ArrayList<GhostPlayer> allplayers = new ArrayList<GhostPlayer>();
+		allplayers.addAll(enemies);
+		allplayers.addAll(myTeam);
+		allplayers.add(cPlayer);
+		return allplayers;
+	}
+
+
 }

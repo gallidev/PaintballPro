@@ -14,21 +14,21 @@ import players.GeneralPlayer;
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
  * One per client.
- * 
+ *
  * @author MattW
  */
 public class UDPClient extends Thread {
 
 	private boolean debug = false;
 	private int clientID;
-	
+
 	DatagramSocket clientSocket;
 	InetAddress IPAddress;
-	
+
 	GUIManager m;
-	
+
 	TeamTable teams;
-	
+
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
 	 * it stores our information server-side.
@@ -48,14 +48,14 @@ public class UDPClient extends Thread {
 			IPAddress = InetAddress.getByName(udpServIP);
 			String sentence = "Connect:"+clientID;
 			sendMessage(sentence);
-			
+
 		}
 		catch (Exception e)
 		{
 			if(debug) System.err.println(e.getStackTrace());
 		}
 	}
-	
+
 	/**
 	 * Loop through, reading messages from the server.
 	 * Main method, ran when the thread is started.
@@ -69,7 +69,7 @@ public class UDPClient extends Thread {
 			{
 				clientSocket.receive(receivePacket);
 				String sentSentence = new String(receivePacket.getData());
-				
+
 				// In-game messages
 				if (sentSentence.contains("Move"))
 					moveAction(sentSentence);
@@ -92,13 +92,13 @@ public class UDPClient extends Thread {
 		}
 		clientSocket.close();
 	}
-	
+
 	/**
 	 * Send messages to the server.
 	 * @param msg Message to send.
 	 */
-	public void sendMessage(String msg) 
-	{	
+	public void sendMessage(String msg)
+	{
 		try{
 			byte[] sendData = new byte[1024];
 			sendData = msg.getBytes();
@@ -110,7 +110,7 @@ public class UDPClient extends Thread {
 			if(debug) System.err.println(e.getStackTrace());
 		}
 	}
-	
+
 	// -------------------------------------
 	// -----------Game Methods--------------
 	// -------------------------------------
@@ -148,7 +148,7 @@ public class UDPClient extends Thread {
 			p.tickBullets(firedBullets);
 		}
 	}
-	
+
 	/**
 	 * Gets a move signal from the server about a specific player. The method
 	 * finds that player and updates the player's position on the map
@@ -175,7 +175,7 @@ public class UDPClient extends Thread {
 			p.tick(x, y, angle);
 		}
 	}
-	
+
 	/**
 	 * Retrieves a player with a specific id from the current game.
 	 *

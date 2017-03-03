@@ -2,12 +2,14 @@ package networking.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import integrationServer.ClientInputReceiver;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
 import players.ServerBasicPlayer;
+import players.ServerMinimumPlayer;
 import players.ServerPlayer;
 
 // Gets messages from client and puts them in a queue, for another
@@ -178,7 +180,9 @@ public class ServerReceiver extends Thread {
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
 	}
 
-
+	public void setInputReceiver(ArrayList<ServerMinimumPlayer> players){
+		inputReceiver = new ClientInputReceiver(players);
+	}
 
 
 	//===================OLD INTEGRATION===============================================
