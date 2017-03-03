@@ -2,6 +2,7 @@ package rendering;
 
 import enums.MenuEnum;
 import gui.GUIManager;
+import gui.MenuControls;
 import gui.MenuOption;
 import gui.MenuOptionSet;
 import javafx.event.ActionEvent;
@@ -10,6 +11,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -33,8 +36,16 @@ class PauseMenu extends SubScene
 		p.setPrefWidth(Renderer.view.getWidth());
 		p.setPrefHeight(Renderer.view.getHeight());
 
+		Image i = new Image("assets/paintballlogo.png");
+		ImageView iv = new ImageView(i);
+		iv.setId("logo");
+		iv.setPreserveRatio(true);
+		iv.setFitWidth(150);
+		p.add(MenuControls.centreInPane(iv), 0, 0);
+
 		Label title = new Label("Paused");
-		p.add(title, 0, 0);
+		title.setStyle("-fx-text-alignment: center; -fx-font-size: 32px");
+		p.add(MenuControls.centreInPane(title), 0, 1);
 
 		MenuOption[] set = {new MenuOption("Resume", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
@@ -44,7 +55,7 @@ class PauseMenu extends SubScene
 		}), new MenuOption("Settings", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				System.out.println("ActionEvent: " + event);
-
+				Renderer.toggleSettingsMenu();
 			}
 		}), new MenuOption("Back to Main Menu", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
@@ -54,7 +65,7 @@ class PauseMenu extends SubScene
 		})};
 
 		GridPane buttonSet = MenuOptionSet.optionSetToGridPane(set);
-		p.add(buttonSet, 0, 1);
+		p.add(buttonSet, 0, 2);
 
 		view.getStylesheets().add("styles/menu.css");
 		view.getChildren().addAll(p);

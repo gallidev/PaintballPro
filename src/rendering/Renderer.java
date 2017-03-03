@@ -30,6 +30,7 @@ public class Renderer extends Scene
 {
 	static Pane view = new Pane();
 	private static PauseMenu pauseMenu;
+	private static PauseSettingsMenu settingsMenu;
 	private double scale = 1;
 	private GeneralPlayer player;
 
@@ -45,6 +46,7 @@ public class Renderer extends Scene
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(m);
+		settingsMenu = new PauseSettingsMenu(m);
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -125,6 +127,7 @@ public class Renderer extends Scene
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(m);
+		settingsMenu = new PauseSettingsMenu(m);
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -226,6 +229,11 @@ public class Renderer extends Scene
 			pauseMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
 			pauseMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
 		}
+		if(view.getChildren().contains(settingsMenu))
+		{
+			settingsMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
+			settingsMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
+		}
 	}
 
 	public static void togglePauseMenu()
@@ -237,8 +245,25 @@ public class Renderer extends Scene
 		pauseMenu.opened = !pauseMenu.opened;
 	}
 
+	public static void toggleSettingsMenu()
+	{
+		if(!settingsMenu.opened) {
+			view.getChildren().remove(pauseMenu);
+			view.getChildren().add(settingsMenu);
+		} else {
+			view.getChildren().remove(settingsMenu);
+			view.getChildren().add(pauseMenu);
+		}
+		settingsMenu.opened = !settingsMenu.opened;
+	}
+
 	public static boolean getPauseMenuState()
 	{
 		return pauseMenu.opened;
+	}
+
+	public static boolean getSettingsMenuState()
+	{
+		return settingsMenu.opened;
 	}
 }
