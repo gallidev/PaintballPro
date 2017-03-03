@@ -35,6 +35,7 @@ public class GUIManager {
     private Thread localServer;
     private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
+    private Renderer r = null;
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean lobbyTimerStarted = false;
@@ -82,6 +83,7 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
+                    r = null;
                     if (localServer != null) {
                         localServer.interrupt();
                         localServer = null;
@@ -118,29 +120,35 @@ public class GUIManager {
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:1");
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("elimination", c.getReceiver(), this));
+                        r = new Renderer("elimination", c.getReceiver(), this);
+                        s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("elimination", audio, this));
+                        r = new Renderer("elimination", audio, this);
+                        s.setScene(r);
                     }
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.track1);
-                    s.setScene(new Renderer("elimination", c.getReceiver(), this));
+                    r = new Renderer("elimination", c.getReceiver(), this);
+                    s.setScene(r);
                     break;
                 case CTFSingle:
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("ctf", c.getReceiver(), this));
+                        r = new Renderer("ctf", c.getReceiver(), this);
+                        s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("ctf", audio, this));
+                        r = new Renderer("ctf", audio, this);
+                        s.setScene(r);
                     }
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.track1);
-                    s.setScene(new Renderer("ctf", c.getReceiver(), this));
+                    r = new Renderer("ctf", c.getReceiver(), this);
+                    s.setScene(r);
                     break;
                 case EndGame:
                     s.setScene(EndGameMenu.getScene(this));
