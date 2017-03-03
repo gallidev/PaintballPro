@@ -34,7 +34,7 @@ public class MainMenu {
 		iv.setFitWidth(400);
 		
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Single player", true, new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Single Player", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(MenuEnum.SingleplayerGameType, null);
 		        System.out.println("ActionEvent: " + event);
