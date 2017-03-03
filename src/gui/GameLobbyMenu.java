@@ -69,7 +69,6 @@ public class GameLobbyMenu {
 			@Override public void handle(ActionEvent event) {
 				m.getClient().getSender().sendMessage("SwitchTeam");
 				m.fetchLobbyUpdates();
-				System.out.println("ActionEvent: " + event);
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);

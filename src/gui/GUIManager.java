@@ -305,13 +305,13 @@ public class GUIManager {
             n.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_ENTERED, new EventHandler<javafx.scene.input.MouseEvent>() {
                 @Override
                 public void handle(javafx.scene.input.MouseEvent event) {
-                    audio.playSFX(new SFXResources().clickSound, (float)1.0);
+                    audio.playSFX(new SFXResources().clickSound, (float)0.5);
                 }
             });
             n.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_PRESSED, new EventHandler<javafx.scene.input.MouseEvent>() {
                 @Override
                 public void handle(javafx.scene.input.MouseEvent event) {
-                    audio.playSFX(new SFXResources().getRandomPaintball(), (float)1.0);
+                    audio.playSFX(new SFXResources().getRandomPaintball(), (float)0.5);
                 }
             });
         }
