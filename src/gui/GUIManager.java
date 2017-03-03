@@ -1,20 +1,14 @@
 package gui;
 
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
 import audio.AudioManager;
-import audio.MusicResources;
 import audio.SFXResources;
 import enums.GameLocation;
 import enums.MenuEnum;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.client.Client;
@@ -23,39 +17,36 @@ import networking.client.ClientSender;
 import networking.server.Server;
 import rendering.Renderer;
 
+import java.util.ArrayList;
+
 /**
  * Class to manage displaying of views (scenes) in the GUI, and the user's settings
  */
 public class GUIManager {
 
     public static boolean localServerCode = false;
+    // Load the user's settings
+    // When set methods are called for this class/object, the class will
+    // automatically save the changed preferences
+    private static UserSettings user = UserSettingsManager.loadSettings();
+    // Set the width and height of the stage
+    public final int width = 1024;
+    public final int height = 576;
     private Stage s;
     private Client c;
     private Thread localServer;
     private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
     private Renderer r = null;
-
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean lobbyTimerStarted = false;
     private int lobbyTimeLeft = 10;
-
-    // Load the user's settings
-    // When set methods are called for this class/object, the class will
-    // automatically save the changed preferences
-    private static UserSettings user = UserSettingsManager.loadSettings();
     private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
-
     private ArrayList<GameObserver> gameObservers = new ArrayList<>();
     private int gameTimeLeft = 0;
     private int redScore = 0;
     private int blueScore = 0;
-
     private AudioManager audio;
-
-    // Set the width and height of the stage
-    public final int width = 1024;
-    public final int height = 576;
 
     public GUIManager() {
         audio = new AudioManager(user, this);
@@ -123,7 +114,7 @@ public class GUIManager {
                         s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
-                        r = new Renderer("elimination", audio, this);
+                        r = new Renderer("elimination", this);
                         s.setScene(r);
                     }
                     break;
@@ -140,7 +131,7 @@ public class GUIManager {
                         s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
-                        r = new Renderer("ctf", audio, this);
+                        r = new Renderer("ctf", this);
                         s.setScene(r);
                     }
                     break;
@@ -203,6 +194,10 @@ public class GUIManager {
             }
     }
 
+    public Stage getStage()
+    {
+        return s;
+    }
 
     public void setStage(Stage primaryStage) throws Exception {
         // TODO: Remove this method once integrated with Game.java
@@ -210,11 +205,6 @@ public class GUIManager {
         s.setTitle("Paintball Pro");
         s.setScene(MainMenu.getScene(this));
         s.show();
-    }
-
-    public Stage getStage()
-    {
-        return s;
     }
 
     public void addSettingsObserver(UserSettingsObserver obs) {
