@@ -13,7 +13,9 @@ import networking.game.UDPClient;
 import physics.CollisionsHandlerGeneralPlayer;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
+import players.GhostPlayer;
 import players.PhysicsClientPlayer;
+import rendering.ImageFactory;
 import rendering.Map;
 
 // Gets messages from client and puts them in a queue, for another
@@ -29,9 +31,9 @@ public class ClientReceiver extends Thread {
 	private BufferedReader fromServer;
 	private ClientSender sender;
 	private GUIManager m;
-	private PhysicsClientPlayer cPlayer;
-	private ArrayList<GeneralPlayer> myTeam;
-	private ArrayList<GeneralPlayer> enemies;
+	private GhostPlayer cPlayer;
+	private ArrayList<GhostPlayer> myTeam;
+	private ArrayList<GhostPlayer> enemies;
 	private ClientActionReceiver actionReceiver;
 	private UDPClient udpReceiver;
 	private TeamTable teams;
@@ -159,57 +161,49 @@ public class ClientReceiver extends Thread {
 		String clientTeam = data[2];
 		Map map = Map.loadRaw("elimination");
 
-
-		CollisionsHandlerGeneralPlayer collisionsHandler = new CollisionsHandlerGeneralPlayer(map);
-
-
 		// add myself to my team
 		// create my client
-//		if (clientTeam.equals("Red"))
-//			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-//					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpReceiver, collisionsHandler);
-//		else
-//			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-//					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpReceiver,collisionsHandler);
-//
-//		ArrayList<GeneralPlayer> allplayers = new ArrayList<GeneralPlayer>();
-//		// extract the other members
-//		for (int i = 3; i < data.length - 1; i = i + 2) {
-//			int id = Integer.parseInt(data[i]);
-//			if (data[i + 1].equals(clientTeam)) {
-//				if (clientTeam.equals("Red"))
-//					myTeam.add(new ClientLocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
-//							TeamEnum.RED));
-//				else
-//					myTeam.add(new ClientLocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
-//							TeamEnum.BLUE));
-//			} else {
-//				if (clientTeam.equals("Red"))
-//					enemies.add(new ClientLocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
-//							TeamEnum.BLUE));
-//				else
-//					enemies.add(new ClientLocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
-//							TeamEnum.RED));
-//			}
-//		}
-//
-//		allplayers.addAll(enemies);
-//		allplayers.addAll(myTeam);
-//		collisionsHandler.setPlayers(allplayers);
-//		cPlayer.setClientEnemies(enemies);
-//
-//		teams.setEnemies(enemies);
-//		teams.setMyTeam(myTeam);
-//
-//		// for debugging
-//		if(debug) System.out.println("game has started for player with ID " + clientID);
-//
-//		Platform.runLater(new Runnable() {
-//			@Override
-//			public void run() {
-//				m.transitionTo(MenuEnum.EliminationMulti, null);
-//			}
-//		});
+		if (clientTeam.equals("Red"))
+			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null);
+		else
+			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null);
+
+		ArrayList<GhostPlayer> allplayers = new ArrayList<GhostPlayer>();
+		// extract the other members
+		for (int i = 3; i < data.length - 1; i = i + 2) {
+			int id = Integer.parseInt(data[i]);
+			if (data[i + 1].equals(clientTeam)) {
+				if (clientTeam.equals("Red"))
+					myTeam.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.RED), null));
+				else
+					myTeam.add(new GhostPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
+			} else {
+				if (clientTeam.equals("Red"))
+					enemies.add(new GhostPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
+				else
+					enemies.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.RED), null));
+			}
+		}
+
+		allplayers.addAll(enemies);
+		allplayers.addAll(myTeam);
+
+		teams.setEnemies(enemies);
+		teams.setMyTeam(myTeam);
+
+		// for debugging
+		if(debug) System.out.println("game has started for player with ID " + clientID);
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				m.transitionTo(MenuEnum.EliminationMulti, null);
+			}
+		});
 	}
 
 	/* Getters and setters */
@@ -220,7 +214,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<GeneralPlayer> getMyTeam() {
+	public ArrayList<GhostPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -231,7 +225,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<GeneralPlayer> getEnemies() {
+	public ArrayList<GhostPlayer> getEnemies() {
 		return enemies;
 	}
 
@@ -247,7 +241,7 @@ public class ClientReceiver extends Thread {
 	 * Return client player instantiation of player.
 	 * @return Client Player object.
 	 */
-	public PhysicsClientPlayer getClientPlayer() {
+	public GhostPlayer getClientPlayer() {
 		return cPlayer;
 	}
 }

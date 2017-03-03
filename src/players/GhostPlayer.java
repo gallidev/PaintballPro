@@ -20,7 +20,7 @@ import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
  */
-public abstract class GhostPlayer extends ImageView {
+public class GhostPlayer extends ImageView {
 
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
@@ -28,11 +28,13 @@ public abstract class GhostPlayer extends ImageView {
 	private TeamEnum team;
 	private AudioManager audio;
 
-	public GhostPlayer(int playerId, Image image, AudioManager audio) {
+	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio) {
 		super(image);
+		setLayoutX(x);
+		setLayoutY(y);
 		this.playerId = playerId;
 		this.audio = audio;
-	}	
+	}
 
 	public void beenShot() {
 		audio.playSFX(audio.sfx.splat, (float) 1.0);
@@ -57,6 +59,10 @@ public abstract class GhostPlayer extends ImageView {
 
 	public AudioManager getAudio() {
 		return audio;
+	}
+
+	public void setAudio(AudioManager audio){
+		this.audio = audio;
 	}
 
 	public int getPlayerId(){

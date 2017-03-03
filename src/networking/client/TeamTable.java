@@ -3,30 +3,31 @@ package networking.client;
 import java.util.ArrayList;
 
 import players.ClientLocalPlayer;
+import players.GhostPlayer;
 
 /**
  * Stores teams for each client - their team and enemy team by their perspective.
- * 
+ *
  * @author MattW
  */
 public class TeamTable {
-	private ArrayList<ClientLocalPlayer> myTeam;
-	private ArrayList<ClientLocalPlayer> enemies;
-	
+	private ArrayList<GhostPlayer> myTeam;
+	private ArrayList<GhostPlayer> enemies;
+
 	/**
 	 * Set up teams.
 	 */
 	public TeamTable()
 	{
-		myTeam = new ArrayList<ClientLocalPlayer>();
-		enemies = new ArrayList<ClientLocalPlayer>();
+		myTeam = new ArrayList<GhostPlayer>();
+		enemies = new ArrayList<GhostPlayer>();
 	}
 
 	/**
 	 * Return team myTeam.
 	 * @return myTeam arraylist.
 	 */
-	public ArrayList<ClientLocalPlayer> getMyTeam() {
+	public ArrayList<GhostPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -34,7 +35,7 @@ public class TeamTable {
 	 * Sets contents of myTeam arraylist.
 	 * @param myTeam Representation of myTeam arraylist.
 	 */
-	public void setMyTeam(ArrayList<ClientLocalPlayer> myTeam) {
+	public void setMyTeam(ArrayList<GhostPlayer> myTeam) {
 		this.myTeam = myTeam;
 	}
 
@@ -42,7 +43,7 @@ public class TeamTable {
 	 * Return team enemies.
 	 * @return enemies arraylist.
 	 */
-	public ArrayList<ClientLocalPlayer> getEnemies() {
+	public ArrayList<GhostPlayer> getEnemies() {
 		return enemies;
 	}
 
@@ -50,7 +51,7 @@ public class TeamTable {
 	 * Sets contents of enemies arraylist.
 	 * @param enemies Representation of enemies arraylist.
 	 */
-	public void setEnemies(ArrayList<ClientLocalPlayer> enemies) {
+	public void setEnemies(ArrayList<GhostPlayer> enemies) {
 		this.enemies = enemies;
 	}
 }

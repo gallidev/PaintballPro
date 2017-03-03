@@ -20,6 +20,7 @@ import physics.KeyReleaseListener;
 import physics.MouseListener;
 import physics.OfflinePlayer;
 import players.GeneralPlayer;
+import players.GhostPlayer;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -32,6 +33,7 @@ public class Renderer extends Scene
 	private static PauseMenu pauseMenu;
 	private double scale = 1;
 	private GeneralPlayer player;
+	private GhostPlayer currentPlayer;
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
@@ -114,6 +116,89 @@ public class Renderer extends Scene
 			}
 		}.start();
 	}
+
+
+//	/**
+//	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
+//	 *
+//	 * @param mapName Name of the selected map
+//	 */
+//	public Renderer(String mapName, ClientReceiver receiver)
+//	{
+//		super(view, 1024, 576);
+//		setFill(Color.BLACK);
+//		setCursor(Cursor.CROSSHAIR);
+//		view.setStyle("-fx-background-color: black;");
+//		pauseMenu = new PauseMenu();
+//
+//		//16:9 aspect ratio
+//		widthProperty().addListener(observable ->
+//		{
+//			scale = getWidth() / 1024;
+//			view.setScaleX(scale);
+//			view.setScaleY((getWidth() * 0.5625) / 576);
+//		});
+//
+//		Map.load("res/maps/" + mapName + ".json");
+//
+//		player = receiver.getClientPlayer();
+//		player.setCache(true);
+//		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+//		view.getChildren().add(player);
+//
+//		receiver.getMyTeam().forEach(localPlayer ->
+//		{
+//			localPlayer.setCache(true);
+//			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+//		});
+//		view.getChildren().addAll(receiver.getMyTeam());
+//
+//		receiver.getEnemies().forEach(localPlayer ->
+//		{
+//			localPlayer.setCache(true);
+//			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+//		});
+//		view.getChildren().addAll(receiver.getEnemies());
+//
+//		InputHandler inputHandler = new InputHandler();
+//
+//		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+//		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+//		MouseListener mouseListener = new MouseListener(inputHandler);
+//
+//		setOnKeyPressed(keyPressListener);
+//		setOnKeyReleased(keyReleaseListener);
+//		setOnMouseDragged(mouseListener);
+//		setOnMouseMoved(mouseListener);
+//		setOnMousePressed(mouseListener);
+//		setOnMouseReleased(mouseListener);
+//
+//		ArrayList<Bullet> pellets = new ArrayList<>();
+//		new AnimationTimer()
+//		{
+//			@Override
+//			public void handle(long now)
+//			{
+//				updateView();
+//
+//				view.getChildren().removeAll(pellets);
+//				pellets.clear();
+//
+//				for(Bullet pellet : player.getBullets())
+//				{
+//					if(pellet.isActive())
+//						pellets.add(pellet);
+//				}
+//				for(GeneralPlayer player : receiver.getMyTeam())
+//					pellets.addAll(player.getBullets());
+//				for(GeneralPlayer player : receiver.getEnemies())
+//					pellets.addAll(player.getBullets());
+//				view.getChildren().addAll(pellets);
+//
+//				player.tick();
+//			}
+//		}.start();
+//	}
 
 	/**
 	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
