@@ -18,6 +18,7 @@ public abstract class Behaviour {
     protected long delay = 3000;
     protected Random rand;
     protected ArrayList<GeneralPlayer> enemies;
+    protected GeneralPlayer closestEnemy;
     protected double angle;
     protected double closestX, closestY;
 
@@ -31,6 +32,9 @@ public abstract class Behaviour {
 
         protected boolean updateShooting(double x, double y){
             double distance = Math.sqrt(Math.pow(x - ai.getLayoutX(), 2) + (Math.pow(ai.getLayoutY() - y, 2)));
+            if(closestEnemy != null){
+                if(closestEnemy.isEliminated()) return false;
+            }
             if(canSee(x, y) && distance < 500) return true;
             return false;
         }
@@ -44,6 +48,7 @@ public abstract class Behaviour {
             for(GeneralPlayer enemy: enemies){
                 double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
                 if(temp < minDistance){
+                    closestEnemy = enemy;
                     closestX = enemy.getLayoutX();
                     closestY = enemy.getLayoutY();
                     minDistance = temp;
@@ -51,11 +56,15 @@ public abstract class Behaviour {
             }
             double deltaX = closestX - ai.getLayoutX();
             double deltaY = ai.getLayoutY() - closestY;
-            angle = Math.atan2(deltaX, deltaY);
+            //if(minDistance > 300) {
+            //    angle = ai.getMovementAngle();
+            //} else {
+                angle = Math.atan2(deltaX, deltaY);
+            //}
         }
 
         public boolean canSee(double x, double y){
-            Line line = new Line(ai.getLayoutX(), ai.getLayoutY(), x, y);
+            Line line = new Line(ai.getLayoutX() + ai.getImage().getWidth()/2, ai.getLayoutY() + ai.getImage().getHeight()/2, x, y);
             ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
             propsWalls.addAll(ai.getMap().getRecWalls());
             for(Rectangle propWall : propsWalls){

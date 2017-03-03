@@ -46,6 +46,6 @@ public class Node {
 
     @Override
     public String toString(){
-        return "(" + x + ", " + y + ", Cost: " + finalCost + ")";
+        return "(" + x + ", " + y + ")";
     }
 }

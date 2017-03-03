@@ -1,5 +1,5 @@
-import networkingDiscovery.ServerAnnouncer;
-import networkingServer.Server;
+import networking.discovery.DiscoveryServerAnnouncer;
+import networking.server.Server;
 
 /**
  * Created by jack on 13/02/2017.
@@ -12,7 +12,7 @@ public class GameClientAndServer {
             public void run() {
                 int portNo = 25566;
                 String[] serverArgs = {portNo + ""};
-                Thread discovery = new Thread(new ServerAnnouncer(portNo));
+                Thread discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
                 discovery.start();
                 Server.main(serverArgs);
             }

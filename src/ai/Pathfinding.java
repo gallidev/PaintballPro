@@ -27,7 +27,7 @@ public class Pathfinding {
     //Initialise Pathfinding for each AI
     public Pathfinding(Map map) {
         //Initialise nodes array from map
-        nodes = new Node[32][32];
+        nodes = new Node[48][48];
         Floor[] floors = map.getFloors();
         Prop[] props = map.getProps();
         Wall[] walls = map.getWalls();
@@ -79,6 +79,7 @@ public class Pathfinding {
         start.finalCost = 0;
         Node current;
         Node goal = nodes[tx][ty];
+        if(goal == null) return;
 
         while(true){
             current = open.poll();

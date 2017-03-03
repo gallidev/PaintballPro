@@ -74,4 +74,6 @@ public class Path {
     public void clearPath(){
         Nodes.clear();
     }
+
+    public void removeFirst() { Nodes.remove(0);}
 }

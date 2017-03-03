@@ -26,13 +26,10 @@ import static rendering.Renderer.view;
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Map
 {
-	private String name;
-	private Material[] materials;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
-
 	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
 
 	/**
@@ -48,15 +45,11 @@ public class Map
 		{
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
-			//load materials
-			for(Material material : map.materials)
-				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, false);
-
 			//load the ground
 			for(Floor floor : map.floors)
 			{
 				WritableImage tiles = new WritableImage(floor.width * 64, floor.height * 64);
-				Image tile = map.getMaterialImage(floor.material);
+				Image tile = ImageFactory.getMaterialImage(floor.material);
 				for(int i = 0; i < floor.width; i++)
 				{
 					for(int j = 0; j < floor.height; j++)
@@ -73,17 +66,15 @@ public class Map
 
 			//load spawns
 			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
-			Image spawnTile = map.getMaterialImage(map.floors[0].material);
 
 			for(int i = 0; i < 2; i++)
 			{
 				for(int j = 0; j < 2; j++)
 				{
-					redSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, spawnTile.getPixelReader(), 0, 0);
-					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, spawnTile.getPixelReader(), 0, 0);
+					redSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getSpawnTile(TeamEnum.RED).getPixelReader(), 0, 0);
+					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getSpawnTile(TeamEnum.BLUE).getPixelReader(), 0, 0);
 				}
 			}
-
 			ImageView redSpawnView = new ImageView(redSpawn), blueSpawnView = new ImageView(blueSpawn);
 			redSpawnView.relocate(map.spawns[0].x * 64, map.spawns[0].y * 64);
 			redSpawnView.setEffect(new DropShadow(32, 0, 0, Color.RED));
@@ -100,7 +91,7 @@ public class Map
 			{
 				for(int i = 0; i < wall.length; i++)
 				{
-					ImageView block = new ImageView(map.getMaterialImage(wall.material));
+					ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
 					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
 					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
 					map.wallGroup.getChildren().add(block);
@@ -119,7 +110,6 @@ public class Map
 //			}
 			map.wallGroup.setCache(true);
 			map.wallGroup.setCacheHint(CacheHint.SCALE);
-
 			view.getChildren().addAll(map.floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
 			//turn on shading if the user has it enabled
@@ -165,16 +155,13 @@ public class Map
 		{
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + url + ".json"), Map.class);
 
-			for(Material material : map.materials)
-				material.image = new Image("assets/materials/" + material.name + ".png", 64, 64, true, true);
-
 			for(Floor floor : map.floors)
 			{
 				for(int i = 0; i < floor.width; i++)
 				{
 					for(int j = 0; j < floor.height; j++)
 					{
-						ImageView tile = new ImageView(map.getMaterialImage(floor.material));
+						ImageView tile = new ImageView(ImageFactory.getMaterialImage(floor.material));
 						tile.setX((i + floor.x) * 64);
 						tile.setY((j + floor.y) * 64);
 						map.floorGroup.getChildren().add(tile);
@@ -188,7 +175,7 @@ public class Map
 			{
 				for(int i = 0; i < wall.length; i++)
 				{
-					ImageView block = new ImageView(map.getMaterialImage(wall.material));
+					ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
 					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
 					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
 					map.wallGroup.getChildren().add(block);
@@ -237,23 +224,14 @@ public class Map
 		return props;
 	}
 
-	public Wall[] getWalls() { return walls; }
+	public Wall[] getWalls()
+	{
+		return walls;
+	}
 
-	/**
-	 * @return The spawn points of both teams
-	 * @author Filippo Galli
-	 */
 	public Spawn[] getSpawns()
 	{
 		return spawns;
-	}
-
-	private Image getMaterialImage(String material)
-	{
-		for(Material m : materials)
-			if(m.name.equals(material))
-				return m.image;
-		return null;
 	}
 
 	private void loadProps()

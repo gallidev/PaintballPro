@@ -3,11 +3,9 @@ package players;
 import enums.TeamEnum;
 import javafx.scene.transform.Rotate;
 import physics.Bullet;
+import rendering.ImageFactory;
 
 import java.util.ArrayList;
-
-import static gui.GUIManager.bluePlayerImage;
-import static gui.GUIManager.redPlayerImage;
 
 public class ClientLocalPlayer extends GeneralPlayer
 {
@@ -16,7 +14,7 @@ public class ClientLocalPlayer extends GeneralPlayer
 
 	public ClientLocalPlayer(double x, double y, int id, TeamEnum team)
 	{
-		super(x,y,id, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage);
+		super(x,y,id, ImageFactory.getPlayerImage(team));
 		rotation = new Rotate(Math.toDegrees(0.0), 0, 0, 0, Rotate.Z_AXIS);
 		getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
@@ -41,16 +39,6 @@ public class ClientLocalPlayer extends GeneralPlayer
 	public int getPlayerId()
 	{
 		return id;
-	}
-
-	public ArrayList<Bullet> getFiredBullets()
-	{
-		ArrayList<Bullet> tmp;
-		synchronized(firedBullets)
-		{
-			tmp = new ArrayList<>(firedBullets);
-		}
-		return tmp;
 	}
 
 	public TeamEnum getTeam()

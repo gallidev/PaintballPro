@@ -5,10 +5,8 @@ import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
 import physics.CollisionsHandlerGeneralPlayer;
+import rendering.ImageFactory;
 import rendering.Map;
-
-import static gui.GUIManager.bluePlayerImage;
-import static gui.GUIManager.redPlayerImage;
 
 public class AIPlayer extends GeneralPlayer{
 
@@ -19,8 +17,9 @@ public class AIPlayer extends GeneralPlayer{
 	private OfflineTeam myTeam;
 
 
+
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
+		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -94,6 +93,8 @@ public class AIPlayer extends GeneralPlayer{
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
 	}
+
+	public double getMovementAngle() { return this.movementAngle;}
 
 	public Map getMap(){
 		return this.map;

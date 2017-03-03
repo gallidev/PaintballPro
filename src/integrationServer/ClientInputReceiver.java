@@ -1,6 +1,6 @@
 package integrationServer;
 
-import networkingClient.ClientSender;
+import networking.client.ClientSender;
 
 /**
  * Receives input information (server-side) from all clients and updates the

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.scene.image.Image;
-import networkingServer.ServerMsgReceiver;
+import networking.server.ServerReceiver;
 import physics.Bullet;
 import rendering.Map;
 /**
@@ -13,7 +13,7 @@ import rendering.Map;
  * @author Alexandra Paduraru
  */
 public class ServerPlayer{
-	private ServerMsgReceiver receiver;
+	private ServerReceiver receiver;
 
 	private double x, y;
 	private int id;
@@ -28,7 +28,7 @@ public class ServerPlayer{
 	 * @param y The y coordinate of the player.
 	 * @param color The player's team colour.
 	 */
-	public ServerPlayer(int id, ServerMsgReceiver receiver, int x, int y, TeamEnum color){
+	public ServerPlayer(int id, ServerReceiver receiver, int x, int y, TeamEnum color){
 		this.id = id;
 		this.receiver = receiver;
 		this.team = color;
@@ -74,7 +74,7 @@ public class ServerPlayer{
 	 * Retrieves the player's server receiver.
 	 * @return The server receiver.
 	 */
-	public ServerMsgReceiver getServerReceiver(){
+	public ServerReceiver getServerReceiver(){
 		return receiver;
 	}
 	
