@@ -167,7 +167,7 @@ public class GUIManager {
                 public void run() {
                     int portNo = 25566;
                     String[] serverArgs = {portNo + "", ipAddress};
-                    Server.main(serverArgs);
+                    Server.main(serverArgs, new ServerConsole());
                 }
             });
             localServer.start();

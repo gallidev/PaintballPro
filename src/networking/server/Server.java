@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import gui.ServerGUI;
+import gui.ServerView;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
@@ -26,7 +28,7 @@ public class Server {
 	 *            0 - port number
 	 *            1 - listen address
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, ServerView gui) {
 		
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();
@@ -88,7 +90,7 @@ public class Server {
 					String text = "";
 					int clientID;
 					// For debugging:
-					System.out.println(clientName + " connected");
+					gui.addMessage(clientName + " connected");
 					// We add the client to the table. Returns a unique client
 					// id
 					clientID = clientTable.add(clientName);
@@ -104,7 +106,7 @@ public class Server {
 					reciever.start();
 					// For debugging
 					text = "UserID is:" + clientID;
-					System.out.println(text);
+					gui.addMessage(text);
 					// Sends a message to the client detailing their unique user
 					// id.
 					Message msg = new Message(text);
@@ -116,7 +118,7 @@ public class Server {
 				System.err.println("IO error " + e.getMessage() + ". Attempting to re-establish...");
 				try {
 					serverSocket = new ServerSocket(portNumber);
-					System.out.println("Connection re-established.");
+					gui.addMessage("Connection re-established.");
 				} catch (IOException f) {
 					System.err.println("Couldn't listen on port " + portNumber + ". Giving up.");
 					System.exit(1); // Give up.
