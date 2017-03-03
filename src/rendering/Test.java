@@ -7,7 +7,9 @@ public class Test extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		stage.setScene(new Renderer("ctf", new GUIManager().getAudioManager(), new GUIManager()));
+		GUIManager guiManager = new GUIManager();
+		guiManager.setStage(stage);
+		stage.setScene(new Renderer("ctf", guiManager.getAudioManager(), guiManager));
 		stage.show();
 	}
 	public static void main(String[] args)

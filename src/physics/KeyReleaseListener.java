@@ -2,7 +2,6 @@ package physics;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import networking.interfaces.ClientPlayerOld;
 import players.GeneralPlayer;
 import rendering.Renderer;
 
@@ -18,7 +17,7 @@ public class KeyReleaseListener implements EventHandler<KeyEvent>
 	@Override
 	public void handle(KeyEvent event)
 	{
-		if(!Renderer.getPauseMenuState() || !Renderer.getSettingsMenuState())
+		if(!Renderer.getPauseMenuState() && !Renderer.getSettingsMenuState())
 			switch(event.getCode())
 			{
 				case UP:

@@ -29,7 +29,6 @@ import rendering.Renderer;
 public class GUIManager {
 
     public static boolean localServerCode = false;
-
     private Stage s;
     private Client c;
     private Thread localServer;
@@ -55,8 +54,8 @@ public class GUIManager {
     private AudioManager audio;
 
     // Set the width and height of the stage
-    public final int width = 800;
-    public final int height = 600;
+    public final int width = 1024;
+    public final int height = 576;
 
     public GUIManager() {
         audio = new AudioManager(user, this);
@@ -211,6 +210,11 @@ public class GUIManager {
         s.setTitle("Paintball Pro");
         s.setScene(MainMenu.getScene(this));
         s.show();
+    }
+
+    public Stage getStage()
+    {
+        return s;
     }
 
     public void addSettingsObserver(UserSettingsObserver obs) {

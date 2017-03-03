@@ -78,6 +78,10 @@ local.properties
 
 # Game Preferences
 preferences.json
+
 *.iml
 *.ipr
-*.class
+.DS_Store
+res/assets/player.pxm
+res/maps/ctf.ai
+res/maps/elimination.ai
