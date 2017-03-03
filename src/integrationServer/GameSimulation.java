@@ -27,12 +27,17 @@ public class GameSimulation {
 		this.redTeam = redTeam;
 		this.blueTeam = blueTeam;
 		
-		startExecution(players);
+		startExecution();
 		
 		
 	}
 	
-	public void startExecution(ArrayList<ServerMinimumPlayer> players){
+	public void startExecution(){
+		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		players.addAll(redTeam.getMembers());
+		players.addAll(blueTeam.getMembers());
+		
+		
 		ScheduledExecutorService scheduler =
 			     Executors.newScheduledThreadPool(1);
 		Runnable game = new Runnable() {

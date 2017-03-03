@@ -343,6 +343,7 @@ public class Lobby {
 		collisionsHandler.setRedTeam(red.getMembers());
 
 		GameSimulation simulator = new GameSimulation(red, blue);
+		simulator.startExecution();
 	}
 
 }

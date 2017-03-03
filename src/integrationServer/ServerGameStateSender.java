@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import networking.server.ServerReceiver;
 import networking.server.ServerSender;
 import players.ServerMinimumPlayer;
 
@@ -16,14 +17,15 @@ import players.ServerMinimumPlayer;
  */
 public class ServerGameStateSender {
 
-	private ServerSender toClient;
+	private ServerReceiver toClient;
 	private ArrayList<ServerMinimumPlayer> players;
 	int frames = 0;
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
 
-	public ServerGameStateSender(ServerSender toClient, ArrayList<ServerMinimumPlayer> players){
-
+	public ServerGameStateSender(ServerReceiver toClient, ArrayList<ServerMinimumPlayer> players){
+		this.toClient = toClient;
+		this.players = players;
 	}
 
 	public void startSending(){
@@ -57,7 +59,7 @@ public class ServerGameStateSender {
 	}
 
 	private void sendClient() {
-
+		//Protocol: "1:<id>:<x>:<y>:<angle>"
 		//TODO
 
 	}

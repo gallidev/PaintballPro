@@ -4,15 +4,8 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import logic.GameMode;
-<<<<<<< HEAD:src/networkingInterfaces/ServerGame.java
-import networkingServer.ServerMsgReceiver;
-import players.ServerMinimumPlayer;
-=======
 import networking.game.UDPServer;
-import networking.server.ServerReceiver;
-import networking.shared.Message;
->>>>>>> f6887eef8fffa5fe0a94cae7fc5ce8145b9556b4:src/networking/interfaces/ServerGame.java
-import players.ServerPlayer;
+import players.ServerMinimumPlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.EscortMode;
 import serverLogic.KingOfTheHillMode;

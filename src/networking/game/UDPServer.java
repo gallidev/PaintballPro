@@ -19,7 +19,7 @@ import players.ServerPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -90,6 +90,7 @@ public class UDPServer extends Thread{
 			}
 		} catch(Exception e)
 		{
+			System.err.println(e.getMessage());
 			if(debug) System.err.println(e.getStackTrace());
 		}
 		// TODO - Let's do some closing stuff here.

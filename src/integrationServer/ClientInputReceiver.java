@@ -1,6 +1,9 @@
 package integrationServer;
 
-import networking.client.ClientSender;
+import java.util.ArrayList;
+
+import networking.server.ServerSender;
+import players.ServerMinimumPlayer;
 
 /**
  * Receives input information (server-side) from all clients and updates the
@@ -14,8 +17,7 @@ import networking.client.ClientSender;
  */
 public class ClientInputReceiver {
 
-	private ClientSender toClients;
-
+	private ArrayList<ServerMinimumPlayer> players;
 	/**
 	 * Initializes a new input receiver with a server receiver which will
 	 * receive information from clients and an client sender, which will send
@@ -24,16 +26,38 @@ public class ClientInputReceiver {
 	 * 
 	 * @param toClients The client sender which will send clients what they should do.
 	 */
-	public ClientInputReceiver(ClientSender toClients) {
+	public ClientInputReceiver(ArrayList<ServerMinimumPlayer> players) {
 		super();
-		this.toClients = toClients;
+		this.players = players;
 	}
 	
 
 	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, double mouseX,
 			double mouseY) {
-		// TODO Auto-generated method stub
+
+		ServerMinimumPlayer playerToBeUpdated = getPlayerWithId(id);
 		
+		//update everything
+		playerToBeUpdated.setUp(up);
+		playerToBeUpdated.setDown(down);
+		playerToBeUpdated.setLeft(left);
+		playerToBeUpdated.setRight(right);
+		playerToBeUpdated.setShoot(shooting);
+		playerToBeUpdated.setMouseX(mouseX);
+		playerToBeUpdated.setMouseY(mouseY);
 	}
+	
+	/**
+	 * Helper method to find the player with a specific id from the entire list of players in the game.
+	 * @param id The player's id.
+	 */
+	private ServerMinimumPlayer getPlayerWithId(int id){
+		for (ServerMinimumPlayer p : players){
+			if (p.getPlayerId() == id)
+				return p;
+		}
+		return null;
+	}
+	
 
 }

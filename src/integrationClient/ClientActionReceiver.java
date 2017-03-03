@@ -12,6 +12,7 @@ import players.GhostPlayer;
 public class ClientActionReceiver {
 
 	private GhostPlayer player;
+	private int id;
 
 	/**
 	 * Initializes a new action receiver with a player which will be controlled
@@ -22,6 +23,13 @@ public class ClientActionReceiver {
 	 */
 	public ClientActionReceiver(GhostPlayer player) {
 		this.player = player;
+		id = player.getPlayerId();
+	}
+	
+	//???NOT SURE
+	public void updatePlayer(double x, double y, double angle){
+		player.setX(x);
+		player.setY(y);
 	}
 
 
