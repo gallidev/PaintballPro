@@ -6,8 +6,13 @@ import rendering.Map;
 
 public class RetreatBehaviour extends Behaviour {
 
-    public RetreatBehaviour(AIPlayer ai){
-        super(ai);
+    public RetreatBehaviour(AIPlayer ai, Pathfinding pathfinder){
+        super(ai, pathfinder);
+    }
+
+    @Override
+    public void tick() {
+
     }
 
 }

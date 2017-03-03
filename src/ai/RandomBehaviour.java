@@ -4,8 +4,9 @@ import players.AIPlayer;
 
 public class RandomBehaviour extends Behaviour{
 
-	public RandomBehaviour(AIPlayer ai){
-		super(ai);
+	public RandomBehaviour(AIPlayer ai, Pathfinding pathfinder){
+
+		super(ai, pathfinder);
 	}
 
 	private void randomMovement(){
@@ -17,6 +18,7 @@ public class RandomBehaviour extends Behaviour{
 		ai.setMovementAngle(movementAngle);
 	}
 
+	@Override
 	public void tick() {
 		enemies = ai.getEnemies();
 		updateAngle();
@@ -26,5 +28,9 @@ public class RandomBehaviour extends Behaviour{
 			ai.setShoot(updateShooting(closestX, closestY));
 			timer = System.currentTimeMillis();
 		}
+	}
+
+	public void change(){
+		timer = System.currentTimeMillis() - delay;
 	}
 }

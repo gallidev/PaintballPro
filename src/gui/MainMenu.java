@@ -34,22 +34,19 @@ public class MainMenu {
 		iv.setFitWidth(400);
 		
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Single player", true, new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Single Player", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(MenuEnum.SingleplayerGameType, null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    }
 		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(MenuEnum.NicknameServerConnection, null);
 //		    	m.transitionTo("Multiplayer", null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    }
 		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(MenuEnum.Settings, null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    }
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed

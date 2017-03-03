@@ -4,6 +4,8 @@ import rendering.Map;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.Random;
+
 import rendering.Floor;
 import rendering.Prop;
 import rendering.Wall;
@@ -24,6 +26,8 @@ public class Pathfinding {
 
     private Path path;
 
+    private Random random;
+
     //Initialise Pathfinding for each AI
     public Pathfinding(Map map) {
         //Initialise nodes array from map
@@ -31,6 +35,7 @@ public class Pathfinding {
         Floor[] floors = map.getFloors();
         Prop[] props = map.getProps();
         Wall[] walls = map.getWalls();
+        random = new Random();
 
         path = new Path();
         for(int i = 0; i < floors.length; i++){
@@ -72,7 +77,36 @@ public class Pathfinding {
         path.clearPath();
         closed.clear();
         open.clear();
-        open.add(nodes[x][y]);
+        int origX = x;
+        int origY = y;
+        while(nodes[x][y] == null){
+            if(x < 0 || x >= 64) x = origX;
+            if(y < 0 || y >= 64) y = origY;
+            int n = random.nextInt(8);
+            switch (n){
+                case 0: x++;
+                        break;
+                case 1: y++;
+                        break;
+                case 2: x--;
+                        break;
+                case 3: y--;
+                        break;
+                case 4: x++;
+                        y++;
+                        break;
+                case 5: x++;
+                        y--;
+                        break;
+                case 6: x--;
+                        y++;
+                        break;
+                case 7: x--;
+                        y--;
+                        break;
+            }
+        }
+        open.add(nodes[x][y]); //find nearest non null node
 
         Node start = nodes[x][y];
         start.heuristicCost = euclideanCost(x, y, tx, ty);
@@ -81,7 +115,7 @@ public class Pathfinding {
         Node goal = nodes[tx][ty];
         if(goal == null) return;
 
-        while(true){
+        while(true){ //use threading
             current = open.poll();
             if (current == null) break;
             closed.add(current);
@@ -94,33 +128,43 @@ public class Pathfinding {
             //Left
             if (current.x - 1 >= 0){
                 n = nodes[current.x-1][current.y];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Right
             if (current.x + 1 < nodes.length){
                 n = nodes[current.x+1][current.y];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Top
             if (current.y - 1 >= 0){
                 n = nodes[current.x][current.y-1];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Bottom
             if (current.y + 1 < nodes[0].length){
                 n = nodes[current.x][current.y+1];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Top Left
             if (current.x - 1 >= 0 && current.y - 1 >= 0){
-                //check of top and left are not obstacles
+                //check if top and left are not obstacles
                 if(nodes[current.x][current.y-1] != null && nodes[current.x-1][current.y] != null) {
                     n = nodes[current.x - 1][current.y - 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -129,7 +173,9 @@ public class Pathfinding {
                 //check if bottom and left are not obstacles
                 if(nodes[current.x][current.y+1] != null && nodes[current.x-1][current.y] != null) {
                     n = nodes[current.x - 1][current.y + 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -138,7 +184,9 @@ public class Pathfinding {
                 //check if top and right are not obstacles
                 if(nodes[current.x+1][current.y] != null && nodes[current.x][current.y-1] != null){
                     n = nodes[current.x + 1][current.y - 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -147,7 +195,9 @@ public class Pathfinding {
                 //check if bottom and right are not obstacles
                 if(nodes[current.x+1][current.y] != null && nodes[current.x][current.y+1] != null) {
                     n = nodes[current.x + 1][current.y + 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
         }
@@ -189,7 +239,7 @@ public class Pathfinding {
     }
 
     //Cheaper, but not efficient for diagonal movements
-    private float manhattanDistance(int x, int y, int tx, int ty) {
+    private float manhattanCost(int x, int y, int tx, int ty) {
         float dx = Math.abs(tx - x);
         float dy = Math.abs(ty - y);
 
@@ -209,10 +259,6 @@ public class Pathfinding {
 
     public Path getPath(int x, int y, int tx, int ty){
         AStar(x, y, tx, ty);
-        //for(int i = 0; i < path.getLength(); i++){
-        //    System.out.println(path.getX(i) + ", " + path.getY(i));
-        //}
-        //System.out.println("\n");
         return path;
     }
 }

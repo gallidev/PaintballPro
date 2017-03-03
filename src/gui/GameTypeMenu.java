@@ -27,9 +27,7 @@ public class GameTypeMenu {
 				} else {
 					m.transitionTo(MenuEnum.EliminationSingle, null);
 				}
-
-		        System.out.println("ActionEvent: (Elimination) " + event);
-		    }     
+			}
 		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				if (loc == GameLocation.MultiplayerServer) {
@@ -38,13 +36,11 @@ public class GameTypeMenu {
 					m.transitionTo(MenuEnum.CTFSingle, null);
 				}
 
-				System.out.println("ActionEvent: (CTF) " + event);
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(MenuEnum.MainMenu, null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    }
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed

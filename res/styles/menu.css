@@ -1,7 +1,8 @@
-@font-face {
-    font-family: 'Roboto Slab';
-    src: url('fonts/roboto-slab/RobotoSlab-Regular.ttf');
-}
+/*@font-face {*/
+    /*-fx-font-family: 'Roboto Slab';*/
+    /*font-family: 'Roboto Slab';*/
+    /*src: url('fonts/roboto-slab/RobotoSlab-Regular.ttf');*/
+/*}*/
 
 .root {
     /*-fx-background-image: url('../assets/materials/sand.png');*/

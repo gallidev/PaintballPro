@@ -8,6 +8,8 @@ import java.net.Socket;
 /**
  * Class to wait for an Exit input in the command line of the server and act
  * accordingly.
+ * 
+ * @author MattW
  */
 public class ServerExitListener extends Thread {
 

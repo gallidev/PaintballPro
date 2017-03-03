@@ -42,13 +42,18 @@ public class UDPClient extends Thread {
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
+		
+		if(debug) System.out.println("Making new UDP Client");
+		
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
 			clientSocket = new DatagramSocket();
 			IPAddress = InetAddress.getByName(udpServIP);
+			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
 			String sentence = "Connect:"+clientID;
+			if(debug) System.out.println("sending data:"+sentence);
 			sendMessage(sentence);
-
+			if(debug) System.out.println("sent");
 		}
 		catch (Exception e)
 		{
@@ -100,6 +105,7 @@ public class UDPClient extends Thread {
 	public void sendMessage(String msg)
 	{
 		try{
+			if(debug) System.out.println("Attempting to send:"+msg);
 			byte[] sendData = new byte[1024];
 			sendData = msg.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);

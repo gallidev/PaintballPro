@@ -15,6 +15,7 @@ public class AIPlayer extends GeneralPlayer{
 	private double movementAngle;
 	private OfflineTeam oppTeam;
 	private OfflineTeam myTeam;
+	private boolean moving;
 
 
 
@@ -25,6 +26,7 @@ public class AIPlayer extends GeneralPlayer{
 		movementAngle = 0;
 		right = true;
 		this.map = map;
+		this.moving = true;
 		bManager = new BehaviourManager(this);
 		this.audio = audio;
 	}
@@ -36,6 +38,7 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	public void tick() {
 		bManager.tick();
+
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
 			updatePosition();
@@ -61,8 +64,15 @@ public class AIPlayer extends GeneralPlayer{
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
 
-		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) setLayoutY(getLayoutY() - yToReduce);
-		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) setLayoutX(getLayoutX() + xToAdd);
+		if(moving) {
+			if ((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown)) setLayoutY(getLayoutY() - yToReduce);
+			if ((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft)) setLayoutX(getLayoutX() + xToAdd);
+//			if (collUp) setLayoutY(getLayoutY() + 1);
+//			if (collDown) setLayoutY(getLayoutY() - 1);
+//			if (collLeft) setLayoutX(getLayoutX() + 1);
+//			if (collRight) setLayoutX(getLayoutX() - 1);
+
+		}
 	}
 
 
@@ -96,9 +106,7 @@ public class AIPlayer extends GeneralPlayer{
 
 	public double getMovementAngle() { return this.movementAngle;}
 
-	public Map getMap(){
-		return this.map;
-	}
+	public Map getMap() {return this.map;}
 
 	public void setOppTeam(OfflineTeam t){
 		oppTeam = t;
@@ -107,4 +115,6 @@ public class AIPlayer extends GeneralPlayer{
 	public void setMyTeam(OfflineTeam t){
 		myTeam = t;
 	}
+
+	public void setMoving(boolean b) { this.moving = b;}
 }

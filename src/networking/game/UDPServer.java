@@ -41,27 +41,36 @@ public class UDPServer extends Thread{
 	public void run()
 	{
 		try {
+			if(debug) System.out.println("Starting server");
 			serverSocket = new DatagramSocket(9876);
+		
+			if(debug) System.out.println("Opened socket on port " + serverSocket.getPort() + serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];
 			while(true)
 			{
 			      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			      
+			      if(debug) System.out.println("Waiting to receive packet");
 			      serverSocket.receive(receivePacket);
-			      String sentence = new String( receivePacket.getData());
+			    
+			      String sentence = new String( receivePacket.getData()).trim();
 			      
-			      if(debug)System.out.println("RECEIVED: " + sentence);
+			      if(debug) System.out.println("Packet received with text:"+sentence);
 			      
 			      InetAddress IPAddress;
 			      int port;
 			     
-			      if(sentence.contains("Exit"))
+			      if(sentence.contains("ExitUDP"))
 			    	  break;
 			      else if(sentence.contains("Connect:"))
 			      {
+			    	  if(debug) System.out.println("Trying to connect now");
 			    	  IPAddress = receivePacket.getAddress();
 			    	  port = receivePacket.getPort();
+			    	  if(debug) System.out.println("Attempting to parse client id");
 			    	  int clientID = Integer.parseInt(sentence.substring(8));
+			    	  if(debug) System.out.println("Parsed");
+			    	  if(debug) System.out.println("Client id is:"+clientID);
+			    	  if(debug) System.out.println("Their ip is:"+IPAddress.toString());
 			    	  clients.addNewIP(IPAddress.toString(), clientID);
 			    	  clients.addUDPQueue(IPAddress.toString());
 			      }
@@ -80,8 +89,10 @@ public class UDPServer extends Thread{
 						// Send a message to all clients in the game.
 						// Includes : sending moves, bullets
 						if (sentence.contains("SendToAll:"))
+						{
+							if(debug) System.out.println("Attempting to send all:"+sentence);
 							sendToAll(sentence,ipFrom);
-						
+						}
 						// Reset the client when they exit the game.
 						if (sentence.contains("Exit:Game"))
 							exitGame(ipFrom);
@@ -90,11 +101,14 @@ public class UDPServer extends Thread{
 			}
 		} catch(Exception e)
 		{
-			System.err.println(e.getMessage());
-			if(debug) System.err.println(e.getStackTrace());
+
+			if(debug) System.err.println(e.getMessage());
 		}
-		// TODO - Let's do some closing stuff here.
-		serverSocket.close();
+		finally
+		{
+			// TODO - Let's do some closing stuff here.
+			serverSocket.close();
+		}
 	}
 
 	/**
@@ -112,14 +126,20 @@ public class UDPServer extends Thread{
 		for(ServerBasicPlayer player : players)
 		{
 			int id = player.getID();
+			if(debug) System.out.println("Trying to send messages to player with id:"+id);
 			String playerIP = clients.getIP(id);
+			if(debug) System.out.println("Their ip is:"+playerIP);
 			// Parse IP to get first part and port number.
 			String ipAddr = playerIP.split(":")[0];
-			String ipPort = playerIP.split(":")[1];
+			ipAddr = ipAddr.substring(1, ipAddr.length());
+			//if(debug) System.out.println("trying to get port");
+			//String ipPort = playerIP.split(":")[1];
+			if(debug) System.out.println("All parsed, ip is:"+ipAddr);
 			try{
 				// Let's send the message.
 				InetAddress sendAddress = InetAddress.getByName(ipAddr);
-				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, Integer.parseInt(ipPort));
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, 9876);
+				if(debug) System.out.println("Attempting to send to all:"+toBeSent);
 				serverSocket.send(sendPacket);
 			}
 			catch(Exception e)
@@ -145,6 +165,7 @@ public class UDPServer extends Thread{
 	{
 		// we get the lobby id.
 		int lobbyID = clients.getPlayer(clients.getID(ip)).getAllocatedLobby();
+		if(debug) System.out.println("The lobby id is:"+lobbyID);
 		// we can now send to all clients in the same lobby as the origin client.
 		sendToAll(toBeSent,lobbyID);
 	}

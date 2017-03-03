@@ -4,9 +4,9 @@ package ai;
 import players.AIPlayer;
 import rendering.Map;
 
-public class CaptureBehaviour extends Behaviour {
+public class MoveBehaviour extends Behaviour {
 
-    public CaptureBehaviour(AIPlayer ai, Pathfinding pathfinder){
+    public MoveBehaviour(AIPlayer ai, Pathfinding pathfinder){
         super(ai, pathfinder);
     }
 
@@ -14,6 +14,5 @@ public class CaptureBehaviour extends Behaviour {
     public void tick() {
 
     }
-
 
 }

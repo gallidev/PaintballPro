@@ -222,7 +222,15 @@ public class OfflinePlayer extends GeneralPlayer
 		double bulletX = getLayoutX() + x2 + playerHeadX;
 		double bulletY = getLayoutY() + y2 + playerHeadY;
 
-		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
+		double bulletAngle = angle;
+		boolean sign= rand.nextBoolean();
+		double deviation = (double)rand.nextInt(60)/1000;
+		if(sign){
+			bulletAngle += deviation;
+		} else {
+			bulletAngle -= deviation;
+		}
+		Bullet bullet = new Bullet(bulletX, bulletY, bulletAngle, team);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
 	}

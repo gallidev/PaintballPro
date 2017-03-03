@@ -1,22 +1,21 @@
 package players;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import audio.AudioManager;
 import enums.TeamEnum;
+import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
+import physics.CollisionsHandler;
 import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
-import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
  */
@@ -43,6 +42,8 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected boolean scoreChanged = false;
 	protected AudioManager audio;
 	protected CollisionsHandlerGeneralPlayer collisionsHandler;
+	//protected CollisionsHandler collisionsHandler;
+	protected Random rand;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -51,11 +52,12 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param y The y-coordinate of the player with respect to the map
 	 * @param id The id of the player
 	 * @param map The map in which the player is playing
-	 * @param Team The team of the player
 	 *
 	 */
 	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
 		super(image);
+		setCache(true);
+		setCacheHint(CacheHint.SPEED);
 		setLayoutX(x);
 		setLayoutY(y);
 		this.lastX = x;
@@ -63,6 +65,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		this.lastAngle = angle;
 		this.team = team;
 		this.id = id;
+		this.rand = new Random();
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
@@ -82,7 +85,6 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * Constructor needed for the game logic.
 	 * @param x The x coordinate of the player.
 	 * @param y the y coordinate of the player.
-	 * @param nickname The player's nickname.
 	 *
 	 * @ atp575
 	 */
@@ -229,7 +231,15 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		double bulletX = getLayoutX() + x2 + playerHeadX;
 		double bulletY = getLayoutY() + y2 + playerHeadY;
 
-		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
+		double bulletAngle = angle;
+		boolean sign= rand.nextBoolean();
+		double deviation = (double)rand.nextInt(100)/1000;
+		if(sign){
+			bulletAngle += deviation;
+		} else {
+            bulletAngle -= deviation;
+		}
+		Bullet bullet = new Bullet(bulletX, bulletY, bulletAngle, team);
 
 		firedBullets.add(bullet);
 	}
@@ -319,6 +329,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return eliminated;
 	}
 
+	public boolean isInvincible() {return invincible;}
 	public Polygon getPolygonBounds() {
 		return bounds;
 	}

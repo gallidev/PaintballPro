@@ -35,6 +35,7 @@ public class GUIManager {
     private Thread localServer;
     private MenuEnum currentScene = MenuEnum.MainMenu;
     private String ipAddress = "";
+    private Renderer r = null;
 
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean lobbyTimerStarted = false;
@@ -82,6 +83,7 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
+                    r = null;
                     if (localServer != null) {
                         localServer.interrupt();
                         localServer = null;
@@ -98,7 +100,7 @@ public class GUIManager {
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
                 case SingleplayerGameType:
-                    if (localServerCode) establishLocalSingleServerConnection();
+                    if (localServerCode) establishLocalServerConnection();
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
                 case Lobby:
@@ -118,29 +120,35 @@ public class GUIManager {
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:1");
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("elimination", c.getReceiver()));
+                        r = new Renderer("elimination", c.getReceiver(), this);
+                        s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("elimination", audio));
+                        r = new Renderer("elimination", audio, this);
+                        s.setScene(r);
                     }
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.track1);
-                    s.setScene(new Renderer("elimination", c.getReceiver()));
+                    r = new Renderer("elimination", c.getReceiver(), this);
+                    s.setScene(r);
                     break;
                 case CTFSingle:
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("ctf", c.getReceiver()));
+                        r = new Renderer("ctf", c.getReceiver(), this);
+                        s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
-                        s.setScene(new Renderer("ctf", audio));
+                        r = new Renderer("ctf", audio, this);
+                        s.setScene(r);
                     }
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.track1);
-                    s.setScene(new Renderer("ctf", c.getReceiver()));
+                    r = new Renderer("ctf", c.getReceiver(), this);
+                    s.setScene(r);
                     break;
                 case EndGame:
                     s.setScene(EndGameMenu.getScene(this));
@@ -151,7 +159,7 @@ public class GUIManager {
         }
     }
 
-    private boolean establishLocalSingleServerConnection() {
+    private boolean establishLocalServerConnection() {
         if (localServerCode) {
             ipAddress = "0.0.0.0";
             localServer = new Thread(new Runnable() {
@@ -159,7 +167,7 @@ public class GUIManager {
                 public void run() {
                     int portNo = 25566;
                     String[] serverArgs = {portNo + "", ipAddress};
-                    Server.main(serverArgs);
+                    Server.main(serverArgs, new ServerConsole());
                 }
             });
             localServer.start();
@@ -305,13 +313,13 @@ public class GUIManager {
             n.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_ENTERED, new EventHandler<javafx.scene.input.MouseEvent>() {
                 @Override
                 public void handle(javafx.scene.input.MouseEvent event) {
-                    audio.playSFX(new SFXResources().clickSound, (float)1.0);
+                    audio.playSFX(new SFXResources().clickSound, (float)0.5);
                 }
             });
             n.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_PRESSED, new EventHandler<javafx.scene.input.MouseEvent>() {
                 @Override
                 public void handle(javafx.scene.input.MouseEvent event) {
-                    audio.playSFX(new SFXResources().getRandomPaintball(), (float)1.0);
+                    audio.playSFX(new SFXResources().getRandomPaintball(), (float)0.5);
                 }
             });
         }

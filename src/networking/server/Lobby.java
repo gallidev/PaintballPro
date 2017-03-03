@@ -21,14 +21,11 @@ import serverLogic.Team;
 
 /**
  * Class to represent a lobby.
+ * 
+ * @author MattW
  */
 public class Lobby {
 	// Structures storing relevant data.
-
-	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
-	// 1 - Blue Team, 2 - Red Team
-	// A lobby runs for 2 minutes and then starts a game, if full it starts a 10
-	// second countdown before running a game.
 
 	// Lobby information
 	private int id;
@@ -48,6 +45,11 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 
+	/**
+	 * Sets passed variables and inialised some defaults.
+	 * @param myid ID of lobby.
+	 * @param PassedGameType Game mode that the lobby is used for.
+	 */
 	public Lobby(int myid, int PassedGameType) {
 		inGameStatus = false;
 		GameType = PassedGameType;
@@ -57,35 +59,63 @@ public class Lobby {
 		id = myid;
 	}
 
+	/**
+	 * Retrieve the lobby id.
+	 * @return Lobby id.
+	 */
 	public int getID() {
 		return id;
 	}
 
+	/**
+	 * Get the game status of the current lobby
+	 * @return True if in game, False if not in game.
+	 */
 	public boolean getInGameStatus() {
 		return inGameStatus;
 	}
 
+	/**
+	 * Switches the game status of the lobby.
+	 */
 	public void switchGameStatus() {
 		this.inGameStatus = !this.inGameStatus;
 	}
 
+	/**
+	 * Retrieve game mode type.
+	 * @return Integer representing the game type.
+	 */
 	public int getGameType() {
 		return GameType;
 	}
 
+	/**
+	 * Returns whether or not max players have been reached.
+	 * @return True if max players reached, False otherwise.
+	 */
 	public boolean isMaxPlayersReached() {
 		return getCurrPlayerTotal() == MaxPlayers;
 	}
 
+	/**
+	 * Retrieves the current number of players in the lobby.
+	 * @return Total number of players in the lobby currently.
+	 */
 	public int getCurrPlayerTotal() {
 		return currPlayerBlueNum + currPlayerRedNum;
 	}
 
-	// Add player to teams - alternate teams unless specified (when a client
-	// requests to switch teams).
-	// We check in LobbyTable if max players is reached.
+	/**
+	 * Add a player to a team - red of blue.
+	 * @param playerToAdd Player object to add to a team.
+	 * @param specific Is there a team we should try to allocate to? 0 = random, 1 = blue, 2 = red
+	 */
 	public void addPlayer(ServerBasicPlayer playerToAdd, int specific) {
-		// Specific - 0 = random, 1 = blue, 2 = red;
+		// Add player to teams - alternate teams unless specified (when a client
+		// requests to switch teams).
+		// We check in LobbyTable if max players is reached.
+		
 		int totPlayers = getCurrPlayerTotal();
 		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers / 2))) {
 			redTeam.put(currPlayerRedNum, playerToAdd);
@@ -96,8 +126,10 @@ public class Lobby {
 		}
 	}
 
-	// remove player from team and alter everyone's respective positions in the
-	// lobby to accomodate
+	/**
+	 * Remove player from a team and re-order other team members as appropriate.
+	 * @param playerToRemove Player obejct to remove from the team.
+	 */
 	public void removePlayer(ServerBasicPlayer playerToRemove) {
 		boolean removed = false;
 		int counter = 0;
@@ -143,7 +175,11 @@ public class Lobby {
 		}
 	}
 
-	// switch player's team
+	/**
+	 * Switch a player's team.
+	 * @param playerToSwitch Player object to switch.
+	 * @param receiver Server Receiver used to retrieve/send messages between clients
+	 */
 	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
 		boolean switched = false;
 		for (ServerBasicPlayer player : blueTeam.values()) {
@@ -184,6 +220,11 @@ public class Lobby {
 		receiver.sendToAll(blueMems);
 	}
 
+	/**
+	 * Retrieve a particular team.
+	 * @param teamNum Number of team to return - 1=blue, 2=red. 
+	 * @return  String representation of team.
+	 */
 	public String getTeam(int teamNum) {
 		String retStr = "";
 		if (teamNum == 1) {
@@ -201,6 +242,10 @@ public class Lobby {
 			return "";
 	}
 
+	/**
+	 * Retrieve an array of player object.
+	 * @return Array of ServerBasicPlayer objects.
+	 */
 	public ServerBasicPlayer[] getPlayers() {
 		ArrayList<ServerBasicPlayer> playArr = new ArrayList<>();
 		playArr.addAll(blueTeam.values());
@@ -227,9 +272,16 @@ public class Lobby {
 	/**
 	 * Method to be called from the GUI when the lobby ends to start the game
 	 * logic.
+<<<<<<< HEAD
 	 *
 	 * @param sender
 	 * @param receiver
+=======
+	 * 
+	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
+	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
+	 * 
+>>>>>>> 162500932c15d90f09a1c3de7a86bb7a1797658b
 	 * @author Alexandra Paduraru
 	 */
 
@@ -268,7 +320,13 @@ public class Lobby {
 //	}
 
 
-	// A timer, accessed by the client for game countdown.
+	/**
+	 * A timer, accessed by the client for game countdown.
+	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
+	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpReceiver) {
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -295,18 +353,35 @@ public class Lobby {
 		t.start();
 	}
 
+	/**
+	 * Return winned of a game.
+	 * @return Winner team enum of a game.
+	 */
 	public TeamEnum getWinner() {
 		return currentSessionGame.getGame().whoWon().getColour();
 	}
 
+	/**
+	 * Return red converted team.
+	 * @return Red Team object.
+	 */
 	public Team getRedTeam() {
 		return red;
 	}
 
+	/**
+	 * Return blue converted team.
+	 * @return Blue Team object.
+	 */
 	public Team getBlueTeam() {
 		return blue;
 	}
 
+	/**
+	 * Return the team association of a player.
+	 * @param playerID Player to determine team association of.
+	 * @return Team association.
+	 */
 	private String getTeamAssoc(int playerID) {
 		for (ServerBasicPlayer player : redTeam.values()) {
 			if (player.getID() == playerID) {
@@ -320,7 +395,6 @@ public class Lobby {
 		}
 		return "";
 	}
-
 
 
 	//====================NEW INTEGRATION BELOW=================================
