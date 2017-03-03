@@ -27,7 +27,7 @@ Move up/down/left/right/mouse/start shooting|"O:Up:Down:Left:Right:Mouse:Shootin
 --------------------------------------------|---------------------------------------	|
 			SERVER ACTIONS					|/////////////////////////////////////		|
 --------------------------------------------|---------------------------------------	|
-Send clients new location					|"1:<id>:<x>:<y>:<angle>
+Send clients new location					|"1:<id>:<x>:<y>:<angle>:<visibility>"
 
 
 Number meanings:

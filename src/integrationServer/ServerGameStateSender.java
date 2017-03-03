@@ -59,8 +59,18 @@ public class ServerGameStateSender {
 	}
 
 	private void sendClient() {
-		//Protocol: "1:<id>:<x>:<y>:<angle>"
-		//TODO
+		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
+		
+		for(ServerMinimumPlayer p : players){
+			String toBeSent = "1:" + p.getPlayerId();
+			
+			toBeSent += ":" + p.getX();
+			toBeSent += ":" + p.getY();
+			toBeSent += ":" + p.getAngle();
+			toBeSent += ":" + p.isVisible();
+			
+			toClient.sendToAll(toBeSent);
+		}
 
 	}
 

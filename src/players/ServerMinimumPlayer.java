@@ -317,6 +317,9 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		return team;
 	}
 
+	public boolean isVisible(){
+		return visible;
+	}
 
 }
 
