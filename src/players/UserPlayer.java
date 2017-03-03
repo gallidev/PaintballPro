@@ -8,14 +8,15 @@ import javafx.scene.shape.Polygon;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Map;
+import rendering.Spawn;
 /**
  *  The player, represented by an ImageView
  */
 public class UserPlayer extends ServerMinimumPlayer{
 
-	public UserPlayer(double x, double y, int id, double width, double height, Map map, TeamEnum team,
+	public UserPlayer(double x, double y, int id, double width, double height, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler) {
-		super(x, y, id, width, height, map, team, collisionsHandler);
+		super(x, y, id, width, height, spawn, team, collisionsHandler);
 	}
 
 	public void tick()

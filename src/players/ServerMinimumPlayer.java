@@ -17,6 +17,7 @@ import physics.Bullet;
 import physics.CollisionsHandler;
 import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
+import rendering.Spawn;
 import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
@@ -35,7 +36,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected double mouseX, mouseY;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	protected Rotate rotation;
-	protected Map map;
+	protected Spawn[] spawn;
 	protected int id;
 	protected long shootTimer, spawnTimer;
 	protected double lastX, lastY;
@@ -53,7 +54,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public ServerMinimumPlayer(double x, double y, int id, double width, double height,  Map map, TeamEnum team, CollisionsHandler collisionsHandler){
+	public ServerMinimumPlayer(double x, double y, int id, double width, double height,  Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler){
 		this.x = x;
 		this.y = y;
 		this.lastX = x;
@@ -64,7 +65,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
-		this.map = map;
+		this.spawn = spawn;
 		eliminated = false;
 		invincible = false;
 		visible = true;
@@ -107,8 +108,8 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
 			if(team == TeamEnum.BLUE) i = 4;
-			x = map.getSpawns()[i].x * 64 ;
-			y = map.getSpawns()[i].y * 64 ;
+			x = spawn[i].x * 64 ;
+			y = spawn[i].y * 64 ;
 			eliminated = false;
 			invincible = true;
 			spawnTimer = System.currentTimeMillis();
@@ -312,7 +313,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	public void setCollRight(boolean collRight) {
 		this.collRight = collRight;
 	}
-	
+
 	public TeamEnum getColour(){
 		return team;
 	}

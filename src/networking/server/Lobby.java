@@ -6,8 +6,11 @@ import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
 import integrationServer.ClientInputReceiver;
+import integrationServer.GameSimulationJavaFxApplication;
 import integrationServer.GameSimulation;
 import integrationServer.ServerGameStateSender;
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
@@ -329,15 +332,16 @@ public class Lobby {
 		red = new Team();
 		blue = new Team();
 
-		
+		GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
+
 		Map map = Map.load("res/maps/" + "elimination" + ".json");
 
 		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
 		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
-		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map, TeamEnum.RED, collisionsHandler);
-		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, imageWidth, imageHeight, map, TeamEnum.BLUE, collisionsHandler);
+		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
+		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
 
 		//add players to the teams
 		red.addMember(redPlayer);
@@ -350,10 +354,10 @@ public class Lobby {
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
 		receiver.setInputReceiver(players);
-		ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
 
-		GameSimulation simulator = new GameSimulation(red, blue);
-		simulator.startExecution();
+		GameSimulation gameloop = new GameSimulation(receiver, red, blue);
+		gameloop.startExecution();
+		ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
 		stateSender.startSending();
 	}
 
