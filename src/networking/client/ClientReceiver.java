@@ -128,6 +128,11 @@ public class ClientReceiver extends Thread {
 
 					//initialize the ClientActionReceiver!!!!
 					//do stuff here according to new protocols for actions that update the client-sided player
+					
+					switch(text.charAt(0)){
+						case '1' : updatePlayerAction(text) ;
+								   break;
+					}
 
 				} else // if the client wants to exit the system.
 				{
@@ -140,6 +145,30 @@ public class ClientReceiver extends Thread {
 			sender.stopThread();
 			return;
 		}
+	}
+
+	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
+	//							NEW INTEGRATION BELOW
+
+	
+	private void updatePlayerAction(String text) {
+		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
+		String[] actions = text.split("1");
+		
+		int id = Integer.parseInt(actions[1]);
+		double x = Double.parseDouble(actions[2]);
+		double y = Double.parseDouble(actions[3]);
+		double angle = Double.parseDouble(actions[4]);
+		
+		boolean visibility = false;
+		if (actions[3].equals("true"))
+			visibility = true;
+		
+		;
+		
+		actionReceiver.updatePlayer(id, x, y, angle, visibility);
+		
+		
 	}
 
 	// Different actions to handle the server messages
