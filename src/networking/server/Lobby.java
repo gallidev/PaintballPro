@@ -5,12 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
-import integrationServer.ClientInputReceiver;
-import integrationServer.GameSimulationJavaFxApplication;
 import integrationServer.GameSimulation;
+import integrationServer.GameSimulationJavaFxApplication;
 import integrationServer.ServerGameStateSender;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
