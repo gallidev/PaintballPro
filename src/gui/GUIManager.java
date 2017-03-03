@@ -98,7 +98,7 @@ public class GUIManager {
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
                 case SingleplayerGameType:
-                    if (localServerCode) establishLocalSingleServerConnection();
+                    if (localServerCode) establishLocalServerConnection();
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
                 case Lobby:
@@ -151,7 +151,7 @@ public class GUIManager {
         }
     }
 
-    private boolean establishLocalSingleServerConnection() {
+    private boolean establishLocalServerConnection() {
         if (localServerCode) {
             ipAddress = "0.0.0.0";
             localServer = new Thread(new Runnable() {
