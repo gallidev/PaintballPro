@@ -1,12 +1,12 @@
 package gui;
 
-import enums.MenuEnum;
+import enums.Menu;
 import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
 import javafx.scene.Scene;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jack on 02/03/2017.
@@ -18,9 +18,9 @@ public class EndGameMenuTest {
 
         GUIManagerTestHelper m = new GUIManagerTestHelper();
         Scene s = EndGameMenu.getScene(m);
-        m.currentMenu = MenuEnum.EndGame;
+        m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Main Menu", s.getRoot()).fire();
-        assertTrue(m.currentMenu == MenuEnum.MainMenu);
+        assertTrue(m.currentMenu == Menu.MainMenu);
     }
 
 }

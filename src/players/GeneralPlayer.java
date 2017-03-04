@@ -1,33 +1,31 @@
 package players;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import audio.AudioManager;
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Map;
-import serverLogic.Team;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  *  The player, represented by an ImageView
  */
 public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-	protected final double movementSpeed = 2;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
+	protected final double movementSpeed = 2;
 	protected boolean up, down, left, right, shoot, eliminated, invincible;
 	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle, lastAngle;
@@ -37,7 +35,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected int id;
 	protected long shootTimer, spawnTimer;
 	protected double lastX, lastY;
-	protected TeamEnum team;
+	protected Team team;
 	protected ArrayList<GeneralPlayer> enemies;
 	protected ArrayList<GeneralPlayer> teamPlayers;
 	protected Polygon bounds = new Polygon();
@@ -56,7 +54,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param map The map in which the player is playing
 	 *
 	 */
-	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
+	public GeneralPlayer(double x, double y, int id, Map map, Team team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
 		super(image);
 		setCache(true);
 		setCacheHint(CacheHint.SPEED);
@@ -137,7 +135,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
-			if(team == TeamEnum.BLUE) i = 4;
+			if(team == Team.BLUE) i = 4;
 			setLayoutX(map.getSpawns()[i].x * 64);
 			setLayoutY(map.getSpawns()[i].y * 64);
 			eliminated = false;
@@ -307,20 +305,16 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		this.shoot = shoot;
 	}
 
-	public TeamEnum getTeam() {
+	public Team getTeam() {
 		return team;
-	}
-
-	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
-		this.teamPlayers = teamPlayers;
-	}
-
-	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
-		this.enemies = enemies;
 	}
 
 	public ArrayList<GeneralPlayer> getEnemies(){
 		return this.enemies;
+	}
+
+	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
+		this.enemies = enemies;
 	}
 
 	public int getPlayerId(){
@@ -329,6 +323,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	public ArrayList<GeneralPlayer> getTeamPlayers(){
 		return teamPlayers;
+	}
+
+	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
 	}
 
 	public void setMX(double newX) {

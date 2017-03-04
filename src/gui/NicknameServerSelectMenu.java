@@ -1,7 +1,7 @@
 package gui;
 
 
-import enums.MenuEnum;
+import enums.Menu;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -10,7 +10,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import networking.discovery.DiscoveryClientListener;
 /**
@@ -19,7 +18,7 @@ import networking.discovery.DiscoveryClientListener;
 public class NicknameServerSelectMenu {
     public static Scene getScene(GUIManager m) {
         // Obtain the user's settings
-        UserSettings s = m.getUserSettings();
+        UserSettings s = GUIManager.getUserSettings();
         // Create the main grid (to contain the options grid, and the apply/cancel buttons)
         GridPane mainGrid = new GridPane();
         mainGrid.setAlignment(Pos.CENTER);
@@ -97,19 +96,19 @@ public class NicknameServerSelectMenu {
                         m.setIpAddress(ipPort);
                         // Transition back to the main menu
                         if (m.establishConnection())
-                            m.transitionTo(MenuEnum.MultiplayerGameType, null);
+                            m.transitionTo(Menu.MultiplayerGameType, null);
                     }
                 } else {
                     m.setIpAddress(ipText.getText());
                     // Transition back to the main menu
                     if (m.establishConnection())
-                        m.transitionTo(MenuEnum.MultiplayerGameType, null);
+                        m.transitionTo(Menu.MultiplayerGameType, null);
                 }
             }
         }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                m.transitionTo(MenuEnum.MainMenu, null);
+                m.transitionTo(Menu.MainMenu, null);
             }
         })};
         // Turn the array into a grid pane

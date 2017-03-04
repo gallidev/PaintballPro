@@ -1,6 +1,6 @@
 package players;
 
-import enums.TeamEnum;
+import enums.Team;
 import networking.server.ServerReceiver;
 /**
  * Class to represent the server version of a player currently in a game. Stores
@@ -14,7 +14,7 @@ public class ServerPlayer{
 	private double x, y;
 	private int id;
 	private double angle;
-	private TeamEnum team;
+	private Team team;
 
 	/**
 	 * Creates a new server player with a given id, location and an assigned team colour.
@@ -24,7 +24,7 @@ public class ServerPlayer{
 	 * @param y The y coordinate of the player.
 	 * @param color The player's team colour.
 	 */
-	public ServerPlayer(int id, ServerReceiver receiver, int x, int y, TeamEnum color){
+	public ServerPlayer(int id, ServerReceiver receiver, int x, int y, Team color){
 		this.id = id;
 		this.receiver = receiver;
 		this.team = color;
@@ -62,7 +62,7 @@ public class ServerPlayer{
 	 * Changes the team's colour.
 	 * @param team The new team colour.
 	 */
-	public void setTeam (TeamEnum team){
+	public void setTeam (Team team){
 		this.team = team;
 	}
 	
@@ -78,7 +78,7 @@ public class ServerPlayer{
 	 * Retrieves the colour of the team that the player is playing in.
 	 * @return The player's team colour.
 	 */
-	public TeamEnum getColour(){
+	public Team getColour(){
 		return team;
 	}
 	

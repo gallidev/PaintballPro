@@ -1,6 +1,6 @@
 package rendering;
 
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;
@@ -14,9 +14,9 @@ public class ImageFactory
 
 	private static final HashMap<String, Image> materials = new HashMap<>();
 
-	public static Image getPlayerImage(TeamEnum team)
+	public static Image getPlayerImage(Team team)
 	{
-		return team == TeamEnum.RED ? redPlayerImage : bluePlayerImage;
+		return team == Team.RED ? redPlayerImage : bluePlayerImage;
 	}
 
 	static Image getMaterialImage(String material)
@@ -25,8 +25,8 @@ public class ImageFactory
 		return materials.get(material);
 	}
 
-	static Image getSpawnTile(TeamEnum team)
+	static Image getSpawnTile(Team team)
 	{
-		return team == TeamEnum.RED ? redSpawnTile : blueSpawnTile;
+		return team == Team.RED ? redSpawnTile : blueSpawnTile;
 	}
 }

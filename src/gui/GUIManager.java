@@ -3,7 +3,7 @@ package gui;
 import audio.AudioManager;
 import audio.SFXResources;
 import enums.GameLocation;
-import enums.MenuEnum;
+import enums.Menu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -35,7 +35,7 @@ public class GUIManager {
     private Stage s;
     private Client c;
     private Thread localServer;
-    private MenuEnum currentScene = MenuEnum.MainMenu;
+    private Menu currentScene = Menu.MainMenu;
     private String ipAddress = "";
     private Renderer r = null;
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
@@ -67,7 +67,7 @@ public class GUIManager {
      * @param menu the string representation of the menu to switch to
      * @param o    an object to be passed to the target scene (usually null)
      */
-    public void transitionTo(MenuEnum menu, Object o) {
+    public void transitionTo(Menu menu, Object o) {
         audio.stopMusic();
         if (!menu.equals(currentScene)) {
             currentScene = menu;
@@ -281,7 +281,7 @@ public class GUIManager {
         return lobbyTimerStarted;
     }
 
-    public MenuEnum getCurrentScene() {
+    public Menu getCurrentScene() {
         return currentScene;
     }
 

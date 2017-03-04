@@ -1,6 +1,6 @@
 package gui;
 
-import enums.MenuEnum;
+import enums.Menu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -122,7 +122,7 @@ public class SettingsMenu {
 		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	// Transition back to the main menu
-		    	m.transitionTo(MenuEnum.MainMenu, null);
+		    	m.transitionTo(Menu.MainMenu, null);
 		    }     
 		})};
 		// Turn the array into a grid pane
