@@ -30,6 +30,8 @@ public class ClientTable {
 	//Each user will have an incrementing unique id - allows multiple people with the same nickname.
 	private int id = 1;
 	
+	private boolean debug = false;
+	
 	/**
 	 * Add client information to all of the relevant data structures.
 	 * @param nickname The nickname of the Client.
@@ -195,6 +197,10 @@ public class ClientTable {
 	 * @return The message queue of the client.
 	 */
 	public MessageQueue getQueue(int clientID) {
+		if (debug) {
+			for(Integer i : queueTable.keySet())
+				System.out.print(i + " ");
+		}
 		//Null if not in the table.
 		return queueTable.get(clientID);
 	}

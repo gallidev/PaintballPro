@@ -44,6 +44,9 @@ public class Lobby {
 	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	private Team red;
 	private Team blue;
+	private ArrayList<ServerMinimumPlayer> players;
+	
+	private boolean debug = true;
 
 	/**
 	 * Sets passed variables and inialised some defaults.
@@ -57,6 +60,7 @@ public class Lobby {
 		currPlayerBlueNum = 0;
 		currPlayerRedNum = 0;
 		id = myid;
+		players = new ArrayList<>();
 	}
 
 	/**
@@ -348,6 +352,7 @@ public class Lobby {
 					}
 				}
 				playGame(receiver,udpReceiver);
+				startGameLoop(receiver);
 			}
 		});
 		t.start();
@@ -403,7 +408,7 @@ public class Lobby {
 		red = new Team();
 		blue = new Team();
 
-		GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
+		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 
 		Map map = Map.load("res/maps/" + "elimination" + ".json");
 
@@ -411,8 +416,8 @@ public class Lobby {
 		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
-		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
-		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
+		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
+		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
 
 		//add players to the teams
 		red.addMember(redPlayer);
@@ -421,15 +426,36 @@ public class Lobby {
 		collisionsHandler.setRedTeam(red.getMembers());
 		collisionsHandler.setBlueTeam(blue.getMembers());
 
-		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
+		
 		receiver.setInputReceiver(players);
+		if(debug) System.out.println("input receiver set in lobby");
 
-		GameSimulation gameloop = new GameSimulation(receiver, red, blue);
-		gameloop.startExecution();
+		for (ServerMinimumPlayer p : players) {
+			String toBeSent = "2:";
+
+			// the current player's info
+			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
+
+			// adding to the string the information about all the other players
+			for (ServerMinimumPlayer aux : players)
+				if (aux.getPlayerId() != p.getPlayerId())
+					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
+
+			receiver.sendToSpec(p.getPlayerId(), toBeSent);
+		}
+
+		
+		
+	}
+	
+	public void startGameLoop(ServerReceiver receiver){
+
 		ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
 		stateSender.startSending();
+		GameSimulation gameloop = new GameSimulation(receiver, red, blue);
+		gameloop.startExecution();
 	}
 
 }

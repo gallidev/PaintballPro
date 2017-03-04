@@ -178,11 +178,13 @@ public class ServerReceiver extends Thread {
 
 		int id = Integer.parseInt(actions[actions.length - 1]);
 
+		if(debug) System.out.println(inputReceiver == null);
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
 	}
 
 	public void setInputReceiver(ArrayList<ServerMinimumPlayer> players){
 		inputReceiver = new ClientInputReceiver(players);
+		if (debug)	System.out.println("Input receiver set");
 	}
 
 

@@ -18,6 +18,8 @@ public class GameSimulation {
 
 	private long delayMilliseconds = 33;
 	private int frames = 0;
+	
+	private boolean debug = false;
 
 	public GameSimulation(ServerReceiver receiver, Team redTeam, Team blueTeam){
 
@@ -50,7 +52,7 @@ public class GameSimulation {
 
 		Runnable frameCounter = new Runnable() {
 		       public void run() {
-		    	   System.out.println("server frames " + frames);
+		    	   if (debug) System.out.println("server frames " + frames);
 		    	   frames = 0;
 
 		       }

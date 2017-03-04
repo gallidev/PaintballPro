@@ -133,6 +133,8 @@ public class ClientReceiver extends Thread {
 					switch(text.charAt(0)){
 						case '1' : updatePlayerAction(text) ;
 								   break;
+						case '2' : startGameAction(text);
+								   break;
 					}
 
 				} else // if the client wants to exit the system.
@@ -151,38 +153,6 @@ public class ClientReceiver extends Thread {
 	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 	//							NEW INTEGRATION BELOW
 
-
-	private void updatePlayerAction(String text) {
-		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
-		String[] actions = text.split("1");
-
-		int id = Integer.parseInt(actions[1]);
-		double x = Double.parseDouble(actions[2]);
-		double y = Double.parseDouble(actions[3]);
-		double angle = Double.parseDouble(actions[4]);
-
-		boolean visibility = false;
-		if (actions[3].equals("true"))
-			visibility = true;
-
-		;
-
-		actionReceiver.updatePlayer(id, x, y, angle, visibility);
-
-
-	}
-
-	// Different actions to handle the server messages
-	/**
-	 * Contains everything that needs to be done when a player receives the
-	 * start signal: take the client's id and team, then form the team and the
-	 * enemy team. This information is then used by the renderer.
-	 *
-	 * @param text
-	 *            The text received from the server.
-	 *
-	 * @author Alexandra Paduraru
-	 */
 	public void startGameAction(String text) {
 		// get all the relevant data from the message : StartGame:2:Red:1:Red:
 		String[] data = text.split(":");
@@ -224,7 +194,6 @@ public class ClientReceiver extends Thread {
 
 		actionReceiver = new ClientActionReceiver(getAllPlayers());
 
-
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
@@ -235,6 +204,94 @@ public class ClientReceiver extends Thread {
 			}
 		});
 	}
+	
+	private void updatePlayerAction(String text) {
+		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
+		String[] actions = text.split("1");
+
+		int id = Integer.parseInt(actions[1]);
+		double x = Double.parseDouble(actions[2]);
+		double y = Double.parseDouble(actions[3]);
+		double angle = Double.parseDouble(actions[4]);
+
+		boolean visibility = false;
+		if (actions[3].equals("true"))
+			visibility = true;
+
+		;
+
+		actionReceiver.updatePlayer(id, x, y, angle, visibility);
+
+
+	}
+	
+	
+	
+	
+
+	// Different actions to handle the server messages
+	/**
+	 * Contains everything that needs to be done when a player receives the
+	 * start signal: take the client's id and team, then form the team and the
+	 * enemy team. This information is then used by the renderer.
+	 *
+	 * @param text
+	 *            The text received from the server.
+	 *
+	 * @author Alexandra Paduraru
+	 */
+//	public void startGameAction(String text) {
+//		// get all the relevant data from the message : StartGame:2:Red:1:Red:
+//		String[] data = text.split(":");
+//
+//		clientID = Integer.parseInt(data[1]);
+//		String clientTeam = data[2];
+//		Map map = Map.loadRaw("elimination");
+//
+//		// add myself to my team
+//		// create my client
+//		if (clientTeam.equals("Red"))
+//			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null);
+//		else
+//			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null);
+//
+//		// extract the other members
+//		for (int i = 3; i < data.length - 1; i = i + 2) {
+//			int id = Integer.parseInt(data[i]);
+//			if (data[i + 1].equals(clientTeam)) {
+//				if (clientTeam.equals("Red"))
+//					myTeam.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
+//							ImageFactory.getPlayerImage(TeamEnum.RED), null));
+//				else
+//					myTeam.add(new GhostPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+//							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
+//			} else {
+//				if (clientTeam.equals("Red"))
+//					enemies.add(new GhostPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+//							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
+//				else
+//					enemies.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
+//							ImageFactory.getPlayerImage(TeamEnum.RED), null));
+//			}
+//		}
+//
+//		teams.setEnemies(enemies);
+//		teams.setMyTeam(myTeam);
+//
+//
+//		actionReceiver = new ClientActionReceiver(getAllPlayers());
+//
+//
+//		// for debugging
+//		if(debug) System.out.println("game has started for player with ID " + clientID);
+//
+//		Platform.runLater(new Runnable() {
+//			@Override
+//			public void run() {
+//				m.transitionTo(MenuEnum.EliminationMulti, null);
+//			}
+//		});
+//	}
 
 	/* Getters and setters */
 	/**
