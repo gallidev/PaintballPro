@@ -119,7 +119,8 @@ public class CollisionsHandler {
 		for(GeneralPlayer enemy : opponents){
 
 			for(Bullet bullet : enemy.getBullets()){
-				if(bullet.isActive() && p.getPolygonBounds().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
+				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
+					System.out.println("Here!");
 					bullet.setActive(false);
 					p.beenShot();
 					return;
