@@ -3,7 +3,7 @@ package networking.client;
 import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
-import integrationClient.ClientActionReceiver;
+import integrationClient.ClientGameStateReceiver;
 import integrationClient.ClientInputSender;
 import javafx.application.Platform;
 import networking.game.UDPClient;
@@ -35,8 +35,8 @@ public class ClientReceiver extends Thread {
 	private GhostPlayer cPlayer;
 	private ArrayList<GhostPlayer> myTeam;
 	private ArrayList<GhostPlayer> enemies;
-	private ClientActionReceiver actionReceiver;
-	private UDPClient udpReceiver;
+	private ClientGameStateReceiver actionReceiver;
+	private UDPClient udpClient;
 	private TeamTable teams;
 
 	private boolean debug = true;
@@ -51,14 +51,14 @@ public class ClientReceiver extends Thread {
 	 * @param sender
 	 *            Sender class for sending messages to the client.
 	 */
-	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, GUIManager m, UDPClient udpReceiver, TeamTable teams) {
+	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, GUIManager m, UDPClient udpClient, TeamTable teams) {
 		this.m = m;
 		clientID = Cid;
 		fromServer = reader;
 		this.sender = sender;
 		myTeam = new ArrayList<>();
 		enemies = new ArrayList<>();
-		this.udpReceiver = udpReceiver;
+		this.udpClient = udpClient;
 		this.teams = teams;
 	}
 
@@ -131,8 +131,6 @@ public class ClientReceiver extends Thread {
 					//do stuff here according to new protocols for actions that update the client-sided player
 
 					switch(text.charAt(0)){
-						case '1' : updatePlayerAction(text) ;
-								   break;
 						case '2' : startGameAction(text);
 								   break;
 					}
@@ -191,7 +189,8 @@ public class ClientReceiver extends Thread {
 		teams.setMyTeam(myTeam);
 
 
-		actionReceiver = new ClientActionReceiver(getAllPlayers());
+		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
+		udpClient.setGameStateReceiver(gameStateReceiver);
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
@@ -204,29 +203,7 @@ public class ClientReceiver extends Thread {
 		});
 	}
 
-	private void updatePlayerAction(String text) {
-		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
-		if(debug)System.out.println(text);
-		if(text != ""){
-			String[] actions = text.split("1");
 
-			int id = Integer.parseInt(actions[1]);
-			double x = Double.parseDouble(actions[2]);
-			double y = Double.parseDouble(actions[3]);
-			double angle = Double.parseDouble(actions[4]);
-
-			boolean visibility = false;
-			if (actions[3].equals("true"))
-				visibility = true;
-
-			;
-
-			actionReceiver.updatePlayer(id, x, y, angle, visibility);
-		}
-
-
-
-	}
 
 
 
@@ -335,6 +312,9 @@ public class ClientReceiver extends Thread {
 		return cPlayer;
 	}
 
+	public UDPClient getUdpClient(){
+		return udpClient;
+	}
 	/**
 	 * Return all the players that are not in this Player's team.
 	 *

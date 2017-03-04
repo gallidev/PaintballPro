@@ -44,7 +44,7 @@ public class GameSimulationScene extends Scene{
 		players = new ArrayList<>();
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
-		receiver.setInputReceiver(players);
+		//.setInputReceiver(players);
 		this.redTeam = redTeam;
 		this.blueTeam = blueTeam;
 
@@ -60,8 +60,8 @@ public class GameSimulationScene extends Scene{
 			}
 		}.start();
 
-		ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
-		stateSender.startSending();
+		//ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
+		//stateSender.startSending();
 	}
 
 }

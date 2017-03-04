@@ -14,11 +14,11 @@ import networking.shared.MessageQueue;
 
 /**
  * Controls main client code - holds server sender and receiver threads.
- * 
+ *
  * @author MattW
  */
 public class Client {
-	
+
 	ClientSender sender;
 	ClientReceiver receiver;
 	int clientID;
@@ -34,12 +34,12 @@ public class Client {
 	 * @param guiManager GUI Manager object.
 	 */
 	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager) throws Exception {
-		
+
 		String nickname = passedNickname;
 
 		// We check that nickname does not contain - or : as these are used in our protocols.
 		if (!nickname.contains(":") || !nickname.contains("-")) {
-			
+
 			int portNumber = portNum;
 			String hostname = serverIP;
 
@@ -95,9 +95,9 @@ public class Client {
 			}
 			// Sanity output.
 			System.out.println("Client has id:" + clientID);
-			
+
 			TeamTable teams = new TeamTable();
-			
+
 			//Make a UDP Receiver and Sender for low-latency in-game.
 			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams);
 			udpReceiver.start();
@@ -120,7 +120,7 @@ public class Client {
 						fromServer.close(); // Close connection from server
 						server.close(); // Close server socket
 						// Acknowledge to the client that everything has stopped.
-						System.out.println("Client has been stopped."); 
+						System.out.println("Client has been stopped.");
 					// Catch possible errors.
 					} catch (IOException e) {
 						System.err.println("Something wrong " + e.getMessage());

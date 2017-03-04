@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import integrationServer.ClientInputReceiver;
+import integrationServer.ServerInputReceiver;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
@@ -33,7 +33,7 @@ public class ServerReceiver extends Thread {
 	private Lobby lobby;
 	private UDPServer udpReceiver;
 
-	private ClientInputReceiver inputReceiver;
+	private ServerInputReceiver inputReceiver;
 
 	private boolean debug = true;
 
@@ -57,7 +57,7 @@ public class ServerReceiver extends Thread {
 		gameLobby = passedGameLobby;
 		myMsgQueue = clientTable.getQueue(myClientsID);
 		this.udpReceiver = udpReceiver;
-		this.inputReceiver = new ClientInputReceiver();
+		this.inputReceiver = new ServerInputReceiver();
 	}
 
 	/**
@@ -126,9 +126,9 @@ public class ServerReceiver extends Thread {
 
 					//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 					//							NEW INTEGRATION BELOW
-					switch(text.charAt(0)){
-					case '0' : playerInputChanged(text);
-					}
+//					switch(text.charAt(0)){
+//					case '0' : playerInputChanged(text);
+//					}
 
 				} else // if the client wants to exit the system.
 				{
@@ -147,49 +147,49 @@ public class ServerReceiver extends Thread {
 
 	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 	//							NEW INTEGRATION BELOW
-	public void playerInputChanged(String text){
-		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
-		String[] actions = text.split(":");
-		boolean up = false;
-		boolean down = false;
-		boolean left = false;
-		boolean right = false;
-		boolean shoot = false;
-		double mX = 0;
-		double mY = 0;
+//	public void playerInputChanged(String text){
+//		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
+//		String[] actions = text.split(":");
+//		boolean up = false;
+//		boolean down = false;
+//		boolean left = false;
+//		boolean right = false;
+//		boolean shoot = false;
+//		double mX = 0;
+//		double mY = 0;
+//
+//		for(int i = 0; i < actions.length - 1; i++){
+//			String act = actions[i];
+//			switch(act){
+//				case "Up"    : up = true;
+//							   break;
+//				case "Down"  : down = true;
+//							   break;
+//				case "Left"  : left = true;
+//							   break;
+//				case "Right" : right = true;
+//				   			   break;
+//				case "Mouse" : mX = Double.parseDouble(actions[i+1]);
+//							   mY = Double.parseDouble(actions[i+2]);
+//							   i = i + 3;
+//							   break;
+//				default		 : break;
+//			}
+//		}
+//
+//		int id = Integer.parseInt(actions[actions.length - 1]);
+//
+//		if(debug) System.out.println(inputReceiver == null);
+//		if(inputReceiver != null){
+//			inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
+//		}
+//
+//	}
 
-		for(int i = 0; i < actions.length - 1; i++){
-			String act = actions[i];
-			switch(act){
-				case "Up"    : up = true;
-							   break;
-				case "Down"  : down = true;
-							   break;
-				case "Left"  : left = true;
-							   break;
-				case "Right" : right = true;
-				   			   break;
-				case "Mouse" : mX = Double.parseDouble(actions[i+1]);
-							   mY = Double.parseDouble(actions[i+2]);
-							   i = i + 3;
-							   break;
-				default		 : break;
-			}
-		}
-
-		int id = Integer.parseInt(actions[actions.length - 1]);
-
-		if(debug) System.out.println(inputReceiver == null);
-		if(inputReceiver != null){
-			inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
-		}
-
-	}
-
-	public void setInputReceiver(ArrayList<ServerMinimumPlayer> players){
-		inputReceiver.setPlayers(players);
-		if (debug)	System.out.println("Input receiver set");
-	}
+//	public void setInputReceiver(ArrayList<ServerMinimumPlayer> players){
+//		inputReceiver.setPlayers(players);
+//		if (debug)	System.out.println("Input receiver set");
+//	}
 
 
 	//===================OLD INTEGRATION===============================================

@@ -15,7 +15,7 @@ import players.ServerMinimumPlayer;
  * @author Alexandra Paduraru
  *
  */
-public class ClientInputReceiver {
+public class ServerInputReceiver {
 
 	private ArrayList<ServerMinimumPlayer> players;
 	/**
@@ -26,12 +26,12 @@ public class ClientInputReceiver {
 	 *
 	 * @param toClients The client sender which will send clients what they should do.
 	 */
-	public ClientInputReceiver() {
+	public ServerInputReceiver() {
 		super();
 	}
 
 
-	public ClientInputReceiver(ArrayList<ServerMinimumPlayer> players) {
+	public ServerInputReceiver(ArrayList<ServerMinimumPlayer> players) {
 		super();
 		this.players = players;
 	}

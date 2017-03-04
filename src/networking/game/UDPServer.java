@@ -3,7 +3,9 @@ package networking.game;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
+import integrationServer.ServerInputReceiver;
 import networking.server.ClientTable;
 import networking.server.Lobby;
 import networking.server.LobbyTable;
@@ -14,7 +16,7 @@ import players.ServerPlayer;
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
  * One per server.
- * 
+ *
  * @author MattW
  */
 public class UDPServer extends Thread{
@@ -23,7 +25,9 @@ public class UDPServer extends Thread{
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
-	
+
+	private ServerInputReceiver inputReceiver;
+
 	/**
 	 * Constructor, sets global variables to those passed.
 	 * @param clientTable Table storing all necessary client information.
@@ -33,7 +37,7 @@ public class UDPServer extends Thread{
 		clients = clientTable;
 		this.lobbyTab = lobby;
 	}
-	
+
 	/**
 	 * Loop through, reading messages from the server.
 	 * Main method, ran when the thread is started.
@@ -43,7 +47,7 @@ public class UDPServer extends Thread{
 		try {
 			if(debug) System.out.println("Starting server");
 			serverSocket = new DatagramSocket(9876);
-		
+
 			if(debug) System.out.println("Opened socket on port " + serverSocket.getPort() + serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];
 			while(true)
@@ -51,14 +55,14 @@ public class UDPServer extends Thread{
 			      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			      if(debug) System.out.println("Waiting to receive packet");
 			      serverSocket.receive(receivePacket);
-			    
+
 			      String sentence = new String( receivePacket.getData()).trim();
-			      
+
 			      if(debug) System.out.println("Packet received with text:"+sentence);
-			      
+
 			      InetAddress IPAddress;
 			      int port;
-			     
+
 			      if(sentence.contains("ExitUDP"))
 			    	  break;
 			      else if(sentence.contains("Connect:"))
@@ -83,7 +87,7 @@ public class UDPServer extends Thread{
 						// ---------------
 						if (sentence.contains("Scored"))
 							newScoreAction(sentence,ipFrom);
-			    	  
+
 						// Server Actions
 						// ---------------
 						// Send a message to all clients in the game.
@@ -96,7 +100,12 @@ public class UDPServer extends Thread{
 						// Reset the client when they exit the game.
 						if (sentence.contains("Exit:Game"))
 							exitGame(ipFrom);
-						
+
+						switch(sentence.charAt(0)){
+							case '0' : playerInputChanged(sentence);
+						}
+
+
 			      }
 			}
 		} catch(Exception e)
@@ -119,7 +128,7 @@ public class UDPServer extends Thread{
 	public void sendToAll(String toBeSent, int lobbyID) {
 		byte[] sendData = new byte[1024];
 		sendData = toBeSent.getBytes();
-		
+
 		// We get all players in the same game as the transmitting player.
 		ServerBasicPlayer[] players = lobbyTab.getLobby(lobbyID).getPlayers();
 		// Let's send a message to them all.
@@ -147,15 +156,15 @@ public class UDPServer extends Thread{
 				if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
 			}
 		}
-		
-		Lobby lobby = lobbyTab.getLobby(lobbyID); 
-		
+
+		Lobby lobby = lobbyTab.getLobby(lobbyID);
+
 		//Given a move, the server player's location needs to be updated
 		if (toBeSent.contains("Move")){
 				makeMove(lobby,toBeSent);
 		}
 	}
-	
+
 	/**
 	 * Send a message to all clients in a game - based on Lobby.
 	 * @param toBeSent Message to be sent to all clients.
@@ -169,24 +178,68 @@ public class UDPServer extends Thread{
 		// we can now send to all clients in the same lobby as the origin client.
 		sendToAll(toBeSent,lobbyID);
 	}
-	
+
 	// -------------------------------------
 	// -----------Game Methods--------------
 	// -------------------------------------
+
+
+	public void playerInputChanged(String text){
+		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
+		String[] actions = text.split(":");
+		boolean up = false;
+		boolean down = false;
+		boolean left = false;
+		boolean right = false;
+		boolean shoot = false;
+		double mX = 0;
+		double mY = 0;
+
+		for(int i = 0; i < actions.length - 1; i++){
+			String act = actions[i];
+			switch(act){
+				case "Up"    : up = true;
+							   break;
+				case "Down"  : down = true;
+							   break;
+				case "Left"  : left = true;
+							   break;
+				case "Right" : right = true;
+				   			   break;
+				case "Mouse" : mX = Double.parseDouble(actions[i+1]);
+							   mY = Double.parseDouble(actions[i+2]);
+							   i = i + 3;
+							   break;
+				default		 : break;
+			}
+		}
+
+		int id = Integer.parseInt(actions[actions.length - 1]);
+
+		if(debug) System.out.println(inputReceiver == null);
+		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
+
+
+	}
+
+	public void setInputReceiver(ServerInputReceiver inputReceiver){
+		this.inputReceiver = inputReceiver;
+	}
+
 	/**
 	 * Updates a team's score based on the information got from a client. Helps
 	 * the server keep track of each team's score(the teams are stored in the
 	 * Lobby).
-	 * 
+	 *
 	 * @param text The protocol message for updating a team's score.
-	 * 
+	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
 	public void newScoreAction(String text, String ip)
 	{
 		// Protocol : "Scored:<Team>"
 		String teamColour = text.split(":")[1];
-		Lobby lobby = lobbyTab.getLobby(clients.getPlayer(clients.getID(ip)).getAllocatedLobby()); 
+		Lobby lobby = lobbyTab.getLobby(clients.getPlayer(clients.getID(ip)).getAllocatedLobby());
 		if (teamColour.equals("Red"))
 			lobby.getRedTeam().incrementScore(1);
 		else
@@ -196,7 +249,7 @@ public class UDPServer extends Thread{
 		if(debug) System.out.println("Red team score: " + lobby.getRedTeam().getScore());
 		if(debug) System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
 	}
-	
+
 	/**
 	 * We reset status of some objects storing game-specific information.
 	 * @param ip IP of a particular client to remove.
@@ -206,12 +259,12 @@ public class UDPServer extends Thread{
 		lobbyTab.removePlayer(myPlayer);
 		myPlayer.setAllocatedLobby(-1);
 	}
-	
+
 	/**
 	 * We represent a move being made by a player.
 	 * @param lobby Lobby that the player is in.
 	 * @param text Text to parse movement information.
-	 * 
+	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
 	private void makeMove(Lobby lobby, String text)
@@ -228,7 +281,7 @@ public class UDPServer extends Thread{
 		for(ServerMinimumPlayer p : lobby.getRedTeam().getMembers())
 			if( id == p.getPlayerId())
 				currentPlayer = p;
-		
+
 		if (currentPlayer == null){
 			for(ServerMinimumPlayer p : lobby.getBlueTeam().getMembers())
 				if( id == p.getPlayerId())

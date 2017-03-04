@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import gui.GUIManager;
+import integrationClient.ClientGameStateReceiver;
 import networking.client.TeamTable;
 import physics.Bullet;
 import players.ClientLocalPlayer;
@@ -31,6 +32,7 @@ public class UDPClient extends Thread {
 	GUIManager m;
 
 	TeamTable teams;
+	private ClientGameStateReceiver gameStateReceiver;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -76,22 +78,14 @@ public class UDPClient extends Thread {
 			while(true)
 			{
 				clientSocket.receive(receivePacket);
-				String sentSentence = new String(receivePacket.getData());
+				String receivedText = new String(receivePacket.getData());
 
 				// In-game messages
-				if (sentSentence.contains("Move"))
-					moveAction(sentSentence);
-				else if (sentSentence.contains("Bullet"))
-					bulletAction(sentSentence);
-				else if (sentSentence.contains("LTime:")) {
-					String remTime = sentSentence.split(":")[1];
-					int time = Integer.parseInt(remTime);
-					m.setTimeLeft(time);
-					m.setTimerStarted();
-					if(debug) System.out.println("Lobby has " + time + " left");
+				switch(receivedText.charAt(0)){
+				case '1' : updatePlayerAction(receivedText) ;
+						   break;
+
 				}
-				else if (sentSentence.contains("Exit"))
-					break;
 			}
 		}
 		catch (Exception e)
@@ -123,6 +117,37 @@ public class UDPClient extends Thread {
 	// -------------------------------------
 	// -----------Game Methods--------------
 	// -------------------------------------
+
+
+
+	private void updatePlayerAction(String text) {
+		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
+		if(debug)System.out.println(text);
+		if(text != ""){
+			String[] actions = text.split("1");
+
+			int id = Integer.parseInt(actions[1]);
+			double x = Double.parseDouble(actions[2]);
+			double y = Double.parseDouble(actions[3]);
+			double angle = Double.parseDouble(actions[4]);
+
+			boolean visibility = false;
+			if (actions[3].equals("true"))
+				visibility = true;
+
+			;
+
+			gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
+		}
+
+
+
+	}
+
+	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
+		this.gameStateReceiver = gameStateReceiver;
+	}
+
 	/**
 	 * Action starting when a player fires a bullet. It renders the bullet and
 	 * also detects when a player has been eliminated.

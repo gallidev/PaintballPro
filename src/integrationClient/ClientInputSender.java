@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import networking.client.ClientSender;
+import networking.game.UDPClient;
 import physics.InputHandler;
 
 /**
@@ -15,7 +15,7 @@ import physics.InputHandler;
  */
 public class ClientInputSender {
 
-	private ClientSender toServer;
+	private UDPClient udpClient;
 	private InputHandler handler;
 	private int id;
 
@@ -29,8 +29,8 @@ public class ClientInputSender {
 	 * @param handler The handler which handles all user inputs in the player.
 	 * @param playerId The current player's id.
 	 */
-	public ClientInputSender(ClientSender sender, InputHandler handler, int playerId){
-		toServer = sender;
+	public ClientInputSender(UDPClient udpClient, InputHandler handler, int playerId){
+		this.udpClient = udpClient;
 		this.handler = handler;
 		id = playerId;
 	}
@@ -96,7 +96,7 @@ public class ClientInputSender {
 		//did the mouse move?
 		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY() + ":" + id;
 
-		toServer.sendMessage(toBeSent);
+		udpClient.sendMessage(toBeSent);
 	}
 
 

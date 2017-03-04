@@ -5,7 +5,7 @@ public class InputHandler {
 
 	boolean up, down, left, right;
 	boolean shoot;
-	double mouseX, mouseY;
+	int mouseX, mouseY;
 
 	public InputHandler(){
 		up = false;
@@ -57,19 +57,19 @@ public class InputHandler {
 		this.shoot = shoot;
 	}
 
-	public double getMouseX() {
+	public int getMouseX() {
 		return mouseX;
 	}
 
-	public void setMouseX(double mouseX) {
+	public void setMouseX(int mouseX) {
 		this.mouseX = mouseX;
 	}
 
-	public double getMouseY() {
+	public int getMouseY() {
 		return mouseY;
 	}
 
-	public void setMouseY(double mouseY) {
+	public void setMouseY(int mouseY) {
 		this.mouseY = mouseY;
 	}
 

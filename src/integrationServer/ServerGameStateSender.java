@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import networking.game.UDPServer;
 import networking.server.ServerReceiver;
 import networking.server.ServerSender;
 import players.ServerMinimumPlayer;
@@ -17,15 +18,17 @@ import players.ServerMinimumPlayer;
  */
 public class ServerGameStateSender {
 
-	private ServerReceiver toClient;
+	private int lobbyId;
+	private UDPServer udpServer;
 	private ArrayList<ServerMinimumPlayer> players;
-	int frames = 0;
+	private int frames = 0;
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
 
-	public ServerGameStateSender(ServerReceiver toClient, ArrayList<ServerMinimumPlayer> players){
-		this.toClient = toClient;
+	public ServerGameStateSender(UDPServer udpServer, ArrayList<ServerMinimumPlayer> players, int lobbyId){
+		this.udpServer = udpServer;
 		this.players = players;
+		this.lobbyId = lobbyId;
 	}
 
 	public void startSending(){
@@ -60,16 +63,16 @@ public class ServerGameStateSender {
 
 	private void sendClient() {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
-		
+
 		for(ServerMinimumPlayer p : players){
 			String toBeSent = "1:" + p.getPlayerId();
-			
+
 			toBeSent += ":" + p.getX();
 			toBeSent += ":" + p.getY();
 			toBeSent += ":" + p.getAngle();
 			toBeSent += ":" + p.isVisible();
-			
-			toClient.sendToAll(toBeSent);
+
+			udpServer.sendToAll(toBeSent, lobbyId);
 		}
 
 	}

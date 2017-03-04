@@ -11,17 +11,17 @@ import serverLogic.Team;
 import players.ServerMinimumPlayer;
 
 
-public class GameSimulation {
+public class ServerGameSimulation {
 
 	private Team redTeam;
 	private Team blueTeam;
 
 	private long delayMilliseconds = 33;
 	private int frames = 0;
-	
+
 	private boolean debug = false;
 
-	public GameSimulation(ServerReceiver receiver, Team redTeam, Team blueTeam){
+	public ServerGameSimulation(Team redTeam, Team blueTeam){
 
 		this.redTeam = redTeam;
 		this.blueTeam = blueTeam;

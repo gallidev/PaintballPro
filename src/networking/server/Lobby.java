@@ -5,9 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
-import integrationServer.GameSimulation;
+import integrationServer.ServerGameSimulation;
 import integrationServer.GameSimulationJavaFxApplication;
 import integrationServer.ServerGameStateSender;
+import integrationServer.ServerInputReceiver;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
@@ -21,7 +22,7 @@ import serverLogic.Team;
 
 /**
  * Class to represent a lobby.
- * 
+ *
  * @author MattW
  */
 public class Lobby {
@@ -45,7 +46,7 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 	private ArrayList<ServerMinimumPlayer> players;
-	
+
 	private boolean debug = true;
 
 	/**
@@ -119,7 +120,7 @@ public class Lobby {
 		// Add player to teams - alternate teams unless specified (when a client
 		// requests to switch teams).
 		// We check in LobbyTable if max players is reached.
-		
+
 		int totPlayers = getCurrPlayerTotal();
 		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers / 2))) {
 			redTeam.put(currPlayerRedNum, playerToAdd);
@@ -226,7 +227,7 @@ public class Lobby {
 
 	/**
 	 * Retrieve a particular team.
-	 * @param teamNum Number of team to return - 1=blue, 2=red. 
+	 * @param teamNum Number of team to return - 1=blue, 2=red.
 	 * @return  String representation of team.
 	 */
 	public String getTeam(int teamNum) {
@@ -281,10 +282,10 @@ public class Lobby {
 	 * @param sender
 	 * @param receiver
 =======
-	 * 
+	 *
 	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
 	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
-	 * 
+	 *
 >>>>>>> 162500932c15d90f09a1c3de7a86bb7a1797658b
 	 * @author Alexandra Paduraru
 	 */
@@ -328,10 +329,10 @@ public class Lobby {
 	 * A timer, accessed by the client for game countdown.
 	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
 	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
-	public void timerStart(ServerReceiver receiver, UDPServer udpReceiver) {
+	public void timerStart(ServerReceiver receiver, UDPServer udpServer) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -351,8 +352,8 @@ public class Lobby {
 
 					}
 				}
-				playGame(receiver,udpReceiver);
-				startGameLoop(receiver);
+				playGame(receiver,udpServer);
+				startGameLoop(udpServer);
 			}
 		});
 		t.start();
@@ -404,7 +405,7 @@ public class Lobby {
 
 	//====================NEW INTEGRATION BELOW=================================
 
-	public void playGame(ServerReceiver receiver, UDPServer server){
+	public void playGame(ServerReceiver receiver, UDPServer udpServer){
 		red = new Team();
 		blue = new Team();
 
@@ -428,8 +429,10 @@ public class Lobby {
 
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
-		
-		receiver.setInputReceiver(players);
+
+		ServerInputReceiver inputReceiver = new ServerInputReceiver(players);
+
+		udpServer.setInputReceiver(inputReceiver);
 		if(debug) System.out.println("input receiver set in lobby");
 
 		for (ServerMinimumPlayer p : players) {
@@ -446,16 +449,17 @@ public class Lobby {
 			receiver.sendToSpec(p.getPlayerId(), toBeSent);
 		}
 
-		
-		
-	}
-	
-	public void startGameLoop(ServerReceiver receiver){
 
-		ServerGameStateSender stateSender = new ServerGameStateSender(receiver, players);
-		stateSender.startSending();
-		GameSimulation gameloop = new GameSimulation(receiver, red, blue);
+
+	}
+
+	public void startGameLoop(UDPServer udpServer){
+
+		ServerGameSimulation gameloop = new ServerGameSimulation(red, blue);
 		gameloop.startExecution();
+		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
+		stateSender.startSending();
+
 	}
 
 }

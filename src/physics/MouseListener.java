@@ -18,8 +18,8 @@ public class MouseListener implements EventHandler<MouseEvent>{
 
 		if(!Renderer.getPauseMenuState()&& !Renderer.getSettingsMenuState())
 		{
-				double newX = event.getX();
-				double newY = event.getY();
+				int newX = (int) event.getX();
+				int newY = (int) event.getY();
 				inputHandler.setMouseX(newX);
 				inputHandler.setMouseY(newY);
 				inputHandler.setShoot(event.isPrimaryButtonDown());

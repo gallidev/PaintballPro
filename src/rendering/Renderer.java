@@ -167,7 +167,7 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		inputSender = new ClientInputSender(receiver.getSender(),inputHandler, cPlayer.getPlayerId());
+		inputSender = new ClientInputSender(receiver.getUdpClient(),inputHandler, cPlayer.getPlayerId());
 
 		inputSender.startSending();
 
