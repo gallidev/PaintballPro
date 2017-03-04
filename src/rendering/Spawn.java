@@ -1,9 +1,9 @@
 package rendering;
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.image.ImageView;
 public class Spawn
 {
 	public int x, y;
-	TeamEnum team;
+	Team team;
 	transient ImageView image;
 }

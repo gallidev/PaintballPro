@@ -1,6 +1,6 @@
 package physics;
 
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -10,8 +10,8 @@ import javafx.scene.shape.Circle;
  */
 public class Bullet extends Circle{
 	
+	private static final float speed = 10f;
 	private double angle;
-	private float speed = 7f;
 	private double x, y;
 	private double originX, originY;
 	private boolean active;
@@ -22,7 +22,7 @@ public class Bullet extends Circle{
 	 * @param y The y-coordinate of the bullet
 	 * @param angle The angle at which the bullet will travel
 	 */
-	public Bullet(double x, double y, double angle, TeamEnum team) {
+	public Bullet(double x, double y, double angle, Team team) {
 		setCache(true);
 		setCacheHint(CacheHint.SPEED);
 		this.x = x;
@@ -34,7 +34,7 @@ public class Bullet extends Circle{
 		setCenterX(x);
 		setCenterY(y);
 		setRadius(3);
-		if(team == TeamEnum.RED){
+		if(team == Team.RED){
 			setFill(Color.RED);
 		} else {
 			setFill(Color.BLUE);

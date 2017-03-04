@@ -1,9 +1,9 @@
 package offlineLogic;
 
-import java.util.ArrayList;
-
-import enums.TeamEnum;
+import enums.Team;
 import players.AIPlayer;
+
+import java.util.ArrayList;
 
 /**
  * A team of just AI players which can be used for the single player mode.
@@ -13,7 +13,7 @@ import players.AIPlayer;
 public class OfflineTeam {
 
 	private ArrayList<AIPlayer> members;
-	private TeamEnum colour;
+	private Team colour;
 	private int score;
 	
 	/**
@@ -21,7 +21,7 @@ public class OfflineTeam {
 	 * @param members The list of players in the team.
 	 * @param colour The enum corresponding to the team colour.
 	 */
-	public OfflineTeam(ArrayList<AIPlayer> members, TeamEnum colour){
+	public OfflineTeam(ArrayList<AIPlayer> members, Team colour){
 		this.members = members;
 		score = 0;
 		this.colour = colour;
@@ -72,7 +72,7 @@ public class OfflineTeam {
 	 * Returns the colour of the team as a TeamEnum.
 	 * @return The team colour.
 	 */
-	public TeamEnum getColour() {
+	public Team getColour() {
 		return colour;
 	}
 	
@@ -80,7 +80,7 @@ public class OfflineTeam {
 	 * Changes the team colour.
 	 * @param colour The new team colour.
 	 */
-	public void setColour(TeamEnum colour) {
+	public void setColour(Team colour) {
 		this.colour = colour;
 	}
 	

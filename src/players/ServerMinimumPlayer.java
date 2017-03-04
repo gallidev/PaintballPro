@@ -1,6 +1,6 @@
 package players;
 
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
@@ -30,7 +30,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected int id;
 	protected long shootTimer, spawnTimer;
 	protected double lastX, lastY;
-	protected TeamEnum team;
+	protected Team team;
 	protected Polygon bounds = new Polygon();
 	protected CollisionsHandler collisionsHandler;
 
@@ -44,7 +44,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	 * @param Team The team of the player
 	 *
 	 */
-	public ServerMinimumPlayer(double x, double y, int id, double width, double height,  Map map, TeamEnum team, CollisionsHandler collisionsHandler){
+	public ServerMinimumPlayer(double x, double y, int id, double width, double height, Map map, Team team, CollisionsHandler collisionsHandler){
 		this.x = x;
 		this.y = y;
 		this.lastX = x;
@@ -96,7 +96,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
-			if(team == TeamEnum.BLUE) i = 4;
+			if(team == Team.BLUE) i = 4;
 			x = map.getSpawns()[i].x * 64 ;
 			y = map.getSpawns()[i].y * 64 ;
 			eliminated = false;
@@ -243,7 +243,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		this.shoot = shoot;
 	}
 
-	public TeamEnum getTeam() {
+	public Team getTeam() {
 		return team;
 	}
 

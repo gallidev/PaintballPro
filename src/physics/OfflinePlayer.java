@@ -1,14 +1,15 @@
 package physics;
 
-import java.util.ArrayList;
 import audio.AudioManager;
-import enums.TeamEnum;
+import enums.Team;
 import javafx.geometry.Point2D;
 import offlineLogic.OfflineTeam;
 import players.AIPlayer;
 import players.GeneralPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
 
 /**
  * The player, represented by an ImageView that should be running
@@ -31,7 +32,7 @@ public class OfflinePlayer extends GeneralPlayer
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene         The scene in which the player will be displayed
 	 */
-	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, CollisionsHandler collisionsHandler)
+	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, Team team, CollisionsHandler collisionsHandler)
 	{
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
 		this.audio = audio;
@@ -58,7 +59,7 @@ public class OfflinePlayer extends GeneralPlayer
 		ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
 
 		for (int i = 0; i < 4; i++){
-				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, collisionsHandler);
+				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == Team.RED ? Team.BLUE : Team.RED, audio, collisionsHandler);
 				oppTeamMembers.add(p);
 				enemies.add(p);
 		}
@@ -77,7 +78,7 @@ public class OfflinePlayer extends GeneralPlayer
 
 	}
 
-	public OfflinePlayer(double x, double y, int id, TeamEnum team)
+	public OfflinePlayer(double x, double y, int id, Team team)
 	{
 		super(x, y, id, ImageFactory.getPlayerImage(team));
 		controlScheme = false;
@@ -128,7 +129,7 @@ public class OfflinePlayer extends GeneralPlayer
 
 		oppTeam.incrementScore();
 
-		if (myTeam.getColour() == TeamEnum.RED){
+		if (myTeam.getColour() == Team.RED){
 			System.out.println( "Red team score: " + myTeam.getScore());
 			System.out.println( "Blue team score: " + oppTeam.getScore());
 		}

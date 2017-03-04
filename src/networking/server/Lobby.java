@@ -1,16 +1,15 @@
 package networking.server;
 
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import enums.TeamEnum;
+import enums.Team;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
 import players.ServerBasicPlayer;
 import players.ServerPlayer;
-import serverLogic.Team;
+
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Class to represent a lobby.
@@ -20,9 +19,9 @@ import serverLogic.Team;
 public class Lobby {
 	// Structures storing relevant data.
 
+	private static final int lobbyTime = 10;
 	// Lobby information
 	private int id;
-	private static final int lobbyTime = 10;
 	private boolean inGameStatus;
 
 	// Game information
@@ -35,8 +34,8 @@ public class Lobby {
 	private int currPlayerRedNum;
 	private ConcurrentMap<Integer, ServerBasicPlayer> blueTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
-	private Team red;
-	private Team blue;
+	private serverLogic.Team red;
+	private serverLogic.Team blue;
 
 	/**
 	 * Sets passed variables and inialised some defaults.
@@ -255,14 +254,14 @@ public class Lobby {
 	 * @param teamNum Team number to convert.
 	 * @return Converted Team object.
 	 */
-	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
-		Team newTeam = new Team();
+	private serverLogic.Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
+		serverLogic.Team newTeam = new serverLogic.Team();
 		for (ServerBasicPlayer origPlayer : team.values()) {
 			ServerPlayer player = null;
 			if (teamNum == 1)
-				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.BLUE);
+				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, Team.BLUE);
 			else
-				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.RED);
+				player = new ServerPlayer(origPlayer.getID(), receiver, 0, 0, Team.RED);
 			newTeam.addMember(player);
 		}
 		return newTeam;
@@ -348,7 +347,7 @@ public class Lobby {
 	 * Return winned of a game.
 	 * @return Winner team enum of a game.
 	 */
-	public TeamEnum getWinner() {
+	public Team getWinner() {
 		return currentSessionGame.getGame().whoWon().getColour();
 	}
 
@@ -356,7 +355,7 @@ public class Lobby {
 	 * Return red converted team.
 	 * @return Red Team object.
 	 */
-	public Team getRedTeam() {
+	public serverLogic.Team getRedTeam() {
 		return red;
 	}
 
@@ -364,7 +363,7 @@ public class Lobby {
 	 * Return blue converted team.
 	 * @return Blue Team object.
 	 */
-	public Team getBlueTeam() {
+	public serverLogic.Team getBlueTeam() {
 		return blue;
 	}
 

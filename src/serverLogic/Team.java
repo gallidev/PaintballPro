@@ -1,6 +1,5 @@
 package serverLogic;
 
-import enums.TeamEnum;
 import players.ServerPlayer;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class Team {
 
 	private ArrayList<ServerPlayer> members;
 	private int score;
-	private TeamEnum colour;
+	private enums.Team colour;
 
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
@@ -85,7 +84,7 @@ public class Team {
 		colour = teamPlayers.get(0).getColour();
 	}
 
-	public TeamEnum getColour(){
+	public enums.Team getColour(){
 		return colour;
 	}
 

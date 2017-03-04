@@ -1,6 +1,6 @@
 package rendering;
 
-import enums.TeamEnum;
+import enums.Team;
 import gui.GUIManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.CacheHint;
@@ -26,8 +26,10 @@ import static players.GeneralPlayer.playerHeadY;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
+	static AnimationTimer timer;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
+	private static HeadUpDisplay hud;
 	private GeneralPlayer player;
 	private Map map;
 
@@ -46,9 +48,7 @@ public class Renderer extends Scene
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), TeamEnum.RED, collisionsHandler);
-
-		initListeners();
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), Team.RED, collisionsHandler);
 
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
@@ -66,14 +66,14 @@ public class Renderer extends Scene
 		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
 		for(GeneralPlayer p : players)
 		{
-			if(p.getTeam() == TeamEnum.RED)
+			if(p.getTeam() == Team.RED)
 				redTeam.add(p);
 			else
 				blueTeam.add(p);
 		}
 		for(GeneralPlayer p : players)
 		{
-			if(p.getTeam() == TeamEnum.RED)
+			if(p.getTeam() == Team.RED)
 			{
 				p.setEnemies(blueTeam);
 				p.setTeamPlayers(redTeam);
@@ -90,7 +90,9 @@ public class Renderer extends Scene
 		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
 		//game.start();
 
-		new AnimationTimer()
+		initListeners();
+
+		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
@@ -112,7 +114,8 @@ public class Renderer extends Scene
 					}
 				}
 			}
-		}.start();
+		};
+		timer.start();
 	}
 
 	/**
@@ -149,7 +152,7 @@ public class Renderer extends Scene
 		initListeners();
 
 		ArrayList<Bullet> pellets = new ArrayList<>();
-		new AnimationTimer()
+		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
@@ -172,7 +175,8 @@ public class Renderer extends Scene
 
 				player.tick();
 			}
-		}.start();
+		};
+		timer.start();
 	}
 
 	/**
@@ -230,6 +234,8 @@ public class Renderer extends Scene
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
+		hud = new HeadUpDisplay();
+		view.getChildren().add(hud);
 
 		map = Map.load("res/maps/" + mapName + ".json");
 	}
@@ -246,11 +252,14 @@ public class Renderer extends Scene
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
+
+		hud.toFront();
 	}
 
 	private void updateView()
 	{
 		view.relocate((getWidth() / 2) - playerHeadX - player.getLayoutX(), (getHeight() / 2) - playerHeadY - player.getLayoutY());
+		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
@@ -262,9 +271,11 @@ public class Renderer extends Scene
 	@Override
 	protected void finalize() throws Throwable
 	{
-		super.finalize();
 		view = null;
 		pauseMenu = null;
 		settingsMenu = null;
+		hud = null;
+		timer = null;
+		super.finalize();
 	}
 }

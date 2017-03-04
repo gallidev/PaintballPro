@@ -1,18 +1,15 @@
 package networking.interfaces;
 
-import java.util.ArrayList;
-
-import enums.TeamEnum;
+import enums.Team;
 import logic.GameMode;
 import networking.game.UDPServer;
-import networking.server.ServerReceiver;
-import networking.shared.Message;
 import players.ServerPlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.EscortMode;
 import serverLogic.KingOfTheHillMode;
-import serverLogic.Team;
 import serverLogic.TeamMatchMode;
+
+import java.util.ArrayList;
 
 /**
  * Server side integration to play a game in a specific game mode. Will be
@@ -35,7 +32,7 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team red, Team blue, UDPServer receiver, int lobbyID) {
+	public ServerGame(int gameMode, serverLogic.Team red, serverLogic.Team blue, UDPServer receiver, int lobbyID) {
 		this.lobbyID = lobbyID;
 		switch (gameMode) {
 		case 1:
@@ -71,10 +68,10 @@ public class ServerGame {
 	 * Checks to see when a game has ended and sends the appropriate message to all clients.
 	 * @param t Enumeration of Team colours - Red and Blue.
  	 */
-	public void endGame(TeamEnum t){
+	public void endGame(Team t){
 		String toBeSent = "EndGame:";
 		
-		if (t== TeamEnum.RED){
+		if (t== Team.RED){
 			toBeSent += "Red";
 			System.out.println("Winner: Red");
 		}
