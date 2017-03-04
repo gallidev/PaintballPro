@@ -103,7 +103,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				updateView();
+				updateViewCPlayer();
 			}
 		}.start();
 	}
@@ -305,6 +305,16 @@ public class Renderer extends Scene
 		{
 			pauseMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
 			pauseMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
+		}
+	}
+
+	private void updateViewCPlayer() {
+		view.setLayoutX(((getWidth() / 2) - cPlayer.getImage().getWidth() - cPlayer.getLayoutX()) * scale);
+		view.setLayoutY(((getHeight() / 2) - cPlayer.getImage().getHeight() - cPlayer.getLayoutY()) * scale);
+		if(view.getChildren().contains(pauseMenu))
+		{
+			pauseMenu.setLayoutX(cPlayer.getLayoutX() + cPlayer.getImage().getWidth() - getWidth() / 2);
+			pauseMenu.setLayoutY(cPlayer.getLayoutY() + cPlayer.getImage().getHeight() - getHeight() / 2);
 		}
 	}
 

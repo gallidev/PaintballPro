@@ -39,7 +39,7 @@ public class ClientReceiver extends Thread {
 	private UDPClient udpReceiver;
 	private TeamTable teams;
 
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -204,30 +204,34 @@ public class ClientReceiver extends Thread {
 			}
 		});
 	}
-	
+
 	private void updatePlayerAction(String text) {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
-		String[] actions = text.split("1");
+		if(debug)System.out.println(text);
+		if(text != ""){
+			String[] actions = text.split("1");
 
-		int id = Integer.parseInt(actions[1]);
-		double x = Double.parseDouble(actions[2]);
-		double y = Double.parseDouble(actions[3]);
-		double angle = Double.parseDouble(actions[4]);
+			int id = Integer.parseInt(actions[1]);
+			double x = Double.parseDouble(actions[2]);
+			double y = Double.parseDouble(actions[3]);
+			double angle = Double.parseDouble(actions[4]);
 
-		boolean visibility = false;
-		if (actions[3].equals("true"))
-			visibility = true;
+			boolean visibility = false;
+			if (actions[3].equals("true"))
+				visibility = true;
 
-		;
+			;
 
-		actionReceiver.updatePlayer(id, x, y, angle, visibility);
+			actionReceiver.updatePlayer(id, x, y, angle, visibility);
+		}
+
 
 
 	}
-	
-	
-	
-	
+
+
+
+
 
 	// Different actions to handle the server messages
 	/**

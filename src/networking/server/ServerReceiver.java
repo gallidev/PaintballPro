@@ -19,7 +19,7 @@ import players.ServerPlayer;
 /**
  * Class to get messages from client, process and put appropriate message for a
  * client.
- * 
+ *
  * @author MattW
  */
 public class ServerReceiver extends Thread {
@@ -40,7 +40,7 @@ public class ServerReceiver extends Thread {
 	/**
 	 * Construct the class, setting passed variables to local objects.
 
-	 * 
+	 *
 	 * @param clientID The ID of the client.
 	 * @param reader Input stream reader for data.
 	 * @param table Table storing client information.
@@ -57,6 +57,7 @@ public class ServerReceiver extends Thread {
 		gameLobby = passedGameLobby;
 		myMsgQueue = clientTable.getQueue(myClientsID);
 		this.udpReceiver = udpReceiver;
+		this.inputReceiver = new ClientInputReceiver();
 	}
 
 	/**
@@ -99,17 +100,17 @@ public class ServerReceiver extends Thread {
 					// Team 1 for blue, 2 for red.
 					// Get usernames of people currently in red team of lobby.
 						getRedTeamAction();
-					
+
 
 					// Get usernames of people currently in blue team of lobby.
-					if (text.contains("Get:Blue")) 
+					if (text.contains("Get:Blue"))
 						getBlueTeamAction();
-					
+
 
 					// Get the client's currently set username.
-					if (text.contains("Get:Username")) 
+					if (text.contains("Get:Username"))
 						getUsernameAction();
-					
+
 
 					// Reset the client when they exit the game.
 					if (text.contains("Exit:Game"))
@@ -179,11 +180,14 @@ public class ServerReceiver extends Thread {
 		int id = Integer.parseInt(actions[actions.length - 1]);
 
 		if(debug) System.out.println(inputReceiver == null);
-		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
+		if(inputReceiver != null){
+			inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
+		}
+
 	}
 
 	public void setInputReceiver(ArrayList<ServerMinimumPlayer> players){
-		inputReceiver = new ClientInputReceiver(players);
+		inputReceiver.setPlayers(players);
 		if (debug)	System.out.println("Input receiver set");
 	}
 
