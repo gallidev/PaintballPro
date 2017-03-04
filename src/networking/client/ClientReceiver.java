@@ -1,21 +1,19 @@
 package networking.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
 import networking.game.UDPClient;
-import networking.shared.Message;
-import networking.shared.MessageQueue;
 import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
 import rendering.Map;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.

@@ -1,10 +1,9 @@
 package serverLogic;
 
-import java.util.ArrayList;
-
 import enums.TeamEnum;
 import players.ServerPlayer;
-import rendering.Map;
+
+import java.util.ArrayList;
 
 /**
  * Class to represent a team of players in the game.
@@ -42,14 +41,8 @@ public class Team {
 		colour = p.getColour();
 	}
 
-	/**
-	 * Adds players as a member of the team.
-	 * @param teamPlayers The array of players to team.
-	 */
-	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
-		for (ServerPlayer p : teamPlayers)
-			addMember(p);
-		colour = teamPlayers.get(0).getColour();
+	public int getMembersNo() {
+		return members.size();
 	}
 //	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
 //		p.getsetXCoord(newXCoord);
@@ -70,10 +63,6 @@ public class Team {
 
 	/* Getters and setters */
 
-	public int getMembersNo() {
-		return members.size();
-	}
-
 	public int getScore() {
 		return score;
 	}
@@ -82,9 +71,18 @@ public class Team {
 		score = newScore;
 	}
 
-
 	public ArrayList<ServerPlayer> getMembers(){
 		return members;
+	}
+
+	/**
+	 * Adds players as a member of the team.
+	 * @param teamPlayers The array of players to team.
+	 */
+	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
+		for (ServerPlayer p : teamPlayers)
+			addMember(p);
+		colour = teamPlayers.get(0).getColour();
 	}
 
 	public TeamEnum getColour(){

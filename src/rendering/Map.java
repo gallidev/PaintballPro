@@ -32,7 +32,6 @@ public class Map
 	private Prop[] props;
 	private Spawn[] spawns;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
-	transient private int width, height;
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -47,15 +46,16 @@ public class Map
 		{
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
+			int width = 0, height = 0;
 			for(Floor floor : map.floors)
 			{
-				if(floor.x + floor.width > map.width)
-					map.width = floor.x + floor.width;
-				if(floor.y + floor.height > map.height)
-					map.height = floor.y + floor.height;
+				if(floor.x + floor.width > width)
+					width = floor.x + floor.width;
+				if(floor.y + floor.height > height)
+					height = floor.y + floor.height;
 			}
 
-			WritableImage tiles = new WritableImage(map.width * 64, map.height * 64);
+			WritableImage tiles = new WritableImage(width * 64, height * 64);
 
 			//load the ground
 			for(Floor floor : map.floors)
@@ -196,16 +196,6 @@ public class Map
 			e.printStackTrace();
 		}
 		return map;
-	}
-
-	public int getWidth()
-	{
-		return width;
-	}
-
-	public int getHeight()
-	{
-		return height;
 	}
 
 	private ArrayList<Rectangle> getCollisions(Group group)

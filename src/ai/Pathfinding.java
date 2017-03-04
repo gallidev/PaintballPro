@@ -30,7 +30,7 @@ public class Pathfinding {
     //Initialise Pathfinding for each AI
     public Pathfinding(Map map) {
         //Initialise nodes array from map
-        nodes = new Node[map.getWidth()][map.getHeight()];
+        nodes = new Node[48][48];
         Floor[] floors = map.getFloors();
         Prop[] props = map.getProps();
         Wall[] walls = map.getWalls();
@@ -61,12 +61,12 @@ public class Pathfinding {
             int length = wall.getLength();
             boolean orientation = wall.getOrientation();
             if(orientation) {
-                for(int w = x; w <= x + length; w++) {
+                for(int w = x; w < x + length; w++) {
                     nodes[w][y] = null;
                 }
             }
             else {
-                for(int h = y; h <= y + length; h++) {
+                for(int h = y; h < y + length; h++) {
                     nodes[x][h] = null;
                 }
             }

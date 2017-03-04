@@ -1,32 +1,25 @@
 package players;
-import java.util.ArrayList;
-import java.util.List;
 
-import audio.AudioManager;
 import enums.TeamEnum;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Map;
-import serverLogic.Team;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  *  The player, represented by an ImageView
  */
 public abstract class ServerMinimumPlayer implements GameObject{
 
-	protected double x, y;
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-	protected final double movementSpeed = 2;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
+	protected final double movementSpeed = 2;
+	protected double x, y;
 	protected double width, height;
 	protected boolean up, down, left, right, shoot, eliminated, invincible, visible;
 	protected boolean collUp, collDown, collLeft, collRight;
