@@ -1,9 +1,5 @@
 package networking.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import enums.MenuEnum;
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -11,13 +7,17 @@ import integrationClient.ClientActionReceiver;
 import integrationClient.ClientInputSender;
 import javafx.application.Platform;
 import networking.game.UDPClient;
-import physics.CollisionsHandlerGeneralPlayer;
+import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 import players.GhostPlayer;
 import players.PhysicsClientPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -167,7 +167,6 @@ public class ClientReceiver extends Thread {
 			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null);
 		else
 			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null);
-
 		// extract the other members
 		for (int i = 3; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);

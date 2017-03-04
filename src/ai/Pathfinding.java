@@ -1,14 +1,13 @@
 package ai;
 
+import rendering.Floor;
 import rendering.Map;
+import rendering.Prop;
+import rendering.Wall;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
-
-import rendering.Floor;
-import rendering.Prop;
-import rendering.Wall;
 
 /**
  * Pathfinding uses A* search to compute an efficient path from the current position to a given target position
@@ -38,35 +37,36 @@ public class Pathfinding {
         random = new Random();
 
         path = new Path();
-        for(int i = 0; i < floors.length; i++){
-            int x = floors[i].getX();
-            int y = floors[i].getY();
-            int width = floors[i].getWidth();
-            int height = floors[i].getHeight();
-            for(int w = x; w <= x + width; w ++){
-                for(int h = y; h <= y + height; h++){
+        for(Floor floor : floors) {
+            int x = floor.getX();
+            int y = floor.getY();
+            int width = floor.getWidth();
+            int height = floor.getHeight();
+            for(int w = x; w <= x + width; w++) {
+                for(int h = y; h <= y + height; h++) {
                     nodes[w][h] = new Node(w, h);
                 }
             }
         }
 
-        for(int i = 0; i < props.length; i++){
-            int x = props[i].getX();
-            int y = props[i].getY();
+        for(Prop prop : props) {
+            int x = prop.getX();
+            int y = prop.getY();
             nodes[x][y] = null;
         }
 
-        for(int i = 0; i < walls.length; i++){
-            int x = walls[i].getX();
-            int y = walls[i].getY();
-            int length = walls[i].getLength();
-            boolean orientation = walls[i].getOrientation();
-            if(orientation){
-                for(int w = x; w <= x + length; w++){
+        for(Wall wall : walls) {
+            int x = wall.getX();
+            int y = wall.getY();
+            int length = wall.getLength();
+            boolean orientation = wall.getOrientation();
+            if(orientation) {
+                for(int w = x; w < x + length; w++) {
                     nodes[w][y] = null;
                 }
-            } else {
-                for(int h = y; h <= y + length; h++){
+            }
+            else {
+                for(int h = y; h < y + length; h++) {
                     nodes[x][h] = null;
                 }
             }

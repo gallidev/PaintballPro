@@ -15,7 +15,18 @@ public class KeyPressListener implements EventHandler<KeyEvent>
 	@Override
 	public void handle(KeyEvent event)
 	{
-		if(Renderer.getPauseMenuState())
+		if(Renderer.getSettingsMenuState())
+		{
+			switch(event.getCode())
+			{
+				case ESCAPE:
+					Renderer.toggleSettingsMenu();
+					break;
+				default:
+					break;
+			}
+		}
+		else if(Renderer.getPauseMenuState())
 		{
 			switch(event.getCode())
 			{

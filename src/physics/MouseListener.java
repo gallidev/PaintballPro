@@ -15,7 +15,8 @@ public class MouseListener implements EventHandler<MouseEvent>{
 
 	@Override
     public void handle(MouseEvent event) {
-		if(!Renderer.getPauseMenuState())
+
+		if(!Renderer.getPauseMenuState()&& !Renderer.getSettingsMenuState())
 		{
 				double newX = event.getX();
 				double newY = event.getY();

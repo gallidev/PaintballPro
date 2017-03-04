@@ -1,5 +1,5 @@
 package rendering;
-import javafx.scene.Group;
+
 /**
  * A group of blocks that form a wall which players cannot walk through. Each wall is <i>l</i> blocks long, spans at a certain <code>orientation</code>:
  * <ul>

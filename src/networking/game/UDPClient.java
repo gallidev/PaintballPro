@@ -4,12 +4,15 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import gui.GUIManager;
 import networking.client.TeamTable;
 import physics.Bullet;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
+import players.GhostPlayer;
+import players.ServerMinimumPlayer;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -42,9 +45,9 @@ public class UDPClient extends Thread {
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
-		
+
 		if(debug) System.out.println("Making new UDP Client");
-		
+
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
 			clientSocket = new DatagramSocket();
@@ -132,27 +135,27 @@ public class UDPClient extends Thread {
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
 	private void bulletAction(String text) {
-		// Protocol message: SendToAll:Bullet:id:team:x:y:angle:
-		String[] data = text.split(":");
-
-		int id = Integer.parseInt(data[2]);
-		String t = data[3];
-
-		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
-
-		if (p != null) // the player is not us
-		{
-			ArrayList<Bullet> firedBullets = new ArrayList<>();
-			for (int i = 4; i < data.length - 2; i = i + 3) {
-
-				double x = Double.parseDouble(data[i]);
-				double y = Double.parseDouble(data[i + 1]);
-				double angle = Double.parseDouble(data[i + 2]);
-
-				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
-			}
-			p.tickBullets(firedBullets);
-		}
+//		// Protocol message: SendToAll:Bullet:id:team:x:y:angle:
+//		String[] data = text.split(":");
+//
+//		int id = Integer.parseInt(data[2]);
+//		String t = data[3];
+//
+//		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
+//
+//		if (p != null) // the player is not us
+//		{
+//			ArrayList<Bullet> firedBullets = new ArrayList<>();
+//			for (int i = 4; i < data.length - 2; i = i + 3) {
+//
+//				double x = Double.parseDouble(data[i]);
+//				double y = Double.parseDouble(data[i + 1]);
+//				double angle = Double.parseDouble(data[i + 2]);
+//
+//				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
+//			}
+//			p.tickBullets(firedBullets);
+//		}
 	}
 
 	/**
@@ -167,20 +170,23 @@ public class UDPClient extends Thread {
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
 	public void moveAction(String text) {
-		String[] msg = text.split(":");
-		// System.out.println("Text move action: " + Arrays.toString(msg));
-
-		int id = Integer.parseInt(msg[2]);
-		double x = Double.parseDouble(msg[3]);
-		double y = Double.parseDouble(msg[4]);
-		double angle = Double.parseDouble(msg[5]);
-
-		if (id != clientID) {
-			// find the player that need to be updated
-			ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
-			p.tick(x, y, angle);
-		}
+//		String[] msg = text.split(":");
+//		if(debug) System.out.println("Text move action: " + text);
+//
+//		int id = Integer.parseInt(msg[2]);
+//		double x = Double.parseDouble(msg[3]);
+//		double y = Double.parseDouble(msg[4]);
+//		double angle = Double.parseDouble(msg[5]);
+//
+//		if (id != clientID) {
+//			// find the player that need to be updated
+//			GhostPlayer p = getPlayerWithID(id);
+//			p.tick(x, y, angle);
+//		}
 	}
+
+
+
 
 	/**
 	 * Retrieves a player with a specific id from the current game.
@@ -191,14 +197,14 @@ public class UDPClient extends Thread {
 	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-	private GeneralPlayer getPlayerWithID(int id) {
+	private GhostPlayer getPlayerWithID(int id) {
 		// Check if the Player is in my team
-		for (GeneralPlayer p : teams.getMyTeam())
+		for (GhostPlayer p : teams.getMyTeam())
 			if (p.getPlayerId() == id)
 				return p;
 
 		// otherwise, player is in the enemy team
-		for (GeneralPlayer p : teams.getEnemies())
+		for (GhostPlayer p : teams.getEnemies())
 			if (p.getPlayerId() == id)
 				return p;
 
