@@ -1,11 +1,11 @@
 package offlineLogic;
 
-import java.util.ArrayList;
-
 import enums.TeamEnum;
 import physics.OfflinePlayer;
 import players.AIPlayer;
 import players.GeneralPlayer;
+
+import java.util.ArrayList;
 
 /**
  * Represents a game mode played in a Single Player game. The game contains 

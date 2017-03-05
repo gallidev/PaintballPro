@@ -80,7 +80,7 @@ public class Team {
 	public TeamEnum getColour(){
 		return colour;
 	}
-	
+
 	public void setColour(TeamEnum c){
 		colour = c;
 	}

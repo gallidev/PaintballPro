@@ -33,7 +33,7 @@ public class Client {
 	 * @param serverIP IP address of the server.
 	 * @param guiManager GUI Manager object.
 	 */
-	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager) throws Exception {
+	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager, int udpPortSenderNum) throws Exception {
 
 		String nickname = passedNickname;
 
@@ -99,7 +99,7 @@ public class Client {
 			TeamTable teams = new TeamTable();
 
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams);
+			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams,udpPortSenderNum);
 			udpReceiver.start();
 
 			// We can now set up the message received for the client.

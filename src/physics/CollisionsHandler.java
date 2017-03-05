@@ -1,8 +1,5 @@
 package physics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import enums.TeamEnum;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
@@ -10,6 +7,9 @@ import javafx.scene.shape.Shape;
 import players.GeneralPlayer;
 import players.ServerMinimumPlayer;
 import rendering.Map;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionsHandler {
 
@@ -120,7 +120,7 @@ public class CollisionsHandler {
 		for(ServerMinimumPlayer enemy : opponents){
 
 			for(Bullet bullet : enemy.getBullets()){
-				if(bullet.isActive() && p.getPolygonBounds().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
+				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
 					bullet.setActive(false);
 					p.beenShot();
 					return;

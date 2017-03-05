@@ -2,7 +2,6 @@ package players;
 
 import audio.AudioManager;
 import enums.TeamEnum;
-import javafx.geometry.Point2D;
 import networking.game.UDPClient;
 import physics.Bullet;
 import physics.CollisionsHandlerGeneralPlayer;
@@ -17,13 +16,12 @@ import java.util.ArrayList;
 public class PhysicsClientPlayer extends GeneralPlayer
 {
 
+	//flag for keeping track of scores
+	boolean scoreChanged = true;
 	private double mx, my;
 	private boolean controlScheme;
 	private UDPClient sender;
 	private ArrayList<ClientLocalPlayer> clientEnemies;
-
-	//flag for keeping track of scores
-	boolean scoreChanged = true;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -32,7 +30,6 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-
 
 	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClient sender, CollisionsHandlerGeneralPlayer collisionHandler)
 	{

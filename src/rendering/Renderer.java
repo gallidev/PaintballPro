@@ -1,5 +1,6 @@
 package rendering;
 
+
 import enums.TeamEnum;
 import integrationClient.ClientInputSender;
 import gui.GUIManager;
@@ -28,8 +29,10 @@ import static players.GeneralPlayer.playerHeadY;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
+	static AnimationTimer timer;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
+	private static HeadUpDisplay hud;
 	private GeneralPlayer player;
 	private GhostPlayer cPlayer;
 	private ClientInputSender inputSender;
@@ -54,8 +57,6 @@ public class Renderer extends Scene
 		CollisionsHandlerGeneralPlayer collisionsHandler = new CollisionsHandlerGeneralPlayer(map);
 
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), TeamEnum.RED, collisionsHandler);
-
-		initListeners();
 
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
@@ -97,7 +98,9 @@ public class Renderer extends Scene
 		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
 		//game.start();
 
-		new AnimationTimer()
+		initListeners();
+
+		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
@@ -119,7 +122,8 @@ public class Renderer extends Scene
 					}
 				}
 			}
-		}.start();
+		};
+		timer.start();
 	}
 
 	/**
@@ -171,14 +175,16 @@ public class Renderer extends Scene
 
 		inputSender.startSending();
 
-		new AnimationTimer()
+
+		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
 			{
 				updateViewCPlayer();
 			}
-		}.start();
+		};
+		timer.start();
 	}
 
 	/**
@@ -186,10 +192,11 @@ public class Renderer extends Scene
 	 */
 	public static void togglePauseMenu()
 	{
-		if(!pauseMenu.opened)
+		if(!pauseMenu.opened) {
 			view.getChildren().add(pauseMenu);
-		else
+		} else {
 			view.getChildren().remove(pauseMenu);
+		}
 		pauseMenu.opened = !pauseMenu.opened;
 	}
 
@@ -236,6 +243,8 @@ public class Renderer extends Scene
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
+		hud = new HeadUpDisplay();
+		view.getChildren().add(hud);
 
 		map = Map.load("res/maps/" + mapName + ".json");
 	}
@@ -252,11 +261,14 @@ public class Renderer extends Scene
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
+
+		hud.toFront();
 	}
 
 	private void updateView()
 	{
 		view.relocate((getWidth() / 2) - playerHeadX - player.getLayoutX(), (getHeight() / 2) - playerHeadY - player.getLayoutY());
+		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
@@ -279,9 +291,11 @@ public class Renderer extends Scene
 	@Override
 	protected void finalize() throws Throwable
 	{
-		super.finalize();
 		view = null;
 		pauseMenu = null;
 		settingsMenu = null;
+		hud = null;
+		timer = null;
+		super.finalize();
 	}
 }

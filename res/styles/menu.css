@@ -44,3 +44,11 @@
     -fx-background-color: #B2B2B2;
     -fx-border-color: #262626;
 }
+
+#RedScore {
+    -fx-text-fill: rgb(104, 61, 49);
+}
+
+#BlueScore {
+    -fx-text-fill: rgb(43, 64, 111);
+}

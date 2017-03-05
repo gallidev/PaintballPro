@@ -1,6 +1,5 @@
 package physics;
 
-import java.util.ArrayList;
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Point2D;
@@ -9,6 +8,8 @@ import players.AIPlayer;
 import players.GeneralPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
 
 /**
  * The player, represented by an ImageView that should be running
@@ -31,6 +32,7 @@ public class OfflinePlayer extends GeneralPlayer
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 * @param scene         The scene in which the player will be displayed
 	 */
+
 	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, CollisionsHandlerGeneralPlayer collisionsHandler)
 	{
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);

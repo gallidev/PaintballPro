@@ -1,9 +1,9 @@
 package offlineLogic;
 
-import java.util.ArrayList;
-
 import enums.TeamEnum;
 import players.AIPlayer;
+
+import java.util.ArrayList;
 
 /**
  * A team of just AI players which can be used for the single player mode.

@@ -15,6 +15,7 @@ import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
 import physics.CollisionsHandler;
 import players.ServerBasicPlayer;
+
 import players.ServerMinimumPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
@@ -29,9 +30,9 @@ import serverLogic.Team;
 public class Lobby {
 	// Structures storing relevant data.
 
+	private static final int lobbyTime = 10;
 	// Lobby information
 	private int id;
-	private static final int lobbyTime = 10;
 	private boolean inGameStatus;
 
 	// Game information
@@ -261,6 +262,7 @@ public class Lobby {
 		return playArrReturn;
 	}
 
+
 //	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 //		Team newTeam = new Team();
 //		for (ServerBasicPlayer origPlayer : team.values()) {
@@ -371,7 +373,7 @@ public class Lobby {
 	 * Return red converted team.
 	 * @return Red Team object.
 	 */
-	public Team getRedTeam() {
+	public serverLogic.Team getRedTeam() {
 		return red;
 	}
 
@@ -379,7 +381,7 @@ public class Lobby {
 	 * Return blue converted team.
 	 * @return Blue Team object.
 	 */
-	public Team getBlueTeam() {
+	public serverLogic.Team getBlueTeam() {
 		return blue;
 	}
 
@@ -410,7 +412,7 @@ public class Lobby {
 		blue = new Team(TeamEnum.BLUE);
 
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
-		
+
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		Map map = Map.load("res/maps/" + "elimination" + ".json");

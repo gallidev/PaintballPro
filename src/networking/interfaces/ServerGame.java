@@ -1,6 +1,5 @@
 package networking.interfaces;
 
-import java.util.ArrayList;
 
 import enums.TeamEnum;
 import logic.GameMode;
@@ -11,6 +10,8 @@ import serverLogic.EscortMode;
 import serverLogic.KingOfTheHillMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
+
+import java.util.ArrayList;
 
 /**
  * Server side integration to play a game in a specific game mode. Will be
@@ -33,7 +34,7 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, Team red, Team blue, UDPServer receiver, int lobbyID) {
+	public ServerGame(int gameMode, serverLogic.Team red, serverLogic.Team blue, UDPServer receiver, int lobbyID) {
 		this.lobbyID = lobbyID;
 		switch (gameMode) {
 		case 1:
@@ -73,6 +74,7 @@ public class ServerGame {
 		String toBeSent = "EndGame:";
 
 		if (t== TeamEnum.RED){
+
 			toBeSent += "Red";
 			System.out.println("Winner: Red");
 		}

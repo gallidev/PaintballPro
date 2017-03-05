@@ -1,20 +1,13 @@
 package gui;
 
-import enums.MenuEnum;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
+import enums.Menu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-
-import static java.lang.Thread.sleep;
 
 public class EndGameMenu {
 	// TODO: implement the menu to be displayed at the end of each game
@@ -26,7 +19,7 @@ public class EndGameMenu {
 
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                m.transitionTo(MenuEnum.MainMenu, null);
+                m.transitionTo(Menu.MainMenu, null);
             }
         })};
         GridPane options = MenuOptionSet.optionSetToGridPane(set);

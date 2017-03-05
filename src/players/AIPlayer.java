@@ -1,6 +1,6 @@
 package players;
 
-import ai.*;
+import ai.BehaviourManager;
 import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
@@ -21,6 +21,7 @@ public class AIPlayer extends GeneralPlayer{
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
+
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -100,11 +101,11 @@ public class AIPlayer extends GeneralPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	public double getMovementAngle() { return this.movementAngle;}
+
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
 	}
-
-	public double getMovementAngle() { return this.movementAngle;}
 
 	public Map getMap() {return this.map;}
 

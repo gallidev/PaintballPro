@@ -23,7 +23,7 @@ import players.ServerMinimumPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 
 	DatagramSocket clientSocket;
@@ -42,8 +42,10 @@ public class UDPClient extends Thread {
 	 * @param guiManager Manager of GUI.
 	 * @param teams Both client's and opposing teams.
 	 */
-	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams)
+	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum)
 	{
+		int port = portNum;
+		// 9877
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
@@ -52,13 +54,18 @@ public class UDPClient extends Thread {
 
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
-			clientSocket = new DatagramSocket();
+			clientSocket = new DatagramSocket(port);
 			IPAddress = InetAddress.getByName(udpServIP);
 			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
 			String sentence = "Connect:"+clientID;
 			if(debug) System.out.println("sending data:"+sentence);
 			sendMessage(sentence);
 			if(debug) System.out.println("sent");
+			byte[] receiveData = new byte[1024];
+			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			clientSocket.receive(receivePacket);
+			String sentSentence = new String(receivePacket.getData());
+			if(debug) System.out.println(sentSentence.trim());
 		}
 		catch (Exception e)
 		{
@@ -78,11 +85,11 @@ public class UDPClient extends Thread {
 			while(true)
 			{
 				clientSocket.receive(receivePacket);
-				String receivedText = new String(receivePacket.getData());
-
+				String sentSentence = new String(receivePacket.getData());
+				if(debug) System.out.println("Received from server:"+sentSentence);
 				// In-game messages
-				switch(receivedText.charAt(0)){
-				case '1' : updatePlayerAction(receivedText) ;
+				switch(sentSentence.charAt(0)){
+				case '1' : updatePlayerAction(sentSentence) ;
 						   break;
 
 				}
@@ -90,9 +97,11 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
+			//e.printStackTrace(System.out);
 			if(debug) System.err.println(e.getStackTrace());
 		}
 		clientSocket.close();
+		if(debug) System.err.println("Socket closed");
 	}
 
 	/**
@@ -110,6 +119,7 @@ public class UDPClient extends Thread {
 		}
 		catch(Exception e)
 		{
+			//e.printStackTrace(System.out);
 			if(debug) System.err.println(e.getStackTrace());
 		}
 	}

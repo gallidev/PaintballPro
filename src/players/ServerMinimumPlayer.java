@@ -52,6 +52,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	 *
 	 */
 	public ServerMinimumPlayer(double x, double y, int id, double width, double height,  Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler){
+
 		this.x = x;
 		this.y = y;
 		this.lastX = x;
@@ -104,6 +105,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected void checkSpawn() {
 		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
+
 			if(team == TeamEnum.BLUE) i = 4;
 			x = spawn[i].x * 64 ;
 			y = spawn[i].y * 64 ;

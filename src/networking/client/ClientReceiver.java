@@ -1,6 +1,6 @@
 package networking.client;
 
-import enums.MenuEnum;
+import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
@@ -118,7 +118,7 @@ public class ClientReceiver extends Thread {
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
-								m.transitionTo(MenuEnum.EndGame, someScore);
+								m.transitionTo(Menu.EndGame, someScore);
 							}
 
 						});
@@ -198,7 +198,7 @@ public class ClientReceiver extends Thread {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				m.transitionTo(MenuEnum.EliminationMulti, null);
+				m.transitionTo(Menu.EliminationMulti, null);
 			}
 		});
 	}

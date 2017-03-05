@@ -1,7 +1,4 @@
 package players;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import audio.AudioManager;
 import enums.TeamEnum;
@@ -16,20 +13,25 @@ import physics.Bullet;
 import physics.CollisionsHandler;
 import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  *  The player, represented by an ImageView
  */
 public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-	protected final double movementSpeed = 2;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
+	protected final double movementSpeed = 2;
 	protected boolean up, down, left, right, shoot, eliminated, invincible;
 	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle, lastAngle;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	protected Rotate rotation;
+	protected Rotate rotation, boundRotation;
 	protected Map map;
 	protected int id;
 	protected long shootTimer, spawnTimer;
@@ -54,7 +56,9 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 * @param map The map in which the player is playing
 	 *
 	 */
+
 	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
+
 		super(image);
 		setCache(true);
 		setCacheHint(CacheHint.SPEED);
@@ -77,8 +81,12 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		invincible = false;
 		this.audio = audio;
 		this.collisionsHandler = collisionsHandler;
+		createPlayerBounds();
+		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
+		bounds.getTransforms().add(boundRotation);
+		boundRotation.setPivotX(playerHeadX);
+		boundRotation.setPivotY(playerHeadY);
 		updatePlayerBounds();
-
 	}
 
 	/**
@@ -168,49 +176,54 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	}
 
 	//Consists of 5 points around player
-	public void updatePlayerBounds(){
+	public void createPlayerBounds(){
 		//Point1
 		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
 		double y1 = (5 * getImage().getHeight()/255) - playerHeadY;
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx1 = getLayoutX() + x2 + playerHeadX;
-		double boundy1 = getLayoutY() + y2 + playerHeadY;
+		double boundx1 = x2 + playerHeadX;
+		double boundy1 = y2 + playerHeadY;
 		//Point2
 		x1 = (getImage().getWidth()) - playerHeadX;
 		y1 = (233 * getImage().getHeight()/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx2 = getLayoutX() + x2 + playerHeadX;
-		double boundy2 = getLayoutY() + y2 + playerHeadY;
+		double boundx2 = x2 + playerHeadX;
+		double boundy2 = y2 + playerHeadY;
 		//Point3
 		x1 = (57 * getImage().getWidth()/120) - playerHeadX;
 		y1 = (getImage().getHeight()) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx3 = getLayoutX() + x2 + playerHeadX;
-		double boundy3 = getLayoutY() + y2 + playerHeadY;
+		double boundx3 = x2 + playerHeadX;
+		double boundy3 = y2 + playerHeadY;
 		//Point4
 		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
 		y1 = (183 * getImage().getHeight()/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx4 = getLayoutX() + x2 + playerHeadX;
-		double boundy4 = getLayoutY() + y2 + playerHeadY;
+		double boundx4 = x2 + playerHeadX;
+		double boundy4 = y2 + playerHeadY;
 		//Point5
 		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
 		y1 = (128 * getImage().getHeight()/255) - playerHeadY;
 		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx5 = getLayoutX() + x2 + playerHeadX;
-		double boundy5 = getLayoutY() + y2 + playerHeadY;
+		double boundx5 = x2 + playerHeadX;
+		double boundy5 = y2 + playerHeadY;
 		bounds.getPoints().clear();
 		bounds.getPoints().addAll(boundx1, boundy1,
 				boundx2, boundy2,
 				boundx3, boundy3,
 				boundx4, boundy4,
 				boundx5, boundy5);
+	}
 
+	public void updatePlayerBounds(){
+		bounds.setLayoutX(getLayoutX());
+		bounds.setLayoutY(getLayoutY());
+		boundRotation.setAngle(Math.toDegrees(angle));
 	}
 
 
@@ -300,16 +313,12 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		return team;
 	}
 
-	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
-		this.teamPlayers = teamPlayers;
+	public ArrayList<GeneralPlayer> getEnemies(){
+		return this.enemies;
 	}
 
 	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
 		this.enemies = enemies;
-	}
-
-	public ArrayList<GeneralPlayer> getEnemies(){
-		return this.enemies;
 	}
 
 	public int getPlayerId(){
@@ -318,6 +327,10 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	public ArrayList<GeneralPlayer> getTeamPlayers(){
 		return teamPlayers;
+	}
+
+	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
 	}
 
 	public void setMX(double newX) {
