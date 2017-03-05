@@ -184,10 +184,11 @@ public class Renderer extends Scene
 	 */
 	public static void togglePauseMenu()
 	{
-		if(!pauseMenu.opened)
+		if(!pauseMenu.opened) {
 			view.getChildren().add(pauseMenu);
-		else
+		} else {
 			view.getChildren().remove(pauseMenu);
+		}
 		pauseMenu.opened = !pauseMenu.opened;
 	}
 
