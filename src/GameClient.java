@@ -13,6 +13,7 @@ public class GameClient extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 16);
+		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 32);
 		stage.getIcons().addAll(new Image("assets/icon_dock.png"), new Image("assets/icon_32.png"), new Image("assets/icon_16.png"));
 		m.setStage(stage);
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

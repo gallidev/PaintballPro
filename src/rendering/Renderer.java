@@ -31,6 +31,7 @@ public class Renderer extends Scene
 	static Pane view = new Pane();
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
+	private static Overlay overlay;
 	private double scale = 1;
 	private GeneralPlayer player;
 
@@ -47,6 +48,7 @@ public class Renderer extends Scene
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(m);
 		settingsMenu = new PauseSettingsMenu(m);
+		overlay = new Overlay(m);
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -88,6 +90,8 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		view.getChildren().add(overlay);
+
 		ArrayList<Bullet> pellets = new ArrayList<>();
 		new AnimationTimer()
 		{
@@ -128,6 +132,7 @@ public class Renderer extends Scene
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(m);
 		settingsMenu = new PauseSettingsMenu(m);
+		overlay = new Overlay(m);
 
 		//16:9 aspect ratio
 		widthProperty().addListener(observable ->
@@ -195,6 +200,8 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		view.getChildren().add(overlay);
+
 		new AnimationTimer()
 		{
 			@Override
@@ -228,20 +235,25 @@ public class Renderer extends Scene
 		{
 			pauseMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
 			pauseMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
-		}
-		if(view.getChildren().contains(settingsMenu))
+		} else if(view.getChildren().contains(settingsMenu))
 		{
 			settingsMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
 			settingsMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
+		} else if(view.getChildren().contains(overlay)) {
+			overlay.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
+			overlay.setLayoutY(player.getLayoutY() + player.getImage().getHeight() + (getHeight() / 2 - overlay.getHeight()));
 		}
 	}
 
 	public static void togglePauseMenu()
 	{
-		if(!pauseMenu.opened)
+		if(!pauseMenu.opened) {
 			view.getChildren().add(pauseMenu);
-		else
+			view.getChildren().remove(overlay);
+		} else {
 			view.getChildren().remove(pauseMenu);
+			view.getChildren().add(overlay);
+		}
 		pauseMenu.opened = !pauseMenu.opened;
 	}
 
