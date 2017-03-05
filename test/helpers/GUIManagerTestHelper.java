@@ -1,10 +1,9 @@
 package helpers;
 
-import enums.MenuEnum;
+import enums.Menu;
 import gui.GUIManager;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.util.ArrayList;
@@ -14,15 +13,10 @@ import java.util.ArrayList;
  */
 public class GUIManagerTestHelper extends GUIManager {
 
-    public MenuEnum currentMenu = MenuEnum.MainMenu;
+    public Menu currentMenu = Menu.MainMenu;
 
     public GUIManagerTestHelper() {
         super();
-    }
-
-    @Override
-    public void transitionTo(MenuEnum menu, Object o) {
-        currentMenu = menu;
     }
 
     private static ArrayList<Button> navigateParentForButtons(Parent root) {
@@ -44,6 +38,11 @@ public class GUIManagerTestHelper extends GUIManager {
                 return b;
         }
         throw new RuntimeException("Could not find " + text + " in " + root.toString());
+    }
+
+    @Override
+    public void transitionTo(Menu menu, Object o) {
+        currentMenu = menu;
     }
 
 }

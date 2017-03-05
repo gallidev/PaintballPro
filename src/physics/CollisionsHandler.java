@@ -1,14 +1,14 @@
 package physics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.GeneralPlayer;
 import rendering.Map;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionsHandler {
 
@@ -119,7 +119,7 @@ public class CollisionsHandler {
 		for(GeneralPlayer enemy : opponents){
 
 			for(Bullet bullet : enemy.getBullets()){
-				if(bullet.isActive() && p.getPolygonBounds().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
+				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
 					bullet.setActive(false);
 					p.beenShot();
 					return;
@@ -168,7 +168,7 @@ public class CollisionsHandler {
 	public void setPlayers(ArrayList<GeneralPlayer> players){
 		for(GeneralPlayer p : players)
 		{
-			if(p.getTeam() == TeamEnum.RED)
+			if(p.getTeam() == Team.RED)
 				redTeam.add(p);
 			else
 				blueTeam.add(p);

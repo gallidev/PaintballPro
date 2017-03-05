@@ -1,25 +1,22 @@
 package rendering;
 
-import java.util.ArrayList;
-
-import audio.AudioManager;
-import enums.TeamEnum;
+import enums.Team;
 import gui.GUIManager;
 import javafx.animation.AnimationTimer;
-import javafx.scene.*;
+import javafx.scene.CacheHint;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import networking.client.ClientReceiver;
-import offlineLogic.OfflineGameMode;
-import offlineLogic.OfflineTeamMatchMode;
-import physics.Bullet;
-import physics.CollisionsHandler;
-import physics.KeyPressListener;
-import physics.KeyReleaseListener;
-import physics.MouseListener;
-import physics.OfflinePlayer;
+import physics.*;
 import players.GeneralPlayer;
+
+import java.util.ArrayList;
+
+import static players.GeneralPlayer.playerHeadX;
+import static players.GeneralPlayer.playerHeadY;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -29,36 +26,110 @@ import players.GeneralPlayer;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
+	static AnimationTimer timer;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
-	private static Overlay overlay;
-	private double scale = 1;
+	private static HeadUpDisplay hud;
 	private GeneralPlayer player;
+	private Map map;
 
 	/**
-	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
+	 * Renders an offline game instance by loading the selected map, spawning the players and responding to changes in game logic.
 	 *
 	 * @param mapName Name of the selected map
+	 * @param guiManager GUI manager that creates this object
 	 */
-	public Renderer(String mapName, ClientReceiver receiver, GUIManager m)
+	public Renderer(String mapName, GUIManager guiManager)
 	{
-		super(view, 1024, 576);
-		setFill(Color.BLACK);
-		setCursor(Cursor.CROSSHAIR);
-		view.setStyle("-fx-background-color: black;");
-		pauseMenu = new PauseMenu(m);
-		settingsMenu = new PauseSettingsMenu(m);
-		overlay = new Overlay(m);
+		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		init(guiManager, mapName);
 
-		//16:9 aspect ratio
-		widthProperty().addListener(observable ->
+
+		ArrayList<GeneralPlayer> players = new ArrayList<>();
+
+		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), Team.RED, collisionsHandler);
+
+		players.add(player);
+		players.addAll(player.getTeamPlayers());
+		players.addAll(player.getEnemies());
+		players.forEach(p ->
 		{
-			scale = getWidth() / 1024;
-			view.setScaleX(scale);
-			view.setScaleY((getWidth() * 0.5625) / 576);
+			p.setCache(true);
+			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+			p.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
 		});
+		view.getChildren().addAll(players);
 
-		Map.load("res/maps/" + mapName + ".json");
+		//provisional way to differ enemies and team players
+		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
+		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
+		for(GeneralPlayer p : players)
+		{
+			if(p.getTeam() == Team.RED)
+				redTeam.add(p);
+			else
+				blueTeam.add(p);
+		}
+		for(GeneralPlayer p : players)
+		{
+			if(p.getTeam() == Team.RED)
+			{
+				p.setEnemies(blueTeam);
+				p.setTeamPlayers(redTeam);
+			}
+			else
+			{
+				p.setEnemies(redTeam);
+				p.setTeamPlayers(blueTeam);
+			}
+		}
+
+		collisionsHandler.setBlueTeam(blueTeam);
+		collisionsHandler.setRedTeam(redTeam);
+		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
+		//game.start();
+
+		initListeners();
+
+		timer = new AnimationTimer()
+		{
+			@Override
+			public void handle(long now)
+			{
+				updateView();
+
+				for(GeneralPlayer player : players)
+				{
+					player.tick();
+					for(Bullet pellet : player.getBullets())
+					{
+						if(pellet.isActive())
+						{
+							if(!view.getChildren().contains(pellet))
+								view.getChildren().add(pellet);
+						}
+						else if(view.getChildren().contains(pellet))
+							view.getChildren().remove((pellet));
+					}
+				}
+			}
+		};
+		timer.start();
+	}
+
+	/**
+	 * Renders an online game instance by loading the selected map, receiving data from the client receiver and responding to changes in game logic.
+	 *
+	 * @param mapName    Name of the selected map
+	 * @param receiver   Client receiver for communication with the game server
+	 * @param guiManager GUI manager that creates this object
+	 */
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
+	{
+		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		init(guiManager, mapName);
 
 		player = receiver.getClientPlayer();
 		player.setCache(true);
@@ -79,21 +150,10 @@ public class Renderer extends Scene
 		});
 		view.getChildren().addAll(receiver.getEnemies());
 
-		KeyPressListener keyPressListener = new KeyPressListener(player);
-		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
-		MouseListener mouseListener = new MouseListener(player);
-
-		setOnKeyPressed(keyPressListener);
-		setOnKeyReleased(keyReleaseListener);
-		setOnMouseDragged(mouseListener);
-		setOnMouseMoved(mouseListener);
-		setOnMousePressed(mouseListener);
-		setOnMouseReleased(mouseListener);
-
-		view.getChildren().add(overlay);
+		initListeners();
 
 		ArrayList<Bullet> pellets = new ArrayList<>();
-		new AnimationTimer()
+		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
@@ -116,79 +176,74 @@ public class Renderer extends Scene
 
 				player.tick();
 			}
-		}.start();
+		};
+		timer.start();
 	}
 
 	/**
-	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
-	 *
-	 * @param mapName Name of the selected map
+	 * Toggles the pause menu whilst in-game
 	 */
-	public Renderer(String mapName, AudioManager audio, GUIManager m)
+	public static void togglePauseMenu()
 	{
-		super(view, 1024, 576);
+		if(!pauseMenu.opened) {
+			view.getChildren().add(pauseMenu);
+		} else {
+			view.getChildren().remove(pauseMenu);
+		}
+		pauseMenu.opened = !pauseMenu.opened;
+	}
+
+	/**
+	 * Toggles the settings scene from the pause menu whilst in-game
+	 */
+	public static void toggleSettingsMenu()
+	{
+		if(!settingsMenu.opened)
+		{
+			view.getChildren().remove(pauseMenu);
+			view.getChildren().add(settingsMenu);
+		}
+		else
+		{
+			view.getChildren().remove(settingsMenu);
+			view.getChildren().add(pauseMenu);
+		}
+		settingsMenu.opened = !settingsMenu.opened;
+	}
+
+	/**
+	 * Get the current state of the pause menu
+	 * @return <code>true</code> if the pause menu is active, <code>false</code> otherwise
+	 */
+	public static boolean getPauseMenuState()
+	{
+		return pauseMenu.opened;
+	}
+
+	/**
+	 * Get the current state of the settings scene in the pause menu
+	 * @return <code>true</code> if the settings scene is active, <code>false</code> otherwise
+	 */
+	public static boolean getSettingsMenuState()
+	{
+		return settingsMenu.opened;
+	}
+
+	private void init(GUIManager guiManager, String mapName)
+	{
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
-		pauseMenu = new PauseMenu(m);
-		settingsMenu = new PauseSettingsMenu(m);
-		overlay = new Overlay(m);
+		pauseMenu = new PauseMenu(guiManager);
+		settingsMenu = new PauseSettingsMenu(guiManager);
+		hud = new HeadUpDisplay();
+		view.getChildren().add(hud);
 
-		//16:9 aspect ratio
-		widthProperty().addListener(observable ->
-		{
-			scale = getWidth() / 1024;
-			view.setScaleX(scale);
-			view.setScaleY((getWidth() * 0.5625) / 576);
-		});
+		map = Map.load("res/maps/" + mapName + ".json");
+	}
 
-		Map map = Map.load("res/maps/" + mapName + ".json");
-
-		ArrayList<GeneralPlayer> players = new ArrayList<>();
-
-		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
-
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, collisionsHandler);
-
-		players.add(player);
-		players.addAll(player.getTeamPlayers());
-		players.addAll(player.getEnemies());
-		players.forEach(p -> {
-			p.setCache(true);
-			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-			p.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
-		});
-		view.getChildren().addAll(players);
-
-		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
-		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-				redTeam.add(p);
-			else
-				blueTeam.add(p);
-		}
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-			{
-				p.setEnemies(blueTeam);
-				p.setTeamPlayers(redTeam);
-			}
-			else
-			{
-				p.setEnemies(redTeam);
-				p.setTeamPlayers(blueTeam);
-			}
-		}
-
-		collisionsHandler.setBlueTeam(blueTeam);
-		collisionsHandler.setRedTeam(redTeam);
-		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
-		//game.start();
-
+	private void initListeners()
+	{
 		KeyPressListener keyPressListener = new KeyPressListener(player);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
 		MouseListener mouseListener = new MouseListener(player);
@@ -200,82 +255,29 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		view.getChildren().add(overlay);
-
-		new AnimationTimer()
-		{
-			@Override
-			public void handle(long now)
-			{
-				updateView();
-
-				for(GeneralPlayer player : players)
-				{
-					player.tick();
-					for(Bullet pellet : player.getBullets())
-					{
-						if(pellet.isActive())
-						{
-							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(pellet);
-						}
-						else if(view.getChildren().contains(pellet))
-							view.getChildren().remove((pellet));
-					}
-				}
-			}
-		}.start();
+		hud.toFront();
 	}
 
 	private void updateView()
 	{
-		view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
-		view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
+		view.relocate((getWidth() / 2) - playerHeadX - player.getLayoutX(), (getHeight() / 2) - playerHeadY - player.getLayoutY());
+		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+
 		if(view.getChildren().contains(pauseMenu))
-		{
-			pauseMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
-			pauseMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
-		} else if(view.getChildren().contains(settingsMenu))
-		{
-			settingsMenu.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
-			settingsMenu.setLayoutY(player.getLayoutY() + player.getImage().getHeight() - getHeight() / 2);
-		} else if(view.getChildren().contains(overlay)) {
-			overlay.setLayoutX(player.getLayoutX() + player.getImage().getWidth() - getWidth() / 2);
-			overlay.setLayoutY(player.getLayoutY() + player.getImage().getHeight() + (getHeight() / 2 - overlay.getHeight()));
-		}
+			pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+
+		if(view.getChildren().contains(settingsMenu))
+			settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 	}
 
-	public static void togglePauseMenu()
+	@Override
+	protected void finalize() throws Throwable
 	{
-		if(!pauseMenu.opened) {
-			view.getChildren().add(pauseMenu);
-			view.getChildren().remove(overlay);
-		} else {
-			view.getChildren().remove(pauseMenu);
-			view.getChildren().add(overlay);
-		}
-		pauseMenu.opened = !pauseMenu.opened;
-	}
-
-	public static void toggleSettingsMenu()
-	{
-		if(!settingsMenu.opened) {
-			view.getChildren().remove(pauseMenu);
-			view.getChildren().add(settingsMenu);
-		} else {
-			view.getChildren().remove(settingsMenu);
-			view.getChildren().add(pauseMenu);
-		}
-		settingsMenu.opened = !settingsMenu.opened;
-	}
-
-	public static boolean getPauseMenuState()
-	{
-		return pauseMenu.opened;
-	}
-
-	public static boolean getSettingsMenuState()
-	{
-		return settingsMenu.opened;
+		view = null;
+		pauseMenu = null;
+		settingsMenu = null;
+		hud = null;
+		timer = null;
+		super.finalize();
 	}
 }

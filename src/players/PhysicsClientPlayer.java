@@ -1,8 +1,7 @@
 package players;
 
 import audio.AudioManager;
-import enums.TeamEnum;
-import javafx.geometry.Point2D;
+import enums.Team;
 import networking.game.UDPClient;
 import physics.Bullet;
 import physics.CollisionsHandler;
@@ -17,13 +16,12 @@ import java.util.ArrayList;
 public class PhysicsClientPlayer extends GeneralPlayer
 {
 
+	//flag for keeping track of scores
+	boolean scoreChanged = true;
 	private double mx, my;
 	private boolean controlScheme;
 	private UDPClient sender;
 	private ArrayList<ClientLocalPlayer> clientEnemies;
-
-	//flag for keeping track of scores
-	boolean scoreChanged = true;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
@@ -32,7 +30,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	 * @param y             The y-coordinate of the player with respect to the map
 	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 	 */
-	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClient sender, CollisionsHandler collisionHandler)
+	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, Team team, UDPClient sender, CollisionsHandler collisionHandler)
 	{
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionHandler);
 		this.mx = x;
@@ -42,7 +40,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		this.sender = sender;
 	}
 
-	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, UDPClient sender)
+	public PhysicsClientPlayer(double x, double y, int id, Team team, UDPClient sender)
 	{
 		super(x, y, id, ImageFactory.getPlayerImage(team));
 		controlScheme = false;
@@ -198,7 +196,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		String msg = "Scored:";
 
 		//The current player has been shot, so the point goes to the other team
-		if(team == TeamEnum.RED)
+		if(team == Team.RED)
 			msg += "Blue";
 		else
 			msg += "Red";

@@ -1,6 +1,6 @@
 package players;
 
-import enums.TeamEnum;
+import enums.Team;
 import javafx.scene.transform.Rotate;
 import physics.Bullet;
 import rendering.ImageFactory;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class ClientLocalPlayer extends GeneralPlayer
 {
 	private Rotate rotation;
-	private TeamEnum team;
+	private Team team;
 
-	public ClientLocalPlayer(double x, double y, int id, TeamEnum team)
+	public ClientLocalPlayer(double x, double y, int id, Team team)
 	{
 		super(x,y,id, ImageFactory.getPlayerImage(team));
 		rotation = new Rotate(Math.toDegrees(0.0), 0, 0, 0, Rotate.Z_AXIS);
@@ -41,7 +41,7 @@ public class ClientLocalPlayer extends GeneralPlayer
 		return id;
 	}
 
-	public TeamEnum getTeam()
+	public Team getTeam()
 	{
 		return team;
 	}

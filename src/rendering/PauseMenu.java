@@ -1,6 +1,6 @@
 package rendering;
 
-import enums.MenuEnum;
+import enums.Menu;
 import gui.GUIManager;
 import gui.MenuControls;
 import gui.MenuOption;
@@ -14,20 +14,16 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 class PauseMenu extends SubScene
 {
-	private static Pane view = new Pane();
+	private static GridPane p = new GridPane();
 	boolean opened = false;
 
 	PauseMenu(GUIManager m)
 	{
-		super(view, Renderer.view.getWidth(), Renderer.view.getHeight());
-		view.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
-
-		GridPane p = new GridPane();
+		super(p, Renderer.view.getWidth(), Renderer.view.getHeight());
+		p.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
 
 		p.setAlignment(Pos.CENTER);
 		p.setHgap(10);
@@ -59,7 +55,8 @@ class PauseMenu extends SubScene
 			}
 		}), new MenuOption("Back to Main Menu", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
-				m.transitionTo(MenuEnum.MainMenu, null);
+				m.transitionTo(Menu.MainMenu, null);
+				Renderer.timer.stop();
 				System.out.println("ActionEvent: " + event);
 			}
 		})};
@@ -67,8 +64,6 @@ class PauseMenu extends SubScene
 		GridPane buttonSet = MenuOptionSet.optionSetToGridPane(set);
 		p.add(buttonSet, 0, 2);
 
-		view.getStylesheets().add("styles/menu.css");
-		view.getChildren().addAll(p);
-
+		p.getStylesheets().add("styles/menu.css");
 	}
 }

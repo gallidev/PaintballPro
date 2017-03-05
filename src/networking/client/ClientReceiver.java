@@ -1,21 +1,19 @@
 package networking.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import enums.MenuEnum;
-import enums.TeamEnum;
+import enums.Menu;
+import enums.Team;
 import gui.GUIManager;
 import javafx.application.Platform;
 import networking.game.UDPClient;
-import networking.shared.Message;
-import networking.shared.MessageQueue;
 import physics.CollisionsHandler;
 import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 import players.PhysicsClientPlayer;
 import rendering.Map;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -115,7 +113,7 @@ public class ClientReceiver extends Thread {
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
-								m.transitionTo(MenuEnum.EndGame, someScore);
+								m.transitionTo(Menu.EndGame, someScore);
 							}
 
 						});
@@ -159,10 +157,10 @@ public class ClientReceiver extends Thread {
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.RED, udpReceiver, collisionsHandler);
+					clientID, false, map, m.getAudioManager(), Team.RED, udpReceiver, collisionsHandler);
 		else
 			cPlayer = new PhysicsClientPlayer(map.getSpawns()[clientID + 3].x * 64, map.getSpawns()[clientID + 3].y * 64,
-					clientID, false, map, m.getAudioManager(), TeamEnum.BLUE, udpReceiver,collisionsHandler);
+					clientID, false, map, m.getAudioManager(), Team.BLUE, udpReceiver,collisionsHandler);
 
 		ArrayList<GeneralPlayer> allplayers = new ArrayList<GeneralPlayer>();
 		// extract the other members
@@ -171,17 +169,17 @@ public class ClientReceiver extends Thread {
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red"))
 					myTeam.add(new ClientLocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
-							TeamEnum.RED));
+							Team.RED));
 				else
 					myTeam.add(new ClientLocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
-							TeamEnum.BLUE));
+							Team.BLUE));
 			} else {
 				if (clientTeam.equals("Red"))
 					enemies.add(new ClientLocalPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
-							TeamEnum.BLUE));
+							Team.BLUE));
 				else
 					enemies.add(new ClientLocalPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
-							TeamEnum.RED));
+							Team.RED));
 			}
 		}
 
@@ -199,7 +197,7 @@ public class ClientReceiver extends Thread {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				m.transitionTo(MenuEnum.EliminationMulti, null);
+				m.transitionTo(Menu.EliminationMulti, null);
 			}
 		});
 	}

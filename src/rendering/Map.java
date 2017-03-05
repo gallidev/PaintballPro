@@ -1,7 +1,6 @@
 package rendering;
 
-import com.google.gson.Gson; //add gson-2.8.0.jar to the project libraries!
-import enums.TeamEnum;
+import com.google.gson.Gson;
 import gui.GUIManager;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
@@ -9,7 +8,9 @@ import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -30,7 +31,7 @@ public class Map
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
-	transient private Group wallGroup = new Group(), floorGroup = new Group(), propGroup = new Group();
+	transient private Group wallGroup = new Group(), propGroup = new Group();
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -45,24 +46,32 @@ public class Map
 		{
 			map = (new Gson()).fromJson(new FileReader(url), Map.class);
 
+			int width = 0, height = 0;
+			for(Floor floor : map.floors)
+			{
+				if(floor.x + floor.width > width)
+					width = floor.x + floor.width;
+				if(floor.y + floor.height > height)
+					height = floor.y + floor.height;
+			}
+
+			WritableImage tiles = new WritableImage(width * 64, height * 64);
+
 			//load the ground
 			for(Floor floor : map.floors)
 			{
-				WritableImage tiles = new WritableImage(floor.width * 64, floor.height * 64);
 				Image tile = ImageFactory.getMaterialImage(floor.material);
 				for(int i = 0; i < floor.width; i++)
 				{
 					for(int j = 0; j < floor.height; j++)
 					{
-						tiles.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, tile.getPixelReader(), 0, 0);
+						tiles.getPixelWriter().setPixels((floor.x + i) * 64, (floor.y + j) * 64, 64, 64, tile.getPixelReader(), 0, 0);
 					}
 				}
-				ImageView tilesView = new ImageView(tiles);
-				tilesView.relocate(floor.x * 64, floor.y * 64);
-				map.floorGroup.getChildren().add(tilesView);
 			}
-			map.floorGroup.setCache(true);
-			map.floorGroup.setCacheHint(CacheHint.SCALE);
+			ImageView floorGroup = new ImageView(tiles);
+			floorGroup.setCache(true);
+			floorGroup.setCacheHint(CacheHint.SCALE);
 
 			//load spawns
 			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
@@ -71,8 +80,8 @@ public class Map
 			{
 				for(int j = 0; j < 2; j++)
 				{
-					redSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getSpawnTile(TeamEnum.RED).getPixelReader(), 0, 0);
-					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getSpawnTile(TeamEnum.BLUE).getPixelReader(), 0, 0);
+					redSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getMaterialImage(map.floors[0].material).getPixelReader(), 0, 0);
+					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getMaterialImage(map.floors[1].material).getPixelReader(), 0, 0);
 				}
 			}
 			ImageView redSpawnView = new ImageView(redSpawn), blueSpawnView = new ImageView(blueSpawn);
@@ -110,7 +119,7 @@ public class Map
 //			}
 			map.wallGroup.setCache(true);
 			map.wallGroup.setCacheHint(CacheHint.SCALE);
-			view.getChildren().addAll(map.floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
+			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
 			//turn on shading if the user has it enabled
 			if(GUIManager.getUserSettings().getShading())
@@ -155,19 +164,19 @@ public class Map
 		{
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + url + ".json"), Map.class);
 
-			for(Floor floor : map.floors)
-			{
-				for(int i = 0; i < floor.width; i++)
-				{
-					for(int j = 0; j < floor.height; j++)
-					{
-						ImageView tile = new ImageView(ImageFactory.getMaterialImage(floor.material));
-						tile.setX((i + floor.x) * 64);
-						tile.setY((j + floor.y) * 64);
-						map.floorGroup.getChildren().add(tile);
-					}
-				}
-			}
+//			for(Floor floor : map.floors)
+//			{
+//				for(int i = 0; i < floor.width; i++)
+//				{
+//					for(int j = 0; j < floor.height; j++)
+//					{
+//						ImageView tile = new ImageView(ImageFactory.getMaterialImage(floor.material));
+//						tile.setX((i + floor.x) * 64);
+//						tile.setY((j + floor.y) * 64);
+//						map.floorGroup.getChildren().add(tile);
+//					}
+//				}
+//			}
 
 			map.loadProps();
 

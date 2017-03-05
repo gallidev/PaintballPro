@@ -1,6 +1,6 @@
 package offlineLogic;
 
-import enums.TeamEnum;
+import enums.Team;
 import logic.RoundTimer;
 import physics.OfflinePlayer;
 
@@ -11,8 +11,8 @@ import physics.OfflinePlayer;
  */
 public class OfflineTeamMatchMode extends OfflineGameMode {
 
-	private RoundTimer timer;
 	private static final long gameTime = 180; // in seconds
+	private RoundTimer timer;
 	
 	/**
 	 * Initialises the game mode with the user player. This will also create 
@@ -49,7 +49,7 @@ public class OfflineTeamMatchMode extends OfflineGameMode {
 	 * continue the game for 30 more seconds, until one team wins.
 	 */
 	@Override
-	public TeamEnum whoWon() {
+	public Team whoWon() {
 		if (getMyTeam().getScore() > getEnemies().getScore())
 			return getMyTeam().getColour();
 		else if (getMyTeam().getScore() < getEnemies().getScore())

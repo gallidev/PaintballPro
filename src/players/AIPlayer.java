@@ -1,8 +1,8 @@
 package players;
 
-import ai.*;
+import ai.BehaviourManager;
 import audio.AudioManager;
-import enums.TeamEnum;
+import enums.Team;
 import offlineLogic.OfflineTeam;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
@@ -18,7 +18,7 @@ public class AIPlayer extends GeneralPlayer{
 	private boolean moving;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler){
+	public AIPlayer(double x, double y, int id, Map map, Team team, AudioManager audio, CollisionsHandler collisionsHandler){
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
 		this.audio = audio;
 		angle = Math.toRadians(90);
@@ -82,7 +82,7 @@ public class AIPlayer extends GeneralPlayer{
 	public void updateScore(){
 		oppTeam.incrementScore();
 
-		if (myTeam.getColour() == TeamEnum.RED){
+		if (myTeam.getColour() == Team.RED){
 			System.out.println( "Red team score: " + myTeam.getScore());
 			System.out.println( "Blue team score: " + oppTeam.getScore());
 		}
@@ -99,11 +99,11 @@ public class AIPlayer extends GeneralPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	public double getMovementAngle() { return this.movementAngle;}
+
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
 	}
-
-	public double getMovementAngle() { return this.movementAngle;}
 
 	public Map getMap() {return this.map;}
 

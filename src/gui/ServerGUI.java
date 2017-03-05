@@ -1,18 +1,12 @@
 package gui;
-import enums.MenuEnum;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-
 import javafx.scene.image.ImageView;
-
-import javax.swing.*;
-import java.util.Set;
+import javafx.scene.layout.GridPane;
 
 /**
  * Server GUI scene class
