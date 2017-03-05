@@ -181,9 +181,11 @@ public class GUIManager {
             int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
             String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
+            int udpPortNumber = 9877;
+            
             // This loads up the client code.
             try {
-                c = new Client(nickname, portNumber, machName, this);
+                c = new Client(nickname, portNumber, machName, this,udpPortNumber);
 
                 // We can then get the client sender and receiver threads.
                 ClientSender sender = c.getSender();

@@ -37,8 +37,10 @@ public class UDPClient extends Thread {
 	 * @param guiManager Manager of GUI.
 	 * @param teams Both client's and opposing teams.
 	 */
-	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams)
+	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum)
 	{
+		int port = portNum;
+		// 9877
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
@@ -47,7 +49,7 @@ public class UDPClient extends Thread {
 		
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
-			clientSocket = new DatagramSocket(9877);
+			clientSocket = new DatagramSocket(port);
 			IPAddress = InetAddress.getByName(udpServIP);
 			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
 			String sentence = "Connect:"+clientID;
