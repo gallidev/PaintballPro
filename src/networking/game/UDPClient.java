@@ -19,7 +19,7 @@ import players.GeneralPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	
 	DatagramSocket clientSocket;
@@ -47,13 +47,18 @@ public class UDPClient extends Thread {
 		
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
-			clientSocket = new DatagramSocket();
+			clientSocket = new DatagramSocket(9877);
 			IPAddress = InetAddress.getByName(udpServIP);
 			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
 			String sentence = "Connect:"+clientID;
 			if(debug) System.out.println("sending data:"+sentence);
 			sendMessage(sentence);
 			if(debug) System.out.println("sent");
+			byte[] receiveData = new byte[1024];
+			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			clientSocket.receive(receivePacket);
+			String sentSentence = new String(receivePacket.getData());
+			if(debug) System.out.println(sentSentence.trim());
 		}
 		catch (Exception e)
 		{
@@ -74,7 +79,7 @@ public class UDPClient extends Thread {
 			{
 				clientSocket.receive(receivePacket);
 				String sentSentence = new String(receivePacket.getData());
-				
+				if(debug) System.out.println("Received from server:"+sentSentence);
 				// In-game messages
 				if (sentSentence.contains("Move"))
 					moveAction(sentSentence);

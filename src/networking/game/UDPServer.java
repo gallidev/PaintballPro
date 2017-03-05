@@ -18,7 +18,7 @@ import players.ServerPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -41,9 +41,10 @@ public class UDPServer extends Thread{
 	{
 		try {
 			if(debug) System.out.println("Starting server");
+			
 			serverSocket = new DatagramSocket(9876);
 		
-			if(debug) System.out.println("Opened socket on port " + serverSocket.getPort() + serverSocket.getInetAddress());
+			if(debug) System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:" +serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];
 			while(true)
 			{
@@ -72,6 +73,10 @@ public class UDPServer extends Thread{
 			    	  if(debug) System.out.println("Their ip is:"+IPAddress.toString());
 			    	  clients.addNewIP(IPAddress.toString(), clientID);
 			    	  clients.addUDPQueue(IPAddress.toString());
+			  		  byte[] sendData = new byte[1024];
+			  		  sendData = "Successfully Connected".getBytes();
+			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), 9877);
+			  		  serverSocket.send(sendPacket);
 			      }
 			      else
 			      {
@@ -89,7 +94,7 @@ public class UDPServer extends Thread{
 						// Includes : sending moves, bullets
 						if (sentence.contains("SendToAll:"))
 						{
-							if(debug) System.out.println("Attempting to send all:"+sentence);
+							//if(debug) System.out.println("Attempting to send all:"+sentence);
 							sendToAll(sentence,ipFrom);
 						}
 						// Reset the client when they exit the game.
@@ -136,9 +141,10 @@ public class UDPServer extends Thread{
 			try{
 				// Let's send the message.
 				InetAddress sendAddress = InetAddress.getByName(ipAddr);
-				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, 9876);
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, 9877);
 				if(debug) System.out.println("Attempting to send to all:"+toBeSent);
 				serverSocket.send(sendPacket);
+				if(debug) System.out.println("Message sent.");
 			}
 			catch(Exception e)
 			{
@@ -163,7 +169,7 @@ public class UDPServer extends Thread{
 	{
 		// we get the lobby id.
 		int lobbyID = clients.getPlayer(clients.getID(ip)).getAllocatedLobby();
-		if(debug) System.out.println("The lobby id is:"+lobbyID);
+		//if(debug) System.out.println("The lobby id is:"+lobbyID);
 		// we can now send to all clients in the same lobby as the origin client.
 		sendToAll(toBeSent,lobbyID);
 	}
