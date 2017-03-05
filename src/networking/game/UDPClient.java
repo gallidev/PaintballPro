@@ -19,7 +19,7 @@ import players.GeneralPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	
 	DatagramSocket clientSocket;
