@@ -39,11 +39,11 @@ public class ServerGameSimulation {
 			     Executors.newScheduledThreadPool(1);
 		Runnable game = new Runnable() {
 		       public void run() {
-				for(ServerMinimumPlayer player : players)
-				{
-					player.tick();
-				}
-		    	frames ++;
+					for(ServerMinimumPlayer player : players)
+					{
+						player.tick();
+					}
+			    	frames ++;
 		       }
 		     };
 

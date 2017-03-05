@@ -22,9 +22,10 @@ public class Team {
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
 	 */
-	public Team(){
+	public Team(TeamEnum colour){
 		members = new ArrayList<>();
 		score = 0;
+		this.colour = colour;
 	}
 
 	/**
@@ -78,6 +79,10 @@ public class Team {
 
 	public TeamEnum getColour(){
 		return colour;
+	}
+	
+	public void setColour(TeamEnum c){
+		colour = c;
 	}
 
 //	public void setMap(Map map){

@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.GameSimulationJavaFxApplication;
+import integrationServer.GameSimulationScene;
 import integrationServer.ServerGameStateSender;
 import integrationServer.ServerInputReceiver;
 import logic.RoundTimer;
@@ -330,7 +331,6 @@ public class Lobby {
 	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
 	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
 	 *
-	 * @author Alexandra Paduraru
 	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpServer) {
 		Thread t = new Thread(new Runnable() {
@@ -406,10 +406,12 @@ public class Lobby {
 	//====================NEW INTEGRATION BELOW=================================
 
 	public void playGame(ServerReceiver receiver, UDPServer udpServer){
-		red = new Team();
-		blue = new Team();
+		red = new Team(TeamEnum.RED);
+		blue = new Team(TeamEnum.BLUE);
 
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
+		
+		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		Map map = Map.load("res/maps/" + "elimination" + ".json");
 

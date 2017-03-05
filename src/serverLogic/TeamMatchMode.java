@@ -13,7 +13,7 @@ import logic.RoundTimer;
 public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
-	private static final long gameTime = 180; // in seconds
+	private static final long gameTime = 10; // in seconds
 	
 	//debugging
 	private boolean debug = false;
@@ -66,6 +66,10 @@ public class TeamMatchMode extends GameMode {
 	@Override
 	public void start() {
 		timer.startTimer();
+	}
+	
+	public RoundTimer getTimer(){
+		return timer;
 	}
 
 }
