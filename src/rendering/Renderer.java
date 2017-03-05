@@ -44,7 +44,6 @@ public class Renderer extends Scene
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		init(guiManager, mapName);
 
-
 		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
