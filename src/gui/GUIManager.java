@@ -47,6 +47,7 @@ public class GUIManager {
     private int redScore = 0;
     private int blueScore = 0;
     private AudioManager audio;
+    public int udpPortNumber = 0;
 
     public GUIManager() {
         audio = new AudioManager(user, this);
@@ -181,8 +182,6 @@ public class GUIManager {
             int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
             String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
-            int udpPortNumber = 9877;
-            
             // This loads up the client code.
             try {
                 c = new Client(nickname, portNumber, machName, this,udpPortNumber);
