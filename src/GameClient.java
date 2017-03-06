@@ -13,11 +13,11 @@ public class GameClient extends Application {
 		launch(args);
 	}
 //always run the server first!!
-	//for testing use ports 9877 and 9876 on 9877 it runs the server
+	//for testing use ports  9878 first and then 9879 and make sure you close the server first
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		m.udpPortNumber = 9878;
+		m.udpPortNumber = 9879;
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 16);
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 32);
 		stage.getIcons().addAll(new Image("assets/icon_dock.png"), new Image("assets/icon_32.png"), new Image("assets/icon_16.png"));

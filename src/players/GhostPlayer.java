@@ -22,6 +22,7 @@ import serverLogic.Team;
  */
 public class GhostPlayer extends ImageView {
 
+	public double playerHeadX = 12.5, playerHeadY = 47.5;
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private int playerId;
@@ -34,6 +35,10 @@ public class GhostPlayer extends ImageView {
 		setLayoutY(y);
 		this.playerId = playerId;
 		this.audio = audio;
+		rotation = new Rotate(Math.toDegrees(0), 0, 0, 0, Rotate.Z_AXIS);
+	    getTransforms().add(rotation);
+		rotation.setPivotX(playerHeadX);
+		rotation.setPivotY(playerHeadY);
 	}
 
 	public void beenShot() {
@@ -45,16 +50,16 @@ public class GhostPlayer extends ImageView {
 		return firedBullets;
 	}
 
-	public void setFiredBullets(ArrayList<Bullet> firedBullets) {
+	public synchronized void setFiredBullets(ArrayList<Bullet> firedBullets) {
 		this.firedBullets = firedBullets;
 	}
 
-	public Rotate getRotation() {
+	public synchronized Rotate getRotation() {
 		return rotation;
 	}
 
-	public void setRotation(Rotate rotation) {
-		this.rotation = rotation;
+	public synchronized void setRotationAngle(double angle) {
+		this.rotation.setAngle(angle);
 	}
 
 	public AudioManager getAudio() {
@@ -68,5 +73,18 @@ public class GhostPlayer extends ImageView {
 	public int getPlayerId(){
 		return this.playerId;
 	}
+
+	public synchronized void setSyncVisible(boolean visible){
+		setVisible(visible);
+	}
+
+	public synchronized void setSyncX(double x){
+		setLayoutX(x);
+	}
+
+	public synchronized void setSyncY(double y){
+		setLayoutY(y);
+	}
+
 }
 
