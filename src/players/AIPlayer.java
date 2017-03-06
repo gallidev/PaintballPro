@@ -66,11 +66,6 @@ public class AIPlayer extends GeneralPlayer{
 		if(moving) {
 			if ((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown)) setLayoutY(getLayoutY() - yToReduce);
 			if ((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft)) setLayoutX(getLayoutX() + xToAdd);
-//			if (collUp) setLayoutY(getLayoutY() + 1);
-//			if (collDown) setLayoutY(getLayoutY() - 1);
-//			if (collLeft) setLayoutX(getLayoutX() + 1);
-//			if (collRight) setLayoutX(getLayoutX() - 1);
-
 		}
 	}
 

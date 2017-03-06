@@ -42,8 +42,8 @@ public class Pathfinding {
             int y = floor.getY();
             int width = floor.getWidth();
             int height = floor.getHeight();
-            for(int w = x; w <= x + width; w++) {
-                for(int h = y; h <= y + height; h++) {
+            for(int w = x; w < x + width; w++) {
+                for(int h = y; h < y + height; h++) {
                     nodes[w][h] = new Node(w, h);
                 }
             }
@@ -77,47 +77,18 @@ public class Pathfinding {
         path.clearPath();
         closed.clear();
         open.clear();
-        int origX = x;
-        int origY = y;
-        while(nodes[x][y] == null){
-            if(x < 0 || x >= 64) x = origX;
-            if(y < 0 || y >= 64) y = origY;
-            int n = random.nextInt(8);
-            switch (n){
-                case 0: x++;
-                        break;
-                case 1: y++;
-                        break;
-                case 2: x--;
-                        break;
-                case 3: y--;
-                        break;
-                case 4: x++;
-                        y++;
-                        break;
-                case 5: x++;
-                        y--;
-                        break;
-                case 6: x--;
-                        y++;
-                        break;
-                case 7: x--;
-                        y--;
-                        break;
-            }
-        }
         open.add(nodes[x][y]); //find nearest non null node
 
         Node start = nodes[x][y];
         start.heuristicCost = euclideanCost(x, y, tx, ty);
         start.finalCost = 0;
-        Node current;
         Node goal = nodes[tx][ty];
-        if(goal == null) return;
 
-        while(true){ //use threading
-            current = open.poll();
-            if (current == null) break;
+        while(true){
+            Node current = open.poll();
+            if (current == null) {
+                break;
+            }
             closed.add(current);
             if (current.equals(goal)) {
                 break;
@@ -216,13 +187,12 @@ public class Pathfinding {
         if(closed.contains(target)) return;
         if(current == null || target == null) return;
         target.heuristicCost = euclideanCost(target.x, target.y, goal.x, goal.y);
-
         float tempFinalCost = target.heuristicCost + current.finalCost + 1;
-        if(!closed.contains(target) && tempFinalCost < target.finalCost){
+        if(tempFinalCost < target.finalCost){ //check this
             target.finalCost = tempFinalCost;
             target.parent = current;
             if(!open.contains(target)){
-                open.offer(target);
+                open.add(target);
             }
         }
 
@@ -252,13 +222,34 @@ public class Pathfinding {
             path.prependNode(n.parent);
             n = n.parent;
         }
+        if(path.getLength() != 0){
+            path.appendNode(goal);
+            path.removeFirst();
+        }
 
-        path.appendNode(goal);
-        if (!path.getNode(0).equals(start)) path = null;
+
     }
 
     public Path getPath(int x, int y, int tx, int ty){
+        if(path == null){
+            path = new Path();
+        }
+        resetNodes();
         AStar(x, y, tx, ty);
         return path;
+    }
+
+    private void resetNodes(){
+        for (Node[] nodeRow:nodes) {
+            for (Node node:nodeRow) {
+                if(node != null){
+                    node.reset();
+                }
+            }
+        }
+    }
+
+    public Node[][] getNodeGrid(){
+        return this.nodes;
     }
 }

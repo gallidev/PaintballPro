@@ -19,6 +19,7 @@ public abstract class Behaviour {
     protected Random rand;
     protected ArrayList<GeneralPlayer> enemies;
     protected GeneralPlayer closestEnemy;
+    protected double closestDistance = 0;
     protected double angle;
     protected double closestX, closestY;
     protected Pathfinding pathfinder;
@@ -56,7 +57,7 @@ public abstract class Behaviour {
                     minDistance = temp;
                 }
             }
-
+            closestDistance = minDistance;
             if(minDistance < 400){
                 double deltaX = closestX - ai.getLayoutX();
                 double deltaY = ai.getLayoutY() - closestY;
