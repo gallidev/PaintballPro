@@ -18,7 +18,7 @@ import players.ServerPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -72,12 +72,14 @@ public class UDPServer extends Thread{
 			    	  if(debug) System.out.println("Parsed");
 			    	  if(debug) System.out.println("Client id is:"+clientID);
 			    	  if(debug) System.out.println("Their ip is:"+IPAddress.toString());
-			    	  String ipAdd = IPAddress.toString().substring(1, IPAddress.toString().length()) + ":" + port;
+			    	  String ipStr = IPAddress.toString().substring(1, IPAddress.toString().length());
+			    	  String ipAdd = ipStr + ":" + port;
 			    	  clients.addNewIP(ipAdd, clientID);
 			    	  clients.addUDPQueue(ipAdd);
 			  		  byte[] sendData = new byte[1024];
 			  		  sendData = "Successfully Connected".getBytes();
-			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), port);
+			  		  IPAddress = InetAddress.getByName(ipStr);
+			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
 			  		  serverSocket.send(sendPacket);
 			      }
 			      else

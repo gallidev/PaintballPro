@@ -19,7 +19,7 @@ import players.GeneralPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	
 	DatagramSocket clientSocket;
@@ -49,7 +49,9 @@ public class UDPClient extends Thread {
 		
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
+			if(debug) System.out.println("Attempting to make client socket");
 			clientSocket = new DatagramSocket(port);
+			if(debug) System.out.println("Attempting to get ip address");
 			IPAddress = InetAddress.getByName(udpServIP);
 			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
 			String sentence = "Connect:"+clientID;
@@ -64,7 +66,7 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			if(debug) System.err.println(e.getStackTrace());
+			if(debug) System.err.println(e.getMessage());
 		}
 	}
 	
