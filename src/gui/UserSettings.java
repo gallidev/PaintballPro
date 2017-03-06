@@ -8,7 +8,7 @@ public class UserSettings {
 	private int sfxVolume = 100;
 	private String username = "Player";
 	private boolean shading = true;
-	protected static String possibleResolutions[] = {"640x360", "960x540", "1024x576", "1280x720", "1600x900", "1920x1080", "2560x1440", "4096x2304"};
+	public static String possibleResolutions[] = {"640x360", "960x540", "1024x576", "1280x720", "1600x900", "1920x1080", "2560x1440", "4096x2304"};
 	private String resolution = possibleResolutions[2];
 
 	/**
