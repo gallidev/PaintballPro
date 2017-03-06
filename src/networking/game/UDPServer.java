@@ -114,6 +114,7 @@ public class UDPServer extends Thread{
 
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
+									   break;
 						}
 
 
@@ -142,7 +143,7 @@ public class UDPServer extends Thread{
 
 		// We get all players in the same game as the transmitting player.
 		ServerBasicPlayer[] players = lobbyTab.getLobby(lobbyID).getPlayers();
-		if(debug) System.out.println("2 Attempting to send to all:"+toBeSent);
+		//if(debug) System.out.println("2 Attempting to send to all:"+toBeSent);
 		// Let's send a message to them all.
 		for(ServerBasicPlayer player : players)
 		{
@@ -166,7 +167,7 @@ public class UDPServer extends Thread{
 			}
 			catch(Exception e)
 			{
-				if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
+				//if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
 			}
 		}
 
@@ -204,6 +205,8 @@ public class UDPServer extends Thread{
 
 	public void playerInputChanged(String text){
 		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
+
+		if(debug) System.out.println("Input Received: "+text);
 		String[] actions = text.split(":");
 		boolean up = false;
 		boolean down = false;

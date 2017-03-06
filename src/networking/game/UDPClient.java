@@ -97,7 +97,7 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			//e.printStackTrace(System.out);
+			e.printStackTrace(System.out);
 			if(debug) System.err.println(e.getStackTrace());
 		}
 		clientSocket.close();
@@ -134,20 +134,21 @@ public class UDPClient extends Thread {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if(debug)System.out.println(text);
 		if(text != ""){
-			String[] actions = text.split("1");
+			String[] actions = text.split(":");
 
 			int id = Integer.parseInt(actions[1]);
 			double x = Double.parseDouble(actions[2]);
 			double y = Double.parseDouble(actions[3]);
 			double angle = Double.parseDouble(actions[4]);
 
-			boolean visibility = false;
-			if (actions[3].equals("true"))
-				visibility = true;
+			boolean visibility = true;
+			if (actions[5].equals("false"))
+				visibility = false;
 
 			;
-
-			gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
+			if(gameStateReceiver != null){
+				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
+			}
 		}
 
 

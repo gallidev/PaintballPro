@@ -188,9 +188,9 @@ public class ClientReceiver extends Thread {
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
 
-
 		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		udpClient.setGameStateReceiver(gameStateReceiver);
+		System.out.println("initialised GameStateReceiver");
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);

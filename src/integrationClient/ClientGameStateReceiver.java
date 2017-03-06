@@ -32,10 +32,10 @@ public class ClientGameStateReceiver {
 
 		GhostPlayer playerToBeUpdated = getPlayerWithId(id);
 
-		playerToBeUpdated.setLayoutX(x);
-		playerToBeUpdated.setLayoutY(y);
-		playerToBeUpdated.setRotation(new Rotate(angle));
-		playerToBeUpdated.setVisible(visible);
+		playerToBeUpdated.setSyncX(x);
+		playerToBeUpdated.setSyncY(y);
+		playerToBeUpdated.setRotationAngle(angle);
+		playerToBeUpdated.setSyncVisible(visible);
 	}
 
 	/**
