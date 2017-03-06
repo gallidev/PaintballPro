@@ -152,6 +152,7 @@ public class UDPServer extends Thread{
 			//if(debug) System.out.println("Their ip is:"+playerIP);
 			// Parse IP to get first part and port number.
 			String ipAddr = playerIP.split(":")[0];
+			ipAddr = ipAddr.substring(1,ipAddr.length());
 			int port = Integer.parseInt(playerIP.split(":")[1]);
 			//if(debug) System.out.println("trying to get port");
 			//String ipPort = playerIP.split(":")[1];
