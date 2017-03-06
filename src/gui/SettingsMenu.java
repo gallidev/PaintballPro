@@ -1,18 +1,21 @@
 package gui;
 
 import enums.Menu;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
 
 /**
  * Class to create a scene for the settings menu
@@ -107,6 +110,38 @@ public class SettingsMenu {
 				m.notifySettingsObservers();
 			}
 		});
+
+		Label resolutionLabel = new Label("Resolution");
+
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		ComboBox<String> resolutionComboBox = new ComboBox<>();
+		int i = 0;
+		boolean found = false;
+		for (String res: UserSettings.possibleResolutions) {
+			try {
+				String[] components = res.split("x");
+				if (Integer.parseInt(components[0]) <= primaryScreenBounds.getWidth() && Integer.parseInt(components[1]) <= primaryScreenBounds.getHeight()) {
+					resolutionComboBox.getItems().add(res);
+					if (res.equals(s.getResolution())) {
+						resolutionComboBox.getSelectionModel().select(i);
+						found = true;
+					}
+					i++;
+				}
+			} catch (NumberFormatException e) {
+
+			}
+		}
+		if (!found) {
+			resolutionComboBox.getSelectionModel().select("1024x576");
+		}
+		resolutionComboBox.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				s.setResolution(newValue);
+			}
+		});
+
 		
 		// Add all of the options to the options grid
 		optGrid.add(musicLabel, 0, 0);
@@ -117,6 +152,8 @@ public class SettingsMenu {
 		optGrid.add(usernameText, 1, 2);
 		optGrid.add(shadingLabel, 0, 3);
 		optGrid.add(shadingCheckbox, 1, 3);
+		optGrid.add(resolutionLabel, 0, 4);
+		optGrid.add(resolutionComboBox, 1, 4);
 
 		// Create a array of options for the cancel and apply buttons
 		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {

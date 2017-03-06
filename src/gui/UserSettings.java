@@ -8,7 +8,9 @@ public class UserSettings {
 	private int sfxVolume = 100;
 	private String username = "Player";
 	private boolean shading = true;
-	
+	protected static String possibleResolutions[] = {"640x360", "960x540", "1024x576", "1280x720", "1600x900", "1920x1080", "2560x1440", "4096x2304"};
+	private String resolution = possibleResolutions[2];
+
 	/**
 	 * Get the music volume level
 	 * @return music volume level
@@ -76,5 +78,19 @@ public class UserSettings {
 		this.shading = shading;
 		UserSettingsManager.saveSettings(this);
 	}
-	
+
+
+	public String getResolution() {
+		return resolution;
+	}
+
+	public void setResolution(String resolution) {
+		for (String res: possibleResolutions) {
+			if (resolution.equals(res)) {
+				this.resolution = resolution;
+				UserSettingsManager.saveSettings(this);
+				return;
+			}
+		}
+	}
 }
