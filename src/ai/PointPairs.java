@@ -7,8 +7,8 @@ public class PointPairs {
     private Point2D fst, snd;
 
     public PointPairs(double x, double y, double tx, double ty){
-        fst = new Point2D(x, y);
-        snd = new Point2D(tx, ty);
+        fst = new Point2D((int)x, (int)y);
+        snd = new Point2D((int)tx, (int)ty);
     }
 
     @Override

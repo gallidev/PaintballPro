@@ -1,29 +1,32 @@
 package ai;
 
 
+import enums.GameMode;
 import javafx.geometry.Point2D;
 import rendering.Map;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HashMapGen {
 
-    private HashMap<PointPairs, Point2D[]> pathMap;
+    private HashMap<PointPairs, ArrayList<Point2D>> pathMap;
     private HashMap<PointPairs, Boolean> coverMap;
     private String csvFile;
     private String csvFile2;
     private String line = "";
     private String csvSplitBy = ",";
 
-    public HashMapGen(){//Map map){
-        //if map is elim map:
-        csvFile = "res/maps/elimination_paths.csv";
-        //and
-        csvFile2 = "res/maps/elimination_coverVision.csv";
+    public HashMapGen(Map map){
+        if(map.getGameMode() == GameMode.CAPTURETHEFLAG){
+            csvFile = "res/maps/ctf_paths.csv";
+            csvFile2 = "res/maps/ctf_coverVision.csv";
+        } else {
+            csvFile = "res/maps/elimination_paths.csv";
+            csvFile2 = "res/maps/elimination_coverVision.csv";
+        }
 
-        //if map is ctf map: csvFile = "res/maps/ctf_paths.csv";
-        //and csvFile2 = "res/maps/ctf_coverVision.csv";
         pathMap = new HashMap<>();
         coverMap = new HashMap<>();
         try{
@@ -45,11 +48,11 @@ public class HashMapGen {
 
             PointPairs key = new PointPairs(Double.parseDouble(path[0]),Double.parseDouble(path[1]),Double.parseDouble(path[2]),Double.parseDouble(path[3]));
             int pathLength = (path.length - 4)/2;
-            Point2D[] values = new Point2D[pathLength];
+            ArrayList<Point2D> values = new ArrayList<Point2D>();
 
             if(path.length > 4){
                 for(int i = 4; i < path.length; i += 2){
-                    values[(i/2 - 2)] = new Point2D(Double.parseDouble(path[i]),Double.parseDouble(path[i+1]));
+                    values.add(new Point2D(Double.parseDouble(path[i]),Double.parseDouble(path[i+1])));
                 }
             }
             pathMap.put(key, values);
@@ -71,11 +74,7 @@ public class HashMapGen {
         }
     }
 
-    public static void main(String[] args){
-        HashMapGen mapGen = new HashMapGen();
-    }
-
-    public HashMap<PointPairs, Point2D[]> getPathMap(){
+    public HashMap<PointPairs, ArrayList<Point2D>> getPathMap(){
         return this.pathMap;
     }
 

@@ -1,5 +1,6 @@
 package physics;
 
+import ai.HashMapGen;
 import audio.AudioManager;
 import enums.Team;
 import gui.GUIManager;
@@ -43,12 +44,13 @@ public class OfflinePlayer extends GeneralPlayer
 		this.team = team;
 		teamPlayers = new ArrayList<>();
 		enemies = new ArrayList<>();
+		HashMapGen hashMaps = new HashMapGen(map);
 
 		//populating the players team and creating a corresponding OfflineTeam for the members
 		ArrayList<AIPlayer> myTeamMembers = new ArrayList<AIPlayer>();
 
 		for(int i = 1; i < 4; i++){
-			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, audio, collisionsHandler);
+			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, audio, collisionsHandler, hashMaps);
 			teamPlayers.add(p);
 			myTeamMembers.add(p);
 		}
@@ -59,7 +61,7 @@ public class OfflinePlayer extends GeneralPlayer
 		ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
 
 		for (int i = 0; i < 4; i++){
-				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == Team.RED ? Team.BLUE : Team.RED, audio, collisionsHandler);
+				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == Team.RED ? Team.BLUE : Team.RED, audio, collisionsHandler, hashMaps);
 				oppTeamMembers.add(p);
 				enemies.add(p);
 		}

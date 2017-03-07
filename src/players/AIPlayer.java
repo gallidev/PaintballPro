@@ -1,6 +1,7 @@
 package players;
 
 import ai.BehaviourManager;
+import ai.HashMapGen;
 import audio.AudioManager;
 import enums.Team;
 import offlineLogic.OfflineTeam;
@@ -12,6 +13,7 @@ import rendering.Renderer;
 public class AIPlayer extends GeneralPlayer{
 
 	private BehaviourManager bManager;
+	private HashMapGen hashMaps;
 	private AudioManager audio;
 	private double movementAngle;
 	private OfflineTeam oppTeam;
@@ -19,8 +21,9 @@ public class AIPlayer extends GeneralPlayer{
 	private boolean moving;
 
 
-	public AIPlayer(double x, double y, int id, Map map, Team team, AudioManager audio, CollisionsHandler collisionsHandler){
+	public AIPlayer(double x, double y, int id, Map map, Team team, AudioManager audio, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
 		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
+		this.hashMaps = hashMaps;
 		this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -59,7 +62,6 @@ public class AIPlayer extends GeneralPlayer{
 
 	@Override
 	protected void updatePosition(){
-		if(collUp || collLeft || collRight || collDown) bManager.change();
 
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
@@ -113,4 +115,8 @@ public class AIPlayer extends GeneralPlayer{
 	}
 
 	public void setMoving(boolean b) { this.moving = b;}
+
+	public HashMapGen getHashMaps(){
+		return this.hashMaps;
+	}
 }
