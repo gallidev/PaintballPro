@@ -1,5 +1,6 @@
 package rendering;
 
+import enums.Menu;
 import gui.GUIManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -16,7 +17,7 @@ public class Test extends Application
 	{
 		GUIManager guiManager = new GUIManager();
 		guiManager.setStage(stage);
-		stage.setScene(new Renderer("ctf", guiManager));
+		guiManager.transitionTo(Menu.CTFSingle, null);
 //		WritableImage wall = new WritableImage(64, 64);
 //		wall.getPixelWriter().setPixels(0, 0, 64, 64, ImageFactory.getMaterialImage("sand_brick").getPixelReader(), 0, 0);
 //

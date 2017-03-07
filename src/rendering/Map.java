@@ -3,7 +3,6 @@ package rendering;
 import com.google.gson.Gson;
 import enums.GameMode;
 import gui.GUIManager;
-import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -72,8 +71,6 @@ public class Map
 				}
 			}
 			ImageView floorGroup = new ImageView(tiles);
-			floorGroup.setCache(true);
-			floorGroup.setCacheHint(CacheHint.SCALE);
 
 			//load spawns
 			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
@@ -95,7 +92,6 @@ public class Map
 			//load props
 			map.loadProps();
 			map.propGroup.setCache(true);
-			map.propGroup.setCacheHint(CacheHint.SCALE);
 
 			//load walls
 			for(Wall wall : map.walls)
@@ -120,7 +116,6 @@ public class Map
 //				map.wallGroup.getChildren().add(blocksView);
 //			}
 			map.wallGroup.setCache(true);
-			map.wallGroup.setCacheHint(CacheHint.SCALE);
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
 			//turn on shading if the user has it enabled
