@@ -122,7 +122,7 @@ public class UDPClient extends Thread {
 //			msg = msg +
 			sendData = msg.getBytes();
 			if(debug) System.out.println("sendData Length: "+ sendData.length);
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 19876);
 			clientSocket.send(sendPacket);
 		}
 		catch(Exception e)
