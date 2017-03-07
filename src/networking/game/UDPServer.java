@@ -94,26 +94,33 @@ public class UDPServer extends Thread{
 			    	  	if(debug) System.out.println("Message was received from:"+ipFrom);
 			    	  	ipFrom = ipFrom +":"+receivePacket.getPort();
 
-						// In-Game Status'
-						// ---------------
-						if (sentence.contains("Scored"))
-							newScoreAction(sentence,ipFrom);
-
-						// Server Actions
-						// ---------------
-						// Send a message to all clients in the game.
-						// Includes : sending moves, bullets
-						if (sentence.contains("SendToAll:"))
-						{
-							if(debug) System.out.println("Attempting to send all:"+sentence);
-							sendToAll(sentence,ipFrom);
-						}
-						// Reset the client when they exit the game.
-						if (sentence.contains("Exit:Game"))
-							exitGame(ipFrom);
+//						// In-Game Status'
+//						// ---------------
+//						if (sentence.contains("Scored"))
+//							newScoreAction(sentence,ipFrom);
+//
+//						// Server Actions
+//						// ---------------
+//						// Send a message to all clients in the game.
+//						// Includes : sending moves, bullets
+//						if (sentence.contains("SendToAll:"))
+//						{
+//							if(debug) System.out.println("Attempting to send all:"+sentence);
+//							sendToAll(sentence,ipFrom);
+//						}
+//						// Reset the client when they exit the game.
+//						if (sentence.contains("Exit:Game"))
+//							exitGame(ipFrom);
 
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
+									   break;
+									   
+							case '4' : getWinner(sentence);
+									   break;
+									   
+							case '5' : //exitGame(ipFrom);
+									   
 									   break;
 						}
 
@@ -241,6 +248,14 @@ public class UDPServer extends Thread{
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
 
 
+	}
+	
+	public void getWinner(String text){
+		String winner = text.split(":")[1];
+		
+		System.out.println("The winner is : " + winner);
+		
+		//dp stuff here tp update gui
 	}
 
 	public void setInputReceiver(ServerInputReceiver inputReceiver){

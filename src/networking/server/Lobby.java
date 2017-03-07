@@ -21,6 +21,7 @@ import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import serverLogic.Team;
+import serverLogic.TeamMatchMode;
 
 /**
  * Class to represent a lobby.
@@ -428,8 +429,8 @@ public class Lobby {
 		red.addMember(redPlayer);
 		blue.addMember(bluePlayer);
 
-		collisionsHandler.setRedTeam(red.getMembers());
-		collisionsHandler.setBlueTeam(blue.getMembers());
+		collisionsHandler.setRedTeam(red);
+		collisionsHandler.setBlueTeam(blue);
 
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
@@ -459,9 +460,10 @@ public class Lobby {
 
 	public void startGameLoop(UDPServer udpServer){
 
-		ServerGameSimulation gameloop = new ServerGameSimulation(red, blue);
+		ServerGameSimulation gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
 		gameloop.startExecution();
 		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
+		stateSender.setGameLoop(gameloop);
 		stateSender.startSending();
 
 	}

@@ -6,6 +6,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import enums.Menu;
+import enums.TeamEnum;
+import javafx.application.Platform;
 import networking.game.UDPServer;
 import networking.server.ServerReceiver;
 import networking.server.ServerSender;
@@ -24,6 +27,8 @@ public class ServerGameStateSender {
 	private int frames = 0;
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
+	
+	private ServerGameSimulation gameLoop;
 
 	public ServerGameStateSender(UDPServer udpServer, ArrayList<ServerMinimumPlayer> players, int lobbyId){
 		this.udpServer = udpServer;
@@ -46,6 +51,24 @@ public class ServerGameStateSender {
 		ScheduledFuture<?> senderHandler =
 				scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
 
+		
+		//sending just twice per second for less important actions
+		Runnable rareSender = new Runnable() {
+		       public void run() {
+		    	   frames ++;
+		    	   updateScore();
+		    	   
+		    	   if(gameLoop.getGame().isGameFinished()){
+		    		   
+		    		   udpServer.sendToAll("5", lobbyId);
+		    		   sendWinner();
+		    	   }
+		       }
+		     };
+
+		ScheduledFuture<?> rareSenderHandler =
+				scheduler.scheduleAtFixedRate(sender, 0, 50, TimeUnit.MILLISECONDS);
+		
 		//for testing purposes:
 
 //		Runnable frameCounter = new Runnable() {
@@ -77,6 +100,22 @@ public class ServerGameStateSender {
 
 	}
 
+	public void updateScore(){
+		//Protocol: "3:<redTeamScore>:<blueTeamScore>
+		String toBeSent = "3:" +  gameLoop.getGame().getFirstTeam().getScore() + ":" + gameLoop.getGame().getSecondTeam().getScore();
+			
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+	
+	public void sendWinner(){
+		String toBeSent = "4:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
+		
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+	
+	public void setGameLoop(ServerGameSimulation sim){
+		gameLoop = sim;
+	}
 
 
 }

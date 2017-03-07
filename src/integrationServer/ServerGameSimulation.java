@@ -6,25 +6,28 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import networking.server.ServerReceiver;
-import serverLogic.Team;
+import logic.GameMode;
 import players.ServerMinimumPlayer;
+import serverLogic.Team;
 
 
 public class ServerGameSimulation {
 
 	private Team redTeam;
 	private Team blueTeam;
+	private GameMode game;
 
 	private long delayMilliseconds = 33;
 	private int frames = 0;
 
 	private boolean debug = false;
 
-	public ServerGameSimulation(Team redTeam, Team blueTeam){
-
-		this.redTeam = redTeam;
-		this.blueTeam = blueTeam;
+	public ServerGameSimulation(GameMode game){
+		
+		this.game = game;
+		
+		this.redTeam = game.getFirstTeam();
+		this.blueTeam = game.getSecondTeam();
 
 		startExecution();
 	}
@@ -33,6 +36,8 @@ public class ServerGameSimulation {
 		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
+		
+		game.start();
 
 
 		ScheduledExecutorService scheduler =
@@ -70,6 +75,10 @@ public class ServerGameSimulation {
 
 	public void stopExecution(){
 
+	}
+	
+	public GameMode getGame(){
+		return game;
 	}
 
 }

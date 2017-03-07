@@ -87,10 +87,14 @@ public class UDPClient extends Thread {
 				clientSocket.receive(receivePacket);
 				String sentSentence = new String(receivePacket.getData());
 				if(debug) System.out.println("Received from server:"+sentSentence);
+				
 				// In-game messages
 				switch(sentSentence.charAt(0)){
-				case '1' : updatePlayerAction(sentSentence) ;
-						   break;
+				
+					case '1' : updatePlayerAction(sentSentence) ;
+							   break;
+					case '3' : updateScoreAction(sentSentence);
+							   break;
 
 				}
 			}
@@ -153,6 +157,13 @@ public class UDPClient extends Thread {
 
 
 
+	}
+	
+	public void updateScoreAction(String text){
+		int redScore = Integer.parseInt(text.split(":")[1]);
+		int blueScore = Integer.parseInt(text.split(":")[2]);
+		
+		//do stuff here to update the GUI
 	}
 
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){

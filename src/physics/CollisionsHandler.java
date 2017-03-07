@@ -1,15 +1,15 @@
 package physics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import enums.TeamEnum;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import players.GeneralPlayer;
 import players.ServerMinimumPlayer;
 import rendering.Map;
-
-import java.util.ArrayList;
-import java.util.List;
+import serverLogic.Team;
 
 public class CollisionsHandler {
 
@@ -17,6 +17,9 @@ public class CollisionsHandler {
 	private ArrayList<Rectangle> propsWalls;
 	private ArrayList<ServerMinimumPlayer> redTeam;
 	private ArrayList<ServerMinimumPlayer> blueTeam;
+	
+	private Team red;
+	private Team blue;
 
 	public CollisionsHandler(Map map){
 		this.propsWalls = map.getRecProps();
@@ -123,6 +126,13 @@ public class CollisionsHandler {
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
 					bullet.setActive(false);
 					p.beenShot();
+					
+					//update score
+					if (red.containsPlayer(p))
+						red.incrementScore(1);
+					else 
+						blue.incrementScore(1);
+					
 					return;
 				}
 			}
@@ -154,16 +164,18 @@ public class CollisionsHandler {
 		return redTeam;
 	}
 
-	public void setRedTeam(ArrayList<ServerMinimumPlayer> redTeam) {
-		this.redTeam = redTeam;
+	public void setRedTeam(Team red) {
+		this.red = red;
+		redTeam = red.getMembers();
 	}
 
 	public ArrayList<ServerMinimumPlayer> getBlueTeam() {
 		return blueTeam;
 	}
 
-	public void setBlueTeam(ArrayList<ServerMinimumPlayer> blueTeam) {
-		this.blueTeam = blueTeam;
+	public void setBlueTeam(Team blue) {
+		this.blue = blue;
+		blueTeam = blue.getMembers();
 	}
 
 	public void setPlayers(ArrayList<ServerMinimumPlayer> players){
