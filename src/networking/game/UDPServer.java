@@ -27,6 +27,7 @@ public class UDPServer extends Thread{
 	private DatagramSocket serverSocket;
 
 	private ServerInputReceiver inputReceiver;
+	
 
 	/**
 	 * Constructor, sets global variables to those passed.
@@ -47,7 +48,7 @@ public class UDPServer extends Thread{
 		try {
 			if(debug) System.out.println("Starting server");
 
-			serverSocket = new DatagramSocket(9876);
+			serverSocket = new DatagramSocket(19876);
 
 			if(debug) System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:" +serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];
@@ -129,7 +130,7 @@ public class UDPServer extends Thread{
 			}
 		} catch(Exception e)
 		{
-
+			e.printStackTrace();
 			if(debug) System.err.println(e.getMessage());
 		}
 		finally
