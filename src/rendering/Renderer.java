@@ -55,12 +55,7 @@ public class Renderer extends Scene
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
 		players.addAll(player.getEnemies());
-		players.forEach(p ->
-		{
-			p.setCache(true);
-			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-			p.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
-		});
+		players.forEach(p -> p.setEffect(new DropShadow(16, 0, 0, Color.BLACK)));
 		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
