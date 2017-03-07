@@ -50,6 +50,13 @@ public class Team {
 		return members.size();
 	}
 
+	public boolean containsPlayer(ServerMinimumPlayer player){
+		for(ServerMinimumPlayer p: getMembers())
+			if ( p == player )
+				return true;
+		return false;
+	}
+	
 
 	/* Getters and setters */
 

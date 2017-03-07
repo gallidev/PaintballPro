@@ -24,6 +24,8 @@ public class ServerGameStateSender {
 	private int frames = 0;
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
+	
+	private ServerGameSimulation gameLoop;
 
 	public ServerGameStateSender(UDPServer udpServer, ArrayList<ServerMinimumPlayer> players, int lobbyId){
 		this.udpServer = udpServer;
@@ -46,6 +48,18 @@ public class ServerGameStateSender {
 		ScheduledFuture<?> senderHandler =
 				scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
 
+		
+		//sending just twice per second for less important actions
+		Runnable rareSender = new Runnable() {
+		       public void run() {
+		    	   frames ++;
+		    	   updateScore();
+		       }
+		     };
+
+		ScheduledFuture<?> rareSenderHandler =
+				scheduler.scheduleAtFixedRate(sender, 0, 50, TimeUnit.MILLISECONDS);
+		
 		//for testing purposes:
 
 //		Runnable frameCounter = new Runnable() {
@@ -77,6 +91,16 @@ public class ServerGameStateSender {
 
 	}
 
+	public void updateScore(){
+		//Protocol: "3:<redTeamScore>:<blueTeamScore>
+		String toBeSent = "3:" +  gameLoop.getGame().getFirstTeam().getScore() + ":" + gameLoop.getGame().getSecondTeam().getScore();
+			
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+	
+	public void setGameLoop(ServerGameSimulation sim){
+		gameLoop = sim;
+	}
 
 
 }

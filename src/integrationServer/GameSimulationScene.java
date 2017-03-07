@@ -38,8 +38,8 @@ public class GameSimulationScene extends Scene{
 		redTeam.addMember(redPlayer);
 		blueTeam.addMember(bluePlayer);
 
-		collisionsHandler.setRedTeam(redTeam.getMembers());
-		collisionsHandler.setBlueTeam(blueTeam.getMembers());
+		collisionsHandler.setRedTeam(redTeam);
+		collisionsHandler.setBlueTeam(blueTeam);
 
 		players = new ArrayList<>();
 		players.addAll(redTeam.getMembers());

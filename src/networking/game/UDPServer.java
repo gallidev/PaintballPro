@@ -94,23 +94,23 @@ public class UDPServer extends Thread{
 			    	  	if(debug) System.out.println("Message was received from:"+ipFrom);
 			    	  	ipFrom = ipFrom +":"+receivePacket.getPort();
 
-						// In-Game Status'
-						// ---------------
-						if (sentence.contains("Scored"))
-							newScoreAction(sentence,ipFrom);
-
-						// Server Actions
-						// ---------------
-						// Send a message to all clients in the game.
-						// Includes : sending moves, bullets
-						if (sentence.contains("SendToAll:"))
-						{
-							if(debug) System.out.println("Attempting to send all:"+sentence);
-							sendToAll(sentence,ipFrom);
-						}
-						// Reset the client when they exit the game.
-						if (sentence.contains("Exit:Game"))
-							exitGame(ipFrom);
+//						// In-Game Status'
+//						// ---------------
+//						if (sentence.contains("Scored"))
+//							newScoreAction(sentence,ipFrom);
+//
+//						// Server Actions
+//						// ---------------
+//						// Send a message to all clients in the game.
+//						// Includes : sending moves, bullets
+//						if (sentence.contains("SendToAll:"))
+//						{
+//							if(debug) System.out.println("Attempting to send all:"+sentence);
+//							sendToAll(sentence,ipFrom);
+//						}
+//						// Reset the client when they exit the game.
+//						if (sentence.contains("Exit:Game"))
+//							exitGame(ipFrom);
 
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
