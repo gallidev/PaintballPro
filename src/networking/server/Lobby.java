@@ -434,6 +434,11 @@ public class Lobby {
 
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
+		
+		System.out.println("Players are: ");
+		for(ServerMinimumPlayer p : players){
+			System.out.print(p.getPlayerId() + " ");
+		}
 
 		ServerInputReceiver inputReceiver = new ServerInputReceiver(players);
 

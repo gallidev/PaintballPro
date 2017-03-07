@@ -112,7 +112,7 @@ public class UDPServer extends Thread{
 //						// Reset the client when they exit the game.
 //						if (sentence.contains("Exit:Game"))
 //							exitGame(ipFrom);
-
+			    	  	sentence = sentence.trim();
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
 									   break;
@@ -212,10 +212,13 @@ public class UDPServer extends Thread{
 
 
 	public void playerInputChanged(String text){
-		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
+		//Protocol: "O:<id>:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>"
 
 		if(debug) System.out.println("Input Received: "+text);
 		String[] actions = text.split(":");
+		
+		int id = Integer.parseInt(actions[1]);
+		
 		boolean up = false;
 		boolean down = false;
 		boolean left = false;
@@ -224,7 +227,7 @@ public class UDPServer extends Thread{
 		double mX = 0;
 		double mY = 0;
 
-		for(int i = 0; i < actions.length - 1; i++){
+		for(int i = 0; i < actions.length; i++){
 			String act = actions[i];
 			switch(act){
 				case "Up"    : up = true;
@@ -243,9 +246,6 @@ public class UDPServer extends Thread{
 			}
 		}
 
-		int id = Integer.parseInt(actions[actions.length - 1]);
-
-		if(debug) System.out.println(" Is inputReceiver null ?: " + inputReceiver == null);
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
 
 
