@@ -90,14 +90,21 @@ public class ClientInputSender {
 			toBeSent += ":Right:" + id;
 
 		//is the player shooting?
-		if (handler.isShoot())
-			toBeSent += ":Shooting:" + id;
+		if (handler.isShooting())
+			toBeSent += ":Shoot:" + id;
 
 		//did the mouse move?
 		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY();
 
 		System.out.println("ToBeSent is:"+toBeSent);
 		udpClient.sendMessage(toBeSent);
+	}
+
+	private void sendBullets() {
+		// Protocol: "4:<id>:<bulletX>:<bulletY>
+		
+		String toBeSent = "4:" + id + ":";
+		
 	}
 
 

@@ -49,7 +49,7 @@ public class InputHandler {
 		this.right = right;
 	}
 
-	public boolean isShoot() {
+	public boolean isShooting() {
 		return shoot;
 	}
 

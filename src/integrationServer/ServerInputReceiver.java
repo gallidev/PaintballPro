@@ -18,6 +18,7 @@ import players.ServerMinimumPlayer;
 public class ServerInputReceiver {
 
 	private ArrayList<ServerMinimumPlayer> players;
+	
 	/**
 	 * Initializes a new input receiver with a server receiver which will
 	 * receive information from clients and an client sender, which will send
@@ -51,6 +52,7 @@ public class ServerInputReceiver {
 		playerToBeUpdated.setShoot(shooting);
 		playerToBeUpdated.setMouseX(mouseX);
 		playerToBeUpdated.setMouseY(mouseY);
+		
 	}
 
 	/**
