@@ -6,6 +6,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import enums.Menu;
+import enums.TeamEnum;
+import javafx.application.Platform;
 import networking.game.UDPServer;
 import networking.server.ServerReceiver;
 import networking.server.ServerSender;
@@ -54,6 +57,12 @@ public class ServerGameStateSender {
 		       public void run() {
 		    	   frames ++;
 		    	   updateScore();
+		    	   
+		    	   if(gameLoop.getGame().isGameFinished()){
+		    		   
+		    		   udpServer.sendToAll("5", lobbyId);
+		    		   sendWinner();
+		    	   }
 		       }
 		     };
 
@@ -95,6 +104,12 @@ public class ServerGameStateSender {
 		//Protocol: "3:<redTeamScore>:<blueTeamScore>
 		String toBeSent = "3:" +  gameLoop.getGame().getFirstTeam().getScore() + ":" + gameLoop.getGame().getSecondTeam().getScore();
 			
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+	
+	public void sendWinner(){
+		String toBeSent = "4:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
+		
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 	

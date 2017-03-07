@@ -115,6 +115,13 @@ public class UDPServer extends Thread{
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
 									   break;
+									   
+							case '4' : getWinner(sentence);
+									   break;
+									   
+							case '5' : //exitGame(ipFrom);
+									   
+									   break;
 						}
 
 
@@ -241,6 +248,14 @@ public class UDPServer extends Thread{
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
 
 
+	}
+	
+	public void getWinner(String text){
+		String winner = text.split(":")[1];
+		
+		System.out.println("The winner is : " + winner);
+		
+		//dp stuff here tp update gui
 	}
 
 	public void setInputReceiver(ServerInputReceiver inputReceiver){

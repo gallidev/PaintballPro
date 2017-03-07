@@ -90,6 +90,7 @@ public class UDPClient extends Thread {
 				
 				// In-game messages
 				switch(sentSentence.charAt(0)){
+				
 					case '1' : updatePlayerAction(sentSentence) ;
 							   break;
 					case '3' : updateScoreAction(sentSentence);
