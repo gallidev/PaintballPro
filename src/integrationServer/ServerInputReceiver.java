@@ -37,8 +37,8 @@ public class ServerInputReceiver {
 	}
 
 
-	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, double mouseX,
-			double mouseY) {
+	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, int mouseX,
+			int mouseY) {
 
 		ServerMinimumPlayer playerToBeUpdated = getPlayerWithId(id);
 

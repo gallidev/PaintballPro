@@ -72,26 +72,26 @@ public class ClientInputSender {
 	public void sendServer(){
 		//Protocol: "0:" + Up/Down/Left/Right/Shooting/Mouse + ":id", depending on the player's action
 
-		String toBeSent = "0:";
+		String toBeSent = "0";
 		//did player move up?
 		if (handler.isUp())
-			toBeSent += "Up:" + id;
+			toBeSent += ":Up:";
 
 		//did player move down?
 		if (handler.isDown())
-			toBeSent += ":Down:" + id;
+			toBeSent += ":Down:";
 
 		//did player move left?
 		if (handler.isLeft())
-			toBeSent += ":Left:" + id;
+			toBeSent += ":Left:";
 
 		//did player move right?
 		if (handler.isRight())
-			toBeSent += ":Right:" + id;
+			toBeSent += ":Right:";
 
 		//is the player shooting?
 		if (handler.isShoot())
-			toBeSent += ":Shooting:" + id;
+			toBeSent += ":Shooting:";
 
 		//did the mouse move?
 		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY() + ":" + id;

@@ -27,7 +27,7 @@ public class UDPServer extends Thread{
 	private DatagramSocket serverSocket;
 
 	private ServerInputReceiver inputReceiver;
-	
+
 
 	/**
 	 * Constructor, sets global variables to those passed.
@@ -221,8 +221,8 @@ public class UDPServer extends Thread{
 		boolean left = false;
 		boolean right = false;
 		boolean shoot = false;
-		double mX = 0;
-		double mY = 0;
+		int mX = 0;
+		int mY = 0;
 
 		for(int i = 0; i < actions.length - 1; i++){
 			String act = actions[i];

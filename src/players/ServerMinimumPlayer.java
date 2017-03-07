@@ -253,6 +253,10 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		return this.angle;
 	}
 
+	public double getAngleDegrees(){
+		return Math.toDegrees(this.angle);
+	}
+
 	public void setAngle(double angle){
 		this.angle = angle;
 	}
@@ -285,10 +289,10 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		return id;
 	}
 
-	public synchronized void setMouseX(double newX) {
+	public synchronized void setMouseX(int newX) {
 		mouseX = newX;
 	}
-	public synchronized void setMouseY(double newY){
+	public synchronized void setMouseY(int newY){
 		mouseY = newY;
 	}
 
