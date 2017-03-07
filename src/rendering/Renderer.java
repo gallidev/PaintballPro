@@ -7,6 +7,8 @@ import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import networking.client.ClientReceiver;
@@ -99,9 +101,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				if(lastSecond == 0)
-					lastSecond = now;
-				else if(now - lastSecond >= 1000000000)
+				if(now - lastSecond >= 1000000000)
 				{
 					hud.tick();
 					lastSecond = now;
@@ -242,6 +242,21 @@ public class Renderer extends Scene
 		hud.incrementScore(team);
 	}
 
+	public static void destroy(Renderer renderer)
+	{
+		if(renderer != null)
+		{
+			renderer.timer.stop();
+			view = new Pane();
+			PauseMenu.p = new GridPane();
+			pauseMenu = null;
+			PauseSettingsMenu.p = new GridPane();
+			settingsMenu = null;
+			HeadUpDisplay.view = new BorderPane();
+			hud = null;
+		}
+	}
+
 	private void init(GUIManager guiManager, String mapName)
 	{
 		setFill(Color.BLACK);
@@ -281,15 +296,5 @@ public class Renderer extends Scene
 
 		if(view.getChildren().contains(settingsMenu))
 			settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
-	}
-
-	@Override
-	protected void finalize() throws Throwable
-	{
-		view = null;
-		pauseMenu = null;
-		settingsMenu = null;
-		hud = null;
-		super.finalize();
 	}
 }

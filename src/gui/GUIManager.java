@@ -32,12 +32,13 @@ public class GUIManager {
     // Set the width and height of the stage
     public final int width = 1024;
     public final int height = 576;
+    public int udpPortNumber = 0;
     private Stage s;
     private Client c;
     private Thread localServer;
     private Menu currentScene = Menu.MainMenu;
     private String ipAddress = "";
-    private Renderer r = null;
+    private Renderer r;
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean lobbyTimerStarted = false;
     private int lobbyTimeLeft = 10;
@@ -47,7 +48,6 @@ public class GUIManager {
     private int redScore = 0;
     private int blueScore = 0;
     private AudioManager audio;
-    public int udpPortNumber = 0;
 
     public GUIManager() {
         audio = new AudioManager(user, this);
@@ -74,6 +74,7 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
+                    Renderer.destroy(r);
                     r = null;
                     if (localServer != null) {
                         localServer.interrupt();

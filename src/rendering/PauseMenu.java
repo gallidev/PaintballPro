@@ -17,7 +17,7 @@ import javafx.scene.layout.GridPane;
 
 class PauseMenu extends SubScene
 {
-	private static GridPane p = new GridPane();
+	static GridPane p = new GridPane();
 	boolean opened = false;
 
 	PauseMenu(GUIManager m)

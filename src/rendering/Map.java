@@ -1,6 +1,7 @@
 package rendering;
 
 import com.google.gson.Gson;
+import enums.GameMode;
 import gui.GUIManager;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
@@ -27,6 +28,7 @@ import static rendering.Renderer.view;
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Map
 {
+	private GameMode gameMode;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
@@ -241,6 +243,11 @@ public class Map
 	public Spawn[] getSpawns()
 	{
 		return spawns;
+	}
+
+	public GameMode getGameMode()
+	{
+		return gameMode;
 	}
 
 	private void loadProps()

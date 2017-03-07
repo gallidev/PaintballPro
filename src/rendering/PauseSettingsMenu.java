@@ -22,7 +22,7 @@ import javafx.stage.Screen;
 
 class PauseSettingsMenu extends SubScene
 {
-    private static GridPane p = new GridPane();
+    static GridPane p = new GridPane();
     boolean opened = false;
 
     PauseSettingsMenu(GUIManager m)
