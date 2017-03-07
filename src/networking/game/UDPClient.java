@@ -34,7 +34,7 @@ public class UDPClient extends Thread {
 	TeamTable teams;
 	private ClientGameStateReceiver gameStateReceiver;
 	
-	public boolean bulletDebug = true;
+	public boolean bulletDebug = false;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -177,54 +177,38 @@ public class UDPClient extends Thread {
 	
 	public void updateBulletAction(String text){
 		// Protocol message: 4:id:x:y:angle:...
-		if (bulletDebug) System.out.println("Called updateBulletAction");
-		if (bulletDebug) System.out.println("Received bullets: " + text);
 		
-		int id = Integer.parseInt(text.split(":")[2]);
+		int id = Integer.parseInt(text.split(":")[1]);
 		
 		//get all the bullets
 		String[] data = text.split(":");
-		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
+		System.out.print("Received bullets: " );
 		
+		for(int i = 0; i < data.length; i++){
+			if (data[i].isEmpty())
+				System.out.print("EMPTY ");
+			else 
+				System.out.print(data[i] + " ");
+		}
+
+		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
+		System.out.print("Just the bullets: ");
+
+		for(int i = 0; i < bullets.length; i++){
+			if (bullets[i].isEmpty())
+				System.out.print("EMPTY ");
+			else 
+				System.out.print(bullets[i] + " ");
+		}
+			
+		
+		System.out.println();
+
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateBullets(id, bullets);
 		}
 	}
 
-	/**
-	 * Action starting when a player fires a bullet. It renders the bullet and
-	 * also detects when a player has been eliminated.
-	 *
-	 * @param text
-	 *            The protocol text containing information about the coordinates
-	 *            and angle of the bullet, as well as the player id which shot
-	 *            it.
-	 *
-	 * @author Alexandra Paduraru and Matthew Walters
-	 */
-	private void bulletAction(String text) {
-//		// Protocol message: SendToAll:Bullet:id:team:x:y:angle:
-//		String[] data = text.split(":");
-//
-//		int id = Integer.parseInt(data[2]);
-//		String t = data[3];
-//
-//		ClientLocalPlayer p = (ClientLocalPlayer) getPlayerWithID(id);
-//
-//		if (p != null) // the player is not us
-//		{
-//			ArrayList<Bullet> firedBullets = new ArrayList<>();
-//			for (int i = 4; i < data.length - 2; i = i + 3) {
-//
-//				double x = Double.parseDouble(data[i]);
-//				double y = Double.parseDouble(data[i + 1]);
-//				double angle = Double.parseDouble(data[i + 2]);
-//
-//				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
-//			}
-//			p.tickBullets(firedBullets);
-//		}
-	}
 
 
 

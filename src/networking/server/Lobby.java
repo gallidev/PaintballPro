@@ -48,7 +48,7 @@ public class Lobby {
 	private Team blue;
 	private ArrayList<ServerMinimumPlayer> players;
 
-	private boolean debug = true;
+	private boolean debug = false;
 
 	/**
 	 * Sets passed variables and inialised some defaults.

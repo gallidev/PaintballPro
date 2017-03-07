@@ -88,15 +88,16 @@ public class ServerGameStateSender {
 		for(ServerMinimumPlayer p : players){
 			
 			if (p.isShooting()){
-				String toBeSent = "4:" + p.getPlayerId() + ":";
+				String toBeSent = "4:" + p.getPlayerId();
 
 				for(Bullet bullet : p.getBullets())
 				{
 					if(bullet.isActive())
 					{
-						toBeSent += ":" + bullet.getX() + ":" + bullet.getY() + ":" +  bullet.getAngle() + ":";
+						toBeSent += ":" + bullet.getX() + ":" + bullet.getY() + ":" +  bullet.getAngle();
 					}
 				}
+				System.out.println("Bullet msg sent from server " + toBeSent);
 				udpServer.sendToAll(toBeSent, lobbyId);
 			}
 		}

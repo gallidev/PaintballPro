@@ -212,7 +212,7 @@ public class UDPServer extends Thread{
 
 
 	public void playerInputChanged(String text){
-		//Protocol: "O:<id>:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>"
+		//Protocol: "O:<id>:Up:Down:Left:Right:Shoot:Mouse:<mX>:<mY>"
 
 		if(debug) System.out.println("Input Received: "+text);
 		String[] actions = text.split(":");
@@ -241,6 +241,8 @@ public class UDPServer extends Thread{
 				case "Mouse" : mX = Integer.parseInt(actions[i+1]);
 							   mY = Integer.parseInt(actions[i+2]);
 							   i = i + 3;
+							   break;
+				case "Shoot" : shoot = true;
 							   break;
 				default		 : break;
 			}

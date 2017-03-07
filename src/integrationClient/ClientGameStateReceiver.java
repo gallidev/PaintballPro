@@ -62,9 +62,12 @@ public class ClientGameStateReceiver {
 				double y = Double.parseDouble(bullets[i + 1]);
 				double angle = Double.parseDouble(bullets[i + 2]);
 
-			firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
-		}
-			//p.tickBullets(firedBullets);
+				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
+			}
+			
+			
+			p.getFiredBullets().clear();
+			p.setFiredBullets(firedBullets);
 		}
 	}
 
