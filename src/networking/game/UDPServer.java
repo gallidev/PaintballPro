@@ -227,8 +227,8 @@ public class UDPServer extends Thread{
 							   break;
 				case "Right" : right = true;
 				   			   break;
-				case "Mouse" : mX = Double.parseDouble(actions[i+1]);
-							   mY = Double.parseDouble(actions[i+2]);
+				case "Mouse" : mX = Integer.parseInt(actions[i+1]);
+							   mY = Integer.parseInt(actions[i+2]);
 							   i = i + 3;
 							   break;
 				default		 : break;
@@ -237,7 +237,7 @@ public class UDPServer extends Thread{
 
 		int id = Integer.parseInt(actions[actions.length - 1]);
 
-		if(debug) System.out.println(inputReceiver == null);
+		if(debug) System.out.println(" Is inputReceiver null ?: " + inputReceiver == null);
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
 
 
