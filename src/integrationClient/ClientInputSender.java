@@ -95,7 +95,7 @@ public class ClientInputSender {
 
 		//did the mouse move?
 		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY() + ":" + id;
-
+		System.out.println("ToBeSent is:"+toBeSent);
 		udpClient.sendMessage(toBeSent);
 	}
 

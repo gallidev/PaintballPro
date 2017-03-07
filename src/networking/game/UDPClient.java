@@ -85,15 +85,15 @@ public class UDPClient extends Thread {
 			while(true)
 			{
 				clientSocket.receive(receivePacket);
-				String sentSentence = new String(receivePacket.getData());
-				if(debug) System.out.println("Received from server:"+sentSentence);
-				
+			    String receivedPacket = new String(receivePacket.getData(), 0, receivePacket.getLength());
+				if(debug) System.out.println("Received from server:"+receivedPacket);
+
 				// In-game messages
-				switch(sentSentence.charAt(0)){
-				
-					case '1' : updatePlayerAction(sentSentence) ;
+				switch(receivedPacket.charAt(0)){
+
+					case '1' : updatePlayerAction(receivedPacket) ;
 							   break;
-					case '3' : updateScoreAction(sentSentence);
+					case '3' : updateScoreAction(receivedPacket);
 							   break;
 
 				}
@@ -117,7 +117,11 @@ public class UDPClient extends Thread {
 		try{
 			if(debug) System.out.println("Attempting to send:"+msg);
 			byte[] sendData = new byte[1024];
+//			int msgLen = msg.getBytes().length;
+//			int freeSpace = 1024 - msgLen;
+//			msg = msg +
 			sendData = msg.getBytes();
+			if(debug) System.out.println("sendData Length: "+ sendData.length);
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
 			clientSocket.send(sendPacket);
 		}
@@ -158,11 +162,11 @@ public class UDPClient extends Thread {
 
 
 	}
-	
+
 	public void updateScoreAction(String text){
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
-		
+
 		//do stuff here to update the GUI
 	}
 
