@@ -57,8 +57,8 @@ public class UDPServer extends Thread{
 			      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			      if(debug) System.out.println("Waiting to receive packet");
 			      serverSocket.receive(receivePacket);
-
-			      String sentence = new String( receivePacket.getData()).trim();
+			      if(debug) System.out.println("packetLength: " + receivePacket.getLength());
+			      String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
 
 			      if(debug) System.out.println("Packet received with text:"+sentence);
 
@@ -116,12 +116,12 @@ public class UDPServer extends Thread{
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
 									   break;
-									   
+
 							case '4' : getWinner(sentence);
 									   break;
-									   
+
 							case '5' : //exitGame(ipFrom);
-									   
+
 									   break;
 						}
 
@@ -250,12 +250,12 @@ public class UDPServer extends Thread{
 
 
 	}
-	
+
 	public void getWinner(String text){
 		String winner = text.split(":")[1];
-		
+
 		System.out.println("The winner is : " + winner);
-		
+
 		//dp stuff here tp update gui
 	}
 
