@@ -68,7 +68,7 @@ public class AudioManagerTest {
         audio.musicPlayer.setVolume((float)100.0);
         userSettings.setMusicVolume(50);
         m.notifySettingsObservers();
-        assertTrue(audio.musicPlayer.getVolume() == (float) 50.0);
+        assertTrue(audio.musicPlayer.getVolume() == (float) 0.5);
         audio.stopMusic();
     }
 

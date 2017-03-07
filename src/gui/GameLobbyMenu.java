@@ -17,28 +17,10 @@ import javafx.scene.layout.GridPane;
 import static java.lang.Thread.sleep;
 
 public class GameLobbyMenu {
-	// TODO: implement the lobby menu GUI
-	
+
 	public static Scene getScene(GUIManager m, ObservableList<GameLobbyRow> lobbyData) {
-//		GridPane table = new GridPane();
-//		Label teamRed = new Label("Red");
-//		Label teamBlue = new Label("Blue");
-//		Label teamR1 = new Label();
-//		Label teamR2 = new Label();
-//		Label teamR3 = new Label();
-//		Label teamR4 = new Label();
-//		Label teamB1 = new Label();
-//		Label teamB2 = new Label();
-//		Label teamB3 = new Label();
-//		Label teamB4 = new Label();
-//
-//
-//
-//		Label[] tableLabels = {teamRed, teamBlue, teamR1, teamR2, teamR3, teamR4, teamB1, teamB2, teamB3, teamB4};
-//
-//		for (Label label: tableLabels) {
-//			label.setStyle("-fx-min-width: 100px; -fx-min-height: 50px; -fx-background-color: green; -fx-border-width: 1px; -fx-border-color: black;");
-//		}
+
+		// Setup table
 		TableView table = new TableView();
 		table.setPrefWidth(200.0);
 		table.setPlaceholder(new Label("No Players in Lobby"));
@@ -52,17 +34,8 @@ public class GameLobbyMenu {
 		blueColumn.prefWidthProperty().bind(table.widthProperty().divide(2));
 		table.getColumns().addAll(redColumn, blueColumn);
 		table.setItems(lobbyData);
-//		table.add(teamRed, 0, 0);
-//		table.add(teamR1, 0, 1);
-//		table.add(teamR2, 0, 2);
-//		table.add(teamR3, 0, 3);
-//		table.add(teamR4, 0, 4);
-//
-//		table.add(teamBlue, 1, 0);
-//		table.add(teamB1, 1, 1);
-//		table.add(teamB2, 1, 2);
-//		table.add(teamB3, 1, 3);
-//		table.add(teamB4, 1, 4);
+
+		// Setup options area
 		Label timeLabel = new Label("Waiting for more players to join...");
 		GridPane optionsSection = new GridPane();
 		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
@@ -72,43 +45,40 @@ public class GameLobbyMenu {
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);
-		Thread checkLobby = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				boolean threadRunning = true;
-				while (threadRunning) {
-					try {
-						if (m.isTimerStarted()) {
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									options.setVisible(false);
-									timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
-								}
-							});
-							if (m.getTimeLeft() <= 1) {
-								threadRunning = false;
-							} else {
-								m.fetchLobbyUpdates();
-							}
-							sleep(100);
+
+		// Lobby update checking
+		Thread checkLobby = new Thread(() -> {
+			boolean threadRunning = true;
+			while (threadRunning) {
+				try {
+					if (m.isTimerStarted()) {
+						Platform.runLater(() -> {
+							options.setVisible(false);
+							timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
+						});
+						if (m.getTimeLeft() <= 1) {
+							threadRunning = false;
 						} else {
 							m.fetchLobbyUpdates();
-							sleep(1000);
 						}
-					} catch (InterruptedException e) {
-						// Should never happen
-						System.err.println("Could not sleep!");
+						sleep(100);
+					} else {
+						m.fetchLobbyUpdates();
+						sleep(1000);
 					}
+				} catch (InterruptedException e) {
+					// Should never happen
+					System.err.println("Could not sleep!");
 				}
 			}
 		});
 		checkLobby.start();
-		
-		optionsSection.add(options, 1, 0);
-		
+
+		// Setup options section at bottom of screen
 		optionsSection.add(timeLabel, 0, 0);
-		
+		optionsSection.add(options, 1, 0);
+
+		// Setup the main grid to be displayed, and add sounds to buttons
 		GridPane mainGrid = new GridPane();
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
