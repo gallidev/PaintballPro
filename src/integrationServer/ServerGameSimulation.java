@@ -17,7 +17,7 @@ public class ServerGameSimulation {
 	private Team blueTeam;
 	private GameMode game;
 
-	private long delayMilliseconds = 33;
+	private long delayMilliseconds = 17;
 	private int frames = 0;
 
 	private boolean debug = false;
