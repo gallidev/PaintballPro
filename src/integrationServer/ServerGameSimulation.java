@@ -17,26 +17,24 @@ public class ServerGameSimulation {
 	private Team blueTeam;
 	private GameMode game;
 
-	private long delayMilliseconds = 33;
+	private long delayMilliseconds = 17;
 	private int frames = 0;
 
 	private boolean debug = false;
 
 	public ServerGameSimulation(GameMode game){
-		
+
 		this.game = game;
-		
+
 		this.redTeam = game.getFirstTeam();
 		this.blueTeam = game.getSecondTeam();
-
-		startExecution();
 	}
 
 	public void startExecution(){
 		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
-		
+
 		game.start();
 
 
@@ -76,7 +74,7 @@ public class ServerGameSimulation {
 	public void stopExecution(){
 
 	}
-	
+
 	public GameMode getGame(){
 		return game;
 	}

@@ -58,8 +58,8 @@ public class GhostPlayer extends ImageView {
 		return rotation;
 	}
 
-	public synchronized void setRotationAngle(double angle) {
-		this.rotation.setAngle(Math.toDegrees(angle));
+	public synchronized void setRotationAngle(double angleDegress) {
+		this.rotation.setAngle(angleDegress);
 	}
 
 	public AudioManager getAudio() {

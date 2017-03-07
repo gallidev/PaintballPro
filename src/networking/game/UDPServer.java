@@ -21,13 +21,13 @@ import players.ServerPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
 
 	private ServerInputReceiver inputReceiver;
-	
+
 
 	/**
 	 * Constructor, sets global variables to those passed.
@@ -224,8 +224,8 @@ public class UDPServer extends Thread{
 		boolean left = false;
 		boolean right = false;
 		boolean shoot = false;
-		double mX = 0;
-		double mY = 0;
+		int mX = 0;
+		int mY = 0;
 
 		for(int i = 0; i < actions.length; i++){
 			String act = actions[i];

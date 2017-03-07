@@ -14,6 +14,9 @@ import rendering.Spawn;
  */
 public class UserPlayer extends ServerMinimumPlayer{
 
+    public final int widthScreen = 1024;
+    public final int heightScreen = 576;
+
 	public UserPlayer(double x, double y, int id, double width, double height, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler) {
 		super(x, y, id, width, height, spawn, team, collisionsHandler);
@@ -84,10 +87,11 @@ public class UserPlayer extends ServerMinimumPlayer{
 	@Override
 	protected void updateAngle()
 	{
-		double deltax = mouseX - (1.65 * playerHeadX);
-		double deltay = playerHeadY - mouseY;
+		double deltax = mouseX - widthScreen/2;
+		double deltay = heightScreen/2-  mouseY ;
 		angle = Math.atan2(deltax, deltay);
-		rotation.setAngle(Math.toDegrees(angle));
+		double degrees = Math.toDegrees(angle);
+		rotation.setAngle(degrees);
 	}
 
 	protected void updateShooting(){
@@ -104,74 +108,6 @@ public class UserPlayer extends ServerMinimumPlayer{
 		}
 	}
 
-	//Getters and setters below this point
-	//-----------------------------------------------------------------------------
-
-	public List<Bullet> getBullets(){
-		return this.firedBullets;
-	}
-
-	public double getAngle(){
-		return this.angle;
-	}
-
-	public void setAngle(double angle){
-		this.angle = angle;
-	}
-
-	public void setUp(boolean up){
-		this.up = up;
-	}
-
-	public void setDown(boolean down){
-		this.down = down;
-	}
-
-	public void setLeft(boolean left){
-		this.left = left;
-	}
-
-	public void setRight(boolean right){
-		this.right = right;
-	}
-
-	public void setShoot(boolean shoot){
-		this.shoot = shoot;
-	}
-
-	public TeamEnum getTeam() {
-		return team;
-	}
-
-	public int getPlayerId(){
-		return id;
-	}
-
-	public void setMX(double newX) {
-	}
-	public void setMY(double newY){
-	}
-
-	public boolean isEliminated(){
-		return eliminated;
-	}
-
-	public Polygon getPolygonBounds() {
-		return bounds;
-	}
-
-	public void setCollUp(boolean collUp) {
-		this.collUp = collUp;
-	}
-	public void setCollDown(boolean collDown) {
-		this.collDown = collDown;
-	}
-	public void setCollLeft(boolean collLeft) {
-		this.collLeft = collLeft;
-	}
-	public void setCollRight(boolean collRight) {
-		this.collRight = collRight;
-	}
 
 	@Override
 	public void updateScore() {
