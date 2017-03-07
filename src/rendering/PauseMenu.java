@@ -29,8 +29,6 @@ class PauseMenu extends SubScene
 		p.setHgap(10);
 		p.setVgap(10);
 		p.setPadding(new Insets(25, 25, 25, 25));
-		p.setPrefWidth(Renderer.view.getWidth());
-		p.setPrefHeight(Renderer.view.getHeight());
 
 		Image i = new Image("assets/paintballlogo.png");
 		ImageView iv = new ImageView(i);
@@ -56,7 +54,6 @@ class PauseMenu extends SubScene
 		}), new MenuOption("Back to Main Menu", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				m.transitionTo(Menu.MainMenu, null);
-				Renderer.timer.stop();
 				System.out.println("ActionEvent: " + event);
 			}
 		})};

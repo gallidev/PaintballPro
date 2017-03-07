@@ -18,28 +18,23 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 
 class PauseSettingsMenu extends SubScene
 {
-    private static Pane view = new Pane();
+    private static GridPane p = new GridPane();
     boolean opened = false;
 
     PauseSettingsMenu(GUIManager m)
     {
-        super(view, Renderer.view.getWidth(), Renderer.view.getHeight());
-        view.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
-
-        GridPane p = new GridPane();
+        super(p, Renderer.view.getWidth(), Renderer.view.getHeight());
+        p.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
+        p.getStylesheets().add("styles/menu.css");
 
         p.setAlignment(Pos.CENTER);
         p.setHgap(10);
         p.setVgap(10);
         p.setPadding(new Insets(25, 25, 25, 25));
-        p.setPrefWidth(Renderer.view.getWidth());
-        p.setPrefHeight(Renderer.view.getHeight());
-
 
         // Obtain the user's settings
         UserSettings s = GUIManager.getUserSettings();
@@ -158,8 +153,5 @@ class PauseSettingsMenu extends SubScene
         p.add(buttonGrid, 0, 1);
 
         m.addButtonHoverSounds(p);
-        view.getStylesheets().add("styles/menu.css");
-        view.getChildren().addAll(p);
-
     }
 }

@@ -24,7 +24,7 @@ public class Bullet extends Circle{
 	 */
 	public Bullet(double x, double y, double angle, Team team) {
 		setCache(true);
-		setCacheHint(CacheHint.SPEED);
+		setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		this.x = x;
 		this.y = y;
 		this.originX = x;

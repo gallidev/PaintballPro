@@ -2,7 +2,6 @@ package players;
 
 import audio.AudioManager;
 import enums.Team;
-import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polygon;
@@ -56,8 +55,6 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	 */
 	public GeneralPlayer(double x, double y, int id, Map map, Team team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
 		super(image);
-		setCache(true);
-		setCacheHint(CacheHint.SPEED);
 		setLayoutX(x);
 		setLayoutY(y);
 		this.lastX = x;

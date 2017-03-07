@@ -2,12 +2,14 @@ package physics;
 
 import audio.AudioManager;
 import enums.Team;
+import gui.GUIManager;
 import javafx.geometry.Point2D;
 import offlineLogic.OfflineTeam;
 import players.AIPlayer;
 import players.GeneralPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+import rendering.Renderer;
 
 import java.util.ArrayList;
 
@@ -29,16 +31,14 @@ public class OfflinePlayer extends GeneralPlayer
 	 *
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
-	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
-	 * @param scene         The scene in which the player will be displayed
 	 */
-	public OfflinePlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, Team team, CollisionsHandler collisionsHandler)
+	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, Team team, CollisionsHandler collisionsHandler)
 	{
-		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
-		this.audio = audio;
+		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), guiManager.getAudioManager(), collisionsHandler);
+		this.audio = guiManager.getAudioManager();
 		this.mx = x;
 		this.my = y;
-		this.controlScheme = controlScheme;
+		this.controlScheme = false;
 		angle = 0.0;
 		this.team = team;
 		teamPlayers = new ArrayList<>();
@@ -128,15 +128,16 @@ public class OfflinePlayer extends GeneralPlayer
 	public void updateScore() {
 
 		oppTeam.incrementScore();
+		Renderer.incrementScore(oppTeam.getColour());
 
-		if (myTeam.getColour() == Team.RED){
-			System.out.println( "Red team score: " + myTeam.getScore());
-			System.out.println( "Blue team score: " + oppTeam.getScore());
-		}
-		else{
-			System.out.println( "Blue team score: " + myTeam.getScore());
-			System.out.println( "Red team score: " + oppTeam.getScore());
-		}
+//		if (myTeam.getColour() == Team.RED){
+//			System.out.println( "Red team score: " + myTeam.getScore());
+//			System.out.println( "Blue team score: " + oppTeam.getScore());
+//		}
+//		else{
+//			System.out.println( "Blue team score: " + myTeam.getScore());
+//			System.out.println( "Red team score: " + oppTeam.getScore());
+//		}
 
 	}
 

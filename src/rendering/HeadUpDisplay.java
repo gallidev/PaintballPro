@@ -1,6 +1,8 @@
 package rendering;
 
+import enums.Team;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -11,10 +13,13 @@ import javafx.scene.shape.Circle;
 class HeadUpDisplay extends SubScene
 {
 	private static BorderPane view = new BorderPane();
+	private final Label timer = new Label("3:00"),
+			redScore = new Label("0"),
+			blueScore = new Label("0");
 
-	HeadUpDisplay()
+	HeadUpDisplay(Team playerTeam)
 	{
-		super(view, 1024, 576);
+		super(view, Renderer.view.getWidth(), Renderer.view.getHeight());
 		view.setStyle("-fx-background-color: transparent");
 
 		Circle redTeam = new Circle(view.getWidth() / 64, Color.RED),
@@ -24,21 +29,44 @@ class HeadUpDisplay extends SubScene
 		blueTeam.setStroke(Color.WHITE);
 		blueTeam.setStrokeWidth(3);
 
-		Label timer = new Label("3:00"),
-				redScore = new Label("0"),
-				blueScore = new Label("0");
-
 		String textStyle = "-fx-font-size: 16pt; -fx-text-fill: white";
 		timer.setStyle(textStyle);
 		redScore.setStyle(textStyle);
 		blueScore.setStyle(textStyle);
 
-		HBox statusBar = new HBox(view.getWidth() / 32, redScore, redTeam, timer, blueTeam, blueScore);
+		HBox statusBar;
+		if(playerTeam == Team.RED)
+			statusBar = new HBox(view.getWidth() / 32, redScore, redTeam, timer, blueTeam, blueScore);
+		else
+			statusBar = new HBox(view.getWidth() / 32, blueScore, blueTeam, timer, redTeam, redScore);
 		statusBar.setPrefHeight(view.getHeight() / 8);
 		statusBar.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75)");
 		statusBar.setAlignment(Pos.CENTER);
 		statusBar.setCache(true);
+		statusBar.setCacheHint(CacheHint.SCALE);
 
 		view.setBottom(statusBar);
+	}
+
+	void incrementScore(Team team)
+	{
+		(team == Team.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == Team.RED ? redScore : blueScore).getText()) + 1));
+	}
+
+	void tick()
+	{
+		if(timer.getText().equals("BOOM!"))
+			return;
+		if(timer.getText().equals("0:00"))
+		{
+			timer.setText("BOOM!");
+			return;
+		}
+		String[] timeParse = timer.getText().split(":");
+		if(timeParse[1].equals("00"))
+			timer.setText(String.valueOf(Integer.parseInt(timeParse[0]) - 1) + ":59");
+		else
+			timer.setText(String.format("%s:%02d", timeParse[0], Integer.parseInt(timeParse[1]) - 1));
+
 	}
 }

@@ -7,6 +7,7 @@ import offlineLogic.OfflineTeam;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
+import rendering.Renderer;
 
 public class AIPlayer extends GeneralPlayer{
 
@@ -76,15 +77,16 @@ public class AIPlayer extends GeneralPlayer{
 	 */
 	public void updateScore(){
 		oppTeam.incrementScore();
+		Renderer.incrementScore(oppTeam.getColour());
 
-		if (myTeam.getColour() == Team.RED){
-			System.out.println( "Red team score: " + myTeam.getScore());
-			System.out.println( "Blue team score: " + oppTeam.getScore());
-		}
-		else{
-			System.out.println( "Blue team score: " + myTeam.getScore());
-			System.out.println( "Red team score: " + oppTeam.getScore());
-		}
+//		if (myTeam.getColour() == Team.RED){
+//			System.out.println( "Red team score: " + myTeam.getScore());
+//			System.out.println( "Blue team score: " + oppTeam.getScore());
+//		}
+//		else{
+//			System.out.println( "Blue team score: " + myTeam.getScore());
+//			System.out.println( "Red team score: " + oppTeam.getScore());
+//		}
 
 
 	}

@@ -26,10 +26,10 @@ import static players.GeneralPlayer.playerHeadY;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	static AnimationTimer timer;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
+	private AnimationTimer timer;
 	private GeneralPlayer player;
 	private Map map;
 
@@ -48,7 +48,7 @@ public class Renderer extends Scene
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), Team.RED, collisionsHandler);
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, Team.RED, collisionsHandler);
 
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
@@ -94,9 +94,18 @@ public class Renderer extends Scene
 
 		timer = new AnimationTimer()
 		{
+			long lastSecond = 0;
+
 			@Override
 			public void handle(long now)
 			{
+				if(lastSecond == 0)
+					lastSecond = now;
+				else if(now - lastSecond >= 1000000000)
+				{
+					hud.tick();
+					lastSecond = now;
+				}
 				updateView();
 
 				for(GeneralPlayer player : players)
@@ -228,6 +237,11 @@ public class Renderer extends Scene
 		return settingsMenu.opened;
 	}
 
+	public static void incrementScore(Team team)
+	{
+		hud.incrementScore(team);
+	}
+
 	private void init(GUIManager guiManager, String mapName)
 	{
 		setFill(Color.BLACK);
@@ -235,8 +249,6 @@ public class Renderer extends Scene
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
-		hud = new HeadUpDisplay();
-		view.getChildren().add(hud);
 
 		map = Map.load("res/maps/" + mapName + ".json");
 	}
@@ -254,6 +266,8 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		hud = new HeadUpDisplay(player.getTeam());
+		view.getChildren().add(hud);
 		hud.toFront();
 	}
 
@@ -276,7 +290,6 @@ public class Renderer extends Scene
 		pauseMenu = null;
 		settingsMenu = null;
 		hud = null;
-		timer = null;
 		super.finalize();
 	}
 }
