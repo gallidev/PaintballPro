@@ -19,23 +19,13 @@ public class GameServer extends Application {
 		stage.getIcons().addAll(new Image("assets/icon_dock.png"), new Image("assets/icon_32.png"), new Image("assets/icon_16.png"));
 		stage.setScene(gui);
 		stage.setTitle("Paintball Pro Server");
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				System.exit(0);
-			}
-		});
+		stage.setOnCloseRequest((event) -> System.exit(0));
 		stage.show();
 		int portNo = 25566;
 		String[] serverArgs = {portNo + "", "127.0.0.1"};
 		Thread discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
 		discovery.start();
-		(new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Server.main(serverArgs, gui);
-			}
-		})).start();
+		(new Thread(() -> Server.main(serverArgs, gui))).start();
 
 	}
 
