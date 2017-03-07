@@ -85,6 +85,10 @@ public class GhostPlayer extends ImageView {
 	public synchronized void setSyncY(double y){
 		setLayoutY(y);
 	}
+	
+	public TeamEnum getTeam(){
+		return team;
+	}
 
 }
 

@@ -33,6 +33,8 @@ public class UDPClient extends Thread {
 
 	TeamTable teams;
 	private ClientGameStateReceiver gameStateReceiver;
+	
+	public boolean bulletDebug = true;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -95,6 +97,8 @@ public class UDPClient extends Thread {
 							   break;
 					case '3' : updateScoreAction(receivedPacket);
 							   break;
+					case '4' : updateBulletAction(receivedPacket);
+							   break;
 
 				}
 			}
@@ -129,10 +133,10 @@ public class UDPClient extends Thread {
 		}
 	}
 
+	
 	// -------------------------------------
 	// -----------Game Methods--------------
 	// -------------------------------------
-
 
 
 	private void updatePlayerAction(String text) {
@@ -170,6 +174,22 @@ public class UDPClient extends Thread {
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
 		this.gameStateReceiver = gameStateReceiver;
 	}
+	
+	public void updateBulletAction(String text){
+		// Protocol message: 4:id:x:y:angle:...
+		if (bulletDebug) System.out.println("Called updateBulletAction");
+		if (bulletDebug) System.out.println("Received bullets: " + text);
+		
+		int id = Integer.parseInt(text.split(":")[2]);
+		
+		//get all the bullets
+		String[] data = text.split(":");
+		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
+		
+		if(gameStateReceiver != null){
+			gameStateReceiver.updateBullets(id, bullets);
+		}
+	}
 
 	/**
 	 * Action starting when a player fires a bullet. It renders the bullet and
@@ -205,34 +225,6 @@ public class UDPClient extends Thread {
 //			p.tickBullets(firedBullets);
 //		}
 	}
-
-	/**
-	 * Gets a move signal from the server about a specific player. The method
-	 * finds that player and updates the player's position on the map
-	 * accordingly.
-	 *
-	 * @param text
-	 *            The protocol message containing the new x and y coordinates,
-	 *            as well as the angle of the player.
-	 *
-	 * @author Alexandra Paduraru and Matthew Walters
-	 */
-	public void moveAction(String text) {
-//		String[] msg = text.split(":");
-//		if(debug) System.out.println("Text move action: " + text);
-//
-//		int id = Integer.parseInt(msg[2]);
-//		double x = Double.parseDouble(msg[3]);
-//		double y = Double.parseDouble(msg[4]);
-//		double angle = Double.parseDouble(msg[5]);
-//
-//		if (id != clientID) {
-//			// find the player that need to be updated
-//			GhostPlayer p = getPlayerWithID(id);
-//			p.tick(x, y, angle);
-//		}
-	}
-
 
 
 

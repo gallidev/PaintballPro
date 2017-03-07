@@ -72,11 +72,7 @@ public class ClientInputSender {
 	public void sendServer(){
 		//Protocol: "0:id:" + Up/Down/Left/Right/Shooting/Mouse, depending on the player's action
 
-<<<<<<< HEAD
 		String toBeSent = "0:" + id + ":";
-=======
-		String toBeSent = "0";
->>>>>>> 53c12981aa39cd9d599ccd88384d65012a81f5aa
 		//did player move up?
 		if (handler.isUp())
 			toBeSent += ":Up:";
@@ -100,15 +96,7 @@ public class ClientInputSender {
 		//did the mouse move?
 		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY();
 
-		System.out.println("ToBeSent is:"+toBeSent);
 		udpClient.sendMessage(toBeSent);
-	}
-
-	private void sendBullets() {
-		// Protocol: "4:<id>:<bulletX>:<bulletY>
-		
-		String toBeSent = "4:" + id + ":";
-		
 	}
 
 

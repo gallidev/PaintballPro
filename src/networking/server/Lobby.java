@@ -6,8 +6,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
-import integrationServer.GameSimulationJavaFxApplication;
-import integrationServer.GameSimulationScene;
 import integrationServer.ServerGameStateSender;
 import integrationServer.ServerInputReceiver;
 import logic.RoundTimer;
@@ -277,58 +275,6 @@ public class Lobby {
 //		return newTeam;
 //	}
 
-
-	/**
-	 * Method to be called from the GUI when the lobby ends to start the game
-	 * logic.
-<<<<<<< HEAD
-	 *
-	 * @param sender
-	 * @param receiver
-=======
-	 *
-	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
-	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
-	 *
->>>>>>> 162500932c15d90f09a1c3de7a86bb7a1797658b
-	 * @author Alexandra Paduraru
-	 */
-
-//	public void playGame(ServerMsgReceiver receiver) {
-////		red = convertTeam(receiver, redTeam, 2);
-////		blue = convertTeam(receiver, blueTeam, 1);
-//
-//		currentSessionGame = new ServerGame(GameType, red, blue, receiver);
-//		ServerBasicPlayer[] allPlayers = getPlayers();
-//
-//		// String to be sent needs to contain:
-//		// StartGame:<myID><myTeam>...8 times
-//
-//		for (int i = 0; i < allPlayers.length; i++) {
-//			String toBeSent = "StartGame:";
-//
-//			// the current player's info
-//			toBeSent += allPlayers[i].getID() + ":" + getTeamAssoc(allPlayers[i].getID()) + ":";
-//
-//			// adding to the string the information about all the other players
-//			for (int j = 0; j < allPlayers.length; j++)
-//				if (allPlayers[j].getID() != allPlayers[i].getID())
-//					toBeSent += allPlayers[j].getID() + ":" + getTeamAssoc(allPlayers[j].getID()) + ":";
-//
-//			receiver.sendToSpec(allPlayers[i].getID(), toBeSent);
-//		}
-////
-////		currentSessionGame.startGame();
-////
-////
-////		while (!currentSessionGame.getGame().isGameFinished()) {}
-////
-////		// sends the end game signal to all clients
-////		currentSessionGame.endGame(getWinner());
-//		// currentSessionGame.endGame();
-//	}
-
-
 	/**
 	 * A timer, accessed by the client for game countdown.
 	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
@@ -435,15 +381,16 @@ public class Lobby {
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
 		
-		System.out.println("Players are: ");
-		for(ServerMinimumPlayer p : players){
-			System.out.print(p.getPlayerId() + " ");
+		if(debug){
+			System.out.println("Players are: ");
+			for(ServerMinimumPlayer p : players){
+				System.out.print(p.getPlayerId() + " ");
+			}
 		}
-
+		
 		ServerInputReceiver inputReceiver = new ServerInputReceiver(players);
 
 		udpServer.setInputReceiver(inputReceiver);
-		if(debug) System.out.println("input receiver set in lobby");
 
 		for (ServerMinimumPlayer p : players) {
 			String toBeSent = "2:";
@@ -463,7 +410,7 @@ public class Lobby {
 
 	}
 
-	public void startGameLoop(UDPServer udpServer){
+	private void startGameLoop(UDPServer udpServer){
 
 		ServerGameSimulation gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
 		gameloop.startExecution();

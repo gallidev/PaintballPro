@@ -280,6 +280,10 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	public synchronized void setShoot(boolean shoot){
 		this.shoot = shoot;
 	}
+	
+	public boolean isShooting(){
+		return shoot;
+	}
 
 	public TeamEnum getTeam() {
 		return team;

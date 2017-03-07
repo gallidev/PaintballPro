@@ -6,12 +6,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import enums.Menu;
 import enums.TeamEnum;
-import javafx.application.Platform;
 import networking.game.UDPServer;
-import networking.server.ServerReceiver;
-import networking.server.ServerSender;
+import physics.Bullet;
 import players.ServerMinimumPlayer;
 
 /**
@@ -45,6 +42,7 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 
+		    	   sendBullets();
 		       }
 		     };
 
@@ -82,6 +80,26 @@ public class ServerGameStateSender {
 //		ScheduledFuture<?> frameCounterHandle =
 //				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 
+	}
+
+	protected void sendBullets() {
+		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
+		
+		for(ServerMinimumPlayer p : players){
+			
+			if (p.isShooting()){
+				String toBeSent = "4:" + p.getPlayerId() + ":";
+
+				for(Bullet bullet : p.getBullets())
+				{
+					if(bullet.isActive())
+					{
+						toBeSent += ":" + bullet.getX() + ":" + bullet.getY() + ":" +  bullet.getAngle() + ":";
+					}
+				}
+				udpServer.sendToAll(toBeSent, lobbyId);
+			}
+		}
 	}
 
 	private void sendClient() {

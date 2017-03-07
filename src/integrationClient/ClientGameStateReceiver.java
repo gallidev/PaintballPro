@@ -2,9 +2,9 @@ package integrationClient;
 
 import java.util.ArrayList;
 
-import javafx.scene.transform.Rotate;
+import enums.TeamEnum;
+import physics.Bullet;
 import players.GhostPlayer;
-import players.ServerMinimumPlayer;
 
 /**
  * Client-sided class which receives an action imposed by the server on the
@@ -50,6 +50,23 @@ public class ClientGameStateReceiver {
 		return null;
 	}
 
+	public void updateBullets(int id, String[] bullets){
+		GhostPlayer p = getPlayerWithId(id);
+
+		if (p != null) { // the player is not us
+		
+			ArrayList<Bullet> firedBullets = new ArrayList<>();
+			for (int i = 0; i < bullets.length - 2; i = i + 3) {
+
+				double x = Double.parseDouble(bullets[i]);
+				double y = Double.parseDouble(bullets[i + 1]);
+				double angle = Double.parseDouble(bullets[i + 2]);
+
+			firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
+		}
+			//p.tickBullets(firedBullets);
+		}
+	}
 
 
 }

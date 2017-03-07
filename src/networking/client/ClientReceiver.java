@@ -39,7 +39,7 @@ public class ClientReceiver extends Thread {
 	private UDPClient udpClient;
 	private TeamTable teams;
 
-	private boolean debug = true;
+	private boolean debug = false;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
