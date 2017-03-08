@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for AudioManager
  */
-public class AudioManagerTest {
+public class TestAudioManager {
 
     private AudioManager audio;
     private UserSettings userSettings;
