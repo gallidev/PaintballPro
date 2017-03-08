@@ -32,7 +32,7 @@ public class Test extends Application
 			for(int j = 0; j < 64; j++)
 			{
 				if(random.nextDouble() < probability)
-					wall.getPixelWriter().setArgb(i, j, Color.BLUE.getRGB());
+					wall.getPixelWriter().setArgb(j, 63 - i, Color.BLUE.getRGB());
 			}
 			probability -= 0.003;
 		}
@@ -49,5 +49,6 @@ public class Test extends Application
 		GUIManager guiManager = new GUIManager();
 		guiManager.setStage(stage);
 		guiManager.transitionTo(Menu.CTFSingle, null);
+//		sprayTest(stage);
 	}
 }

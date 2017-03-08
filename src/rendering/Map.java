@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import enums.GameMode;
 import gui.GUIManager;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
@@ -63,12 +62,8 @@ public class Map
 			{
 				Image tile = ImageFactory.getMaterialImage(floor.material);
 				for(int i = 0; i < floor.width; i++)
-				{
 					for(int j = 0; j < floor.height; j++)
-					{
 						tiles.getPixelWriter().setPixels((floor.x + i) * 64, (floor.y + j) * 64, 64, 64, tile.getPixelReader(), 0, 0);
-					}
-				}
 			}
 			ImageView floorGroup = new ImageView(tiles);
 
@@ -154,8 +149,7 @@ public class Map
 		for(Prop prop : props)
 		{
 			ImageView image = new ImageView(ImageFactory.getMaterialImage(prop.material));
-			image.setX(prop.x * 64);
-			image.setY(prop.y * 64);
+			image.relocate(prop.x * 64, prop.y * 64);
 			propGroup.getChildren().add(image);
 		}
 	}
@@ -167,8 +161,7 @@ public class Map
 			for(int i = 0; i < wall.length; i++)
 			{
 				ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
-				block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
-				block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
+				block.relocate(wall.orientation ? (i + wall.x) * 64 : wall.x * 64, wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
 				wallGroup.getChildren().add(block);
 			}
 		}
@@ -177,15 +170,10 @@ public class Map
 	private ArrayList<Rectangle> getCollisions(Group group)
 	{
 		ArrayList<Rectangle> rectangles = new ArrayList<>();
-		for(Node node : group.getChildren())
+		group.getChildren().forEach(node ->
 		{
-			Rectangle r = new Rectangle();
-			r.setX(node.getBoundsInParent().getMinX());
-			r.setY(node.getBoundsInParent().getMinY());
-			r.setWidth(node.getBoundsInParent().getWidth());
-			r.setHeight(node.getBoundsInParent().getHeight());
-			rectangles.add(r);
-		}
+			rectangles.add(new Rectangle(node.getBoundsInParent().getMinX(), node.getBoundsInParent().getMinY(), 64, 64));
+		});
 		return rectangles;
 	}
 

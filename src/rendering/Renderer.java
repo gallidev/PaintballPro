@@ -13,7 +13,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import networking.client.ClientReceiver;
 import physics.*;
 import players.GeneralPlayer;
@@ -43,7 +42,7 @@ public class Renderer extends Scene
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
-	 * @param mapName Name of the selected map
+	 * @param mapName    Name of the selected map
 	 * @param guiManager GUI manager that creates this object
 	 */
 	public Renderer(String mapName, GUIManager guiManager)
@@ -113,12 +112,12 @@ public class Renderer extends Scene
 						if(pellet.isActive())
 						{
 							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(pellet);
+								view.getChildren().add(view.getChildren().size() - 2, pellet);
 						}
 						else if(view.getChildren().contains(pellet))
 						{
 							if(pellet.getCollision() != null)
-								generateSpray(pellet.getCollision(), player.getTeam());
+								generateSpray(pellet, player.getTeam());
 							view.getChildren().remove(pellet);
 						}
 					}
@@ -181,11 +180,10 @@ public class Renderer extends Scene
 	 */
 	public static void togglePauseMenu()
 	{
-		if(!pauseMenu.opened) {
+		if(!pauseMenu.opened)
 			view.getChildren().add(pauseMenu);
-		} else {
+		else
 			view.getChildren().remove(pauseMenu);
-		}
 		pauseMenu.opened = !pauseMenu.opened;
 	}
 
@@ -209,6 +207,7 @@ public class Renderer extends Scene
 
 	/**
 	 * Get the current state of the pause menu
+	 *
 	 * @return <code>true</code> if the pause menu is active, <code>false</code> otherwise
 	 */
 	public static boolean getPauseMenuState()
@@ -218,6 +217,7 @@ public class Renderer extends Scene
 
 	/**
 	 * Get the current state of the settings scene in the pause menu
+	 *
 	 * @return <code>true</code> if the settings scene is active, <code>false</code> otherwise
 	 */
 	public static boolean getSettingsMenuState()
@@ -227,7 +227,8 @@ public class Renderer extends Scene
 
 	/**
 	 * Increment the score on the HUD for a given team by a given amount
-	 * @param team The team that has scored
+	 *
+	 * @param team   The team that has scored
 	 * @param amount The amount to increase the score by
 	 */
 	public static void incrementScore(Team team, int amount)
@@ -251,26 +252,24 @@ public class Renderer extends Scene
 		}
 	}
 
-	private static void generateSpray(Rectangle rectangle, Team team)
+	private static void generateSpray(Bullet pellet, Team team)
 	{
-		Random random = new Random();
-		double probability = 0.25;
 		WritableImage paint = new WritableImage(64, 64);
 		PixelWriter pixelWriter = paint.getPixelWriter();
-		for(int i = 0; i < 63; i++)
+
+		Random random = new Random();
+		double probability = 0.1;
+		for(int i = 0; i < 64; i++)
 		{
-			for(int j = 0; j < 63; j++)
-			{
+			for(int j = 0; j < 64; j++)
 				if(random.nextDouble() < probability)
 					pixelWriter.setArgb(i, j, (team == Team.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
-			}
-			probability -= 0.003;
 		}
 
 		ImageView imageView = new ImageView(paint);
-		imageView.relocate(rectangle.getX(), rectangle.getY());
+		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
 		imageView.setCache(true);
-		view.getChildren().add(imageView);
+		view.getChildren().add(view.getChildren().size() - 2, imageView);
 	}
 
 	private void init(GUIManager guiManager, String mapName)
