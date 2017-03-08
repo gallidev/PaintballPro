@@ -19,7 +19,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="physics.OfflinePlayer" project="c1" file="/c1/src/physics/OfflinePlayer.java" 
+  <class id="3" language="java" name="players.OfflinePlayer" project="c1" file="/c1/src/physics/OfflinePlayer.java"
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="344" y="-132"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 

@@ -79,7 +79,7 @@ public class AIPlayer extends GeneralPlayer{
 	 */
 	public void updateScore(){
 		oppTeam.incrementScore();
-		Renderer.incrementScore(oppTeam.getColour());
+		Renderer.incrementScore(oppTeam.getColour(), 1);
 
 //		if (myTeam.getColour() == Team.RED){
 //			System.out.println( "Red team score: " + myTeam.getScore());

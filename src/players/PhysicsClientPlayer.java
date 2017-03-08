@@ -102,7 +102,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 					eliminated = true;
 					updateScore();
 					setVisible(false);
-					bullet.setActive(false);
+					bullet.disable();
 					return;
 				}
 			}

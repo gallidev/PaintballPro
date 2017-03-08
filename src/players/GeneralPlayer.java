@@ -102,7 +102,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 
 	protected abstract void updatePosition();
 
-	protected void updateShooting(){
+	void updateShooting(){
 		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
 			shoot();
 			shootTimer = System.currentTimeMillis();
@@ -110,10 +110,9 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	}
 
 	//Updates the location of the bullets
-	protected void updateBullets(){
-		for(int i = 0; i < firedBullets.size(); i++){
-			firedBullets.get(i).moveInDirection();
-		}
+	void updateBullets(){
+		for(Bullet firedBullet : firedBullets)
+			firedBullet.moveInDirection();
 	}
 
 	//Calculates the angle the player is facing with respect to the mouse

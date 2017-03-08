@@ -2,7 +2,7 @@ package offlineLogic;
 
 import enums.Team;
 import logic.RoundTimer;
-import physics.OfflinePlayer;
+import players.OfflinePlayer;
 
 /**
  * The Team Match Mode for a single player mode.

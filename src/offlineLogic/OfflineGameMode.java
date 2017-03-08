@@ -1,9 +1,9 @@
 package offlineLogic;
 
 import enums.Team;
-import physics.OfflinePlayer;
 import players.AIPlayer;
 import players.GeneralPlayer;
+import players.OfflinePlayer;
 
 import java.util.ArrayList;
 

@@ -48,9 +48,9 @@ class HeadUpDisplay extends SubScene
 		view.setBottom(statusBar);
 	}
 
-	void incrementScore(Team team)
+	void incrementScore(Team team, int amount)
 	{
-		(team == Team.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == Team.RED ? redScore : blueScore).getText()) + 1));
+		(team == Team.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == Team.RED ? redScore : blueScore).getText()) + amount));
 	}
 
 	void tick()

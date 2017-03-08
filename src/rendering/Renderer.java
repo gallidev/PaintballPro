@@ -3,25 +3,30 @@ package rendering;
 import enums.Team;
 import gui.GUIManager;
 import javafx.animation.AnimationTimer;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import networking.client.ClientReceiver;
 import physics.*;
 import players.GeneralPlayer;
+import players.OfflinePlayer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static players.GeneralPlayer.playerHeadX;
 import static players.GeneralPlayer.playerHeadY;
 
 /**
- * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
+ * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.
  *
  * @author Artur Komoter
  */
@@ -31,12 +36,12 @@ public class Renderer extends Scene
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
+	private static Map map;
 	private AnimationTimer timer;
 	private GeneralPlayer player;
-	private Map map;
 
 	/**
-	 * Renders an offline game instance by loading the selected map, spawning the players and responding to changes in game logic.
+	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
 	 * @param mapName Name of the selected map
 	 * @param guiManager GUI manager that creates this object
@@ -84,8 +89,6 @@ public class Renderer extends Scene
 
 		collisionsHandler.setBlueTeam(blueTeam);
 		collisionsHandler.setRedTeam(redTeam);
-		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
-		//game.start();
 
 		initListeners();
 
@@ -105,7 +108,6 @@ public class Renderer extends Scene
 
 				for(GeneralPlayer player : players)
 				{
-					player.tick();
 					for(Bullet pellet : player.getBullets())
 					{
 						if(pellet.isActive())
@@ -114,8 +116,13 @@ public class Renderer extends Scene
 								view.getChildren().add(pellet);
 						}
 						else if(view.getChildren().contains(pellet))
-							view.getChildren().remove((pellet));
+						{
+							if(pellet.getCollision() != null)
+								generateSpray(pellet.getCollision(), player.getTeam());
+							view.getChildren().remove(pellet);
+						}
 					}
+					player.tick();
 				}
 			}
 		};
@@ -135,22 +142,8 @@ public class Renderer extends Scene
 		init(guiManager, mapName);
 
 		player = receiver.getClientPlayer();
-		player.setCache(true);
-		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		view.getChildren().add(player);
-
-		receiver.getMyTeam().forEach(localPlayer ->
-		{
-			localPlayer.setCache(true);
-			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		});
 		view.getChildren().addAll(receiver.getMyTeam());
-
-		receiver.getEnemies().forEach(localPlayer ->
-		{
-			localPlayer.setCache(true);
-			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		});
 		view.getChildren().addAll(receiver.getEnemies());
 
 		initListeners();
@@ -232,9 +225,14 @@ public class Renderer extends Scene
 		return settingsMenu.opened;
 	}
 
-	public static void incrementScore(Team team)
+	/**
+	 * Increment the score on the HUD for a given team by a given amount
+	 * @param team The team that has scored
+	 * @param amount The amount to increase the score by
+	 */
+	public static void incrementScore(Team team, int amount)
 	{
-		hud.incrementScore(team);
+		hud.incrementScore(team, amount);
 	}
 
 	public static void destroy(Renderer renderer)
@@ -249,18 +247,41 @@ public class Renderer extends Scene
 			settingsMenu = null;
 			HeadUpDisplay.view = new BorderPane();
 			hud = null;
+			map = null;
 		}
+	}
+
+	private static void generateSpray(Rectangle rectangle, Team team)
+	{
+		Random random = new Random();
+		double probability = 0.25;
+		WritableImage paint = new WritableImage(64, 64);
+		PixelWriter pixelWriter = paint.getPixelWriter();
+		for(int i = 0; i < 63; i++)
+		{
+			for(int j = 0; j < 63; j++)
+			{
+				if(random.nextDouble() < probability)
+					pixelWriter.setArgb(i, j, (team == Team.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
+			}
+			probability -= 0.003;
+		}
+
+		ImageView imageView = new ImageView(paint);
+		imageView.relocate(rectangle.getX(), rectangle.getY());
+		imageView.setCache(true);
+		view.getChildren().add(imageView);
 	}
 
 	private void init(GUIManager guiManager, String mapName)
 	{
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
+
 		view.setStyle("-fx-background-color: black;");
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
-
-		map = Map.load("res/maps/" + mapName + ".json");
+		map = Map.load(mapName);
 	}
 
 	private void initListeners()
