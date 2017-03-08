@@ -42,6 +42,9 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
+		    	   sendRemainingTime();
+
+
 		       }
 		     };
 
@@ -55,7 +58,6 @@ public class ServerGameStateSender {
 		    	   System.out.println("Rare sender runs");
 		    	   frames ++;
 		    	   updateScore();
-		    	   sendRemainingTime();
 
 		    	   if(gameLoop.getGame().isGameFinished()){
 
@@ -83,7 +85,7 @@ public class ServerGameStateSender {
 
 	}
 
-	protected void sendRemainingTime() {
+	private void sendRemainingTime() {
 		//Protocol: 6:<remaining seconds>
 		String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
 		
@@ -95,19 +97,20 @@ public class ServerGameStateSender {
 
 		for(ServerMinimumPlayer p : players){
 
-			if (p.isShooting()){
 				String toBeSent = "4:" + p.getPlayerId();
 
+				boolean haveBullets = false;
 				for(Bullet bullet : p.getBullets())
 				{
 					if(bullet.isActive())
 					{
+						haveBullets = true;
 						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
 					}
 				}
 				//System.out.println("Bullet msg sent from server " + toBeSent);
-				udpServer.sendToAll(toBeSent, lobbyId);
-			}
+				if (haveBullets)
+					udpServer.sendToAll(toBeSent, lobbyId);
 		}
 	}
 

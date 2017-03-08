@@ -72,4 +72,8 @@ public class RoundTimer {
 	}
 */
 	
+	public void setTimeLeft(long time){
+		timeLeft = time;
+	}
+	
 }

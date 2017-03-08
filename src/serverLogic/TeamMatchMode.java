@@ -1,5 +1,6 @@
 package serverLogic;
 
+import enums.TeamEnum;
 import logic.GameMode;
 import logic.RoundTimer;
 
@@ -56,9 +57,11 @@ public class TeamMatchMode extends GameMode {
 			return getSecondTeam();
 		else{
 			//allocate 30 more seconds to the game.
-			timer = new RoundTimer(30);
+			timer = new RoundTimer(10);
 			timer.startTimer();
-			while (!timer.isTimeElapsed()){}
+			while (!timer.isTimeElapsed()){
+				if (debug) System.out.println("Timer running for more " + timer.getTimeLeft() + " seconds ...");
+			}
 			return whoWon();
 		}
 	}
@@ -76,5 +79,5 @@ public class TeamMatchMode extends GameMode {
 	public long getRemainingTime() {
 		return timer.getTimeLeft();
 	}
-
+	
 }

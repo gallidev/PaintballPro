@@ -231,6 +231,7 @@ public class ServerReceiver extends Thread {
 	 * @param text Text passed to server, parsed for input.
 	 */
 	private void playModeAction(String text) {
+		
 		int gameMode = Integer.parseInt(text.substring(10));
 		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
@@ -238,7 +239,7 @@ public class ServerReceiver extends Thread {
 		// lobby.timerStart(this);
 		if (curTotal == 2) {
 			lobby.switchGameStatus();
-			lobby.timerStart(this, udpReceiver);
+			lobby.timerStart(this, udpReceiver, gameMode);
 		}
 	}
 

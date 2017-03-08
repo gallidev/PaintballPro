@@ -18,6 +18,7 @@ import players.ServerMinimumPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
@@ -281,7 +282,7 @@ public class Lobby {
 	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
 	 *
 	 */
-	public void timerStart(ServerReceiver receiver, UDPServer udpServer) {
+	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -301,8 +302,8 @@ public class Lobby {
 
 					}
 				}
-				playGame(receiver,udpServer);
-				startGameLoop(udpServer);
+				playGame(receiver,udpServer, gameMode);
+				startGameLoop(udpServer, gameMode);
 			}
 		});
 		t.start();
@@ -354,7 +355,7 @@ public class Lobby {
 
 	//====================NEW INTEGRATION BELOW=================================
 
-	public void playGame(ServerReceiver receiver, UDPServer udpServer){
+	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
 
@@ -362,8 +363,14 @@ public class Lobby {
 
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
-		Map map = Map.load("res/maps/" + "elimination" + ".json");
-
+		if (debug) System.out.println("Lobby game mode: " + gameMode);
+		Map map = null;
+		if (gameMode == 1)
+			 map = Map.load("res/maps/" + "elimination" + ".json");
+		else
+			 map = Map.load("res/maps/" + "ctf" + ".json");
+		
+		
 		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
 		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
@@ -410,9 +417,14 @@ public class Lobby {
 
 	}
 
-	private void startGameLoop(UDPServer udpServer){
+	private void startGameLoop(UDPServer udpServer, int gameMode){
 
-		ServerGameSimulation gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
+		ServerGameSimulation gameloop = null;
+		if (gameMode == 1)
+			 gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
+		else 
+			 gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
+
 		gameloop.startExecution();
 		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
 		stateSender.setGameLoop(gameloop);

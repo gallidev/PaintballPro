@@ -180,7 +180,7 @@ public class Renderer extends Scene
 
 		Group displayBullets = new Group();
 
-		view.getChildren().add(displayBullets);
+//		view.getChildren().add(displayBullets);
 
 		timer = new AnimationTimer()
 		{
@@ -188,14 +188,14 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				updateViewCPlayer();
-				displayBullets.getChildren().clear();
-				for(GhostPlayer player : allplayers)
-				{
-					for(GhostBullet pellet : player.getFiredBullets())
-					{
-						displayBullets.getChildren().add(pellet);
-					}
-				}
+				//displayBullets.getChildren().clear();
+//				for(GhostPlayer player : allplayers)
+//				{
+//					for(GhostBullet pellet : player.getFiredBullets())
+//					{
+//						displayBullets.getChildren().add(pellet);
+//					}
+//				}
 			}
 		};
 		timer.start();
