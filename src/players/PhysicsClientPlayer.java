@@ -238,7 +238,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 		} else {
 			bulletAngle -= deviation;
 		}
-		Bullet bullet = new Bullet(bulletX, bulletY, bulletAngle, team);
+		Bullet bullet = new Bullet(0,bulletX, bulletY, bulletAngle, team);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
 	}

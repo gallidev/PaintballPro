@@ -8,13 +8,9 @@ import javafx.scene.shape.Circle;
 /**
  * A bullet is represented as a circle, that travels along a given direction
  */
-public class Bullet extends Circle{
+public class GhostBullet extends Circle{
 
-	private static final float speed = 10f;
-	private double angle;
 	private double x, y;
-	private double originX, originY;
-	private boolean active;
 	private int id;
 
 	/**
@@ -23,16 +19,12 @@ public class Bullet extends Circle{
 	 * @param y The y-coordinate of the bullet
 	 * @param angle The angle at which the bullet will travel
 	 */
-	public Bullet(int id, double x, double y, double angle, TeamEnum team) {
+	public GhostBullet(int id,double x, double y, TeamEnum team) {
 		setCache(true);
 		setCacheHint(CacheHint.SPEED);
 		this.id = id;
 		this.x = x;
 		this.y = y;
-		this.originX = x;
-		this.originY = y;
-		this.angle = angle;
-		active = true;
 		setCenterX(x);
 		setCenterY(y);
 		setRadius(3);
@@ -44,17 +36,17 @@ public class Bullet extends Circle{
 
 	}
 
-	/**
-	 * Updates the position of the bullet
-	 */
-	public void moveInDirection() {
-		y -= speed * Math.cos(angle);
-		x += speed * Math.sin(angle);
-		setCenterX(x);
-		setCenterY(y);
-		double distance = Math.sqrt(Math.pow((x-originX), 2) + Math.pow((originY-y), 2));
-		if(distance > 500) active = false;
-	}
+//	/**
+//	 * Updates the position of the bullet
+//	 */
+//	public void moveInDirection() {
+//		y -= speed * Math.cos(angle);
+//		x += speed * Math.sin(angle);
+//		setCenterX(x);
+//		setCenterY(y);
+//		double distance = Math.sqrt(Math.pow((x-originX), 2) + Math.pow((originY-y), 2));
+//		if(distance > 500) active = false;
+//	}
 
 	//Getters and setters for the coordinates
 
@@ -72,18 +64,6 @@ public class Bullet extends Circle{
 
 	public void setY(double y){
 		this.y = y;
-	}
-
-	public boolean isActive(){
-		return this.active;
-	}
-
-	public void setActive(boolean b){
-		this.active = b;
-	}
-
-	public double getAngle(){
-		return this.angle;
 	}
 
 	public int getBulletId(){

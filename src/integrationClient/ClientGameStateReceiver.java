@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import physics.Bullet;
+import physics.GhostBullet;
 import players.GhostPlayer;
 
 /**
@@ -54,18 +55,16 @@ public class ClientGameStateReceiver {
 		GhostPlayer p = getPlayerWithId(id);
 
 		if (p != null) { // the player is not us
-		
-			ArrayList<Bullet> firedBullets = new ArrayList<>();
+
+			ArrayList<GhostBullet> firedBullets = new ArrayList<>();
 			for (int i = 0; i < bullets.length - 2; i = i + 3) {
 
-				double x = Double.parseDouble(bullets[i]);
-				double y = Double.parseDouble(bullets[i + 1]);
-				double angle = Double.parseDouble(bullets[i + 2]);
+				int bulletId = Integer.parseInt(bullets[i]);
+				double x = Double.parseDouble(bullets[i+1]);
+				double y = Double.parseDouble(bullets[i + 2]);
 
-				firedBullets.add(new Bullet(x, y, angle, p.getTeam()));
+				firedBullets.add(new GhostBullet(bulletId, x, y, p.getTeam()));
 			}
-			
-			
 			p.getFiredBullets().clear();
 			p.setFiredBullets(firedBullets);
 		}

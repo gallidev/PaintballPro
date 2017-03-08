@@ -7,6 +7,7 @@ import gui.GUIManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
@@ -141,6 +142,8 @@ public class Renderer extends Scene
 		cPlayer = receiver.getClientPlayer();
 		cPlayer.setCache(true);
 		cPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+
+		ArrayList<GhostPlayer> allplayers = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 
 		receiver.getMyTeam().forEach(localPlayer ->
@@ -175,6 +178,9 @@ public class Renderer extends Scene
 
 		inputSender.startSending();
 
+		Group displayBullets = new Group();
+
+		view.getChildren().add(displayBullets);
 
 		timer = new AnimationTimer()
 		{
@@ -182,6 +188,14 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				updateViewCPlayer();
+				displayBullets.getChildren().clear();
+				for(GhostPlayer player : allplayers)
+				{
+					for(GhostBullet pellet : player.getFiredBullets())
+					{
+						displayBullets.getChildren().add(pellet);
+					}
+				}
 			}
 		};
 		timer.start();
