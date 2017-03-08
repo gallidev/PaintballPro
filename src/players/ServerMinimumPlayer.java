@@ -40,6 +40,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected TeamEnum team;
 	protected Polygon bounds = new Polygon();
 	protected CollisionsHandler collisionsHandler;
+	protected int bulletCounter;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -70,7 +71,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		this.collisionsHandler = collisionsHandler;
 		updatePlayerBounds();
 		bounds.getTransforms().add(rotation);
-
+		bulletCounter = 1;
 	}
 
 	protected abstract void updatePosition();
@@ -205,9 +206,11 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		double bulletX = x + x2 + playerHeadX;
 		double bulletY = y + y2 + playerHeadY;
 
-		Bullet bullet = new Bullet(bulletX, bulletY, angle, team);
+		Bullet bullet = new Bullet(bulletCounter,bulletX, bulletY, angle, team);
 
 		firedBullets.add(bullet);
+
+		bulletCounter ++;
 	}
 
 	public void beenShot() {
@@ -280,7 +283,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	public synchronized void setShoot(boolean shoot){
 		this.shoot = shoot;
 	}
-	
+
 	public boolean isShooting(){
 		return shoot;
 	}

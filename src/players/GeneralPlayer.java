@@ -252,7 +252,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		} else {
             bulletAngle -= deviation;
 		}
-		Bullet bullet = new Bullet(bulletX, bulletY, bulletAngle, team);
+		Bullet bullet = new Bullet(0,bulletX, bulletY, bulletAngle, team);
 
 		firedBullets.add(bullet);
 	}

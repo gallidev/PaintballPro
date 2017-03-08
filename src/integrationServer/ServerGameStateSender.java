@@ -92,9 +92,9 @@ public class ServerGameStateSender {
 
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
-		
+
 		for(ServerMinimumPlayer p : players){
-			
+
 			if (p.isShooting()){
 				String toBeSent = "4:" + p.getPlayerId();
 
@@ -102,7 +102,7 @@ public class ServerGameStateSender {
 				{
 					if(bullet.isActive())
 					{
-						toBeSent += ":" + bullet.getX() + ":" + bullet.getY() + ":" +  bullet.getAngle();
+						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
 					}
 				}
 				//System.out.println("Bullet msg sent from server " + toBeSent);

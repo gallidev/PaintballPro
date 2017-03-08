@@ -87,8 +87,8 @@ public class UserPlayer extends ServerMinimumPlayer{
 	@Override
 	protected void updateAngle()
 	{
-		double deltax = mouseX - widthScreen/2;
-		double deltay = heightScreen/2-  mouseY ;
+		double deltax = mouseX + (2* playerHeadX) - widthScreen/2;
+		double deltay = heightScreen/2-  (mouseY - playerHeadY) ;
 		angle = Math.atan2(deltax, deltay);
 		double degrees = Math.toDegrees(angle);
 		rotation.setAngle(degrees);

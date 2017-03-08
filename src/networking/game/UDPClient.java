@@ -33,7 +33,7 @@ public class UDPClient extends Thread {
 
 	TeamTable teams;
 	private ClientGameStateReceiver gameStateReceiver;
-	
+
 	public boolean bulletDebug = false;
 
 	/**
@@ -135,7 +135,7 @@ public class UDPClient extends Thread {
 		}
 	}
 
-	
+
 	// -------------------------------------
 	// -----------Game Methods--------------
 	// -------------------------------------
@@ -176,26 +176,36 @@ public class UDPClient extends Thread {
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
 		this.gameStateReceiver = gameStateReceiver;
 	}
-	
+
 	public void updateBulletAction(String text){
-		// Protocol message: 4:id:x:y:angle:...
-		
+		// Protocol message: 4:id:idBullet:x:y:...
+
 		int id = Integer.parseInt(text.split(":")[1]);
-		
+
 		//get all the bullets
 		String[] data = text.split(":");
 		
 		/*System.out.print("Received bullets: " );
 		
+		System.out.print("Received bullets: " );
+
 		for(int i = 0; i < data.length; i++){
 			if (data[i].isEmpty())
 				System.out.print("EMPTY ");
-			else 
+			else
 				System.out.print(data[i] + " ");
 		}*/
 
 		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
-		System.out.print("Just the bullets: ");
+//		System.out.print("Just the bullets: ");
+//
+//		for(int i = 0; i < bullets.length; i++){
+//			if (bullets[i].isEmpty())
+//				System.out.print("EMPTY ");
+//			else
+//				System.out.print(bullets[i] + " ");
+//		}
+
 
 		/*for(int i = 0; i < bullets.length; i++){
 			if (bullets[i].isEmpty())
@@ -204,7 +214,6 @@ public class UDPClient extends Thread {
 				System.out.print(bullets[i] + " ");
 		}*/
 			
-		
 		System.out.println();
 
 		if(gameStateReceiver != null){

@@ -15,6 +15,7 @@ import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandlerGeneralPlayer;
+import physics.GhostBullet;
 import rendering.Map;
 import serverLogic.Team;
 /**
@@ -23,7 +24,7 @@ import serverLogic.Team;
 public class GhostPlayer extends ImageView {
 
 	public double playerHeadX = 12.5, playerHeadY = 47.5;
-	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
+	private ArrayList<GhostBullet> firedBullets = new ArrayList<GhostBullet>();
 	private Rotate rotation;
 	private int playerId;
 	private TeamEnum team;
@@ -46,11 +47,11 @@ public class GhostPlayer extends ImageView {
 		setVisible(false);
 	}
 
-	public ArrayList<Bullet> getFiredBullets() {
+	public ArrayList<GhostBullet> getFiredBullets() {
 		return firedBullets;
 	}
 
-	public synchronized void setFiredBullets(ArrayList<Bullet> firedBullets) {
+	public synchronized void setFiredBullets(ArrayList<GhostBullet> firedBullets) {
 		this.firedBullets = firedBullets;
 	}
 
@@ -85,7 +86,7 @@ public class GhostPlayer extends ImageView {
 	public synchronized void setSyncY(double y){
 		setLayoutY(y);
 	}
-	
+
 	public TeamEnum getTeam(){
 		return team;
 	}
