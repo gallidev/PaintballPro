@@ -70,6 +70,7 @@ public class ClientGameStateReceiver {
 			p.setFiredBullets(firedBullets);
 		}
 	}
+	
 
 
 }

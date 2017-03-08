@@ -99,6 +99,8 @@ public class UDPClient extends Thread {
 							   break;
 					case '4' : updateBulletAction(receivedPacket);
 							   break;
+					case '6' : getRemainingTime(receivedPacket);
+
 
 				}
 			}
@@ -182,24 +184,25 @@ public class UDPClient extends Thread {
 		
 		//get all the bullets
 		String[] data = text.split(":");
-		System.out.print("Received bullets: " );
+		
+		/*System.out.print("Received bullets: " );
 		
 		for(int i = 0; i < data.length; i++){
 			if (data[i].isEmpty())
 				System.out.print("EMPTY ");
 			else 
 				System.out.print(data[i] + " ");
-		}
+		}*/
 
 		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
 		System.out.print("Just the bullets: ");
 
-		for(int i = 0; i < bullets.length; i++){
+		/*for(int i = 0; i < bullets.length; i++){
 			if (bullets[i].isEmpty())
 				System.out.print("EMPTY ");
 			else 
 				System.out.print(bullets[i] + " ");
-		}
+		}*/
 			
 		
 		System.out.println();
@@ -208,6 +211,17 @@ public class UDPClient extends Thread {
 			gameStateReceiver.updateBullets(id, bullets);
 		}
 	}
+	
+	private void getRemainingTime(String sentence) {
+
+		String time = sentence.split(":")[1];
+
+		//do stuff here to update the UI
+		
+		System.out.println("remaining time on client: " + time);
+		
+	}
+
 
 
 

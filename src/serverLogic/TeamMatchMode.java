@@ -56,9 +56,9 @@ public class TeamMatchMode extends GameMode {
 			return getSecondTeam();
 		else{
 			//allocate 30 more seconds to the game.
-			RoundTimer delay = new RoundTimer(30);
-			delay.startTimer();
-			while (!delay.isTimeElapsed()){}
+			timer = new RoundTimer(30);
+			timer.startTimer();
+			while (!timer.isTimeElapsed()){}
 			return whoWon();
 		}
 	}
@@ -70,6 +70,11 @@ public class TeamMatchMode extends GameMode {
 	
 	public RoundTimer getTimer(){
 		return timer;
+	}
+
+	@Override
+	public long getRemainingTime() {
+		return timer.getTimeLeft();
 	}
 
 }
