@@ -1,4 +1,4 @@
-package testingNetworking;
+package networking;
 
 import static org.junit.Assert.*;
 

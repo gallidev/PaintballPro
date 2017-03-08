@@ -1,18 +1,17 @@
 package audio;
 
-import audio.AudioManager;
-import audio.MusicResources;
-import audio.SFXResources;
-import gui.GUIManager;
-import gui.UserSettings;
-import helpers.JavaFXTestHelper;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.MediaPlayer;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import audio.AudioManager;
+import audio.SFXResources;
+import gui.GUIManager;
+import gui.UserSettings;
+import helpers.JavaFXTestHelper;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * Tests for AudioManager
