@@ -359,8 +359,6 @@ public class Lobby {
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
 
-		System.out.println("face start in lobby");
-		
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
@@ -402,7 +400,7 @@ public class Lobby {
 		udpServer.setInputReceiver(inputReceiver);
 
 		for (ServerMinimumPlayer p : players) {
-			String toBeSent = "2:";
+			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
 			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";

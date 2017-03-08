@@ -77,12 +77,12 @@ public class ClientReceiver extends Thread {
 
 					// UI Requests
 					if (text.contains("Ret:Red:")) {
-						if(debug) System.out.println("Got red");
+						//if(debug) System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
 						m.updateRedLobby(red);
 					}
 					else if (text.contains("Ret:Blue:")) {
-						if(debug) System.out.println("Got blue");
+						//if(debug) System.out.println("Got blue");
 						String[] blue = text.substring(9).split("-");
 						m.updateBlueLobby(blue);
 					}
@@ -152,13 +152,18 @@ public class ClientReceiver extends Thread {
 	//							NEW INTEGRATION BELOW
 
 	public void startGameAction(String text) {
-		// get all the relevant data from the message : StartGame:2:Red:1:Red:
-		System.out.println("face start in client receiver");
+		// get all the relevant data from the message : 2:<gameMode>:2:Red:1:Red:
 		String[] data = text.split(":");
 
-		clientID = Integer.parseInt(data[1]);
-		String clientTeam = data[2];
-		Map map = Map.loadRaw("elimination");
+		int gameMode = Integer.parseInt(data[1]);
+		clientID = Integer.parseInt(data[2]);
+		String clientTeam = data[3];
+		Map map = null;
+		if (gameMode == 1)
+			map = Map.loadRaw("elimination");
+		else
+			map = Map.loadRaw("ctf");
+			
 
 		// add myself to my team
 		// create my client
@@ -167,7 +172,7 @@ public class ClientReceiver extends Thread {
 		else
 			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null);
 		// extract the other members
-		for (int i = 3; i < data.length - 1; i = i + 2) {
+		for (int i = 4; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red"))
@@ -191,17 +196,27 @@ public class ClientReceiver extends Thread {
 
 		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		udpClient.setGameStateReceiver(gameStateReceiver);
-		System.out.println("initialised GameStateReceiver");
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				m.transitionTo(Menu.EliminationMulti, null);
-			}
-		});
+		if (gameMode == 1){
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					m.transitionTo(Menu.EliminationMulti, null);
+				}
+			});
+		}
+		else{
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					m.transitionTo(Menu.CTFMulti, null);
+				}
+			});
+		}
+
 	}
 
 
