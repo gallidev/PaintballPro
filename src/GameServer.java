@@ -7,6 +7,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import networking.discovery.DiscoveryServerAnnouncer;
+import networking.discovery.IPAddress;
 import networking.server.Server;
 
 public class GameServer extends Application {
@@ -22,7 +23,7 @@ public class GameServer extends Application {
 		stage.setOnCloseRequest((event) -> System.exit(0));
 		stage.show();
 		int portNo = 25566;
-		String[] serverArgs = {portNo + "", "127.0.0.1"};
+		String[] serverArgs = {portNo + "", IPAddress.getLAN()};
 		Thread discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
 		discovery.start();
 		(new Thread(() -> Server.main(serverArgs, gui))).start();
