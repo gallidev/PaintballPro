@@ -25,6 +25,7 @@ public class Client {
 	PrintStream toServer = null;
 	BufferedReader fromServer = null;
 	Socket server = null;
+	private String nickname;
 
 	/**
 	 * Sets up Client, starts up threads and connects to the server, retrieving an id for this client.
@@ -35,7 +36,7 @@ public class Client {
 	 */
 	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager, int udpPortSenderNum) throws Exception {
 
-		String nickname = passedNickname;
+		nickname = passedNickname;
 
 		// We check that nickname does not contain - or : as these are used in our protocols.
 		if (!nickname.contains(":") || !nickname.contains("-")) {
@@ -99,7 +100,7 @@ public class Client {
 			TeamTable teams = new TeamTable();
 
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams,udpPortSenderNum);
+			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams,udpPortSenderNum, nickname);
 			udpReceiver.start();
 
 			// We can now set up the message received for the client.

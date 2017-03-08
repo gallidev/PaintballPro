@@ -359,6 +359,8 @@ public class Lobby {
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
 
+		System.out.println("face start in lobby");
+		
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);

@@ -91,6 +91,7 @@ public class Server {
 					int clientID;
 					// For debugging:
 					gui.addMessage(clientName + " connected");
+					
 					// We add the client to the table. Returns a unique client
 					// id
 					clientID = clientTable.add(clientName);
@@ -104,6 +105,7 @@ public class Server {
 					// We create and start a new thread to read from the client:
 					ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver);
 					reciever.start();
+			
 					// For debugging
 					text = "UserID is:" + clientID;
 					gui.addMessage(text);

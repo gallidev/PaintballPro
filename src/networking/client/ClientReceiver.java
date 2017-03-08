@@ -153,6 +153,7 @@ public class ClientReceiver extends Thread {
 
 	public void startGameAction(String text) {
 		// get all the relevant data from the message : StartGame:2:Red:1:Red:
+		System.out.println("face start in client receiver");
 		String[] data = text.split(":");
 
 		clientID = Integer.parseInt(data[1]);

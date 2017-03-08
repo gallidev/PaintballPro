@@ -25,6 +25,7 @@ public class UDPClient extends Thread {
 
 	private boolean debug = false;
 	private int clientID;
+	private String nickname;
 
 	DatagramSocket clientSocket;
 	InetAddress IPAddress;
@@ -44,13 +45,14 @@ public class UDPClient extends Thread {
 	 * @param guiManager Manager of GUI.
 	 * @param teams Both client's and opposing teams.
 	 */
-	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum)
+	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum, String nickname)
 	{
 		int port = portNum;
 		// 9877
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
+		this.nickname = nickname;
 
 		if(debug) System.out.println("Making new UDP Client");
 
@@ -81,6 +83,7 @@ public class UDPClient extends Thread {
 	 */
 	public void run()
 	{
+		if(debug) System.out.println("My nickname is: " + nickname);
 		try{
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);

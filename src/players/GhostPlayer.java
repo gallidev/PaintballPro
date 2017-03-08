@@ -29,7 +29,9 @@ public class GhostPlayer extends ImageView {
 	private int playerId;
 	private TeamEnum team;
 	private AudioManager audio;
-
+	private String nickname;
+	
+	
 	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio) {
 		super(image);
 		setLayoutX(x);
@@ -89,6 +91,14 @@ public class GhostPlayer extends ImageView {
 
 	public TeamEnum getTeam(){
 		return team;
+	}
+	
+	public String getNickname(){
+		return nickname;
+	}
+	
+	public void  setNickname(String name){
+		nickname = name;
 	}
 
 }
