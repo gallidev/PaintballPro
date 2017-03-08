@@ -54,7 +54,6 @@ public class DiscoveryServerAnnouncer implements Runnable {
                 socket.send(broadcast);
                 Thread.sleep(5000);
             }
-
         } catch (Exception e) {
             System.err.println("Socket Server Exception: " + e);
         }

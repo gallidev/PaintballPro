@@ -63,6 +63,7 @@ public class DiscoveryClientListener {
 		Thread t = new Thread(new DiscoveryServerAnnouncer(25566));
 		t.start();
 		String ret = DiscoveryClientListener.findServer();
+
 		if(ret.split(":")[1].contains("25566"))
 			return true;
 		else
