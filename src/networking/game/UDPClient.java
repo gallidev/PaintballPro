@@ -178,6 +178,9 @@ public class UDPClient extends Thread {
 
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
 		this.gameStateReceiver = gameStateReceiver;
+		
+		//set the corresponding GhostPlayer's nickname
+		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 
 	public void updateBulletAction(String text){

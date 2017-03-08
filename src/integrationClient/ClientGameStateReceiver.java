@@ -43,7 +43,7 @@ public class ClientGameStateReceiver {
 	 * Helper method to find the player with a specific id from the entire list of players in the game.
 	 * @param id The player's id.
 	 */
-	private GhostPlayer getPlayerWithId(int id){
+	public GhostPlayer getPlayerWithId(int id){
 		for (GhostPlayer p : players){
 			if (p.getPlayerId() == id)
 				return p;
