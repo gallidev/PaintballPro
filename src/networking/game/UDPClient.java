@@ -73,7 +73,7 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			if(debug) System.err.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 	}
 
@@ -127,13 +127,13 @@ public class UDPClient extends Thread {
 			if(debug) System.out.println("Attempting to send:"+msg);
 			byte[] sendData = new byte[1024];
 			sendData = msg.getBytes();
-			if(debug) System.out.println("sendData Length: "+ sendData.length);
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 19876);
 			clientSocket.send(sendPacket);
 		}
 		catch(Exception e)
 		{
-			//e.printStackTrace(System.out);
+			if (debug) System.out.println("Exception in sendMessage");
+			e.printStackTrace();
 			if(debug) System.err.println(e.getStackTrace());
 		}
 	}

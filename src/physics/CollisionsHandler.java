@@ -34,8 +34,8 @@ public class CollisionsHandler {
 		boolean collRight = false;
 		boolean collLeft = false;
 		ArrayList<Double> angles = new ArrayList<>();
-		double playerCenterX = p.getX() + p.getWidth()/2;
-		double playerCenterY = p.getY() + p.getHeight()/2;
+		double playerCenterX = p.getLayoutX() + p.getWidth()/2;
+		double playerCenterY = p.getLayoutY() + p.getHeight()/2;
 		for(Rectangle propWall : propsWalls){
 			//it returns a path with the collision with walls
 			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);

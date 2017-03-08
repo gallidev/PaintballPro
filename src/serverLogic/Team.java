@@ -35,6 +35,10 @@ public class Team {
 	public void incrementScore(int additionalScore){
 		score += additionalScore;
 	}
+	
+	public void incrementScore(){
+		score++;
+	}
 
 	/**
 	 * Adds another player to the team and increments the number of team players.

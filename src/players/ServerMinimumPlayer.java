@@ -224,19 +224,19 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
 
-	public double getX(){
+	public double getLayoutX(){
 		return this.x;
 	}
 
-	public double getY(){
+	public double getLayoutY(){
 		return this.y;
 	}
 
-	public void setX(double x){
+	public void setLayoutX(double x){
 		this.x = x;
 	}
 
-	public void setY(double y){
+	public void setLayoutY(double y){
 		this.y = y;
 	}
 

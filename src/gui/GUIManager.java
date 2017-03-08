@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class GUIManager {
 
-    public static boolean localServerCode = false;
+    public static boolean localServerCode = true;
     // Load the user's settings
     // When set methods are called for this class/object, the class will
     // automatically save the changed preferences
@@ -91,7 +91,7 @@ public class GUIManager {
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
                 case SingleplayerGameType:
-                    if (localServerCode) establishLocalServerConnection();
+                    //if (localServerCode) establishLocalServerConnection();
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
                 case Lobby:
@@ -109,10 +109,15 @@ public class GUIManager {
                     break;
                 case EliminationSingle:
                     if (localServerCode) {
+                    	establishLocalServerConnection();
+                    	
+                    	//System.out.println("Attempting to send play mode in GUI Manager");
                         c.getSender().sendMessage("Play:Mode:1");
+                        //System.out.println("Sent play mode in GUI Manager");
+                        
                         audio.startMusic(audio.music.track1);
-                        r = new Renderer("elimination", c.getReceiver(), this);
-                        s.setScene(r);
+//                        r = new Renderer("elimination", c.getReceiver(), this);
+//                        s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
                         r = new Renderer("elimination", this);
@@ -126,6 +131,7 @@ public class GUIManager {
                     break;
                 case CTFSingle:
                     if (localServerCode) {
+                    	establishLocalServerConnection();
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.track1);
                         r = new Renderer("ctf", c.getReceiver(), this);
@@ -152,13 +158,18 @@ public class GUIManager {
 
     private boolean establishLocalServerConnection() {
         if (localServerCode) {
-            ipAddress = "0.0.0.0";
+            ipAddress = "127.0.0.1";
+            Server local = new Server();
+            local.setSinglePlayer(true);
+           // s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
+            
             localServer = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     int portNo = 25566;
                     String[] serverArgs = {portNo + "", ipAddress};
-                    Server.main(serverArgs, new ServerConsole());
+                    
+                    local.main(serverArgs, new ServerConsole());
                 }
             });
             localServer.start();

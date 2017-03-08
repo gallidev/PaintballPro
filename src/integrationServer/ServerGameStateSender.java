@@ -120,8 +120,8 @@ public class ServerGameStateSender {
 		for(ServerMinimumPlayer p : players){
 			String toBeSent = "1:" + p.getPlayerId();
 
-			toBeSent += ":" + p.getX();
-			toBeSent += ":" + p.getY();
+			toBeSent += ":" + p.getLayoutX();
+			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngleDegrees();
 			toBeSent += ":" + p.isVisible();
 

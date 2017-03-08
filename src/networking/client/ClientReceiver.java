@@ -73,7 +73,7 @@ public class ClientReceiver extends Thread {
 				String text = fromServer.readLine();
 				// If text isn't null and does not read "Exit:Client" do...
 				if (text != null && text.compareTo("Exit:Client") != 0) {
-					if(debug) System.out.println("Received: " + text);
+					if(debug) System.out.println("Client receiver got: " + text);
 
 					// UI Requests
 					if (text.contains("Ret:Red:")) {
@@ -179,11 +179,11 @@ public class ClientReceiver extends Thread {
 					myTeam.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.RED), null));
 				else
-					myTeam.add(new GhostPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+					myTeam.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
 			} else {
 				if (clientTeam.equals("Red"))
-					enemies.add(new GhostPlayer(map.getSpawns()[id + 3].x * 64, map.getSpawns()[id + 3].y * 64, id,
+					enemies.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
 				else
 					enemies.add(new GhostPlayer(map.getSpawns()[id - 1].x * 64, map.getSpawns()[id - 1].y * 64, id,

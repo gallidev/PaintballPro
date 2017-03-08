@@ -26,6 +26,8 @@ public class Client {
 	BufferedReader fromServer = null;
 	Socket server = null;
 	private String nickname;
+	
+	boolean singlePlayer;
 
 	/**
 	 * Sets up Client, starts up threads and connects to the server, retrieving an id for this client.

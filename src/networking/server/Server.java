@@ -20,6 +20,10 @@ import networking.shared.MessageQueue;
  * @author MattW
  */
 public class Server {
+	
+	
+	static boolean singlePlayer;
+	
 	/**
 	 * Main implementation method, handles connecting clients.
 	 * 
@@ -103,12 +107,16 @@ public class Server {
 					// UDPServerSender udpSender = new UDPServerSender(clientTable.getUDPqueue(clientID));
 					
 					// We create and start a new thread to read from the client:
-					ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver);
+					ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver, singlePlayer);
 					reciever.start();
 			
 					// For debugging
 					text = "UserID is:" + clientID;
 					gui.addMessage(text);
+					
+					if (singlePlayer)
+						singlePlayerIntegration();
+					
 					// Sends a message to the client detailing their unique user
 					// id.
 					Message msg = new Message(text);
@@ -127,5 +135,21 @@ public class Server {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Method to start a game in the single player mode. ie The Server is local
+	 * 
+	 * @author Alexandra Paduraru
+	 */
+	private static void singlePlayerIntegration() {
+		System.out.println("Local server starts game ... ");
+		
+		
+	}
+	
+
+	public  void setSinglePlayer(boolean b){
+		singlePlayer = b;
 	}
 }

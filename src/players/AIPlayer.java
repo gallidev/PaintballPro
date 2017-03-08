@@ -1,35 +1,38 @@
 package players;
 
+import java.util.ArrayList;
+
 import ai.BehaviourManager;
-import audio.AudioManager;
 import enums.TeamEnum;
 import offlineLogic.OfflineTeam;
-import physics.CollisionsHandlerGeneralPlayer;
+import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
+import serverLogic.Team;
 
-public class AIPlayer extends GeneralPlayer{
+public class AIPlayer extends ServerMinimumPlayer{
 
 	private BehaviourManager bManager;
-	private AudioManager audio;
+	//private AudioManager audio;
 	private double movementAngle;
-	private OfflineTeam oppTeam;
-	private OfflineTeam myTeam;
+	private Team oppTeam;
+	private Team myTeam;
 	private boolean moving;
+	private Map map;
 
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandlerGeneralPlayer collisionsHandler){
-		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
-
-		this.audio = audio;
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler){
+		super(x, y, id, ImageFactory.getPlayerImage(team).getWidth(), ImageFactory.getPlayerImage(team).getHeight(), map.getSpawns(), team, collisionsHandler);
+		
+		//this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
 		right = true;
 		this.map = map;
 		this.moving = true;
 		bManager = new BehaviourManager(this);
-		this.audio = audio;
+		//this.audio = audio;
 	}
 
 	/**
@@ -107,15 +110,24 @@ public class AIPlayer extends GeneralPlayer{
 		this.movementAngle = angle;
 	}
 
-	public Map getMap() {return this.map;}
+	//public Map getMap() {return this.map;}
 
-	public void setOppTeam(OfflineTeam t){
+	public void setOppTeam(Team t){
 		oppTeam = t;
 	}
 
-	public void setMyTeam(OfflineTeam t){
+	public void setMyTeam(Team t){
 		myTeam = t;
 	}
 
 	public void setMoving(boolean b) { this.moving = b;}
+	
+	public Map getMap(){
+		return map;
+	}
+	
+	public ArrayList<ServerMinimumPlayer> getEnemies(){
+		return oppTeam.getMembers();
+	}
+
 }
