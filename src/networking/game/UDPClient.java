@@ -82,7 +82,7 @@ public class UDPClient extends Thread {
 			while(true)
 			{
 				clientSocket.receive(receivePacket);
-				String sentSentence = new String(receivePacket.getData());
+				String sentSentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
 				if(debug) System.out.println("Received from server:"+sentSentence);
 				// In-game messages
 				if (sentSentence.contains("Move"))

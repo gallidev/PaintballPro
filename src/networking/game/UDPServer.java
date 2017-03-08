@@ -52,7 +52,7 @@ public class UDPServer extends Thread{
 			      if(debug) System.out.println("Waiting to receive packet");
 			      serverSocket.receive(receivePacket);
 			    
-			      String sentence = new String( receivePacket.getData()).trim();
+			      String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
 			      
 			      if(debug) System.out.println("Packet received with text:"+sentence);
 			      

@@ -24,7 +24,7 @@ public class DiscoveryClientListener {
 		try {
 			InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 			System.setProperty("java.net.preferIPv4Stack", "true");
-			MulticastSocket socket = new MulticastSocket(5000);
+			MulticastSocket socket = new MulticastSocket(25566);
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 	        while (networkInterfaces.hasMoreElements()) {
 	            NetworkInterface iface = networkInterfaces.nextElement();
@@ -41,11 +41,11 @@ public class DiscoveryClientListener {
 			
 			byte[] buf = new byte[1023];
 			DatagramPacket packetFromServer = new DatagramPacket(buf, buf.length);
-			if(!socket.isConnected())
-			{
-				socket.close();
-				return "";
-			}
+//			if(!socket.isConnected())
+//			{
+//				socket.close();
+//				return "";
+//			}
 				
 			socket.receive(packetFromServer);
 			String data = new String(packetFromServer.getData(), packetFromServer.getOffset(),
@@ -58,4 +58,15 @@ public class DiscoveryClientListener {
 		}
 		return "";
 	}
+	
+	public boolean test() {
+		Thread t = new Thread(new DiscoveryServerAnnouncer(25566));
+		t.start();
+		String ret = DiscoveryClientListener.findServer();
+		if(ret.split(":")[1].contains("25566"))
+			return true;
+		else
+			return false;
+	}
+	
 }
