@@ -249,11 +249,4 @@ public class OfflinePlayer extends GeneralPlayer
 	{
 		this.my = my;
 	}
-
-	public void setAudio(AudioManager audio)
-	{
-		this.audio = audio;
-	}
-
-
 }

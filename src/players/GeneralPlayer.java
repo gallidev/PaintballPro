@@ -2,6 +2,8 @@ package players;
 
 import audio.AudioManager;
 import enums.Team;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polygon;
@@ -43,6 +45,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	protected AudioManager audio;
 	protected CollisionsHandler collisionsHandler;
 	protected Random rand;
+	protected Label nameTag;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -80,6 +83,12 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		boundRotation.setPivotX(playerHeadX);
 		boundRotation.setPivotY(playerHeadY);
 		updatePlayerBounds();
+
+		nameTag = new Label("Player");
+		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
+				"-fx-font-size: 10pt; -fx-text-fill: white");
+		nameTag.setPadding(new Insets(5));
+		nameTag.relocate(x - 15, y - 32);
 	}
 
 	/**
@@ -163,7 +172,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		} else {
 			invincible = false;
 			setVisible(true);
-
+			nameTag.setVisible(true);
 		}
 	}
 
@@ -254,6 +263,7 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 		spawnTimer = System.currentTimeMillis();
 		eliminated = true;
 		setVisible(false);
+		nameTag.setVisible(false);
 		updateScore();
 	}
 
@@ -328,6 +338,11 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 	public void setMX(double newX) {
 	}
 	public void setMY(double newY){
+	}
+
+	public Label getNameTag()
+	{
+		return nameTag;
 	}
 
 	public boolean isEliminated(){

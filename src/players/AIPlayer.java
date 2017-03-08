@@ -52,6 +52,8 @@ public class AIPlayer extends GeneralPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
+		nameTag.relocate(getLayoutX() - 15, getLayoutY() - 32);
+
 		if(!invincible){
 			collisionsHandler.handleBulletCollision(this);
 		} else {

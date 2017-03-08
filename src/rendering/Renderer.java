@@ -59,7 +59,11 @@ public class Renderer extends Scene
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
 		players.addAll(player.getEnemies());
-		players.forEach(p -> p.setEffect(new DropShadow(16, 0, 0, Color.BLACK)));
+		players.forEach(player -> {
+			player.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+			view.getChildren().add(player.getNameTag());
+		});
+		view.getChildren().remove(player.getNameTag());
 		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
@@ -259,9 +263,9 @@ public class Renderer extends Scene
 
 		Random random = new Random();
 		double probability = 0.1;
-		for(int i = 0; i < 64; i++)
+		for(int i = 0; i < 60; i++)
 		{
-			for(int j = 0; j < 64; j++)
+			for(int j = 0; j < 60; j++)
 				if(random.nextDouble() < probability)
 					pixelWriter.setArgb(i, j, (team == Team.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
 		}
@@ -278,6 +282,7 @@ public class Renderer extends Scene
 		setCursor(Cursor.CROSSHAIR);
 
 		view.setStyle("-fx-background-color: black;");
+		view.getStylesheets().add("styles/menu.css");
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
