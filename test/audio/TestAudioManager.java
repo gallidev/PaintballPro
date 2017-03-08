@@ -1,4 +1,4 @@
-package audio2;
+package audio;
 
 import static org.junit.Assert.assertTrue;
 
