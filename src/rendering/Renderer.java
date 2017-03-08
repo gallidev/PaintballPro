@@ -188,12 +188,13 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				updateViewCPlayer();
-				displayBullets.getChildren().clear();
+
 				for(GhostPlayer player : allplayers)
 				{
 					for(GhostBullet pellet : player.getFiredBullets())
 					{
-						displayBullets.getChildren().add(pellet);
+						if(!displayBullets.getChildren().contains(pellet))
+							displayBullets.getChildren().add(pellet);
 					}
 				}
 			}

@@ -56,6 +56,7 @@ public class GhostBullet extends Circle{
 
 	public void setX(double x){
 		this.x = x;
+		setCenterX(x);
 	}
 
 	public double getY(){
@@ -64,6 +65,7 @@ public class GhostBullet extends Circle{
 
 	public void setY(double y){
 		this.y = y;
+		setCenterY(y);
 	}
 
 	public int getBulletId(){
