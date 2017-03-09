@@ -29,10 +29,10 @@ public class CaptureTheFlagMode extends GameMode {
 	 * @param t The team which has captured the flag and whose score is going to be incremented.
 	 */
 	public void flagCaptured(Team t){
-		if ( t == getFirstTeam())
-			getFirstTeam().incrementScore(flagScore);
-		else if (t == getSecondTeam())
-			getSecondTeam().incrementScore(flagScore);
+		if ( t == getRedTeam())
+			getRedTeam().incrementScore(flagScore);
+		else if (t == getBlueTeam())
+			getBlueTeam().incrementScore(flagScore);
 	}
 
 	/**
@@ -48,10 +48,10 @@ public class CaptureTheFlagMode extends GameMode {
 	 */
 	@Override
 	public Team whoWon() {
-		if (getFirstTeam().getScore() > getSecondTeam().getScore())
-			return getFirstTeam();
-		else if (getFirstTeam().getScore() < getSecondTeam().getScore())
-			return getSecondTeam();
+		if (getRedTeam().getScore() > getBlueTeam().getScore())
+			return getRedTeam();
+		else if (getRedTeam().getScore() < getBlueTeam().getScore())
+			return getBlueTeam();
 		else{
 			long delayTime = 30;
 			RoundTimer newTimer = new RoundTimer(delayTime);

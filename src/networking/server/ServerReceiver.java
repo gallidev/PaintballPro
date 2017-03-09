@@ -86,7 +86,7 @@ public class ServerReceiver extends Thread {
 					// ------------------
 					// When user specifies a game mode to play, add them to a
 					// lobby.
-					System.out.println("Server single player = " + singlePlayer);
+					if (debug) System.out.println("Server single player = " + singlePlayer);
 					if (text.contains("Play:Mode:"))
 						if (singlePlayer){
 							playModeSingleAction(text);

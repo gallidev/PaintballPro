@@ -130,9 +130,9 @@ public class CollisionsHandler {
 
 					//update score
 					if (red.containsPlayer(p))
-						red.incrementScore(1);
-					else
 						blue.incrementScore(1);
+					else
+						red.incrementScore(1);
 
 					return;
 				}

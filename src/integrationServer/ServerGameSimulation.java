@@ -26,8 +26,8 @@ public class ServerGameSimulation {
 
 		this.game = game;
 
-		this.redTeam = game.getFirstTeam();
-		this.blueTeam = game.getSecondTeam();
+		this.redTeam = game.getRedTeam();
+		this.blueTeam = game.getBlueTeam();
 	}
 
 	public void startExecution(){

@@ -144,21 +144,6 @@ public class Renderer extends Scene
 		ArrayList<GhostPlayer> allplayers = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 		
-		System.out.println("Renderer all players: ");
-		for(GhostPlayer p: allplayers)
-			System.out.print(p.getPlayerId() + " ");
-		System.out.println();
-		
-		System.out.println("Renderer my team: ");
-		for(GhostPlayer p: receiver.getMyTeam())
-			System.out.print(p.getPlayerId() + " ");
-		System.out.println();
-
-		
-		System.out.println("Renderer opp team: ");
-		for(GhostPlayer p: receiver.getEnemies())
-			System.out.print(p.getPlayerId() + " ");
-
 		receiver.getMyTeam().forEach(localPlayer ->
 		{
 			localPlayer.setCache(true);

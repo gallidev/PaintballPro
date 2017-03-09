@@ -32,8 +32,8 @@ public class TeamMatchModeTest {
 		
 		assertFalse(game.isGameFinished());
 		
-		game.getFirstTeam().incrementScore(5);
-		game.getSecondTeam().incrementScore(10);
+		game.getRedTeam().incrementScore(5);
+		game.getRedTeam().incrementScore(10);
 
 		
 		try {
@@ -51,20 +51,20 @@ public class TeamMatchModeTest {
 
 		//setFirstTeam
 		Team newTeam = new Team(TeamEnum.RED);
-		game.setFirstTeam(newTeam);
+		game.setRedTeam(newTeam);
 
 		
 		//getFirstTeam
-		assertTrue(game.getFirstTeam() == newTeam);
-		assertFalse(game.getFirstTeam() == red);
+		assertTrue(game.getRedTeam() == newTeam);
+		assertFalse(game.getRedTeam() == red);
 		
 		//setSecondTeam
 		Team newSndTeam = new Team(TeamEnum.BLUE);
-		game.setFirstTeam(newSndTeam);
+		game.setRedTeam(newSndTeam);
 
 		//setSecondTeam
-		assertTrue(game.getFirstTeam() == newSndTeam);
-		assertFalse(game.getFirstTeam() == blue);
+		assertTrue(game.getRedTeam() == newSndTeam);
+		assertFalse(game.getRedTeam() == blue);
 		
 	}
 

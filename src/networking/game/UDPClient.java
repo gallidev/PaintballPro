@@ -6,8 +6,10 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import enums.Menu;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
+import javafx.application.Platform;
 import networking.client.TeamTable;
 import physics.Bullet;
 import players.GeneralPlayer;
@@ -101,7 +103,10 @@ public class UDPClient extends Thread {
 							   break;
 					case '4' : updateBulletAction(receivedPacket);
 							   break;
+					case '5' : endGameAction();
+							   break;
 					case '6' : getRemainingTime(receivedPacket);
+							   break;
 
 
 				}
@@ -114,6 +119,16 @@ public class UDPClient extends Thread {
 		}
 		clientSocket.close();
 		if(debug) System.err.println("Socket closed");
+	}
+
+	private void endGameAction() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				m.transitionTo(Menu.EndGame, 0);
+			}
+		});
+		
 	}
 
 	/**
@@ -171,6 +186,9 @@ public class UDPClient extends Thread {
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
+		System.out.println("Red score: " + redScore);
+		System.out.println("Blue score: " + blueScore);
+		
 		//do stuff here to update the GUI
 	}
 
@@ -189,35 +207,21 @@ public class UDPClient extends Thread {
 		//get all the bullets
 		String[] data = text.split(":");
 
-		System.out.print("Received bullets: " );
+		if (bulletDebug){
+			System.out.print("Received bullets: " );
 
-		System.out.print("Received bullets: " );
+			System.out.print("Received bullets: " );
 
-		for(int i = 0; i < data.length; i++){
-			if (data[i].isEmpty())
-				System.out.print("EMPTY ");
-			else
-				System.out.print(data[i] + " ");
-		}
+			for(int i = 0; i < data.length; i++){
+				if (data[i].isEmpty())
+					System.out.print("EMPTY ");
+				else
+					System.out.print(data[i] + " ");
+			}
+			
+		}		
 
 		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
-//		System.out.print("Just the bullets: ");
-//
-//		for(int i = 0; i < bullets.length; i++){
-//			if (bullets[i].isEmpty())
-//				System.out.print("EMPTY ");
-//			else
-//				System.out.print(bullets[i] + " ");
-//		}
-
-
-		/*for(int i = 0; i < bullets.length; i++){
-			if (bullets[i].isEmpty())
-				System.out.print("EMPTY ");
-			else
-				System.out.print(bullets[i] + " ");
-		}*/
-
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateBullets(id, bullets);

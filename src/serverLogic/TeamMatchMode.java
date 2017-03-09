@@ -14,7 +14,7 @@ import logic.RoundTimer;
 public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
-	private static final long gameTime = 10; // in seconds
+	private static final long gameTime = 60; // in seconds
 	
 	//debugging
 	private boolean debug = false;
@@ -51,10 +51,10 @@ public class TeamMatchMode extends GameMode {
 	 */
 	@Override
 	public Team whoWon() {
-		if (getFirstTeam().getScore() > getSecondTeam().getScore())
-			return getFirstTeam();
-		else if (getFirstTeam().getScore() < getSecondTeam().getScore())
-			return getSecondTeam();
+		if (getRedTeam().getScore() > getBlueTeam().getScore())
+			return getRedTeam();
+		else if (getRedTeam().getScore() < getBlueTeam().getScore())
+			return getBlueTeam();
 		else{
 			//allocate 30 more seconds to the game.
 			timer = new RoundTimer(10);

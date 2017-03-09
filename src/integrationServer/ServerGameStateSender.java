@@ -42,23 +42,10 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
-		    	   sendRemainingTime();
-
-
-		       }
-		     };
-
-		ScheduledFuture<?> senderHandler =
-				scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
-
-
-		//sending just twice per second for less important actions
-		Runnable rareSender = new Runnable() {
-		       public void run() {
-		    	   System.out.println("Rare sender runs");
-		    	   frames ++;
 		    	   updateScore();
 
+		    	   sendRemainingTime();
+		    	   
 		    	   if(gameLoop.getGame().isGameFinished()){
 
 		    		   udpServer.sendToAll("5", lobbyId);
@@ -67,8 +54,8 @@ public class ServerGameStateSender {
 		       }
 		     };
 
-		ScheduledFuture<?> rareSenderHandler =
-				scheduler.scheduleAtFixedRate(sender, 0, 50, TimeUnit.MILLISECONDS);
+		ScheduledFuture<?> senderHandler =
+				scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
 
 		//for testing purposes:
 
@@ -132,7 +119,7 @@ public class ServerGameStateSender {
 
 	public void updateScore(){
 		//Protocol: "3:<redTeamScore>:<blueTeamScore>
-		String toBeSent = "3:" +  gameLoop.getGame().getFirstTeam().getScore() + ":" + gameLoop.getGame().getSecondTeam().getScore();
+		String toBeSent = "3:" +  gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
 
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}

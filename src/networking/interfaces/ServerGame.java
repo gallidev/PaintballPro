@@ -107,11 +107,11 @@ public class ServerGame {
 	}
 
 	public ArrayList<ServerMinimumPlayer> getRedTeamPlayers(){
-		return game.getFirstTeam().getMembers();
+		return game.getRedTeam().getMembers();
 	}
 
 	public ArrayList<ServerMinimumPlayer> getBlueTeamPlayers(){
-		return game.getSecondTeam().getMembers();
+		return game.getBlueTeam().getMembers();
 	}
 
 	public ArrayList<ServerMinimumPlayer> getAllPlayers(){
