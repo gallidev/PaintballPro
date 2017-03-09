@@ -111,20 +111,10 @@ public class GUIManager {
                     if (localServerCode) {
                     	establishLocalServerConnection();
                     	
-                    	//System.out.println("Attempting to send play mode in GUI Manager");
                         c.getSender().sendMessage("Play:Mode:1");
-                        //System.out.println("Sent play mode in GUI Manager");
                         
                         audio.startMusic(audio.music.track1);
-                        
-                        try {
-							Thread.sleep(1000);
-							r = new Renderer("elimination", c.getReceiver(), this);
-	                        s.setScene(r);
-						} catch (InterruptedException e) {
-							System.err.println("Thread can't sleep in gui manager");
-						}
-                        
+	                    s.setScene(r);
                         
                     } else {
                         audio.startMusic(audio.music.track1);
@@ -142,7 +132,6 @@ public class GUIManager {
                     	establishLocalServerConnection();
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.track1);
-                        r = new Renderer("ctf", c.getReceiver(), this);
                         s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
@@ -360,5 +349,9 @@ public class GUIManager {
     public void setBlueScore(int blueScore) {
         this.blueScore = blueScore;
         notifyGameChanged();
+    }
+    
+    public void setRenderer(Renderer r){
+    	this.r = r;
     }
 }

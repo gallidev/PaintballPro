@@ -1,24 +1,20 @@
 package networking.client;
 
-import enums.Menu;
-import enums.TeamEnum;
-import gui.GUIManager;
-import integrationClient.ClientGameStateReceiver;
-import integrationClient.ClientInputSender;
-import javafx.application.Platform;
-import networking.game.UDPClient;
-import physics.CollisionsHandler;
-import players.ClientLocalPlayer;
-import players.GeneralPlayer;
-import players.GhostPlayer;
-import players.PhysicsClientPlayer;
-import rendering.ImageFactory;
-import rendering.Map;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import enums.Menu;
+import enums.TeamEnum;
+import gui.GUIManager;
+import integrationClient.ClientGameStateReceiver;
+import javafx.application.Platform;
+import networking.game.UDPClient;
+import players.GhostPlayer;
+import rendering.ImageFactory;
+import rendering.Map;
+import rendering.Renderer;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -234,17 +230,21 @@ public class ClientReceiver extends Thread {
 		}
 		else{
 			if (gameMode == 1){
+				Renderer r = new Renderer("elimination", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						m.setRenderer(r);
 						m.transitionTo(Menu.EliminationSingle, null);
 					}
 				});
 			}
 			else{
+				Renderer r = new Renderer("ctf", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						m.setRenderer(r);
 						m.transitionTo(Menu.CTFSingle, null);
 					}
 				});
