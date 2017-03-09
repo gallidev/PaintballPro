@@ -3,8 +3,6 @@ package gui;
 import enums.Menu;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -139,6 +137,10 @@ public class SettingsMenu {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				s.setResolution(newValue);
+				String[] resolution = newValue.split("x");
+				m.getStage().setWidth(Double.parseDouble(resolution[0]));
+				m.getStage().setHeight(Double.parseDouble(resolution[1]));
+				m.getStage().centerOnScreen();
 			}
 		});
 

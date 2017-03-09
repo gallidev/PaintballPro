@@ -26,6 +26,8 @@ class HeadUpDisplay extends SubScene
 		this.guiManager = guiManager;
 		view.setStyle("-fx-background-color: transparent");
 		view.getStylesheets().add("styles/menu.css");
+//		view.setScaleX(Renderer.view.getScaleX());
+//		view.setScaleY(Renderer.view.getScaleY());
 
 		Circle redTeam = new Circle(view.getWidth() / 64, Color.RED),
 				blueTeam = new Circle(view.getWidth() / 64, Color.BLUE);

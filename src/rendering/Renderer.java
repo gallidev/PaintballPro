@@ -105,12 +105,6 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				updateView();
-				if(now - lastSecond >= 1000000000)
-				{
-					hud.tick();
-					lastSecond = now;
-				}
-
 				for(GeneralPlayer player : players)
 				{
 					for(Bullet pellet : player.getBullets())
@@ -128,6 +122,12 @@ public class Renderer extends Scene
 						}
 					}
 					player.tick();
+				}
+
+				if(now - lastSecond >= 1000000000)
+				{
+					hud.tick();
+					lastSecond = now;
 				}
 			}
 		};
@@ -287,6 +287,9 @@ public class Renderer extends Scene
 
 		view.setStyle("-fx-background-color: black;");
 		view.getStylesheets().add("styles/menu.css");
+		String[] resolution = GUIManager.getUserSettings().getResolution().split("x");
+		view.setScaleX(Double.parseDouble(resolution[0]) / 1024);
+		view.setScaleY(Double.parseDouble(resolution[1]) / 576);
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
@@ -312,7 +315,7 @@ public class Renderer extends Scene
 
 	private void updateView()
 	{
-		view.relocate((getWidth() / 2) - playerHeadX - player.getLayoutX(), (getHeight() / 2) - playerHeadY - player.getLayoutY());
+		view.relocate(((getWidth() / 2) - playerHeadX - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - player.getLayoutY()) * view.getScaleY());
 		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
 		if(view.getChildren().contains(pauseMenu))

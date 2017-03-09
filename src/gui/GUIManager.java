@@ -31,8 +31,8 @@ public class GUIManager {
     // automatically save the changed preferences
     private static UserSettings user = UserSettingsManager.loadSettings();
     // Set the width and height of the stage
-    public final int width = 1024;
-    public final int height = 576;
+    public final double width;
+    public final double height;
     public int udpPortNumber = 0;
     private Stage s;
     private Client c;
@@ -45,13 +45,16 @@ public class GUIManager {
     private int lobbyTimeLeft = 10;
     private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
     private ArrayList<GameObserver> gameObservers = new ArrayList<>();
-    private int gameTimeLeft = 0;
-    private int redScore = 0;
-    private int blueScore = 0;
+//    private int gameTimeLeft = 0;
+//    private int redScore = 0;
+//    private int blueScore = 0;
     private AudioManager audio;
 
     public GUIManager() {
         audio = new AudioManager(user, this);
+        String[] resolution = GUIManager.getUserSettings().getResolution().split("x");
+        width = Double.parseDouble(resolution[0]);
+        height = Double.parseDouble(resolution[1]);
     }
 
     /**
@@ -329,21 +332,21 @@ public class GUIManager {
     }
 
     private void notifyGameChanged() {
-        this.gameObservers.forEach(obs -> obs.gameUpdated());
+        this.gameObservers.forEach(GameObserver::gameUpdated);
     }
 
-    public void setGameTimeLeft(int gameTimeLeft) {
-        this.gameTimeLeft = gameTimeLeft;
-        notifyGameChanged();
-    }
-
-    public void setRedScore(int redScore) {
-        this.redScore = redScore;
-        notifyGameChanged();
-    }
-
-    public void setBlueScore(int blueScore) {
-        this.blueScore = blueScore;
-        notifyGameChanged();
-    }
+//    public void setGameTimeLeft(int gameTimeLeft) {
+//        this.gameTimeLeft = gameTimeLeft;
+//        notifyGameChanged();
+//    }
+//
+//    public void setRedScore(int redScore) {
+//        this.redScore = redScore;
+//        notifyGameChanged();
+//    }
+//
+//    public void setBlueScore(int blueScore) {
+//        this.blueScore = blueScore;
+//        notifyGameChanged();
+//    }
 }
