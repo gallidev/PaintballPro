@@ -115,34 +115,34 @@ public class GUIManager {
                 case EliminationSingle:
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:1");
-                        audio.startMusic(audio.music.track1);
+                        audio.startMusic(audio.music.getRandomTrack());
                         r = new Renderer("elimination", c.getReceiver(), this);
                         s.setScene(r);
                     } else {
-                        audio.startMusic(audio.music.track1);
+                        audio.startMusic(audio.music.getRandomTrack());
                         r = new Renderer("elimination", this);
                         s.setScene(r);
                     }
                     break;
                 case EliminationMulti:
-                    audio.startMusic(audio.music.track1);
+                    audio.startMusic(audio.music.getRandomTrack());
                     r = new Renderer("elimination", c.getReceiver(), this);
                     s.setScene(r);
                     break;
                 case CTFSingle:
                     if (localServerCode) {
                         c.getSender().sendMessage("Play:Mode:2");
-                        audio.startMusic(audio.music.track1);
+                        audio.startMusic(audio.music.getRandomTrack());
                         r = new Renderer("ctf", c.getReceiver(), this);
                         s.setScene(r);
                     } else {
-                        audio.startMusic(audio.music.track1);
+                        audio.startMusic(audio.music.getRandomTrack());
                         r = new Renderer("ctf", this);
                         s.setScene(r);
                     }
                     break;
                 case CTFMulti:
-                    audio.startMusic(audio.music.track1);
+                    audio.startMusic(audio.music.getRandomTrack());
                     r = new Renderer("ctf", c.getReceiver(), this);
                     s.setScene(r);
                     break;

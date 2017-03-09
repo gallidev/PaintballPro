@@ -15,7 +15,7 @@ import javafx.scene.shape.Circle;
 class HeadUpDisplay extends SubScene
 {
 	static BorderPane view = new BorderPane();
-	private final Label timer = new Label("0:10"),
+	private final Label timer = new Label("3:00"),
 			redScore = new Label("0"),
 			blueScore = new Label("0");
 	private final GUIManager guiManager;
