@@ -143,7 +143,9 @@ public class GUIManager {
                     s.setScene(r);
                     break;
                 case EndGame:
-                    s.setScene(EndGameMenu.getScene(this));
+                    Renderer.destroy(r);
+                    r = null;
+                    s.setScene(EndGameMenu.getScene(this, (String)o));
                     break;
                 default:
                     throw new RuntimeException("Menu '" + menu + "' is not a valid transition");
