@@ -23,7 +23,7 @@ import serverLogic.Team;
  */
 public class GhostPlayer extends ImageView {
 
-	public double playerHeadX = 12.5, playerHeadY = 47.5;
+	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
 	private ArrayList<GhostBullet> firedBullets = new ArrayList<GhostBullet>();
 	private Rotate rotation;
 	private int playerId;

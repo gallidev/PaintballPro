@@ -4,6 +4,7 @@ import enums.TeamEnum;
 import physics.OfflinePlayer;
 import players.AIPlayer;
 import players.GeneralPlayer;
+import players.ServerMinimumPlayer;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public abstract class OfflineGameMode {
 			//create the player's team
 			ArrayList<AIPlayer> myTeamMembers = new ArrayList<>();
 			
-			for(GeneralPlayer p : player.getTeamPlayers()){
+			for(ServerMinimumPlayer p : player.getTeamPlayers()){
 				myTeamMembers.add((AIPlayer)p);
 			}
 			
@@ -42,7 +43,7 @@ public abstract class OfflineGameMode {
 			//create the opponent team
 			ArrayList<AIPlayer> enemiesMembers = new ArrayList<>();
 			
-			for(GeneralPlayer p : player.getEnemies())
+			for(ServerMinimumPlayer p : player.getEnemies())
 				enemiesMembers.add((AIPlayer)p);
 			
 			enemies = new OfflineTeam(enemiesMembers, enemiesMembers.get(0).getTeam());

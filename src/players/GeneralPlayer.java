@@ -23,7 +23,7 @@ import java.util.Random;
  */
 public abstract class GeneralPlayer extends ImageView implements GameObject{
 
-	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
+//	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
 	protected final double movementSpeed = 2;

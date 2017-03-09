@@ -19,8 +19,8 @@ import players.GhostPlayer;
 
 import java.util.ArrayList;
 
-import static players.GeneralPlayer.playerHeadX;
-import static players.GeneralPlayer.playerHeadY;
+import static players.GhostPlayer.playerHeadX;
+import static players.GhostPlayer.playerHeadY;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
@@ -140,11 +140,7 @@ public class Renderer extends Scene
 		init(guiManager, mapName);
 
 		cPlayer = receiver.getClientPlayer();
-		cPlayer.setCache(true);
-		cPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 		
-		System.out.println("Renderer: my client id " + cPlayer.getPlayerId());
-
 		ArrayList<GhostPlayer> allplayers = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 		
@@ -310,8 +306,8 @@ public class Renderer extends Scene
 	}
 
 	private void updateViewCPlayer() {
-		System.out.println("view is null in renderer: " + view == null);
-		view.relocate((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX(), (getHeight() / 2) - playerHeadY - cPlayer.getLayoutY());
+		view.setLayoutX((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX());
+		view.setLayoutY((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY());
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
