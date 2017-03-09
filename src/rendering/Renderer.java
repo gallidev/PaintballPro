@@ -13,8 +13,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import networking.client.ClientReceiver;
+import oldCode.players.GeneralPlayer;
 import physics.*;
-import players.GeneralPlayer;
 import players.GhostPlayer;
 
 import java.util.ArrayList;

@@ -13,10 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.server.ServerReceiver;
+import oldCode.players.UserPlayer;
 import physics.CollisionsHandler;
 import serverLogic.Team;
 import players.ServerMinimumPlayer;
-import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 

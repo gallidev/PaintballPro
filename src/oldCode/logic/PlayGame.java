@@ -1,11 +1,12 @@
-package serverLogic;
+package oldCode.logic;
 
 import java.util.ArrayList;
 
 import logic.GameMode;
-import players.PhysicsClientPlayer;
-import players.ServerPlayer;
+import oldCode.players.PhysicsClientPlayer;
+import oldCode.players.ServerPlayer;
 import rendering.Map;
+import serverLogic.Team;
 
 /**
  * Class to play a game in a chosen Game Mode, initialises both teams and sends

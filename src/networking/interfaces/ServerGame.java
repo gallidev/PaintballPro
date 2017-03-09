@@ -4,10 +4,10 @@ package networking.interfaces;
 import enums.TeamEnum;
 import logic.GameMode;
 import networking.game.UDPServer;
+import oldCode.logic.EscortMode;
+import oldCode.logic.KingOfTheHillMode;
 import players.ServerMinimumPlayer;
 import serverLogic.CaptureTheFlagMode;
-import serverLogic.EscortMode;
-import serverLogic.KingOfTheHillMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 

@@ -11,8 +11,8 @@ import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
+import oldCode.players.GeneralPlayer;
 import physics.Bullet;
-import players.GeneralPlayer;
 import players.GhostPlayer;
 import players.ServerMinimumPlayer;
 

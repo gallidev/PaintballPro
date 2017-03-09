@@ -9,9 +9,9 @@ import integrationServer.ServerInputReceiver;
 import networking.server.ClientTable;
 import networking.server.Lobby;
 import networking.server.LobbyTable;
+import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
 import players.ServerMinimumPlayer;
-import players.ServerPlayer;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.

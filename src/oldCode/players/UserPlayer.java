@@ -1,4 +1,4 @@
-package players;
+package oldCode.players;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Polygon;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import players.ServerMinimumPlayer;
 import rendering.Map;
 import rendering.Spawn;
 /**

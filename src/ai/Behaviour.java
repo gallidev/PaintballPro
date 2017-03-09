@@ -4,8 +4,8 @@ package ai;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import oldCode.players.GeneralPlayer;
 import players.AIPlayer;
-import players.GeneralPlayer;
 import players.ServerMinimumPlayer;
 import rendering.Map;
 

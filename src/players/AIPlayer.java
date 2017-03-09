@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ai.BehaviourManager;
 import enums.TeamEnum;
 import javafx.scene.image.Image;
-import offlineLogic.OfflineTeam;
+import oldCode.offlineLogic.OfflineTeam;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;

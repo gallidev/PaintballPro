@@ -3,7 +3,7 @@ package networking.interfaces;
 import networking.client.ClientReceiver;
 import networking.client.ClientSender;
 import networking.shared.MessageQueue;
-import players.GeneralPlayer;
+import oldCode.players.GeneralPlayer;
 
 /**
  * Client-sided version of a player, which stores the information required by each player to perform in the game.\

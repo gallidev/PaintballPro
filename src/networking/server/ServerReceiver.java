@@ -8,9 +8,9 @@ import integrationServer.ServerInputReceiver;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
+import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
 import players.ServerMinimumPlayer;
-import players.ServerPlayer;
 
 
 // Gets messages from client and puts them in a queue, for another

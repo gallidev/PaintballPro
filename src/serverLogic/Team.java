@@ -1,9 +1,8 @@
 package serverLogic;
 
 import enums.TeamEnum;
-
+import oldCode.players.ServerPlayer;
 import players.ServerMinimumPlayer;
-import players.ServerPlayer;
 
 import java.util.ArrayList;
 
