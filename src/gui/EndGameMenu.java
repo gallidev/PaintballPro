@@ -25,15 +25,36 @@ public class EndGameMenu {
         // Scores = 1:0 where 1 red : 0 blue
 
         Label endLabel = new Label("Game Ended");
+        endLabel.setStyle("-fx-font-size: 32px;");
+        GridPane endPane = MenuControls.centreInPane(endLabel);
 
-        GridPane scorePane = new GridPane();
+        GridPane scorePaneTemp = new GridPane();
         Label redLabel = new Label(scores.split(",")[0]);
+        redLabel.setStyle("-fx-text-fill: red; -fx-font-size: 32px;");
         Label dashLabel = new Label(" - ");
+        dashLabel.setStyle("-fx-font-size: 24px;");
         Label blueLabel = new Label(scores.split(",")[1]);
+        blueLabel.setStyle("-fx-text-fill: blue; -fx-font-size: 32px;");
+        scorePaneTemp.add(redLabel, 0, 0);
+        scorePaneTemp.add(dashLabel, 1, 0);
+        scorePaneTemp.add(blueLabel, 2, 0);
+        GridPane scorePane = MenuControls.centreInPane(scorePaneTemp);
 
-        scorePane.add(redLabel, 0, 0);
-        scorePane.add(dashLabel, 1, 0);
-        scorePane.add(blueLabel, 2, 0);
+        String gameStatus = "You Won!";
+        try {
+            if ((player == Team.RED &&
+                    Integer.parseInt(scores.split(",")[1]) > Integer.parseInt(scores.split(",")[0]))
+                || (player == Team.BLUE &&
+                    Integer.parseInt(scores.split(",")[0]) > Integer.parseInt(scores.split(",")[1]))) {
+                gameStatus = "You Lost!";
+            }
+        } catch (Exception e) {
+            // Shouldn't happen
+        }
+        Label gameStatusLabel = new Label(gameStatus);
+        gameStatusLabel.setStyle("-fx-font-size: 24px;");
+        GridPane gameStatusPane = MenuControls.centreInPane(gameStatusLabel);
+
 
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
@@ -47,10 +68,10 @@ public class EndGameMenu {
         mainGrid.setHgap(10);
         mainGrid.setVgap(10);
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
-        mainGrid.add(endLabel, 0, 0);
-        mainGrid.add(redLabel, 0, 2);
-        mainGrid.add(blueLabel, 0, 3);
-        mainGrid.add(options, 0, 4);
+        mainGrid.add(endPane, 0, 0);
+        mainGrid.add(gameStatusPane, 0, 1);
+        mainGrid.add(scorePane, 0, 2);
+        mainGrid.add(options, 0, 3);
 
         m.addButtonHoverSounds(mainGrid);
         Scene s = new Scene(mainGrid, m.width, m.height);
