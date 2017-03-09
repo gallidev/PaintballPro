@@ -1,6 +1,8 @@
 package rendering;
 
+import enums.Menu;
 import enums.Team;
+import gui.GUIManager;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.SubScene;
@@ -16,10 +18,12 @@ class HeadUpDisplay extends SubScene
 	private final Label timer = new Label("3:00"),
 			redScore = new Label("0"),
 			blueScore = new Label("0");
+	private final GUIManager guiManager;
 
-	HeadUpDisplay(Team playerTeam)
+	HeadUpDisplay(GUIManager guiManager, Team playerTeam)
 	{
 		super(view, Renderer.view.getWidth(), Renderer.view.getHeight());
+		this.guiManager = guiManager;
 		view.setStyle("-fx-background-color: transparent");
 		view.getStylesheets().add("styles/menu.css");
 
@@ -60,7 +64,7 @@ class HeadUpDisplay extends SubScene
 			return;
 		if(timer.getText().equals("0:00"))
 		{
-			timer.setText("BOOM!");
+			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText());
 			return;
 		}
 		String[] timeParse = timer.getText().split(":");

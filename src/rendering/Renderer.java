@@ -38,6 +38,7 @@ public class Renderer extends Scene
 	private static Map map;
 	private AnimationTimer timer;
 	private GeneralPlayer player;
+	private GUIManager guiManager;
 
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
@@ -48,7 +49,8 @@ public class Renderer extends Scene
 	public Renderer(String mapName, GUIManager guiManager)
 	{
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
-		init(guiManager, mapName);
+		this.guiManager = guiManager;
+		init(mapName);
 
 		ArrayList<GeneralPlayer> players = new ArrayList<>();
 
@@ -142,7 +144,8 @@ public class Renderer extends Scene
 	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
 	{
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
-		init(guiManager, mapName);
+		this.guiManager = guiManager;
+		init(mapName);
 
 		player = receiver.getClientPlayer();
 		view.getChildren().add(player);
@@ -276,7 +279,7 @@ public class Renderer extends Scene
 		view.getChildren().add(view.getChildren().size() - 2, imageView);
 	}
 
-	private void init(GUIManager guiManager, String mapName)
+	private void init(String mapName)
 	{
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
@@ -301,7 +304,7 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		hud = new HeadUpDisplay(player.getTeam());
+		hud = new HeadUpDisplay(guiManager, player.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
 	}
