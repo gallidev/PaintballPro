@@ -1,6 +1,7 @@
 package gui;
 
 import enums.Menu;
+import enums.Team;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,7 +20,7 @@ public class EndGameMenu {
      * @param m manager for the GUI
      * @return scene of the end game menu
      */
-    public static Scene getScene(GUIManager m, String scores) {
+    public static Scene getScene(GUIManager m, String scores, Team player) {
 
         // Scores = 1:0 where 1 red : 0 blue
 

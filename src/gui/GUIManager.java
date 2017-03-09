@@ -4,6 +4,7 @@ import audio.AudioManager;
 import audio.SFXResources;
 import enums.GameLocation;
 import enums.Menu;
+import enums.Team;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -68,7 +69,7 @@ public class GUIManager {
      * @param menu the string representation of the menu to switch to
      * @param o    an object to be passed to the target scene (usually null)
      */
-    public void transitionTo(Menu menu, Object o) {
+    public void transitionTo(Menu menu, Object... o) {
         audio.stopMusic();
         if (!menu.equals(currentScene)) {
             currentScene = menu;
@@ -97,8 +98,8 @@ public class GUIManager {
                     break;
                 case Lobby:
                     lobbyTimerStarted = false;
-                    if (o instanceof String) {
-                        if (o.equals("CTF")) {
+                    if (o[0] instanceof String) {
+                        if (o[0].equals("CTF")) {
                             c.getSender().sendMessage("Play:Mode:2");
                         } else {
                             c.getSender().sendMessage("Play:Mode:1");
@@ -143,9 +144,9 @@ public class GUIManager {
                     s.setScene(r);
                     break;
                 case EndGame:
+                    s.setScene(EndGameMenu.getScene(this, (String)o[0], (Team)o[1]));
                     Renderer.destroy(r);
                     r = null;
-                    s.setScene(EndGameMenu.getScene(this, (String)o));
                     break;
                 default:
                     throw new RuntimeException("Menu '" + menu + "' is not a valid transition");
