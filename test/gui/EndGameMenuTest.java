@@ -1,6 +1,7 @@
 package gui;
 
 import enums.Menu;
+import enums.Team;
 import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
 import javafx.scene.Scene;
@@ -17,7 +18,7 @@ public class EndGameMenuTest {
         JavaFXTestHelper.setupApplication();
 
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = EndGameMenu.getScene(m, "1,0");
+        Scene s = EndGameMenu.getScene(m, "1,0", Team.BLUE);
         m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Main Menu", s.getRoot()).fire();
         assertTrue(m.currentMenu == Menu.MainMenu);
