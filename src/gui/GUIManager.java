@@ -116,8 +116,16 @@ public class GUIManager {
                         //System.out.println("Sent play mode in GUI Manager");
                         
                         audio.startMusic(audio.music.track1);
-                        r = new Renderer("elimination", c.getReceiver(), this);
-                        s.setScene(r);
+                        
+                        try {
+							Thread.sleep(1000);
+							r = new Renderer("elimination", c.getReceiver(), this);
+	                        s.setScene(r);
+						} catch (InterruptedException e) {
+							System.err.println("Thread can't sleep in gui manager");
+						}
+                        
+                        
                     } else {
                         audio.startMusic(audio.music.track1);
                         r = new Renderer("elimination", this);

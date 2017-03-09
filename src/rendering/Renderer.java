@@ -139,13 +139,29 @@ public class Renderer extends Scene
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		init(guiManager, mapName);
 
-		System.out.println("initializing renderer...");
 		cPlayer = receiver.getClientPlayer();
 		cPlayer.setCache(true);
 		cPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+		
+		System.out.println("Renderer: my client id " + cPlayer.getPlayerId());
 
 		ArrayList<GhostPlayer> allplayers = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
+		
+		System.out.println("Renderer all players: ");
+		for(GhostPlayer p: allplayers)
+			System.out.print(p.getPlayerId() + " ");
+		System.out.println();
+		
+		System.out.println("Renderer my team: ");
+		for(GhostPlayer p: receiver.getMyTeam())
+			System.out.print(p.getPlayerId() + " ");
+		System.out.println();
+
+		
+		System.out.println("Renderer opp team: ");
+		for(GhostPlayer p: receiver.getEnemies())
+			System.out.print(p.getPlayerId() + " ");
 
 		receiver.getMyTeam().forEach(localPlayer ->
 		{
@@ -294,6 +310,7 @@ public class Renderer extends Scene
 	}
 
 	private void updateViewCPlayer() {
+		System.out.println("view is null in renderer: " + view == null);
 		view.relocate((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX(), (getHeight() / 2) - playerHeadY - cPlayer.getLayoutY());
 
 		if(view.getChildren().contains(pauseMenu))

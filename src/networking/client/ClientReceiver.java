@@ -136,7 +136,6 @@ public class ClientReceiver extends Thread {
 					//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 					//							NEW INTEGRATION BELOW
 
-					//initialize the ClientActionReceiver!!!!
 					//do stuff here according to new protocols for actions that update the client-sided player
 
 					switch(text.charAt(0)){
@@ -205,7 +204,7 @@ public class ClientReceiver extends Thread {
 
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
-
+		
 		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		udpClient.setGameStateReceiver(gameStateReceiver);
 
@@ -214,7 +213,7 @@ public class ClientReceiver extends Thread {
 
 		
 		//changing the scene
-		
+		System.out.println("single player = " + singlePlayer);
 		if (!singlePlayer){
 			if (gameMode == 1){
 				Platform.runLater(new Runnable() {
