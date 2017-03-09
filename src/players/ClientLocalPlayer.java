@@ -14,7 +14,7 @@ public class ClientLocalPlayer extends GeneralPlayer
 
 	public ClientLocalPlayer(double x, double y, int id, Team team)
 	{
-		super(x,y,id, ImageFactory.getPlayerImage(team));
+		super(x,y,id, ImageFactory.getPlayerImage(team)); 
 		rotation = new Rotate(Math.toDegrees(0.0), 0, 0, 0, Rotate.Z_AXIS);
 		getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);

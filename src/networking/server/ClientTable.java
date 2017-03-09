@@ -120,12 +120,4 @@ public class ClientTable {
 		//Null if not in the table.
 		return queueTable.get(clientID);
 	}
-	/**
-	 * Get the UDP message queue for a particular client.
-	 * @param clientID Client of ID.
-	 * @return UDP message queue.
-	 */
-	public MessageQueue getUDPqueue(int clientID) {
-		return UDPqueueTable.get(clientID);
-	}
 }

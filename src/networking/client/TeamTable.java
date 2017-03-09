@@ -18,7 +18,7 @@ public class TeamTable {
 	 */
 	public TeamTable()
 	{
-		myTeam = new ArrayList<ClientLocalPlayer>();
+		myTeam = new ArrayList<ClientLocalPlayer>(); 
 		enemies = new ArrayList<ClientLocalPlayer>();
 	}
 

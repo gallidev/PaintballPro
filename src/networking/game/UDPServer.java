@@ -28,7 +28,7 @@ public class UDPServer extends Thread{
 	 * @param clientTable Table storing all necessary client information.
 	 * @param lobby Table storing all necessary lobby information.
 	 */
-	public UDPServer(ClientTable clientTable, LobbyTable lobby) {
+	public UDPServer(ClientTable clientTable, LobbyTable lobby) { 
 		clients = clientTable;
 		this.lobbyTab = lobby;
 	}
