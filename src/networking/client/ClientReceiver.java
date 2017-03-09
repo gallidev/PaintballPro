@@ -205,7 +205,7 @@ public class ClientReceiver extends Thread {
 
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
-
+		
 		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		udpClient.setGameStateReceiver(gameStateReceiver);
 
