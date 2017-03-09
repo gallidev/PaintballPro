@@ -110,7 +110,7 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.getLayoutX();
 			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngleDegrees();
-			toBeSent += ":" + p.isVisible();
+			toBeSent += ":" + p.getVisibility();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 		}

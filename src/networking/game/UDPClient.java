@@ -161,6 +161,7 @@ public class UDPClient extends Thread {
 	private void updatePlayerAction(String text) {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if(debug)System.out.println(text);
+		
 		if(text != ""){
 			String[] actions = text.split(":");
 
@@ -172,7 +173,10 @@ public class UDPClient extends Thread {
 			boolean visibility = true;
 			if (actions[5].equals("false"))
 				visibility = false;
-
+			
+			if (visibility == false)
+				System.out.println("I'm invisible");
+			
 			if(gameStateReceiver != null){
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
 			}
@@ -186,8 +190,8 @@ public class UDPClient extends Thread {
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
-		System.out.println("Red score: " + redScore);
-		System.out.println("Blue score: " + blueScore);
+//		System.out.println("Red score: " + redScore);
+//		System.out.println("Blue score: " + blueScore);
 		
 		//do stuff here to update the GUI
 	}

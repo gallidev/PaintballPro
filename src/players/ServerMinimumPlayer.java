@@ -314,6 +314,14 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 	public TeamEnum getColour(){
 		return team;
 	}
+	
+	public synchronized boolean getVisibility(){
+		return visible;
+	}
+	
+	public synchronized void setVisibility(boolean visibility){
+		this.visible = visibility;
+	}
 
 }
 
