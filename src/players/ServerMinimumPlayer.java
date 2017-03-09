@@ -32,7 +32,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	protected double angle, lastAngle;
 	protected double mouseX, mouseY;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	protected Rotate rotation;
+	protected Rotate rotation, boundRotation;
 	protected Spawn[] spawn;
 	protected int id;
 	protected long shootTimer, spawnTimer;
@@ -69,8 +69,12 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		invincible = false;
 		visible = true;
 		this.collisionsHandler = collisionsHandler;
+		createPlayerBounds();
+		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
+		bounds.getTransforms().add(boundRotation);
+		boundRotation.setPivotX(playerHeadX);
+		boundRotation.setPivotY(playerHeadY);
 		updatePlayerBounds();
-		bounds.getTransforms().add(rotation);
 		bulletCounter = 1;
 	}
 
@@ -92,6 +96,12 @@ public abstract class ServerMinimumPlayer implements GameObject{
 
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
+
+	public void updatePlayerBounds(){
+		bounds.setLayoutX(getLayoutX());
+		bounds.setLayoutY(getLayoutY());
+		boundRotation.setAngle(Math.toDegrees(angle));
+	}
 
 	/**
 	 * Method to update the team score once a player has been eliminated.
@@ -144,7 +154,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	}
 
 	//Consists of 5 points around player
-	public void updatePlayerBounds(){
+	public void createPlayerBounds(){
 		//Point1
 		double x1 = (83 * width/120) - playerHeadX;
 		double y1 = (5 * height/255) - playerHeadY;

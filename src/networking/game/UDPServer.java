@@ -21,7 +21,7 @@ import players.ServerPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -215,9 +215,9 @@ public class UDPServer extends Thread{
 
 		if(debug) System.out.println("Input Received: "+text);
 		String[] actions = text.split(":");
-		
+
 		int id = Integer.parseInt(actions[1]);
-		
+
 		boolean up = false;
 		boolean down = false;
 		boolean left = false;
@@ -326,8 +326,8 @@ public class UDPServer extends Thread{
 					currentPlayer = p;
 		}
 		//update its location
-		currentPlayer.setX(x);
-		currentPlayer.setY(y);
+		currentPlayer.setLayoutX(x);
+		currentPlayer.setLayoutY(y);
 		currentPlayer.setAngle(angle);
 	}
 }
