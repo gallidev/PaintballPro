@@ -12,12 +12,14 @@ import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
 import physics.CollisionsHandler;
+import players.AIPlayer;
 import players.ServerBasicPlayer;
 
 import players.ServerMinimumPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
@@ -47,8 +49,13 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 	private ArrayList<ServerMinimumPlayer> players;
+	
+	//required for all players
+	Map map;
+	CollisionsHandler collisionsHandler;
 
 	private boolean debug = false;
+	private CollisionsHandler colissionsHandler;
 
 	/**
 	 * Sets passed variables and inialised some defaults.
@@ -63,6 +70,15 @@ public class Lobby {
 		currPlayerRedNum = 0;
 		id = myid;
 		players = new ArrayList<>();
+		
+		//setting up the map
+		if (PassedGameType == 1)
+			 map = Map.load("res/maps/" + "elimination" + ".json");
+		else
+			 map = Map.load("res/maps/" + "ctf" + ".json");
+		
+		//setting up the collision handler
+		collisionsHandler = new CollisionsHandler(map);
 	}
 
 	/**
@@ -121,7 +137,6 @@ public class Lobby {
 		// Add player to teams - alternate teams unless specified (when a client
 		// requests to switch teams).
 		// We check in LobbyTable if max players is reached.
-
 		int totPlayers = getCurrPlayerTotal();
 		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers / 2))) {
 			redTeam.put(currPlayerRedNum, playerToAdd);
@@ -262,18 +277,23 @@ public class Lobby {
 	}
 
 
-//	private Team convertTeam(ServerMsgReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
-//		Team newTeam = new Team();
-//		for (ServerBasicPlayer origPlayer : team.values()) {
-//			ServerMinimumPlayer player = null;
-//			if (teamNum == 1)
-//				player = new UserPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.BLUE);
-//			else
-//				player = new UserPlayer(origPlayer.getID(), receiver, 0, 0, TeamEnum.RED);
-//			newTeam.addMember(player);
-//		}
-//		return newTeam;
-//	}
+	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
+		Team newTeam = new Team(teamNum == 1 ? TeamEnum.BLUE : TeamEnum.RED);
+		for (ServerBasicPlayer origPlayer : team.values()) {
+			ServerMinimumPlayer player = null;
+			double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+			double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
+			
+			int curId = origPlayer.getID();
+			
+			if (teamNum == 1)
+				player = new UserPlayer(map.getSpawns()[curId - 1].x * 64, map.getSpawns()[curId - 1].y * 64, origPlayer.getID(), imageWidth, imageHeight, map.getSpawns(),  TeamEnum.BLUE, colissionsHandler);
+			else
+				player = new UserPlayer(map.getSpawns()[curId - 1].x * 64, map.getSpawns()[curId - 1].y * 64, origPlayer.getID(), imageWidth, imageHeight, map.getSpawns(),  TeamEnum.RED, colissionsHandler);
+			newTeam.addMember(player);
+		}
+		return newTeam;
+	}
 
 	/**
 	 * A timer, accessed by the client for game countdown.
@@ -281,7 +301,7 @@ public class Lobby {
 	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
 	 *
 	 */
-	public void timerStart(ServerReceiver receiver, UDPServer udpServer) {
+	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -301,8 +321,8 @@ public class Lobby {
 
 					}
 				}
-				playGame(receiver,udpServer);
-				startGameLoop(udpServer);
+				playGame(receiver,udpServer, gameMode);
+				startGameLoop(udpServer, gameMode);
 			}
 		});
 		t.start();
@@ -354,26 +374,39 @@ public class Lobby {
 
 	//====================NEW INTEGRATION BELOW=================================
 
-	public void playGame(ServerReceiver receiver, UDPServer udpServer){
-		red = new Team(TeamEnum.RED);
-		blue = new Team(TeamEnum.BLUE);
+	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
+		red = convertTeam(receiver, redTeam, 2);
+		blue = convertTeam(receiver, blueTeam, 1);
 
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
-		Map map = Map.load("res/maps/" + "elimination" + ".json");
+		if (debug) System.out.println("Lobby game mode: " + gameMode);
+//		
+//		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+//		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
+//		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+//
+//		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
+//		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
 
-		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
-		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
-		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
-
-		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
-		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
-
-		//add players to the teams
-		red.addMember(redPlayer);
-		blue.addMember(bluePlayer);
+//		//add players to the teams
+//		red.addMember(redPlayer);
+//		blue.addMember(bluePlayer);
+		
+		while (red.getMembersNo() < 4){
+			int newID = red.getMembersNo();
+			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID +1, map, TeamEnum.RED,collisionsHandler);
+			red.addMember(newPlayer);
+		}
+		
+		
+		while (blue.getMembersNo() < 4){
+			int newID = blue.getMembersNo() + 4;
+			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID +1, map, TeamEnum.BLUE,collisionsHandler);
+			blue.addMember(newPlayer);
+		}
 
 		collisionsHandler.setRedTeam(red);
 		collisionsHandler.setBlueTeam(blue);
@@ -393,7 +426,7 @@ public class Lobby {
 		udpServer.setInputReceiver(inputReceiver);
 
 		for (ServerMinimumPlayer p : players) {
-			String toBeSent = "2:";
+			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
 			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
@@ -403,16 +436,20 @@ public class Lobby {
 				if (aux.getPlayerId() != p.getPlayerId())
 					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 
-			receiver.sendToSpec(p.getPlayerId(), toBeSent);
+			if (p instanceof UserPlayer)
+				receiver.sendToSpec(p.getPlayerId(), toBeSent);
 		}
-
-
 
 	}
 
-	private void startGameLoop(UDPServer udpServer){
+	public void startGameLoop(UDPServer udpServer, int gameMode){
 
-		ServerGameSimulation gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
+		ServerGameSimulation gameloop = null;
+		if (gameMode == 1)
+			 gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
+		else 
+			 gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
+
 		gameloop.startExecution();
 		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
 		stateSender.setGameLoop(gameloop);

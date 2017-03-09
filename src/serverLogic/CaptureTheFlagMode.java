@@ -70,4 +70,9 @@ public class CaptureTheFlagMode extends GameMode {
 		timer.startTimer();
 	}
 
+	@Override
+	public long getRemainingTime() {
+		return timer.getTimeLeft();
+	}
+
 }

@@ -35,7 +35,9 @@ public class ServerReceiver extends Thread {
 
 	private ServerInputReceiver inputReceiver;
 
-	private boolean debug = true;
+	private boolean debug = false;
+	
+	private boolean singlePlayer;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -49,7 +51,7 @@ public class ServerReceiver extends Thread {
 	 * @param udpReceiver UDP Server sender/receiver.
 	 */
 	public ServerReceiver(int clientID, BufferedReader reader, ClientTable table, ServerSender sender,
-			LobbyTable passedGameLobby, UDPServer udpReceiver) {
+			LobbyTable passedGameLobby, UDPServer udpReceiver, boolean single) {
 		myClientsID = clientID;
 		myClient = reader;
 		clientTable = table;
@@ -58,6 +60,7 @@ public class ServerReceiver extends Thread {
 		myMsgQueue = clientTable.getQueue(myClientsID);
 		this.udpReceiver = udpReceiver;
 		this.inputReceiver = new ServerInputReceiver();
+		this.singlePlayer = single;
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class ServerReceiver extends Thread {
 				String text = myClient.readLine();
 
 				// for debugging
-				// System.out.println("ServerReceiver got : " + text);
+				if (debug) System.out.println("ServerReceiver got : " + text);
 
 				// If text isn't null and does not read "Exit:Client" do...
 				if (text != null && text.compareTo("Exit:Client") != 0) {
@@ -84,7 +87,10 @@ public class ServerReceiver extends Thread {
 					// When user specifies a game mode to play, add them to a
 					// lobby.
 					if (text.contains("Play:Mode:"))
-						playModeAction(text);
+						if (singlePlayer)
+							playModeSingleAction(text);
+						else
+							playModeAction(text);
 
 					// When user attempts to switch teams, try to switch.
 					if (text.contains("SwitchTeam"))
@@ -147,6 +153,18 @@ public class ServerReceiver extends Thread {
 
 	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 	//							NEW INTEGRATION BELOW
+	
+	private void playModeSingleAction(String text) {
+		int gameMode = Integer.parseInt(text.substring(10));
+		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
+		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+
+		lobby.switchGameStatus();
+		lobby.playGame(this, udpReceiver, gameMode);
+		lobby.startGameLoop(udpReceiver, gameMode);
+	}
+	
+	
 //	public void playerInputChanged(String text){
 //		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
 //		String[] actions = text.split(":");
@@ -199,6 +217,7 @@ public class ServerReceiver extends Thread {
 	 * clients.
 	 */
 
+
 	/**
 	 * Retrieve the username for a particular client.
 	 */
@@ -231,6 +250,7 @@ public class ServerReceiver extends Thread {
 	 * @param text Text passed to server, parsed for input.
 	 */
 	private void playModeAction(String text) {
+		
 		int gameMode = Integer.parseInt(text.substring(10));
 		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
@@ -238,7 +258,7 @@ public class ServerReceiver extends Thread {
 		// lobby.timerStart(this);
 		if (curTotal == 2) {
 			lobby.switchGameStatus();
-			lobby.timerStart(this, udpReceiver);
+			lobby.timerStart(this, udpReceiver, gameMode);
 		}
 	}
 

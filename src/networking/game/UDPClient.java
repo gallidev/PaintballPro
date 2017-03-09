@@ -25,6 +25,7 @@ public class UDPClient extends Thread {
 
 	private boolean debug = false;
 	private int clientID;
+	private String nickname;
 
 	DatagramSocket clientSocket;
 	InetAddress IPAddress;
@@ -44,13 +45,14 @@ public class UDPClient extends Thread {
 	 * @param guiManager Manager of GUI.
 	 * @param teams Both client's and opposing teams.
 	 */
-	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum)
+	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum, String nickname)
 	{
 		int port = portNum;
 		// 9877
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
+		this.nickname = nickname;
 
 		if(debug) System.out.println("Making new UDP Client");
 
@@ -71,7 +73,7 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			if(debug) System.err.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 	}
 
@@ -81,6 +83,7 @@ public class UDPClient extends Thread {
 	 */
 	public void run()
 	{
+		if(debug) System.out.println("My nickname is: " + nickname);
 		try{
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -99,6 +102,8 @@ public class UDPClient extends Thread {
 							   break;
 					case '4' : updateBulletAction(receivedPacket);
 							   break;
+					case '6' : getRemainingTime(receivedPacket);
+
 
 				}
 			}
@@ -122,13 +127,13 @@ public class UDPClient extends Thread {
 			if(debug) System.out.println("Attempting to send:"+msg);
 			byte[] sendData = new byte[1024];
 			sendData = msg.getBytes();
-			if(debug) System.out.println("sendData Length: "+ sendData.length);
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 19876);
 			clientSocket.send(sendPacket);
 		}
 		catch(Exception e)
 		{
-			//e.printStackTrace(System.out);
+			if (debug) System.out.println("Exception in sendMessage");
+			e.printStackTrace();
 			if(debug) System.err.println(e.getStackTrace());
 		}
 	}
@@ -173,6 +178,9 @@ public class UDPClient extends Thread {
 
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
 		this.gameStateReceiver = gameStateReceiver;
+		
+		//set the corresponding GhostPlayer's nickname
+		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 
 	public void updateBulletAction(String text){
@@ -182,6 +190,9 @@ public class UDPClient extends Thread {
 
 		//get all the bullets
 		String[] data = text.split(":");
+		
+		System.out.print("Received bullets: " );
+		
 		System.out.print("Received bullets: " );
 
 		for(int i = 0; i < data.length; i++){
@@ -202,14 +213,28 @@ public class UDPClient extends Thread {
 //		}
 
 
-		System.out.println();
+		/*for(int i = 0; i < bullets.length; i++){
+			if (bullets[i].isEmpty())
+				System.out.print("EMPTY ");
+			else 
+				System.out.print(bullets[i] + " ");
+		}*/
+			
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateBullets(id, bullets);
 		}
 	}
+	
+	private void getRemainingTime(String sentence) {
 
+		String time = sentence.split(":")[1];
 
+		//do stuff here to update the UI
+		
+		if (debug) System.out.println("remaining time on client: " + time);
+		
+	}
 
 
 	/**

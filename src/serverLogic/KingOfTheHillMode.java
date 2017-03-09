@@ -27,4 +27,10 @@ public class KingOfTheHillMode extends GameMode {
 		
 	}
 
+	@Override
+	public long getRemainingTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

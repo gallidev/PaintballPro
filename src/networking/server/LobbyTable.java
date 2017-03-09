@@ -68,7 +68,7 @@ public class LobbyTable {
 		}
 		player.setAllocatedLobby(lobbyAllocated);
 		if (this.getLobby(lobbyAllocated).isMaxPlayersReached()) {
-			this.getLobby(lobbyAllocated).timerStart(receiver,udpReceiver);
+			this.getLobby(lobbyAllocated).timerStart(receiver,udpReceiver, gameMode);
 			receiver.sendToAll("TimerStart");
 		}
 		String redMems = "Ret:Red:" + this.getLobby(lobbyAllocated).getTeam(2);

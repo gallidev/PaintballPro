@@ -6,6 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.AIPlayer;
 import players.GeneralPlayer;
+import players.ServerMinimumPlayer;
 import rendering.Map;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public abstract class Behaviour {
     protected long timer = 0;
     protected long delay = 3000;
     protected Random rand;
-    protected ArrayList<GeneralPlayer> enemies;
-    protected GeneralPlayer closestEnemy;
+    protected ArrayList<ServerMinimumPlayer> enemies;
+    protected ServerMinimumPlayer closestEnemy;
     protected double angle;
     protected double closestX, closestY;
     protected Pathfinding pathfinder;
@@ -27,7 +28,7 @@ public abstract class Behaviour {
         this.ai = ai;
         this.map = ai.getMap();
         this.angle = 0.0;
-        this.enemies = new ArrayList<GeneralPlayer>();
+        this.enemies = new ArrayList<ServerMinimumPlayer>();
         rand = new Random();
         this.pathfinder = pathfinder;
     }
@@ -47,7 +48,7 @@ public abstract class Behaviour {
 
         public void updateAngle(){
             double minDistance = Double.MAX_VALUE;
-            for(GeneralPlayer enemy: enemies){
+            for(ServerMinimumPlayer enemy: enemies){
                 double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
                 if(temp < minDistance){
                     closestEnemy = enemy;

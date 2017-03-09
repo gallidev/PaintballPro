@@ -42,6 +42,9 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
+		    	   sendRemainingTime();
+
+
 		       }
 		     };
 
@@ -52,6 +55,7 @@ public class ServerGameStateSender {
 		//sending just twice per second for less important actions
 		Runnable rareSender = new Runnable() {
 		       public void run() {
+		    	   System.out.println("Rare sender runs");
 		    	   frames ++;
 		    	   updateScore();
 
@@ -81,27 +85,32 @@ public class ServerGameStateSender {
 
 	}
 
+	private void sendRemainingTime() {
+		//Protocol: 6:<remaining seconds>
+		String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
+
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
 		for(ServerMinimumPlayer p : players){
 
+				String toBeSent = "4:" + p.getPlayerId();
 
-			String toBeSent = "4:" + p.getPlayerId();
-			boolean haveToSend = false;
-			for(Bullet bullet : p.getBullets())
-			{
-				if(bullet.isActive())
+				boolean haveBullets = false;
+				for(Bullet bullet : p.getBullets())
 				{
-					toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
-					haveToSend = true;
+					if(bullet.isActive())
+					{
+						haveBullets = true;
+						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
+					}
 				}
-			}
-			if(haveToSend){
-				System.out.println("Bullet msg sent from server " + toBeSent);
-				udpServer.sendToAll(toBeSent, lobbyId);
-			}
-
+				//System.out.println("Bullet msg sent from server " + toBeSent);
+				if (haveBullets)
+					udpServer.sendToAll(toBeSent, lobbyId);
 		}
 	}
 
@@ -111,8 +120,8 @@ public class ServerGameStateSender {
 		for(ServerMinimumPlayer p : players){
 			String toBeSent = "1:" + p.getPlayerId();
 
-			toBeSent += ":" + p.getX();
-			toBeSent += ":" + p.getY();
+			toBeSent += ":" + p.getLayoutX();
+			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngleDegrees();
 			toBeSent += ":" + p.isVisible();
 

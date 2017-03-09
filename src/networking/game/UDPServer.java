@@ -59,7 +59,6 @@ public class UDPServer extends Thread{
 			      serverSocket.receive(receivePacket);
 			      if(debug) System.out.println("packetLength: " + receivePacket.getLength());
 			      String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
-
 			      if(debug) System.out.println("Packet received with text:"+sentence);
 
 			      InetAddress IPAddress;

@@ -29,8 +29,8 @@ public class UserPlayer extends ServerMinimumPlayer{
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated)
 		{
-			lastX = getX();
-			lastY = getY();
+			lastX = getLayoutX();
+			lastY = getLayoutY();
 			lastAngle = angle;
 			updatePosition();
 			updateShooting();
@@ -61,24 +61,24 @@ public class UserPlayer extends ServerMinimumPlayer{
 	{
 		//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 		if(up && !collUp){
-			setY(getY() - movementSpeed);
+			setLayoutY(getLayoutY() - movementSpeed);
 		}else if(!up && collUp){
-			setY(getY() + movementSpeed);
+			setLayoutY(getLayoutY() + movementSpeed);
 		}
 		if(down && !collDown){
-			setY(getY() + movementSpeed);
+			setLayoutY(getLayoutY() + movementSpeed);
 		}else if(!down && collDown){
-			setY(getY() - movementSpeed);
+			setLayoutY(getLayoutY() - movementSpeed);
 		}
 		if(left && !collLeft) {
-			setX(getX() - movementSpeed);
+			setLayoutX(getLayoutX() - movementSpeed);
 		} else if(!left && collLeft){
-			setX(getX() + movementSpeed);
+			setLayoutX(getLayoutX() + movementSpeed);
 		}
 		if(right && !collRight){
-			setX(getX() + movementSpeed);
+			setLayoutX(getLayoutX() + movementSpeed);
 		}else if (!right && collRight){
-			setX(getX() - movementSpeed);
+			setLayoutX(getLayoutX() - movementSpeed);
 		}
 	}
 
