@@ -326,8 +326,8 @@ public class UDPServer extends Thread{
 					currentPlayer = p;
 		}
 		//update its location
-		currentPlayer.setX(x);
-		currentPlayer.setY(y);
+		currentPlayer.setLayoutX(x);
+		currentPlayer.setLayoutY(y);
 		currentPlayer.setAngle(angle);
 	}
 }

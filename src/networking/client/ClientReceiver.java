@@ -18,6 +18,7 @@ import rendering.Map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -39,7 +40,10 @@ public class ClientReceiver extends Thread {
 	private UDPClient udpClient;
 	private TeamTable teams;
 
+	private boolean singlePlayer;
+	
 	private boolean debug = false;
+	
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -106,6 +110,11 @@ public class ClientReceiver extends Thread {
 						if(debug) System.out.println("Lobby has " + time + " left");
 					}
 
+					else if (text.contains("Single")){
+						singlePlayer = true;
+						if (debug) System.out.println("Single player: " + singlePlayer);
+					}
+					
 					// Game status
 					else if (text.contains("StartGame"))
 						startGameAction(text);
@@ -154,6 +163,9 @@ public class ClientReceiver extends Thread {
 	public void startGameAction(String text) {
 		// get all the relevant data from the message : 2:<gameMode>:2:Red:1:Red:
 		String[] data = text.split(":");
+		
+		System.out.println("Start game info : ");
+		System.out.println(Arrays.toString(data));
 
 		int gameMode = Integer.parseInt(data[1]);
 		clientID = Integer.parseInt(data[2]);
@@ -200,22 +212,46 @@ public class ClientReceiver extends Thread {
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
-		if (gameMode == 1){
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					m.transitionTo(Menu.EliminationMulti, null);
-				}
-			});
+		
+		//changing the scene
+		
+		if (!singlePlayer){
+			if (gameMode == 1){
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						m.transitionTo(Menu.EliminationMulti, null);
+					}
+				});
+			}
+			else{
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						m.transitionTo(Menu.CTFMulti, null);
+					}
+				});
+			}
 		}
 		else{
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					m.transitionTo(Menu.CTFMulti, null);
-				}
-			});
+			if (gameMode == 1){
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						m.transitionTo(Menu.EliminationSingle, null);
+					}
+				});
+			}
+			else{
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						m.transitionTo(Menu.CTFSingle, null);
+					}
+				});
+			}
 		}
+		
 
 	}
 
