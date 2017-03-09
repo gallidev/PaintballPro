@@ -177,7 +177,7 @@ public class UDPClient extends Thread {
 
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
 		this.gameStateReceiver = gameStateReceiver;
-		
+
 		//set the corresponding GhostPlayer's nickname
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
@@ -189,9 +189,9 @@ public class UDPClient extends Thread {
 
 		//get all the bullets
 		String[] data = text.split(":");
-		
+
 		System.out.print("Received bullets: " );
-		
+
 		System.out.print("Received bullets: " );
 
 		for(int i = 0; i < data.length; i++){
@@ -215,24 +215,24 @@ public class UDPClient extends Thread {
 		/*for(int i = 0; i < bullets.length; i++){
 			if (bullets[i].isEmpty())
 				System.out.print("EMPTY ");
-			else 
+			else
 				System.out.print(bullets[i] + " ");
 		}*/
-			
+
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateBullets(id, bullets);
 		}
 	}
-	
+
 	private void getRemainingTime(String sentence) {
 
 		String time = sentence.split(":")[1];
 
 		//do stuff here to update the UI
-		
+
 		if (debug) System.out.println("remaining time on client: " + time);
-		
+
 	}
 
 

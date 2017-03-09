@@ -1,6 +1,8 @@
 package players;
 
 import enums.TeamEnum;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
@@ -19,20 +21,18 @@ import java.util.List;
 /**
  *  The player, represented by an ImageView
  */
-public abstract class ServerMinimumPlayer implements GameObject{
+public abstract class ServerMinimumPlayer extends ImageView implements GameObject{
 
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
 	protected final double movementSpeed = 2;
-	protected double x, y;
-	protected double width, height;
 	protected boolean up, down, left, right, shoot, eliminated, invincible, visible;
 	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle, lastAngle;
 	protected double mouseX, mouseY;
 	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	protected Rotate rotation;
+	protected Rotate rotation, boundRotation;
 	protected Spawn[] spawn;
 	protected int id;
 	protected long shootTimer, spawnTimer;
@@ -48,14 +48,16 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	 * @param x The x-coordinate of the player with respect to the map
 	 * @param y The y-coordinate of the player with respect to the map
 	 * @param id The id of the player
+	 * @param image
 	 * @param map The map in which the player is playing
 	 * @param Team The team of the player
 	 *
 	 */
-	public ServerMinimumPlayer(double x, double y, int id, double width, double height,  Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler){
-
-		this.x = x;
-		this.y = y;
+	public ServerMinimumPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image){
+		super(image);
+		this.angle = 0;
+		setLayoutX(x);
+		setLayoutY(y);
 		this.lastX = x;
 		this.lastY = y;
 		this.lastAngle = angle;
@@ -69,8 +71,12 @@ public abstract class ServerMinimumPlayer implements GameObject{
 		invincible = false;
 		visible = true;
 		this.collisionsHandler = collisionsHandler;
+		createPlayerBounds();
+		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
+		bounds.getTransforms().add(boundRotation);
+		boundRotation.setPivotX(playerHeadX);
+		boundRotation.setPivotY(playerHeadY);
 		updatePlayerBounds();
-		bounds.getTransforms().add(rotation);
 		bulletCounter = 1;
 	}
 
@@ -93,6 +99,7 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
 
+
 	/**
 	 * Method to update the team score once a player has been eliminated.
 	 * Will be implemented differently depending on the player type:
@@ -108,8 +115,8 @@ public abstract class ServerMinimumPlayer implements GameObject{
 			int i = 0;
 
 			if(team == TeamEnum.BLUE) i = 4;
-			x = spawn[i].x * 64 ;
-			y = spawn[i].y * 64 ;
+			setLayoutX( spawn[i].x * 64 );
+			setLayoutY( spawn[i].y * 64 );
 			eliminated = false;
 			invincible = true;
 			spawnTimer = System.currentTimeMillis();
@@ -144,50 +151,55 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	}
 
 	//Consists of 5 points around player
-	public void updatePlayerBounds(){
-		//Point1
-		double x1 = (83 * width/120) - playerHeadX;
-		double y1 = (5 * height/255) - playerHeadY;
-		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
-		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx1 = x + x2 + playerHeadX;
-		double boundy1 = y + y2 + playerHeadY;
-		//Point2
-		x1 = (width) - playerHeadX;
-		y1 = (233 * height/255) - playerHeadY;
-		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
-		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx2 = x + x2 + playerHeadX;
-		double boundy2 = y + y2 + playerHeadY;
-		//Point3
-		x1 = (57 * width/120) - playerHeadX;
-		y1 = (height) - playerHeadY;
-		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
-		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx3 = x + x2 + playerHeadX;
-		double boundy3 = x + y2 + playerHeadY;
-		//Point4
-		x1 = (1 * width/120) - playerHeadX;
-		y1 = (183 * height/255) - playerHeadY;
-		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
-		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx4 = x + x2 + playerHeadX;
-		double boundy4 = y + y2 + playerHeadY;
-		//Point5
-		x1 = (1 * width/120) - playerHeadX;
-		y1 = (128 * height/255) - playerHeadY;
-		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
-		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-		double boundx5 = x + x2 + playerHeadX;
-		double boundy5 = y + y2 + playerHeadY;
-		bounds.getPoints().clear();
-		bounds.getPoints().addAll(boundx1, boundy1,
-				boundx2, boundy2,
-				boundx3, boundy3,
-				boundx4, boundy4,
-				boundx5, boundy5);
+	//Point1
+	public void createPlayerBounds(){
+			double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
+			double y1 = (5 * getImage().getHeight()/255) - playerHeadY;
+			double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+			double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+			double boundx1 = x2 + playerHeadX;
+			double boundy1 = y2 + playerHeadY;
+			//Point2
+			x1 = (getImage().getWidth()) - playerHeadX;
+			y1 = (233 * getImage().getHeight()/255) - playerHeadY;
+			x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+			y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+			double boundx2 = x2 + playerHeadX;
+			double boundy2 = y2 + playerHeadY;
+			//Point3
+			x1 = (57 * getImage().getWidth()/120) - playerHeadX;
+			y1 = (getImage().getHeight()) - playerHeadY;
+			x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+			y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+			double boundx3 = x2 + playerHeadX;
+			double boundy3 = y2 + playerHeadY;
+			//Point4
+			x1 = (1 * getImage().getWidth()/120) - playerHeadX;
+			y1 = (183 * getImage().getHeight()/255) - playerHeadY;
+			x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+			y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+			double boundx4 = x2 + playerHeadX;
+			double boundy4 = y2 + playerHeadY;
+			//Point5
+			x1 = (1 * getImage().getWidth()/120) - playerHeadX;
+			y1 = (128 * getImage().getHeight()/255) - playerHeadY;
+			x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+			y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+			double boundx5 = x2 + playerHeadX;
+			double boundy5 = y2 + playerHeadY;
+			bounds.getPoints().clear();
+			bounds.getPoints().addAll(boundx1, boundy1,
+					boundx2, boundy2,
+					boundx3, boundy3,
+					boundx4, boundy4,
+					boundx5, boundy5);
+		}
 
-	}
+		public void updatePlayerBounds(){
+			bounds.setLayoutX(getLayoutX());
+			bounds.setLayoutY(getLayoutY());
+			boundRotation.setAngle(Math.toDegrees(angle));
+		}
 
 
 	/**
@@ -197,14 +209,14 @@ public abstract class ServerMinimumPlayer implements GameObject{
 	 */
 	public void shoot(){
 
-		double x1 = (83 * width/120) - playerHeadX;
-		double y1 = (12 * height/255) - playerHeadY;
+		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
+		double y1 = (12 * getImage().getHeight()/255) - playerHeadY;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 
-		double bulletX = x + x2 + playerHeadX;
-		double bulletY = y + y2 + playerHeadY;
+		double bulletX = getLayoutX() + x2 + playerHeadX;
+		double bulletY = getLayoutY() + y2 + playerHeadY;
 
 		Bullet bullet = new Bullet(bulletCounter,bulletX, bulletY, angle, team);
 
@@ -223,30 +235,6 @@ public abstract class ServerMinimumPlayer implements GameObject{
 
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
-
-	public double getLayoutX(){
-		return this.x;
-	}
-
-	public double getLayoutY(){
-		return this.y;
-	}
-
-	public void setLayoutX(double x){
-		this.x = x;
-	}
-
-	public void setLayoutY(double y){
-		this.y = y;
-	}
-
-	public double getWidth(){
-		return this.width;
-	}
-
-	public double getHeight(){
-		return this.height;
-	}
 
 	public List<Bullet> getBullets(){
 		return this.firedBullets;
@@ -326,10 +314,6 @@ public abstract class ServerMinimumPlayer implements GameObject{
 
 	public TeamEnum getColour(){
 		return team;
-	}
-
-	public boolean isVisible(){
-		return visible;
 	}
 
 }

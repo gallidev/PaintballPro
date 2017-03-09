@@ -9,6 +9,7 @@ import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
 import integrationServer.ServerInputReceiver;
+import javafx.scene.image.Image;
 import logic.BlueSpawnsUtil;
 import logic.RedSpawnsUtil;
 import logic.RoundTimer;
@@ -51,7 +52,7 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 	private ArrayList<ServerMinimumPlayer> players;
-	
+
 	//required for all players
 	Map map;
 	//CollisionsHandler collisionsHandler;
@@ -72,13 +73,13 @@ public class Lobby {
 		currPlayerRedNum = 0;
 		id = myid;
 		players = new ArrayList<>();
-		
+
 		//setting up the map
 		if (PassedGameType == 1)
 			 map = Map.load("res/maps/" + "elimination" + ".json");
 		else
 			 map = Map.load("res/maps/" + "ctf" + ".json");
-		
+
 		//setting up the collision handler
 		collissionsHandler = new CollisionsHandler(map);
 		red = new Team(TeamEnum.RED);
@@ -149,7 +150,7 @@ public class Lobby {
 			blueTeam.put(currPlayerBlueNum, playerToAdd);
 			currPlayerBlueNum++;
 		}
-		
+
 	}
 	/**
 	 * Remove player from a team and re-order other team members as appropriate.
@@ -284,26 +285,31 @@ public class Lobby {
 	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team(teamNum == 1 ? TeamEnum.BLUE : TeamEnum.RED);
 		for (ServerBasicPlayer origPlayer : team.values()) {
-			
+
 			UserPlayer player = null;
-			double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
-			double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
-			
+
+//			double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+//			double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
+
+			Image imagePlayer = ImageFactory.getPlayerImage(TeamEnum.RED);
+
 			int serverId = origPlayer.getID();
-			
+
 			int teamMemNo = newTeam.getMembersNo();
 			int curId = 0;
-			
+
 			if (newTeam.getColour() == TeamEnum.RED)
 				curId = newTeam.getMembersNo();
 			else
 				curId = newTeam.getMembersNo() + 4;
-				
+
+
 			//provisionally hardcoded
 			if (teamNum == 1)
-				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, serverId, imageWidth, imageHeight, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler);
+				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, 2, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
 			else
-				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, serverId, imageWidth, imageHeight, map.getSpawns(),  TeamEnum.RED, collissionsHandler);
+				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, 1, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer);
+
 			newTeam.addMember(player);
 		}
 		return newTeam;
@@ -392,6 +398,7 @@ public class Lobby {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
+
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
@@ -409,6 +416,7 @@ public class Lobby {
 //			blueAIM.join();
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
+
 //		}
 //		
 //		System.out.println("Red team members:");
@@ -424,14 +432,14 @@ public class Lobby {
 
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
-		
+
 		if(debug){
 			System.out.println("Players are: ");
 			for(ServerMinimumPlayer p : players){
 				System.out.print(p.getPlayerId() + " ");
 			}
 		}
-		
+
 		ServerInputReceiver inputReceiver = new ServerInputReceiver(players);
 
 		udpServer.setInputReceiver(inputReceiver);
@@ -458,7 +466,7 @@ public class Lobby {
 		ServerGameSimulation gameloop = null;
 		if (gameMode == 1)
 			 gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
-		else 
+		else
 			 gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
 
 		gameloop.startExecution();

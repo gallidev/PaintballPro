@@ -193,7 +193,7 @@ public class Renderer extends Scene
 
 		Group displayBullets = new Group();
 
-//		view.getChildren().add(displayBullets);
+		view.getChildren().add(displayBullets);
 
 		timer = new AnimationTimer()
 		{
