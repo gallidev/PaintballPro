@@ -56,17 +56,19 @@ public class ClientGameStateReceiver {
 
 		if (p != null) { // the player is not us
 
-			ArrayList<GhostBullet> firedBullets = new ArrayList<>();
+//			ArrayList<GhostBullet> firedBullets = new ArrayList<>();
 			for (int i = 0; i < bullets.length - 2; i = i + 3) {
 
 				int bulletId = Integer.parseInt(bullets[i]);
 				double x = Double.parseDouble(bullets[i+1]);
 				double y = Double.parseDouble(bullets[i + 2]);
 
-				firedBullets.add(new GhostBullet(bulletId, x, y, p.getTeam()));
+//				firedBullets.add(new GhostBullet(bulletId, x, y, p.getTeam()));
+				p.updateSingleBullet(bulletId, x, y);
+
 			}
-			p.getFiredBullets().clear();
-			p.setFiredBullets(firedBullets);
+//			p.getFiredBullets().clear();
+//			p.setFiredBullets(firedBullets);
 		}
 	}
 	

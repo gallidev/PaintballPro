@@ -88,7 +88,7 @@ public class ServerGameStateSender {
 	private void sendRemainingTime() {
 		//Protocol: 6:<remaining seconds>
 		String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
-		
+
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 

@@ -57,6 +57,18 @@ public class GhostPlayer extends ImageView {
 		this.firedBullets = firedBullets;
 	}
 
+	public synchronized void updateSingleBullet(int bulletId, double x, double y){
+		for (int i = 0; i < this.firedBullets.size(); i ++){
+			if(this.firedBullets.get(i).getBulletId() == bulletId){
+				this.firedBullets.get(i).setX(x);
+				this.firedBullets.get(i).setY(y);
+				return;
+			}
+		}
+		GhostBullet bullet = new GhostBullet(bulletId, x, y, this.team);
+		this.firedBullets.add(bullet);
+	}
+
 	public synchronized Rotate getRotation() {
 		return rotation;
 	}
