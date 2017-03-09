@@ -17,7 +17,7 @@ public class EndGameMenuTest {
         JavaFXTestHelper.setupApplication();
 
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = EndGameMenu.getScene(m);
+        Scene s = EndGameMenu.getScene(m, "1,0");
         m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Main Menu", s.getRoot()).fire();
         assertTrue(m.currentMenu == Menu.MainMenu);

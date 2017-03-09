@@ -25,8 +25,14 @@ public class EndGameMenu {
 
         Label endLabel = new Label("Game Ended");
 
+        GridPane scorePane = new GridPane();
         Label redLabel = new Label(scores.split(",")[0]);
+        Label dashLabel = new Label(" - ");
         Label blueLabel = new Label(scores.split(",")[1]);
+
+        scorePane.add(redLabel, 0, 0);
+        scorePane.add(dashLabel, 1, 0);
+        scorePane.add(blueLabel, 2, 0);
 
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
