@@ -25,6 +25,9 @@ public class EndGameMenu {
 
         Label endLabel = new Label("Game Ended");
 
+        Label redLabel = new Label(scores.split(",")[0]);
+        Label blueLabel = new Label(scores.split(",")[1]);
+
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 m.transitionTo(Menu.MainMenu, null);
@@ -38,7 +41,9 @@ public class EndGameMenu {
         mainGrid.setVgap(10);
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
         mainGrid.add(endLabel, 0, 0);
-        mainGrid.add(options, 0, 1);
+        mainGrid.add(redLabel, 0, 2);
+        mainGrid.add(blueLabel, 0, 3);
+        mainGrid.add(options, 0, 4);
 
         m.addButtonHoverSounds(mainGrid);
         Scene s = new Scene(mainGrid, m.width, m.height);

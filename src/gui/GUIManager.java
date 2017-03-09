@@ -143,6 +143,8 @@ public class GUIManager {
                     s.setScene(r);
                     break;
                 case EndGame:
+                    Renderer.destroy(r);
+                    r = null;
                     s.setScene(EndGameMenu.getScene(this, (String)o));
                     break;
                 default:
