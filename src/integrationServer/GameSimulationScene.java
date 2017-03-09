@@ -27,12 +27,10 @@ public class GameSimulationScene extends Scene{
 		super(view);
 		Map map = Map.load("res/maps/" + "elimination" + ".json");
 
-		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
-		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
-		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
-		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
+		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map.getSpawns(), TeamEnum.RED, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED));
+		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED));
 
 		//add players to the teams
 		redTeam.addMember(redPlayer);

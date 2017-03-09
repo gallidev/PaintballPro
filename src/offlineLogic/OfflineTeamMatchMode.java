@@ -2,7 +2,6 @@ package offlineLogic;
 
 import enums.TeamEnum;
 import logic.RoundTimer;
-import physics.OfflinePlayer;
 
 /**
  * The Team Match Mode for a single player mode.
@@ -19,8 +18,8 @@ public class OfflineTeamMatchMode extends OfflineGameMode {
 	 * the rest of the team and the opponent team(both filled with AI players).
 	 * @param player The player that will be controlled by the user.
 	 */
-	public OfflineTeamMatchMode(OfflinePlayer player) {
-		super(player);
+	public OfflineTeamMatchMode() {
+		super();
 		timer = new RoundTimer(gameTime);
 	}
 

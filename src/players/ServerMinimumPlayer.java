@@ -8,7 +8,6 @@ import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandler;
-import physics.CollisionsHandlerGeneralPlayer;
 import rendering.Map;
 
 import rendering.Spawn;

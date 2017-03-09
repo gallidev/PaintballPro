@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import ai.BehaviourManager;
 import enums.TeamEnum;
+import javafx.scene.image.Image;
 import offlineLogic.OfflineTeam;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
+import rendering.Spawn;
 import serverLogic.Team;
 
 public class AIPlayer extends ServerMinimumPlayer{
@@ -23,8 +25,8 @@ public class AIPlayer extends ServerMinimumPlayer{
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler){
-		super(x, y, id, ImageFactory.getPlayerImage(team).getWidth(), ImageFactory.getPlayerImage(team).getHeight(), map.getSpawns(), team, collisionsHandler);
-		
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
+
 		//this.audio = audio;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -134,7 +136,7 @@ public class AIPlayer extends ServerMinimumPlayer{
 		return ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
 	}
 
-	public double getheight(){
+	public double getHeight(){
 		return ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 	}
 	

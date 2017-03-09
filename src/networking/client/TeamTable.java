@@ -1,8 +1,6 @@
 package networking.client;
 
 import java.util.ArrayList;
-
-import players.ClientLocalPlayer;
 import players.GhostPlayer;
 
 /**

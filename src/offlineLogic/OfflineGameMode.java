@@ -1,7 +1,6 @@
 package offlineLogic;
 
 import enums.TeamEnum;
-import physics.OfflinePlayer;
 import players.AIPlayer;
 import players.GeneralPlayer;
 import players.ServerMinimumPlayer;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public abstract class OfflineGameMode {
 
 		
-		private OfflinePlayer player;
+		//private OfflinePlayer player;
 		private OfflineTeam myTeam;
 		private OfflineTeam enemies;
 
@@ -27,24 +26,24 @@ public abstract class OfflineGameMode {
 		 * fills the rest of the player's team and the opponent team with AI players.
 		 * @param player The player which will be controlled by the user in this game.
 		 */
-		public OfflineGameMode(OfflinePlayer player) {
+		public OfflineGameMode() {
 			super();
-			this.player = player;
+			//this.player = player;
 			
 			//create the player's team
 			ArrayList<AIPlayer> myTeamMembers = new ArrayList<>();
 			
-			for(ServerMinimumPlayer p : player.getTeamPlayers()){
-				myTeamMembers.add((AIPlayer)p);
-			}
+//			for(ServerMinimumPlayer p : player.getTeamPlayers()){
+//				myTeamMembers.add((AIPlayer)p);
+//			}
 			
 			myTeam = new OfflineTeam(myTeamMembers, myTeamMembers.get(0).getTeam());
 			
 			//create the opponent team
 			ArrayList<AIPlayer> enemiesMembers = new ArrayList<>();
 			
-			for(ServerMinimumPlayer p : player.getEnemies())
-				enemiesMembers.add((AIPlayer)p);
+//			for(ServerMinimumPlayer p : player.getEnemies())
+//				enemiesMembers.add((AIPlayer)p);
 			
 			enemies = new OfflineTeam(enemiesMembers, enemiesMembers.get(0).getTeam());
 			
@@ -86,17 +85,17 @@ public abstract class OfflineGameMode {
 		 * Returns the player controlled by the user.
 		 * @return The only user-controlled player in the game.
 		 */
-		public OfflinePlayer getPlayer() {
-			return player;
-		}
+//		public OfflinePlayer getPlayer() {
+//			return player;
+//		}
 		
 		/**
 		 * Sets the player controlled by the user.
 		 * @param player
 		 */
-		public void setPlayer(OfflinePlayer player) {
-			this.player = player;
-		}
+//		public void setPlayer(OfflinePlayer player) {
+//			this.player = player;
+//		}
 		
 		/**
 		 * Returns all AI players in the same team as the user player.

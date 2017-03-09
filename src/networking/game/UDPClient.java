@@ -10,7 +10,6 @@ import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import networking.client.TeamTable;
 import physics.Bullet;
-import players.ClientLocalPlayer;
 import players.GeneralPlayer;
 import players.GhostPlayer;
 import players.ServerMinimumPlayer;
