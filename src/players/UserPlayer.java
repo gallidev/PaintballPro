@@ -4,6 +4,8 @@ import java.util.List;
 
 
 import enums.TeamEnum;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Polygon;
 import physics.Bullet;
 import physics.CollisionsHandler;
@@ -17,9 +19,9 @@ public class UserPlayer extends ServerMinimumPlayer{
     public final int widthScreen = 1024;
     public final int heightScreen = 576;
 
-	public UserPlayer(double x, double y, int id, double width, double height, Spawn[] spawn, TeamEnum team,
-			CollisionsHandler collisionsHandler) {
-		super(x, y, id, width, height, spawn, team, collisionsHandler);
+	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
+			CollisionsHandler collisionsHandler, Image image) {
+		super(x, y, id, spawn, team, collisionsHandler, image);
 	}
 
 	public void tick()
@@ -40,7 +42,8 @@ public class UserPlayer extends ServerMinimumPlayer{
 		{
 			checkSpawn();
 		}
-		//updatePlayerBounds();
+
+		updatePlayerBounds();
 		updateBullets();
 //		if(!(lastX == getX() && lastY == getY() && lastAngle == angle)){
 //			//sendServerNewPosition(getX(), getY(), angle);
@@ -87,11 +90,13 @@ public class UserPlayer extends ServerMinimumPlayer{
 	@Override
 	protected void updateAngle()
 	{
-		double deltax = mouseX + (2* playerHeadX) - widthScreen/2;
-		double deltay = heightScreen/2-  (mouseY - playerHeadY) ;
+		double deltax = mouseX  - widthScreen/2;
+		double deltay = heightScreen/2 + playerHeadY/6 -  mouseY ;
 		angle = Math.atan2(deltax, deltay);
 		double degrees = Math.toDegrees(angle);
 		rotation.setAngle(degrees);
+
+
 	}
 
 	protected void updateShooting(){

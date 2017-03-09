@@ -17,7 +17,7 @@ public class CollisionsHandler {
 	private ArrayList<Rectangle> propsWalls;
 	private ArrayList<ServerMinimumPlayer> redTeam;
 	private ArrayList<ServerMinimumPlayer> blueTeam;
-	
+
 	private Team red;
 	private Team blue;
 
@@ -34,14 +34,15 @@ public class CollisionsHandler {
 		boolean collRight = false;
 		boolean collLeft = false;
 		ArrayList<Double> angles = new ArrayList<>();
-		double playerCenterX = p.getLayoutX() + p.getWidth()/2;
-		double playerCenterY = p.getLayoutY() + p.getHeight()/2;
+		double playerCenterX = p.getLayoutX() + p.getImage().getWidth()/2;
+		double playerCenterY = p.getLayoutY() + p.getImage().getHeight()/2;
 		for(Rectangle propWall : propsWalls){
 			//it returns a path with the collision with walls
+			//System.out.println("bound player " + p.getPlayerId() + " : " + p.getPolygonBounds().toString());
 			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
 			if(tmp.getBoundsInLocal().isEmpty() == false) {
 
-				//System.out.println("Collisionssss ");
+				System.out.println("Collision of :" +  propWall.toString()+  " and " + p.getPolygonBounds());
 				double propX = propWall.getX();
 				double propY = propWall.getY();
 				double propWidth = propWall.getWidth();
@@ -93,7 +94,7 @@ public class CollisionsHandler {
 				collLeft = true;
 			}
 		}
-		//System.out.println("CollisionsHandler collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
+		//System.out.println("CollisionsHandler " + p.getPlayerId() + " collup :" + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
 		p.setCollUp(collUp);
 		p.setCollDown(collDown);
@@ -126,13 +127,13 @@ public class CollisionsHandler {
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
 					bullet.setActive(false);
 					p.beenShot();
-					
+
 					//update score
 					if (red.containsPlayer(p))
 						red.incrementScore(1);
-					else 
+					else
 						blue.incrementScore(1);
-					
+
 					return;
 				}
 			}
