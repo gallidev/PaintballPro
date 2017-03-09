@@ -104,12 +104,12 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
+				updateView();
 				if(now - lastSecond >= 1000000000)
 				{
 					hud.tick();
 					lastSecond = now;
 				}
-				updateView();
 
 				for(GeneralPlayer player : players)
 				{
@@ -313,8 +313,7 @@ public class Renderer extends Scene
 	private void updateView()
 	{
 		view.relocate((getWidth() / 2) - playerHeadX - player.getLayoutX(), (getHeight() / 2) - playerHeadY - player.getLayoutY());
-		if (hud != null)
-			hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
