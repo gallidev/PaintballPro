@@ -10,8 +10,6 @@ import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
 import integrationServer.ServerInputReceiver;
 import javafx.scene.image.Image;
-import logic.BlueSpawnsUtil;
-import logic.RedSpawnsUtil;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;

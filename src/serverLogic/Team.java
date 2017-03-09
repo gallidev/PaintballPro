@@ -83,8 +83,9 @@ public class Team {
 	 * @param teamPlayers The array of players to team.
 	 */
 	public void setMembers(ArrayList<ServerMinimumPlayer> teamPlayers) {
-		for (ServerMinimumPlayer p : teamPlayers)
-			addMember(p);
+		members = teamPlayers;
+		
+		if (!teamPlayers.isEmpty())
 		colour = teamPlayers.get(0).getColour();
 	}
 

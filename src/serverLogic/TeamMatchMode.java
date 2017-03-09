@@ -29,8 +29,6 @@ public class TeamMatchMode extends GameMode {
 	 */
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
-		if (debug) System.out.println("First team colour is : " + t1.getColour());
-		if (debug) System.out.println("second team colour is : " + t2.getColour());
 		timer = new RoundTimer(gameTime);
 	}
 

@@ -1,0 +1,73 @@
+package serverLogic;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import enums.TeamEnum;
+import logic.GameMode;
+
+public class CaptureTheFlagModeTest {
+
+	CaptureTheFlagMode game;
+	Team red;
+	Team blue;
+	
+	@Before
+	public void setUp() throws Exception {
+		red = new Team(TeamEnum.RED);
+		blue = new Team(TeamEnum.BLUE);
+		game = new CaptureTheFlagMode(red, blue);
+	}
+
+	@Test
+	public void startTest() {
+		game.start();
+		
+		assertFalse(game.isGameFinished());
+		assertTrue(game.getRemainingTime() >= 290);  
+	}
+	
+	@Test
+	public void getRemainingTimeTest(){
+		assertTrue(game.getRemainingTime() >= 290);
+		assertTrue(game.getRemainingTime() <= 300);
+	}
+	
+	@Test
+	public void flagCapturedTest() {
+		game.flagCaptured(red);
+		
+		assertTrue(game.getRedTeam().getScore() > game.getBlueTeam().getScore());
+		
+		game.getBlueTeam().incrementScore();
+		game.flagCaptured(blue);
+		assertTrue(game.getBlueTeam().getScore() > game.getRedTeam().getScore());
+		
+	}
+	
+	@Test
+	public void whoWonTest() {
+		game.getBlueTeam().incrementScore(5);
+		game.getRedTeam().incrementScore(2);
+		
+		assertTrue(game.getBlueTeam().getScore() > game.getRedTeam().getScore());
+		assertFalse(game.whoWon().getColour() == TeamEnum.RED);
+		assertTrue(game.whoWon().getColour() == TeamEnum.BLUE);
+		
+		game.getRedTeam().incrementScore(10);
+		assertTrue(game.whoWon().getColour() == TeamEnum.RED);
+		assertFalse(game.whoWon().getColour() == TeamEnum.BLUE);
+		
+		game.getBlueTeam().incrementScore(7);
+	}
+	
+	@Test
+	public void isGameFinishedTest(){
+		assertFalse(game.isGameFinished());
+	}
+}

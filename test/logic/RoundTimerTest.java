@@ -1,9 +1,9 @@
+package logic;
+
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import logic.RoundTimer;
 
 /**
  * Tester class for the timer used in all game modes.
@@ -22,7 +22,7 @@ public class RoundTimerTest {
 	 * that the timer is reliable.
 	 */
 	@Test
-	public void test() {
+	public void test() throws InterruptedException{
 		long noInterval = 0;
 		long smallInterval = 2;
 		long gameInterval = 4;
@@ -46,34 +46,37 @@ public class RoundTimerTest {
 		assertTrue(gameTimer.getTimeLeft() <= 4);
 		assertTrue(noTimer.getTimeLeft() == 0);
 
-		try {
+//		try {
 			Thread.sleep(2500);
 			assertTrue(noTimer.isTimeElapsed());
 			assertTrue(smallTimer.isTimeElapsed());
 			assertFalse(gameTimer.isTimeElapsed());
-		} catch (InterruptedException e) {
-			System.out.println("Thread couldn't sleep.");
-			System.exit(1);
-		}
+//		} catch (InterruptedException e) {
+//			System.exit(1);
+//		}
 
 		// testing the timer with the actual game time
 		System.out.println(gameTimer.getTimeLeft());
 
 		gameTimer.startTimer();
 
-		try {
+//		try {
 			Thread.sleep(4500);
 			assertTrue(noTimer.isTimeElapsed());
 			assertTrue(smallTimer.isTimeElapsed());
 			assertTrue(gameTimer.isTimeElapsed());
-		} catch (InterruptedException e) {
-			System.out.println("Thread couldn't sleep.");
-			System.exit(1);
-		}
+//		} catch (InterruptedException e) {
+//			System.out.println("Thread couldn't sleep.");
+//			System.exit(1);
+//		}
 
 		assertTrue(smallTimer.getTimeLeft() == 0);
 		assertTrue(gameTimer.getTimeLeft() == 0);
 		assertTrue(noTimer.getTimeLeft() <= 0);
+		
+		//setTimeLeft
+		smallTimer.setTimeLeft(10);
+		assertTrue(smallTimer.getTimeLeft() == 10);
 
 	}
 }
