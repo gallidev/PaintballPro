@@ -39,6 +39,7 @@ public class ServerGUI extends Scene implements ServerView {
         view.add(textArea, 0, 1);
 
         getStylesheets().add("styles/menu.css");
+        getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
     }
 
     public void addMessage(String message) {

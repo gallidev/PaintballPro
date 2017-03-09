@@ -50,6 +50,7 @@ public class GameTypeMenu {
 		m.addButtonHoverSounds(grid);
 		Scene s = new Scene(grid, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
+		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
 		return s;
 	}
 }

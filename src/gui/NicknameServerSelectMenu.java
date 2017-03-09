@@ -119,6 +119,7 @@ public class NicknameServerSelectMenu {
         // Create a new scene using the main grid
         Scene scene = new Scene(mainGrid, m.width, m.height);
         scene.getStylesheets().add("styles/menu.css");
+        scene.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
         return scene;
     }
 }

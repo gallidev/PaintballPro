@@ -76,6 +76,7 @@ public class EndGameMenu {
         m.addButtonHoverSounds(mainGrid);
         Scene s = new Scene(mainGrid, m.width, m.height);
         s.getStylesheets().add("styles/menu.css");
+        s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
         return s;
     }
 }
