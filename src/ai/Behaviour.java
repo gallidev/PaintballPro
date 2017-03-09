@@ -69,7 +69,7 @@ public abstract class Behaviour {
         }
 
         public boolean canSee(double x, double y){
-            Line line = new Line(ai.getLayoutX() + ai.getImage().getWidth()/2, ai.getLayoutY() + ai.getImage().getHeight()/2, x, y);
+            Line line = new Line(ai.getLayoutX() + ai.getWidth()/2, ai.getLayoutY() + ai.getHeight()/2, x, y);
             ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
             propsWalls.addAll(ai.getMap().getRecWalls());
             for(Rectangle propWall : propsWalls){

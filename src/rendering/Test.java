@@ -16,7 +16,7 @@ public class Test extends Application
 	{
 		GUIManager guiManager = new GUIManager();
 		guiManager.setStage(stage);
-		stage.setScene(new Renderer("ctf", guiManager));
+		//stage.setScene(new Renderer("ctf", guiManager));
 		stage.show();
 	}
 }

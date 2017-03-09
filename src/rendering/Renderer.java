@@ -47,85 +47,85 @@ public class Renderer extends Scene
 	 * @param mapName Name of the selected map
 	 * @param guiManager GUI manager that creates this object
 	 */
-	public Renderer(String mapName, GUIManager guiManager)
-	{
-
-		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
-		init(guiManager, mapName);
-
-		ArrayList<GeneralPlayer> players = new ArrayList<>();
-
-		CollisionsHandlerGeneralPlayer collisionsHandler = new CollisionsHandlerGeneralPlayer(map);
-
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), TeamEnum.RED, collisionsHandler);
-
-		players.add(player);
-		players.addAll(player.getTeamPlayers());
-		players.addAll(player.getEnemies());
-		players.forEach(p ->
-		{
-			p.setCache(true);
-			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-			p.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
-		});
-		view.getChildren().addAll(players);
-
-		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
-		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-				redTeam.add(p);
-			else
-				blueTeam.add(p);
-		}
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-			{
-				p.setEnemies(blueTeam);
-				p.setTeamPlayers(redTeam);
-			}
-			else
-			{
-				p.setEnemies(redTeam);
-				p.setTeamPlayers(blueTeam);
-			}
-		}
-
-		collisionsHandler.setBlueTeam(blueTeam);
-		collisionsHandler.setRedTeam(redTeam);
-		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
-		//game.start();
-
-		initListeners();
-
-		timer = new AnimationTimer()
-		{
-			@Override
-			public void handle(long now)
-			{
-				updateView();
-
-				for(GeneralPlayer player : players)
-				{
-					player.tick();
-					for(Bullet pellet : player.getBullets())
-					{
-						if(pellet.isActive())
-						{
-							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(pellet);
-						}
-						else if(view.getChildren().contains(pellet))
-							view.getChildren().remove((pellet));
-					}
-				}
-			}
-		};
-		timer.start();
-	}
+//	public Renderer(String mapName, GUIManager guiManager)
+//	{
+//
+//		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+//		init(guiManager, mapName);
+//
+//		ArrayList<GeneralPlayer> players = new ArrayList<>();
+//
+//		CollisionsHandlerGeneralPlayer collisionsHandler = new CollisionsHandlerGeneralPlayer(map);
+//
+//		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, guiManager.getAudioManager(), TeamEnum.RED, collisionsHandler);
+//
+//		players.add(player);
+//		players.addAll(player.getTeamPlayers());
+//		players.addAll(player.getEnemies());
+//		players.forEach(p ->
+//		{
+//			p.setCache(true);
+//			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
+//			p.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+//		});
+//		view.getChildren().addAll(players);
+//
+//		//provisional way to differ enemies and team players
+//		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
+//		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
+//		for(GeneralPlayer p : players)
+//		{
+//			if(p.getTeam() == TeamEnum.RED)
+//				redTeam.add(p);
+//			else
+//				blueTeam.add(p);
+//		}
+//		for(GeneralPlayer p : players)
+//		{
+//			if(p.getTeam() == TeamEnum.RED)
+//			{
+//				p.setEnemies(blueTeam);
+//				p.setTeamPlayers(redTeam);
+//			}
+//			else
+//			{
+//				p.setEnemies(redTeam);
+//				p.setTeamPlayers(blueTeam);
+//			}
+//		}
+//
+//		collisionsHandler.setBlueTeam(blueTeam);
+//		collisionsHandler.setRedTeam(redTeam);
+//		//OfflineGameMode game = new OfflineTeamMatchMode((OfflinePlayer) player);
+//		//game.start();
+//
+//		initListeners();
+//
+//		timer = new AnimationTimer()
+//		{
+//			@Override
+//			public void handle(long now)
+//			{
+//				updateView();
+//
+//				for(GeneralPlayer player : players)
+//				{
+//					player.tick();
+//					for(Bullet pellet : player.getBullets())
+//					{
+//						if(pellet.isActive())
+//						{
+//							if(!view.getChildren().contains(pellet))
+//								view.getChildren().add(pellet);
+//						}
+//						else if(view.getChildren().contains(pellet))
+//							view.getChildren().remove((pellet));
+//					}
+//				}
+//			}
+//		};
+//		timer.start();
+//	}
 
 	/**
 	 * Renders an online game instance by loading the selected map, receiving data from the client receiver and responding to changes in game logic.

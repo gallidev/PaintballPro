@@ -116,11 +116,12 @@ public class GUIManager {
                         audio.startMusic(audio.music.track1);
 	                    s.setScene(r);
                         
-                    } else {
-                        audio.startMusic(audio.music.track1);
-                        r = new Renderer("elimination", this);
-                        s.setScene(r);
-                    }
+                    } 
+//                    else {
+//                        audio.startMusic(audio.music.track1);
+//                        r = new Renderer("elimination", this);
+//                        s.setScene(r);
+//                    }
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.track1);
@@ -133,11 +134,12 @@ public class GUIManager {
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.track1);
                         s.setScene(r);
-                    } else {
-                        audio.startMusic(audio.music.track1);
-                        r = new Renderer("ctf", this);
-                        s.setScene(r);
-                    }
+                    } 
+//                    else {
+//                        audio.startMusic(audio.music.track1);
+//                        r = new Renderer("ctf", this);
+//                        s.setScene(r);
+//                    }
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.track1);

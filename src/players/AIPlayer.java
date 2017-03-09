@@ -129,5 +129,13 @@ public class AIPlayer extends ServerMinimumPlayer{
 	public ArrayList<ServerMinimumPlayer> getEnemies(){
 		return oppTeam.getMembers();
 	}
+	
+	public double getWidth(){
+		return ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+	}
 
+	public double getheight(){
+		return ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
+	}
+	
 }

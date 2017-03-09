@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import ai.AIManager;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
@@ -396,19 +397,28 @@ public class Lobby {
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		
-		//This should be added when we start filling the game with AI players
-//		while (red.getMembersNo() < 4){
-//			int newID = red.getMembersNo();
-//			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, id +1, map, TeamEnum.RED,collisionsHandler);
-//			red.addMember(newPlayer);
+		//filling the game with AI players
+//		AIManager redAIM = new AIManager(red, map, collissionsHandler);
+//		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
+//
+//		redAIM.start();
+//		blueAIM.start();
+//		
+//		try {
+//			redAIM.join();
+//			blueAIM.join();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
 //		}
 //		
-//		while (blue.getMembersNo() < 4){
-//			int newID = blue.getMembersNo() + 3;
-//			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, id + 1, map, TeamEnum.BLUE,collisionsHandler);
-//			blue.addMember(newPlayer);
-//		}
-
+//		System.out.println("Red team members:");
+//		for(ServerMinimumPlayer p : red.getMembers())
+//			System.out.println(p.getPlayerId() + " ");
+//
+//		System.out.println("Blue team members:");
+//		for(ServerMinimumPlayer p : blue.getMembers())
+//			System.out.println(p.getPlayerId() + " ");
+//		
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 
