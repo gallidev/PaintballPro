@@ -139,6 +139,7 @@ public class Renderer extends Scene
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		init(guiManager, mapName);
 
+		System.out.println("initializing renderer...");
 		cPlayer = receiver.getClientPlayer();
 		cPlayer.setCache(true);
 		cPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);

@@ -87,8 +87,10 @@ public class ServerReceiver extends Thread {
 					// When user specifies a game mode to play, add them to a
 					// lobby.
 					if (text.contains("Play:Mode:"))
-						if (singlePlayer)
+						if (singlePlayer){
 							playModeSingleAction(text);
+							sendToAll("Single");
+						}
 						else
 							playModeAction(text);
 
@@ -159,6 +161,9 @@ public class ServerReceiver extends Thread {
 		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 
+		if (debug) System.out.println("Added player to lobby...");
+		if (debug) System.out.println(lobby.getCurrPlayerTotal());
+		
 		lobby.switchGameStatus();
 		lobby.playGame(this, udpReceiver, gameMode);
 		lobby.startGameLoop(udpReceiver, gameMode);
@@ -324,6 +329,7 @@ public class ServerReceiver extends Thread {
 	 * @param text Message to send to client.
 	 */
 	public void sendToSpec(int id, String text) {
+		if (debug) System.out.println("Sending msg to id: " + id);
 		MessageQueue queue = clientTable.getQueue(id);
 		queue.offer(new Message(text));
 	}

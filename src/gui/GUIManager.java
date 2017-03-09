@@ -116,8 +116,8 @@ public class GUIManager {
                         //System.out.println("Sent play mode in GUI Manager");
                         
                         audio.startMusic(audio.music.track1);
-//                        r = new Renderer("elimination", c.getReceiver(), this);
-//                        s.setScene(r);
+                        r = new Renderer("elimination", c.getReceiver(), this);
+                        s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.track1);
                         r = new Renderer("elimination", this);

@@ -145,8 +145,8 @@ public class Lobby {
 			blueTeam.put(currPlayerBlueNum, playerToAdd);
 			currPlayerBlueNum++;
 		}
+		
 	}
-
 	/**
 	 * Remove player from a team and re-order other team members as appropriate.
 	 * @param playerToRemove Player obejct to remove from the team.
@@ -280,16 +280,18 @@ public class Lobby {
 	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team(teamNum == 1 ? TeamEnum.BLUE : TeamEnum.RED);
 		for (ServerBasicPlayer origPlayer : team.values()) {
-			ServerMinimumPlayer player = null;
+			
+			UserPlayer player = null;
 			double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
 			double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 			
 			int curId = origPlayer.getID();
 			
+			//provisionally hardcoded
 			if (teamNum == 1)
-				player = new UserPlayer(map.getSpawns()[curId - 1].x * 64, map.getSpawns()[curId - 1].y * 64, origPlayer.getID(), imageWidth, imageHeight, map.getSpawns(),  TeamEnum.BLUE, colissionsHandler);
+				player = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(),  TeamEnum.BLUE, colissionsHandler);
 			else
-				player = new UserPlayer(map.getSpawns()[curId - 1].x * 64, map.getSpawns()[curId - 1].y * 64, origPlayer.getID(), imageWidth, imageHeight, map.getSpawns(),  TeamEnum.RED, colissionsHandler);
+				player = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(),  TeamEnum.RED, colissionsHandler);
 			newTeam.addMember(player);
 		}
 		return newTeam;
@@ -375,38 +377,41 @@ public class Lobby {
 	//====================NEW INTEGRATION BELOW=================================
 
 	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
-		red = convertTeam(receiver, redTeam, 2);
-		blue = convertTeam(receiver, blueTeam, 1);
+//		red = convertTeam(receiver, redTeam, 2);
+//		blue = convertTeam(receiver, blueTeam, 1);
 
+		red = new Team(TeamEnum.RED);
+		blue = new Team(TeamEnum.BLUE);
+//		
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
-//		
-//		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
-//		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
-//		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
-//
-//		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
-//		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
+		
+		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 
-//		//add players to the teams
-//		red.addMember(redPlayer);
-//		blue.addMember(bluePlayer);
+		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
+		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
+
+		//add players to the teams
+		red.addMember(redPlayer);
+		blue.addMember(bluePlayer);
 		
-		while (red.getMembersNo() < 4){
-			int newID = red.getMembersNo();
-			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID +1, map, TeamEnum.RED,collisionsHandler);
-			red.addMember(newPlayer);
-		}
-		
-		
-		while (blue.getMembersNo() < 4){
-			int newID = blue.getMembersNo() + 4;
-			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID +1, map, TeamEnum.BLUE,collisionsHandler);
-			blue.addMember(newPlayer);
-		}
+		//This should be added when we start filling the game with AI players
+//		while (red.getMembersNo() < 4){
+//			int newID = red.getMembersNo();
+//			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID +1, map, TeamEnum.RED,collisionsHandler);
+//			red.addMember(newPlayer);
+//		}
+//		
+//		
+//		while (blue.getMembersNo() < 4){
+//			int newID = blue.getMembersNo() + 4;
+//			ServerMinimumPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID +1, map, TeamEnum.BLUE,collisionsHandler);
+//			blue.addMember(newPlayer);
+//		}
 
 		collisionsHandler.setRedTeam(red);
 		collisionsHandler.setBlueTeam(blue);

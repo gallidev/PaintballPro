@@ -159,7 +159,6 @@ public class UDPClient extends Thread {
 			if (actions[5].equals("false"))
 				visibility = false;
 
-			;
 			if(gameStateReceiver != null){
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
 			}
