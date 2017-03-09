@@ -64,7 +64,7 @@ class HeadUpDisplay extends SubScene
 			return;
 		if(timer.getText().equals("0:00"))
 		{
-			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText());
+			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), Renderer.player.getTeam());
 			return;
 		}
 		String[] timeParse = timer.getText().split(":");

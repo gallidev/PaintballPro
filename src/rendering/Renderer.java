@@ -32,12 +32,12 @@ import static players.GeneralPlayer.playerHeadY;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
+	static GeneralPlayer player;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
 	private static Map map;
 	private AnimationTimer timer;
-	private GeneralPlayer player;
 	private GUIManager guiManager;
 
 	/**
@@ -255,6 +255,7 @@ public class Renderer extends Scene
 			settingsMenu = null;
 			HeadUpDisplay.view = new BorderPane();
 			hud = null;
+			player = null;
 			map = null;
 		}
 	}
