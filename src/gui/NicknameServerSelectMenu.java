@@ -96,19 +96,19 @@ public class NicknameServerSelectMenu {
                         m.setIpAddress(ipPort);
                         // Transition back to the main menu
                         if (m.establishConnection())
-                            m.transitionTo(Menu.MultiplayerGameType, null);
+                            m.transitionTo(Menu.MultiplayerGameType);
                     }
                 } else {
                     m.setIpAddress(ipText.getText());
                     // Transition back to the main menu
                     if (m.establishConnection())
-                        m.transitionTo(Menu.MultiplayerGameType, null);
+                        m.transitionTo(Menu.MultiplayerGameType);
                 }
             }
         }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                m.transitionTo(Menu.MainMenu, null);
+                m.transitionTo(Menu.MainMenu);
             }
         })};
         // Turn the array into a grid pane

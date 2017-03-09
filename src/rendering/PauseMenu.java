@@ -53,7 +53,7 @@ class PauseMenu extends SubScene
 			}
 		}), new MenuOption("Back to Main Menu", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
-				m.transitionTo(Menu.MainMenu, null);
+				m.transitionTo(Menu.MainMenu);
 				System.out.println("ActionEvent: " + event);
 			}
 		})};

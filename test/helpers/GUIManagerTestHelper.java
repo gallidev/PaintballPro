@@ -54,7 +54,7 @@ public class GUIManagerTestHelper extends GUIManager {
     }
 
     @Override
-    public void transitionTo(Menu menu, Object o) {
+    public void transitionTo(Menu menu, Object... o) {
         currentMenu = menu;
     }
 

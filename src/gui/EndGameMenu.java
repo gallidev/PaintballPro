@@ -37,7 +37,7 @@ public class EndGameMenu {
 
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                m.transitionTo(Menu.MainMenu, null);
+                m.transitionTo(Menu.MainMenu);
             }
         })};
         GridPane options = MenuOptionSet.optionSetToGridPane(set);

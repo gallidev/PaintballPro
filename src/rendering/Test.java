@@ -48,7 +48,7 @@ public class Test extends Application
 	{
 		GUIManager guiManager = new GUIManager();
 		guiManager.setStage(stage);
-		guiManager.transitionTo(Menu.CTFSingle, null);
+		guiManager.transitionTo(Menu.CTFSingle);
 //		sprayTest(stage);
 	}
 }

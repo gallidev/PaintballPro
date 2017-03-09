@@ -197,7 +197,7 @@ public class ClientReceiver extends Thread {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				m.transitionTo(Menu.EliminationMulti, null);
+				m.transitionTo(Menu.EliminationMulti);
 			}
 		});
 	}
