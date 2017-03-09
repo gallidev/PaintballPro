@@ -391,25 +391,11 @@ public class Lobby {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
-//		red = new Team(TeamEnum.RED);
-//		blue = new Team(TeamEnum.BLUE);
-		
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
-
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		
-//		double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
-//		double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
-//
-//		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, imageWidth, imageHeight, map.getSpawns(), TeamEnum.RED, collisionsHandler);
-//		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 2, imageWidth, imageHeight, map.getSpawns(), TeamEnum.BLUE, collisionsHandler);
-
-		//add players to the teams
-//		red.addMember(redPlayer);
-//		blue.addMember(bluePlayer);
-//		
 		//This should be added when we start filling the game with AI players
 //		while (red.getMembersNo() < 4){
 //			int newID = red.getMembersNo();

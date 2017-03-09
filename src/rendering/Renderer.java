@@ -310,6 +310,7 @@ public class Renderer extends Scene
 	}
 
 	private void updateViewCPlayer() {
+		System.out.println("view is null in renderer: " + view == null);
 		view.relocate((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX(), (getHeight() / 2) - playerHeadY - cPlayer.getLayoutY());
 
 		if(view.getChildren().contains(pauseMenu))
