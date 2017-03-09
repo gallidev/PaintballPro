@@ -3,7 +3,7 @@ package gui;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * Created by jack on 12/02/2017.
+ *
  */
 public class GameLobbyRow {
     private SimpleStringProperty redName;

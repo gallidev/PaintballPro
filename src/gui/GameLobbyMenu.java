@@ -16,6 +16,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import static java.lang.Thread.sleep;
 
+/**
+ *
+ */
 public class GameLobbyMenu {
 
 	public static Scene getScene(GUIManager m, ObservableList<GameLobbyRow> lobbyData) {

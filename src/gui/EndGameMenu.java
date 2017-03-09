@@ -9,11 +9,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+/**
+ * End Game Screen
+ */
 public class EndGameMenu {
-	// TODO: implement the menu to be displayed at the end of each game
 
-    public static Scene getScene(GUIManager m) {
-        GridPane optionsSection = new GridPane();
+    /**
+     * Get the scene for the end game
+     * @param m manager for the GUI
+     * @return scene of the end game menu
+     */
+    public static Scene getScene(GUIManager m, String scores) {
+
+        // Scores = 1:0 where 1 red : 0 blue
 
         Label endLabel = new Label("Game Ended");
 
