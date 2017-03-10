@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import ai.AIManager;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
@@ -13,11 +12,11 @@ import javafx.scene.image.Image;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
-import oldCode.players.UserPlayer;
 import physics.CollisionsHandler;
 import players.AIPlayer;
 import players.ServerBasicPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
+import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import serverLogic.CaptureTheFlagMode;
@@ -49,7 +48,7 @@ public class Lobby {
 	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	private Team red;
 	private Team blue;
-	private ArrayList<ServerMinimumPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 
 	//required for all players
 	Map map;
@@ -74,9 +73,9 @@ public class Lobby {
 
 		//setting up the map
 		if (PassedGameType == 1)
-			 map = Map.load("res/maps/" + "elimination" + ".json");
+			 map = Map.loadRaw("elimination");
 		else
-			 map = Map.load("res/maps/" + "ctf" + ".json");
+			 map = Map.loadRaw("ctf");
 
 		//setting up the collision handler
 		collissionsHandler = new CollisionsHandler(map);
@@ -401,22 +400,22 @@ public class Lobby {
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
-		
+
 		//filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler);
-		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
+//		AIManager redAIM = new AIManager(red, map, collissionsHandler);
+//		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
+//
+//		redAIM.start();
+//		blueAIM.start();
+//
+//		try {
+//			redAIM.join();
+//			blueAIM.join();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
 
-		redAIM.start();
-		blueAIM.start();
-		
-		try {
-			redAIM.join();
-			blueAIM.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-
-		}
-//		
+//		}
+//
 //		System.out.println("Red team members:");
 //		for(ServerMinimumPlayer p : red.getMembers())
 //			System.out.println(p.getPlayerId() + " ");
@@ -424,7 +423,7 @@ public class Lobby {
 //		System.out.println("Blue team members:");
 //		for(ServerMinimumPlayer p : blue.getMembers())
 //			System.out.println(p.getPlayerId() + " ");
-//		
+//
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 
@@ -433,7 +432,7 @@ public class Lobby {
 
 		if(debug){
 			System.out.println("Players are: ");
-			for(ServerMinimumPlayer p : players){
+			for(EssentialPlayer p : players){
 				System.out.print(p.getPlayerId() + " ");
 			}
 		}
@@ -442,14 +441,14 @@ public class Lobby {
 
 		udpServer.setInputReceiver(inputReceiver);
 
-		for (ServerMinimumPlayer p : players) {
+		for (EssentialPlayer p : players) {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
 			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 
 			// adding to the string the information about all the other players
-			for (ServerMinimumPlayer aux : players)
+			for (EssentialPlayer aux : players)
 				if (aux.getPlayerId() != p.getPlayerId())
 					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 

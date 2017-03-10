@@ -37,9 +37,9 @@ public class ClientReceiver extends Thread {
 	private TeamTable teams;
 
 	private boolean singlePlayer;
-	
+
 	private boolean debug = false;
-	
+
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -110,7 +110,7 @@ public class ClientReceiver extends Thread {
 						singlePlayer = true;
 						if (debug) System.out.println("Single player: " + singlePlayer);
 					}
-					
+
 					// Game status
 					else if (text.contains("StartGame"))
 						startGameAction(text);
@@ -158,7 +158,7 @@ public class ClientReceiver extends Thread {
 	public void startGameAction(String text) {
 		// get all the relevant data from the message : 2:<gameMode>:2:Red:1:Red:
 		String[] data = text.split(":");
-		
+
 		System.out.println("Start game info : ");
 		System.out.println(Arrays.toString(data));
 
@@ -170,7 +170,7 @@ public class ClientReceiver extends Thread {
 			map = Map.loadRaw("elimination");
 		else
 			map = Map.loadRaw("ctf");
-			
+
 
 		// add myself to my team
 		// create my client
@@ -197,17 +197,17 @@ public class ClientReceiver extends Thread {
 							ImageFactory.getPlayerImage(TeamEnum.RED), null));
 			}
 		}
-		
+
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
-		
+
 		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		udpClient.setGameStateReceiver(gameStateReceiver);
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
-		
+
 		//changing the scene
 		System.out.println("single player = " + singlePlayer);
 		if (!singlePlayer){
@@ -234,23 +234,24 @@ public class ClientReceiver extends Thread {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						m.setRenderer(r);
+						//m.setRenderer(r);
 						m.transitionTo(Menu.EliminationSingle, null);
 					}
 				});
+
 			}
 			else{
 				Renderer r = new Renderer("ctf", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						m.setRenderer(r);
+						//m.setRenderer(r);
 						m.transitionTo(Menu.CTFSingle, null);
 					}
 				});
 			}
 		}
-		
+
 
 	}
 

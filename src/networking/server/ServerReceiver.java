@@ -10,7 +10,7 @@ import networking.shared.Message;
 import networking.shared.MessageQueue;
 import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 
 // Gets messages from client and puts them in a queue, for another

@@ -11,7 +11,7 @@ import networking.server.Lobby;
 import networking.server.LobbyTable;
 import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -21,7 +21,7 @@ import players.ServerMinimumPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -57,8 +57,10 @@ public class UDPServer extends Thread{
 			      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			      if(debug) System.out.println("Waiting to receive packet");
 			      serverSocket.receive(receivePacket);
+
 			      if(debug) System.out.println("packetLength: " + receivePacket.getLength());
 			      String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
+
 			      if(debug) System.out.println("Packet received with text:"+sentence);
 
 			      InetAddress IPAddress;
@@ -77,12 +79,14 @@ public class UDPServer extends Thread{
 			    	  if(debug) System.out.println("Parsed");
 			    	  if(debug) System.out.println("Client id is:"+clientID);
 			    	  if(debug) System.out.println("Their ip is:"+IPAddress.toString());
-			    	  String ipAdd = IPAddress.toString().substring(1, IPAddress.toString().length()) + ":" + port;
+			    	  String ipStr = IPAddress.toString().substring(1, IPAddress.toString().length());
+			    	  String ipAdd = ipStr + ":" + port;
 			    	  clients.addNewIP(ipAdd, clientID);
 			    	  clients.addUDPQueue(ipAdd);
 			  		  byte[] sendData = new byte[1024];
 			  		  sendData = "Successfully Connected".getBytes();
-			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), port);
+			  		  IPAddress = InetAddress.getByName(ipStr);
+			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
 			  		  serverSocket.send(sendPacket);
 			      }
 			      else
@@ -311,13 +315,13 @@ public class UDPServer extends Thread{
 		double angle = Double.parseDouble(parsedMsg[5]);
 
 		//get that server player from the lobby
-		ServerMinimumPlayer currentPlayer = null;
-		for(ServerMinimumPlayer p : lobby.getRedTeam().getMembers())
+		EssentialPlayer currentPlayer = null;
+		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
 			if( id == p.getPlayerId())
 				currentPlayer = p;
 
 		if (currentPlayer == null){
-			for(ServerMinimumPlayer p : lobby.getBlueTeam().getMembers())
+			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
 				if( id == p.getPlayerId())
 					currentPlayer = p;
 		}

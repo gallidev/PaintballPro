@@ -3,7 +3,7 @@ package integrationServer;
 import java.util.ArrayList;
 
 import networking.server.ServerSender;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 /**
  * Receives input information (server-side) from all clients and updates the
@@ -17,7 +17,7 @@ import players.ServerMinimumPlayer;
  */
 public class ServerInputReceiver {
 
-	private ArrayList<ServerMinimumPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 	
 	/**
 	 * Initializes a new input receiver with a server receiver which will
@@ -32,7 +32,7 @@ public class ServerInputReceiver {
 	}
 
 
-	public ServerInputReceiver(ArrayList<ServerMinimumPlayer> players) {
+	public ServerInputReceiver(ArrayList<EssentialPlayer> players) {
 		super();
 		this.players = players;
 	}
@@ -41,7 +41,7 @@ public class ServerInputReceiver {
 	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, int mouseX,
 			int mouseY) {
 
-		ServerMinimumPlayer playerToBeUpdated = getPlayerWithId(id);
+		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 
 		//update everything
 		playerToBeUpdated.setUp(up);
@@ -58,8 +58,8 @@ public class ServerInputReceiver {
 	 * Helper method to find the player with a specific id from the entire list of players in the game.
 	 * @param id The player's id.
 	 */
-	private ServerMinimumPlayer getPlayerWithId(int id){
-		for (ServerMinimumPlayer p : players){
+	private EssentialPlayer getPlayerWithId(int id){
+		for (EssentialPlayer p : players){
 			if (p.getPlayerId() == id)
 				return p;
 		}
@@ -67,7 +67,7 @@ public class ServerInputReceiver {
 	}
 
 
-	public void setPlayers(ArrayList<ServerMinimumPlayer> players){
+	public void setPlayers(ArrayList<EssentialPlayer> players){
 		this.players = players;
 	}
 

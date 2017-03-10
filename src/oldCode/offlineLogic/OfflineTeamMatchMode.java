@@ -12,9 +12,9 @@ public class OfflineTeamMatchMode extends OfflineGameMode {
 
 	private static final long gameTime = 180; // in seconds
 	private RoundTimer timer;
-	
+
 	/**
-	 * Initialises the game mode with the user player. This will also create 
+	 * Initialises the game mode with the user player. This will also create
 	 * the rest of the team and the opponent team(both filled with AI players).
 	 * @param player The player that will be controlled by the user.
 	 */
@@ -23,7 +23,7 @@ public class OfflineTeamMatchMode extends OfflineGameMode {
 		timer = new RoundTimer(gameTime);
 	}
 
-	
+
 	/**
 	 * Starts the timer for the game mode.
 	 */

@@ -35,9 +35,17 @@ public class LobbyTable {
 	 * Remove a player and all of their information from the lobby.
 	 * @param playerToRemove Player to remove from the lobby.
 	 */
-	public synchronized void removePlayer(ServerBasicPlayer playerToRemove) {
-		Lobby allocatedLobby = lobbyList.get(playerToRemove.getAllocatedLobby());
-		allocatedLobby.removePlayer(playerToRemove);
+	public synchronized int removePlayer(ServerBasicPlayer playerToRemove) {
+		try
+		{
+			Lobby allocatedLobby = lobbyList.get(playerToRemove.getAllocatedLobby());
+			allocatedLobby.removePlayer(playerToRemove);
+		}
+		catch(Exception e)
+		{
+			return 0;
+		}
+		return 1;
 	}
 	
 	/**

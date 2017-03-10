@@ -14,7 +14,7 @@ import networking.client.TeamTable;
 import oldCode.players.GeneralPlayer;
 import physics.Bullet;
 import players.GhostPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -24,7 +24,7 @@ import players.ServerMinimumPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	private String nickname;
 
@@ -59,7 +59,9 @@ public class UDPClient extends Thread {
 
 		// Let's establish a connection to the running UDP server and send our client id.
 		try{
+			if(debug) System.out.println("Attempting to make client socket");
 			clientSocket = new DatagramSocket(port);
+			if(debug) System.out.println("Attempting to get ip address");
 			IPAddress = InetAddress.getByName(udpServIP);
 			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
 			String sentence = "Connect:"+clientID;
@@ -74,7 +76,7 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			if(debug) e.printStackTrace();
 		}
 	}
 
@@ -128,7 +130,7 @@ public class UDPClient extends Thread {
 				m.transitionTo(Menu.EndGame, 0);
 			}
 		});
-		
+
 	}
 
 	/**
@@ -161,7 +163,7 @@ public class UDPClient extends Thread {
 	private void updatePlayerAction(String text) {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if(debug)System.out.println(text);
-		
+
 		if(text != ""){
 			String[] actions = text.split(":");
 
@@ -173,10 +175,10 @@ public class UDPClient extends Thread {
 			boolean visibility = true;
 			if (actions[5].equals("false"))
 				visibility = false;
-			
+
 			if (visibility == false)
 				System.out.println("I'm invisible");
-			
+
 			if(gameStateReceiver != null){
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
 			}
@@ -192,7 +194,7 @@ public class UDPClient extends Thread {
 
 //		System.out.println("Red score: " + redScore);
 //		System.out.println("Blue score: " + blueScore);
-		
+
 		//do stuff here to update the GUI
 	}
 
@@ -222,8 +224,8 @@ public class UDPClient extends Thread {
 				else
 					System.out.print(data[i] + " ");
 			}
-			
-		}		
+
+		}
 
 		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
 

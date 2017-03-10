@@ -1,5 +1,6 @@
 {
-	"name": "Elimination",
+	"name": "Desert",
+	"gameMode": "ELIMINATION",
 	"spawns": [
 		{"x": 2, "y": 7, "team": "RED"},
 		{"x": 2, "y": 8, "team": "RED"},

@@ -16,10 +16,6 @@ public class ClientTable {
 	private ConcurrentMap<Integer,MessageQueue> queueTable  = new ConcurrentHashMap<Integer,MessageQueue>();
 	//Each client has a udp message queue.
 	private ConcurrentMap<String,MessageQueue> UDPqueueTable  = new ConcurrentHashMap<String,MessageQueue>();
-	//Each client has a status relating to whether or not they are in a game.
-	private ConcurrentMap<Integer,Boolean> inGameStatus = new ConcurrentHashMap<Integer,Boolean>();
-	//Each client has a game score.
-	private ConcurrentMap<Integer,Integer> Scores = new ConcurrentHashMap<Integer,Integer>();
 	//Each client has a Player object..
 	private ConcurrentMap<Integer, ServerBasicPlayer> playerInstances = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	//Stores table of IP addresses and corresponding Client IDs.
@@ -40,8 +36,6 @@ public class ClientTable {
 	public synchronized int add(String nickname) 
 	{
 		queueTable.put(id, new MessageQueue()); //Make a new queue for the client.
-		inGameStatus.put(id, false); //Set initial in-game status as false.
-		Scores.put(id, 0); //Set score as 0.
 		ServerBasicPlayer player = new ServerBasicPlayer(id);
 		player.setUsername(nickname);
 		playerInstances.put(id,player);
@@ -56,16 +50,6 @@ public class ClientTable {
 	public synchronized void addUDPQueue(String ip)
 	{
 		UDPqueueTable.put(ip, new MessageQueue());
-	}
-	
-	/**
-	 * Get the UDP message queue for a client with particular ID.
-	 * @param clientID ID of the client.
-	 * @return UDP message queue.
-	 */
-	public synchronized MessageQueue getUDPQueueWithID(int clientID)
-	{
-		return UDPqueueTable.get(clientIPTable.get(clientID));
 	}
 	
 	/**
@@ -126,71 +110,9 @@ public class ClientTable {
 	public synchronized void removeClient(int clientID)
 	{
 		queueTable.remove(clientID);
-		inGameStatus.remove(clientID);
-		Scores.remove(clientID);
 		playerInstances.remove(clientID);
 	}
 	
-	/**
-	 * Set the 'in game' status of the client to true.
-	 * @param player1 ID of client game Player 1.
-	 * @param player2 ID of client game Player 2.
-	 */
-	public synchronized void setGame(int player1, int player2)
-	{
-		inGameStatus.replace(player1, true);
-		inGameStatus.replace(player2, true);
-	}
-	
-	/**
-	 * Set the 'in game' status of the client to false.
-	 * @param player1 ID of client game Player 1.
-	 * @param player2 ID of client game Player 2.
-	 */
-	public synchronized void unsetGame(int player1, int player2)
-	{
-		inGameStatus.replace(player1, false);
-		inGameStatus.replace(player2, false);
-	}
-	/**
-	 * Increment the score of the winning client in a game.
-	 * @param clientID The ID of the client who won the game.
-	 */
-	public void wonGame(int clientID)
-	{
-		Scores.replace(clientID,((this.getScore(clientID))+1));  
-	}
-	/**
-	 * Get the score of a client.
-	 * @param clientID The id of the client to get the score of.
-	 * @return The score of the passed client.
-	 */
-	public int getScore(int clientID)
-	{
-		return Scores.get(clientID);
-	}
-	/**
-	 * Returns all of the scores stored in the table score data structure.
-	 * @return ArrayList of all scores.
-	 */
-	public ArrayList<Integer> getScores()
-	{
-		ArrayList<Integer> scores = new ArrayList<>();
-		//Cycle through all score values and add to an ArrayList.
-		for (int key : queueTable.keySet()) {
-			scores.add(Scores.get(key));
-		}
-		return scores;
-	}
-	/**
-	 * Get the game status of a particular client.
-	 * @param clientID The id of the client.
-	 * @return The game status of the client.
-	 */
-	public boolean gameStatus(int clientID)
-	{
-		return inGameStatus.get(clientID); 
-	}
 	/**
 	 * Get the message queue of a client. 
 	 * @param clientID The id of the client to get the message id for.
@@ -203,13 +125,5 @@ public class ClientTable {
 		}
 		//Null if not in the table.
 		return queueTable.get(clientID);
-	}
-	/**
-	 * Get the UDP message queue for a particular client.
-	 * @param clientID Client of ID.
-	 * @return UDP message queue.
-	 */
-	public MessageQueue getUDPqueue(int clientID) {
-		return UDPqueueTable.get(clientID);
 	}
 }

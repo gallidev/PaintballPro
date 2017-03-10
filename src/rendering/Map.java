@@ -1,10 +1,9 @@
 package rendering;
 
 import com.google.gson.Gson;
+import enums.GameMode;
 import gui.GUIManager;
-import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
@@ -27,6 +26,7 @@ import static rendering.Renderer.view;
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Map
 {
+	private GameMode gameMode;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
@@ -36,15 +36,15 @@ public class Map
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
 	 *
-	 * @param url File location of a map to load
+	 * @param mapName Name of the map file to load
 	 * @return Instance of a loaded map
 	 */
-	public static Map load(String url)
+	static Map load(String mapName)
 	{
 		Map map = null;
 		try
 		{
-			map = (new Gson()).fromJson(new FileReader(url), Map.class);
+			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 
 			int width = 0, height = 0;
 			for(Floor floor : map.floors)
@@ -62,16 +62,10 @@ public class Map
 			{
 				Image tile = ImageFactory.getMaterialImage(floor.material);
 				for(int i = 0; i < floor.width; i++)
-				{
 					for(int j = 0; j < floor.height; j++)
-					{
 						tiles.getPixelWriter().setPixels((floor.x + i) * 64, (floor.y + j) * 64, 64, 64, tile.getPixelReader(), 0, 0);
-					}
-				}
 			}
 			ImageView floorGroup = new ImageView(tiles);
-			floorGroup.setCache(true);
-			floorGroup.setCacheHint(CacheHint.SCALE);
 
 			//load spawns
 			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
@@ -90,35 +84,12 @@ public class Map
 			blueSpawnView.relocate(map.spawns[4].x * 64, map.spawns[4].y * 64);
 			blueSpawnView.setEffect(new DropShadow(32, 0, 0, Color.BLUE));
 
-			//load props
 			map.loadProps();
 			map.propGroup.setCache(true);
-			map.propGroup.setCacheHint(CacheHint.SCALE);
 
-			//load walls
-			for(Wall wall : map.walls)
-			{
-				for(int i = 0; i < wall.length; i++)
-				{
-					ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
-					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
-					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
-					map.wallGroup.getChildren().add(block);
-				}
-			}
-//			for(Wall wall : map.walls)
-//			{
-//				WritableImage blocks = new WritableImage(wall.orientation ? wall.length * 64 : 64, wall.orientation ? 64 : wall.length * 64);
-//				Image block = map.getMaterialImage(wall.material);
-//				for(int i = 0; i < wall.length; i++)
-//					blocks.getPixelWriter().setPixels(wall.orientation ? i * 64 : 0, wall.orientation ? 0 : i * 64, 64, 64, block.getPixelReader(), 0, 0);
-//				ImageView blocksView = new ImageView(blocks);
-//				blocksView.setX(wall.x * 64);
-//				blocksView.setY(wall.y * 64);
-//				map.wallGroup.getChildren().add(blocksView);
-//			}
+			map.loadWalls();
 			map.wallGroup.setCache(true);
-			map.wallGroup.setCacheHint(CacheHint.SCALE);
+
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
 			//turn on shading if the user has it enabled
@@ -157,39 +128,14 @@ public class Map
 		return map;
 	}
 
-	public static Map loadRaw(String url)
+	public static Map loadRaw(String mapName)
 	{
 		Map map = null;
 		try
 		{
-			map = (new Gson()).fromJson(new FileReader("res/maps/" + url + ".json"), Map.class);
-
-//			for(Floor floor : map.floors)
-//			{
-//				for(int i = 0; i < floor.width; i++)
-//				{
-//					for(int j = 0; j < floor.height; j++)
-//					{
-//						ImageView tile = new ImageView(ImageFactory.getMaterialImage(floor.material));
-//						tile.setX((i + floor.x) * 64);
-//						tile.setY((j + floor.y) * 64);
-//						map.floorGroup.getChildren().add(tile);
-//					}
-//				}
-//			}
-
+			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
-
-			for(Wall wall : map.walls)
-			{
-				for(int i = 0; i < wall.length; i++)
-				{
-					ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
-					block.setX(wall.orientation ? (i + wall.x) * 64 : wall.x * 64);
-					block.setY(wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
-					map.wallGroup.getChildren().add(block);
-				}
-			}
+			map.loadWalls();
 		}
 		catch(FileNotFoundException e)
 		{
@@ -198,18 +144,36 @@ public class Map
 		return map;
 	}
 
+	private void loadProps()
+	{
+		for(Prop prop : props)
+		{
+			ImageView image = new ImageView(ImageFactory.getMaterialImage(prop.material));
+			image.relocate(prop.x * 64, prop.y * 64);
+			propGroup.getChildren().add(image);
+		}
+	}
+
+	private void loadWalls()
+	{
+		for(Wall wall : walls)
+		{
+			for(int i = 0; i < wall.length; i++)
+			{
+				ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
+				block.relocate(wall.orientation ? (i + wall.x) * 64 : wall.x * 64, wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
+				wallGroup.getChildren().add(block);
+			}
+		}
+	}
+
 	private ArrayList<Rectangle> getCollisions(Group group)
 	{
 		ArrayList<Rectangle> rectangles = new ArrayList<>();
-		for(Node node : group.getChildren())
+		group.getChildren().forEach(node ->
 		{
-			Rectangle r = new Rectangle();
-			r.setX(node.getBoundsInParent().getMinX());
-			r.setY(node.getBoundsInParent().getMinY());
-			r.setWidth(node.getBoundsInParent().getWidth());
-			r.setHeight(node.getBoundsInParent().getHeight());
-			rectangles.add(r);
-		}
+			rectangles.add(new Rectangle(node.getBoundsInParent().getMinX(), node.getBoundsInParent().getMinY(), 64, 64));
+		});
 		return rectangles;
 	}
 
@@ -243,14 +207,8 @@ public class Map
 		return spawns;
 	}
 
-	private void loadProps()
+	public GameMode getGameMode()
 	{
-		for(Prop prop : props)
-		{
-			ImageView image = new ImageView(new Image("assets/materials/" + prop.material + ".png", 64, 64, true, true));
-			image.setX(prop.x * 64);
-			image.setY(prop.y * 64);
-			propGroup.getChildren().add(image);
-		}
+		return gameMode;
 	}
 }

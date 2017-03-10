@@ -13,6 +13,8 @@ public class SFXResources {
 	public Media clickSound = new Media(new File("res/assets/sfx/click.wav").toURI().toString());
 	// Splat from http://www.freesound.org/people/gprosser/sounds/360942/
 	public Media splat = new Media(new File("res/assets/sfx/splat.wav").toURI().toString());
+	// Adapted from http://www.freesound.org/people/InspectorJ/sounds/345560/ (Creative Commons 3.0)
+	public Media footsteps = new Media(new File("res/assets/sfx/footsteps.wav").toURI().toString());
 
 
 	public Media[] paintballCollection = {paintball1, paintball2, paintball3};

@@ -3,6 +3,7 @@ package physics;
 
 public class InputHandler {
 
+	private double playerHeadX = 12.5, playerHeadY = 47.5;
 	boolean up, down, left, right;
 	boolean shoot;
 	int mouseX, mouseY;
@@ -71,6 +72,14 @@ public class InputHandler {
 
 	public void setMouseY(int mouseY) {
 		this.mouseY = mouseY;
+	}
+
+	public double getAngle(){
+
+		double deltax = mouseX - (1.65 * playerHeadX);
+		double deltay = playerHeadY - mouseY;
+		double angle = Math.atan2(deltax, deltay);
+		return angle;
 	}
 
 }

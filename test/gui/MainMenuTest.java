@@ -25,7 +25,7 @@ public class MainMenuTest {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
         Scene mainMenu = MainMenu.getScene(m);
 
-        (GUIManagerTestHelper.findButtonByTextInParent("Single player", mainMenu.getRoot())).fire();
+        (GUIManagerTestHelper.findButtonByTextInParent("Single Player", mainMenu.getRoot())).fire();
 
         assertTrue(m.currentMenu == Menu.SingleplayerGameType);
     }
