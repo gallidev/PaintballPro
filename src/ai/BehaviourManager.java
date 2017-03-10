@@ -41,7 +41,6 @@ public class BehaviourManager{
         capture = new CTFCaptureBehaviour(ai, this);
         retreat = new CTFRetreatBehaviour(ai, this);
 
-
     }
 
     public void tick(){
