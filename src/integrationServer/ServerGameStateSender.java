@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import enums.TeamEnum;
 import networking.game.UDPServer;
 import physics.Bullet;
+import players.AIPlayer;
 import players.ServerMinimumPlayer;
 
 /**
@@ -111,6 +112,7 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngleDegrees();
 			toBeSent += ":" + p.getVisibility();
+			toBeSent += ":" + (p instanceof AIPlayer ? "AI" : "" );
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 		}

@@ -403,19 +403,19 @@ public class Lobby {
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		
 		//filling the game with AI players
-//		AIManager redAIM = new AIManager(red, map, collissionsHandler);
-//		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
-//
-//		redAIM.start();
-//		blueAIM.start();
-//		
-//		try {
-//			redAIM.join();
-//			blueAIM.join();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
+		AIManager redAIM = new AIManager(red, map, collissionsHandler);
+		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
 
-//		}
+		redAIM.start();
+		blueAIM.start();
+		
+		try {
+			redAIM.join();
+			blueAIM.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+
+		}
 //		
 //		System.out.println("Red team members:");
 //		for(ServerMinimumPlayer p : red.getMembers())

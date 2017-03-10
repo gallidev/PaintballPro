@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import logic.GameMode;
+import players.AIPlayer;
 import players.ServerMinimumPlayer;
 import serverLogic.Team;
 
@@ -28,6 +29,7 @@ public class ServerGameSimulation {
 
 		this.redTeam = game.getRedTeam();
 		this.blueTeam = game.getBlueTeam();
+
 	}
 
 	public void startExecution(){
@@ -44,6 +46,8 @@ public class ServerGameSimulation {
 		       public void run() {
 					for(ServerMinimumPlayer player : players)
 					{
+						if (player instanceof AIPlayer)
+							System.out.println("Ticking Ai players...");
 						player.tick();
 					}
 			    	frames ++;
