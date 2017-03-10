@@ -7,6 +7,11 @@ import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
+/**
+ * Class to listen out for servers in the LAN
+ * 
+ * @author Matthew Walters
+ */
 public class DiscoveryClient extends Thread{
 	
 	public String retVal = "";
@@ -56,6 +61,9 @@ public class DiscoveryClient extends Thread{
 		return "";
 	}
 	
+	/**
+	 * Run the main method of this thread.
+	 */
 	public void run()
 	{
 		retVal = this.findServer();

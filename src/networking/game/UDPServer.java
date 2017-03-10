@@ -1,8 +1,12 @@
 package networking.game;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
+import org.junit.Test;
 
 import networking.server.ClientTable;
 import networking.server.Lobby;
@@ -18,7 +22,7 @@ import players.ServerPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -46,9 +50,9 @@ public class UDPServer extends Thread{
 		
 			if(debug) System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:" +serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];
+			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			while(true)
 			{
-			      DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			      if(debug) System.out.println("Waiting to receive packet");
 			      serverSocket.receive(receivePacket);
 			    
@@ -79,6 +83,7 @@ public class UDPServer extends Thread{
 			  		  byte[] sendData = new byte[1024];
 			  		  sendData = "Successfully Connected".getBytes();
 			  		  IPAddress = InetAddress.getByName(ipStr);
+			  		  if(debug) System.out.println("Sending packet back");
 			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
 			  		  serverSocket.send(sendPacket);
 			      }
@@ -118,6 +123,8 @@ public class UDPServer extends Thread{
 		finally
 		{
 			// TODO - Let's do some closing stuff here.
+			if(debug) System.out.println("Closing Server");
+			//this.sendToAll("Exit", "127.0.0.1");
 			serverSocket.close();
 		}
 	}

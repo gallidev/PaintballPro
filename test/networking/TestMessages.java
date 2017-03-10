@@ -9,6 +9,12 @@ import org.junit.Test;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
 
+/**
+ * Test class to test Messages and Message Queues.
+ * Tests - Message.java, MessageQueue.java
+ * 
+ * @author Matthew Walters
+ */
 public class TestMessages {
 
 	Message message;

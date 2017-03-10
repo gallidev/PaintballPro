@@ -8,6 +8,12 @@ import org.junit.Test;
 
 import networking.discovery.DiscoveryClientListener;
 
+/**
+ * Test class to test Network Discovery.
+ * Tests - DiscoveryClient.java, DiscoveryClientListener.java, DiscoveryServerAnnouncer.java, IPAddress.java
+ * 
+ * @author Matthew Walters
+ */
 public class TestNetworkDiscovery {
 
 	DiscoveryClientListener client;

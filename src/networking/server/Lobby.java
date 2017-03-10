@@ -36,6 +36,8 @@ public class Lobby {
 	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	private serverLogic.Team red;
 	private serverLogic.Team blue;
+	
+	public boolean testEnv = false;
 
 	/**
 	 * Sets passed variables and inialised some defaults.
@@ -208,8 +210,11 @@ public class Lobby {
 		}
 		String redMems = "Ret:Red:" + getTeam(2);
 		String blueMems = "Ret:Blue:" + getTeam(1);
-		receiver.sendToAll(redMems);
-		receiver.sendToAll(blueMems);
+		if(!testEnv)
+		{
+					receiver.sendToAll(redMems);
+					receiver.sendToAll(blueMems);
+		}
 	}
 
 	/**

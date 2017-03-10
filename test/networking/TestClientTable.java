@@ -8,8 +8,13 @@ import org.junit.Test;
 
 import networking.server.ClientTable;
 import networking.shared.MessageQueue;
-import players.ServerBasicPlayer;
 
+/**
+ * Test class to test Client Tables.
+ * Tests - ClientTable.java
+ * 
+ * @author Matthew Walters
+ */
 public class TestClientTable {
 	
 	ClientTable table;

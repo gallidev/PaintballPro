@@ -19,15 +19,18 @@ import players.GeneralPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	
-	DatagramSocket clientSocket;
-	InetAddress IPAddress;
+	private DatagramSocket clientSocket;
+	private InetAddress IPAddress;
 	
-	GUIManager m;
+	private GUIManager m;
 	
-	TeamTable teams;
+	private TeamTable teams;
+	
+	public boolean connected = false;
+	private boolean testSendToAll = false;
 	
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -65,6 +68,8 @@ public class UDPClient extends Thread {
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				clientSocket.receive(receivePacket);
 				String sentSentence = new String(receivePacket.getData());
+				if(sentSentence.contains("Successfully Connected"))
+					connected = true;
 				if (debug) System.out.println(sentSentence.trim());
 			} catch (Exception e) {
 				error = true;
@@ -72,6 +77,15 @@ public class UDPClient extends Thread {
 				port++;
 			}
 		}
+	}
+	
+	/**
+	 * For tests, we check whether SendToAll has worked correctly.
+	 * @return Returns testSendToAll variable.
+	 */
+	public boolean getTestSend()
+	{
+		return this.testSendToAll;
 	}
 	
 	/**
@@ -102,12 +116,21 @@ public class UDPClient extends Thread {
 				}
 				else if (sentSentence.contains("Exit"))
 					break;
+				else if (sentSentence.contains("TestSendToAll"))
+				{
+					testSendToAll = true;
+				}
 			}
 		}
 		catch (Exception e)
 		{
 			if(debug) System.err.println(e.getStackTrace());
 		}
+		finally{
+			if(debug) System.out.println("Closing Client.");
+			clientSocket.close();
+		}
+		if(debug) System.out.println("Closing Client.");
 		clientSocket.close();
 	}
 	
