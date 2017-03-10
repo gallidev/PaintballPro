@@ -3,7 +3,7 @@ package oldCode.offlineLogic;
 import enums.TeamEnum;
 import oldCode.players.GeneralPlayer;
 import players.AIPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 import java.util.ArrayList;
 

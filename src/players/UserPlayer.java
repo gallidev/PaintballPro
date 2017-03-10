@@ -1,4 +1,4 @@
-package oldCode.players;
+package players;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,12 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Polygon;
 import physics.Bullet;
 import physics.CollisionsHandler;
-import players.ServerMinimumPlayer;
 import rendering.Map;
 import rendering.Spawn;
 /**
  *  The player, represented by an ImageView
  */
-public class UserPlayer extends ServerMinimumPlayer{
+public class UserPlayer extends EssentialPlayer{
 
     public final int widthScreen = 1024;
     public final int heightScreen = 576;
@@ -123,13 +122,13 @@ public class UserPlayer extends ServerMinimumPlayer{
 	}
 
 	@Override
-	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> team) {
+	public void setTeamPlayers(ArrayList<EssentialPlayer> team) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
+	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
 		// TODO Auto-generated method stub
 
 	}

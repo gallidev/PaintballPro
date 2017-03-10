@@ -2,7 +2,7 @@ package serverLogic;
 
 import enums.TeamEnum;
 import oldCode.players.ServerPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Team {
 
-	private ArrayList<ServerMinimumPlayer> members;
+	private ArrayList<EssentialPlayer> members;
 	private int score;
 	private TeamEnum colour;
 
@@ -43,7 +43,7 @@ public class Team {
 	 * Adds another player to the team and increments the number of team players.
 	 * @param p The new team player.
 	 */
-	public void addMember(ServerMinimumPlayer p){
+	public void addMember(EssentialPlayer p){
 		members.add(p);
 		colour = p.getColour();
 	}
@@ -53,8 +53,8 @@ public class Team {
 		return members.size();
 	}
 
-	public boolean containsPlayer(ServerMinimumPlayer player){
-		for(ServerMinimumPlayer p: getMembers())
+	public boolean containsPlayer(EssentialPlayer player){
+		for(EssentialPlayer p: getMembers())
 			if ( p == player )
 				return true;
 		return false;
@@ -72,7 +72,7 @@ public class Team {
 	}
 
 
-	public ArrayList<ServerMinimumPlayer> getMembers(){
+	public ArrayList<EssentialPlayer> getMembers(){
 
 		return members;
 	}
@@ -81,7 +81,7 @@ public class Team {
 	 * Adds players as a member of the team.
 	 * @param teamPlayers The array of players to team.
 	 */
-	public void setMembers(ArrayList<ServerMinimumPlayer> teamPlayers) {
+	public void setMembers(ArrayList<EssentialPlayer> teamPlayers) {
 		members = teamPlayers;
 		
 		if (!teamPlayers.isEmpty())

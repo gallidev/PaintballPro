@@ -8,9 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import networking.server.ServerReceiver;
-import oldCode.players.UserPlayer;
 import physics.CollisionsHandler;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
+import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import serverLogic.Team;
@@ -21,7 +21,7 @@ public class GameSimulationScene extends Scene{
 	private Team blueTeam;
 	static Pane view = new Pane();
 
-	private ArrayList<ServerMinimumPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 
 	public GameSimulationScene(ServerReceiver receiver, Team redTeam, Team blueTeam) {
 		super(view);
@@ -51,7 +51,7 @@ public class GameSimulationScene extends Scene{
 			@Override
 			public void handle(long now)
 			{
-				for(ServerMinimumPlayer player : players)
+				for(EssentialPlayer player : players)
 				{
 					player.tick();
 				}

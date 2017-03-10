@@ -21,13 +21,13 @@ import java.util.Random;
 /**
  * The player, represented by an ImageView that should be running
  */
-public class OfflinePlayer extends ServerMinimumPlayer
+public class OfflinePlayer extends EssentialPlayer
 {
 	private OfflineTeam myTeam;
 	private OfflineTeam oppTeam;
 	private InputHandler inputHandler;
-	private ArrayList<ServerMinimumPlayer> enemies;
-	private ArrayList<ServerMinimumPlayer> teamPlayers;
+	private ArrayList<EssentialPlayer> enemies;
+	private ArrayList<EssentialPlayer> teamPlayers;
 	private AudioManager audio;
 	private Random rand;
 	private Label nameTag;
@@ -235,7 +235,7 @@ public class OfflinePlayer extends ServerMinimumPlayer
 
 
 	@Override
-	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> team) {
+	public void setTeamPlayers(ArrayList<EssentialPlayer> team) {
 		this.teamPlayers = team;
 
 	}
@@ -243,18 +243,18 @@ public class OfflinePlayer extends ServerMinimumPlayer
 
 
 	@Override
-	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
+	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
 		this.enemies= enemies;
 
 	}
 
 
-	public ArrayList<ServerMinimumPlayer> getEnemies() {
+	public ArrayList<EssentialPlayer> getEnemies() {
 		return enemies;
 	}
 
 
-	public ArrayList<ServerMinimumPlayer> getTeamPlayers() {
+	public ArrayList<EssentialPlayer> getTeamPlayers() {
 		return teamPlayers;
 	}
 

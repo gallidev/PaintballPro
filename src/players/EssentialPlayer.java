@@ -20,7 +20,7 @@ import java.util.List;
 /**
  *  The player, represented by an ImageView
  */
-public abstract class ServerMinimumPlayer extends ImageView implements GameObject{
+public abstract class EssentialPlayer extends ImageView implements GameObject{
 
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
 	protected static long shootDelay = 450;
@@ -52,7 +52,7 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 	 * @param Team The team of the player
 	 *
 	 */
-	public ServerMinimumPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image){
+	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image){
 		super(image);
 		this.angle = 0;
 		setLayoutX(x);
@@ -318,8 +318,8 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 	}
 
 
-	public abstract void setTeamPlayers(ArrayList<ServerMinimumPlayer> team);
-	public abstract void setEnemies(ArrayList<ServerMinimumPlayer> enemies);
+	public abstract void setTeamPlayers(ArrayList<EssentialPlayer> team);
+	public abstract void setEnemies(ArrayList<EssentialPlayer> enemies);
 
 }
 

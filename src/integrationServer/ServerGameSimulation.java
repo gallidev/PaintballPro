@@ -7,7 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import logic.GameMode;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 import serverLogic.Team;
 
 
@@ -31,7 +31,7 @@ public class ServerGameSimulation {
 	}
 
 	public void startExecution(){
-		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
 
@@ -42,7 +42,7 @@ public class ServerGameSimulation {
 			     Executors.newScheduledThreadPool(1);
 		Runnable game = new Runnable() {
 		       public void run() {
-					for(ServerMinimumPlayer player : players)
+					for(EssentialPlayer player : players)
 					{
 						player.tick();
 					}

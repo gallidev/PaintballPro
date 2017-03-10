@@ -12,11 +12,11 @@ import javafx.scene.image.Image;
 import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
-import oldCode.players.UserPlayer;
 import physics.CollisionsHandler;
 import players.AIPlayer;
 import players.ServerBasicPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
+import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import serverLogic.CaptureTheFlagMode;
@@ -48,7 +48,7 @@ public class Lobby {
 	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
 	private Team red;
 	private Team blue;
-	private ArrayList<ServerMinimumPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 
 	//required for all players
 	Map map;
@@ -432,7 +432,7 @@ public class Lobby {
 
 		if(debug){
 			System.out.println("Players are: ");
-			for(ServerMinimumPlayer p : players){
+			for(EssentialPlayer p : players){
 				System.out.print(p.getPlayerId() + " ");
 			}
 		}
@@ -441,14 +441,14 @@ public class Lobby {
 
 		udpServer.setInputReceiver(inputReceiver);
 
-		for (ServerMinimumPlayer p : players) {
+		for (EssentialPlayer p : players) {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
 			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 
 			// adding to the string the information about all the other players
-			for (ServerMinimumPlayer aux : players)
+			for (EssentialPlayer aux : players)
 				if (aux.getPlayerId() != p.getPlayerId())
 					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 

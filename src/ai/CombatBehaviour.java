@@ -4,8 +4,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.AIPlayer;
-import players.GeneralPlayer;
-
 import java.util.ArrayList;
 
 public class CombatBehaviour extends Behaviour {
@@ -22,8 +20,5 @@ public class CombatBehaviour extends Behaviour {
     public void tick() {
         //take cover
     }
-
-
-
 
 }

@@ -15,7 +15,7 @@ import ai.HashMapGen;
 import audio.AudioManager;
 import rendering.Renderer;
 
-public class AIPlayer extends ServerMinimumPlayer{
+public class AIPlayer extends EssentialPlayer{
 
 	private BehaviourManager bManager;
 	private HashMapGen hashMaps;
@@ -25,8 +25,8 @@ public class AIPlayer extends ServerMinimumPlayer{
 	private boolean moving;
 	private Map map;
 	private AudioManager audio;
-	private ArrayList<ServerMinimumPlayer> enemies;
-	private ArrayList<ServerMinimumPlayer> teamPlayers;
+	private ArrayList<EssentialPlayer> enemies;
+	private ArrayList<EssentialPlayer> teamPlayers;
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
@@ -143,19 +143,19 @@ public class AIPlayer extends ServerMinimumPlayer{
 		return this.hashMaps;
 	}
 
-	public ArrayList<ServerMinimumPlayer> getEnemies() {
+	public ArrayList<EssentialPlayer> getEnemies() {
 		return enemies;
 	}
 
-	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
+	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
 		this.enemies = enemies;
 	}
 
-	public ArrayList<ServerMinimumPlayer> getTeamPlayers() {
+	public ArrayList<EssentialPlayer> getTeamPlayers() {
 		return teamPlayers;
 	}
 
-	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> teamPlayers) {
+	public void setTeamPlayers(ArrayList<EssentialPlayer> teamPlayers) {
 		this.teamPlayers = teamPlayers;
 	}
 

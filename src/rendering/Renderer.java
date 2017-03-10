@@ -22,7 +22,7 @@ import oldCode.players.GeneralPlayer;
 import physics.*;
 import players.GhostPlayer;
 import players.OfflinePlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 import serverLogic.Team;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class Renderer extends Scene
 		this.guiManager = guiManager;
 		init(mapName);
 
-		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		ArrayList<EssentialPlayer> players = new ArrayList<>();
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
@@ -95,16 +95,16 @@ public class Renderer extends Scene
 		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
-		ArrayList<ServerMinimumPlayer> redTeam = new ArrayList<>();
-		ArrayList<ServerMinimumPlayer> blueTeam = new ArrayList<>();
-		for(ServerMinimumPlayer p : players)
+		ArrayList<EssentialPlayer> redTeam = new ArrayList<>();
+		ArrayList<EssentialPlayer> blueTeam = new ArrayList<>();
+		for(EssentialPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED)
 				redTeam.add(p);
 			else
 				blueTeam.add(p);
 		}
-		for(ServerMinimumPlayer p : players)
+		for(EssentialPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED)
 			{
@@ -130,7 +130,7 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				updateView();
-				for(ServerMinimumPlayer player : players)
+				for(EssentialPlayer player : players)
 				{
 					for(Bullet pellet : player.getBullets())
 					{

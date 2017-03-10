@@ -7,7 +7,7 @@ import enums.TeamEnum;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 import rendering.Map;
 import serverLogic.Team;
 
@@ -15,8 +15,8 @@ public class CollisionsHandler
 {
 
 	private ArrayList<Rectangle> propsWalls;
-	private ArrayList<ServerMinimumPlayer> redTeam;
-	private ArrayList<ServerMinimumPlayer> blueTeam;
+	private ArrayList<EssentialPlayer> redTeam;
+	private ArrayList<EssentialPlayer> blueTeam;
 
 	private Team red;
 	private Team blue;
@@ -31,7 +31,7 @@ public class CollisionsHandler
 		blue = new Team(TeamEnum.BLUE);
 	}
 
-	public void handlePropWallCollision(ServerMinimumPlayer p){
+	public void handlePropWallCollision(EssentialPlayer p){
 		boolean collUp = false;
 		boolean collDown = false;
 		boolean collRight = false;
@@ -125,7 +125,7 @@ public class CollisionsHandler
 
 	}
 
-	public void handleBulletCollision(ServerMinimumPlayer p)
+	public void handleBulletCollision(EssentialPlayer p)
 	{
 		switch(p.getTeam())
 		{
@@ -146,8 +146,8 @@ public class CollisionsHandler
 
 	}
 
-	private void checkBulletsAgainstATeam(ServerMinimumPlayer p, ArrayList<ServerMinimumPlayer> opponents){
-		for(ServerMinimumPlayer enemy : opponents){
+	private void checkBulletsAgainstATeam(EssentialPlayer p, ArrayList<EssentialPlayer> opponents){
+		for(EssentialPlayer enemy : opponents){
 
 			for(Bullet bullet : enemy.getBullets())
 			{
@@ -189,11 +189,11 @@ public class CollisionsHandler
 	    return avg_d;
 	  }
 
-	public ArrayList<ServerMinimumPlayer> getRedTeam() {
+	public ArrayList<EssentialPlayer> getRedTeam() {
 		return redTeam;
 	}
 
-	public void setRedTeam(ArrayList<ServerMinimumPlayer> redTeam) {
+	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
 		this.redTeam = redTeam;;
 	}
 
@@ -202,11 +202,11 @@ public class CollisionsHandler
 		redTeam = red.getMembers();
 	}
 
-	public ArrayList<ServerMinimumPlayer> getBlueTeam() {
+	public ArrayList<EssentialPlayer> getBlueTeam() {
 		return blueTeam;
 	}
 
-	public void setBlueTeam(ArrayList<ServerMinimumPlayer> blueTeam) {
+	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
 		this.blueTeam = blueTeam;
 	}
 
@@ -215,8 +215,8 @@ public class CollisionsHandler
 		blueTeam = blue.getMembers();
 	}
 
-	public void setPlayers(ArrayList<ServerMinimumPlayer> players){
-		for(ServerMinimumPlayer p : players)
+	public void setPlayers(ArrayList<EssentialPlayer> players){
+		for(EssentialPlayer p : players)
 		{
 			if(p.getTeam() == TeamEnum.RED){
 				redTeam.add(p);

@@ -11,7 +11,7 @@ import networking.server.Lobby;
 import networking.server.LobbyTable;
 import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -315,13 +315,13 @@ public class UDPServer extends Thread{
 		double angle = Double.parseDouble(parsedMsg[5]);
 
 		//get that server player from the lobby
-		ServerMinimumPlayer currentPlayer = null;
-		for(ServerMinimumPlayer p : lobby.getRedTeam().getMembers())
+		EssentialPlayer currentPlayer = null;
+		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
 			if( id == p.getPlayerId())
 				currentPlayer = p;
 
 		if (currentPlayer == null){
-			for(ServerMinimumPlayer p : lobby.getBlueTeam().getMembers())
+			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
 				if( id == p.getPlayerId())
 					currentPlayer = p;
 		}

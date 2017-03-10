@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import enums.TeamEnum;
 import networking.game.UDPServer;
 import physics.Bullet;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -20,14 +20,14 @@ public class ServerGameStateSender {
 
 	private int lobbyId;
 	private UDPServer udpServer;
-	private ArrayList<ServerMinimumPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 	private int frames = 0;
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
 
 	private ServerGameSimulation gameLoop;
 
-	public ServerGameStateSender(UDPServer udpServer, ArrayList<ServerMinimumPlayer> players, int lobbyId){
+	public ServerGameStateSender(UDPServer udpServer, ArrayList<EssentialPlayer> players, int lobbyId){
 		this.udpServer = udpServer;
 		this.players = players;
 		this.lobbyId = lobbyId;
@@ -82,7 +82,7 @@ public class ServerGameStateSender {
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
-		for(ServerMinimumPlayer p : players){
+		for(EssentialPlayer p : players){
 
 				String toBeSent = "4:" + p.getPlayerId();
 
@@ -104,7 +104,7 @@ public class ServerGameStateSender {
 	private void sendClient() {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 
-		for(ServerMinimumPlayer p : players){
+		for(EssentialPlayer p : players){
 			String toBeSent = "1:" + p.getPlayerId();
 
 			toBeSent += ":" + p.getLayoutX();

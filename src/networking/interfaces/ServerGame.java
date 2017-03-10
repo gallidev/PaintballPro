@@ -6,7 +6,7 @@ import logic.GameMode;
 import networking.game.UDPServer;
 import oldCode.logic.EscortMode;
 import oldCode.logic.KingOfTheHillMode;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
@@ -106,17 +106,17 @@ public class ServerGame {
 		return game;
 	}
 
-	public ArrayList<ServerMinimumPlayer> getRedTeamPlayers(){
+	public ArrayList<EssentialPlayer> getRedTeamPlayers(){
 		return game.getRedTeam().getMembers();
 	}
 
-	public ArrayList<ServerMinimumPlayer> getBlueTeamPlayers(){
+	public ArrayList<EssentialPlayer> getBlueTeamPlayers(){
 		return game.getBlueTeam().getMembers();
 	}
 
-	public ArrayList<ServerMinimumPlayer> getAllPlayers(){
-		ArrayList<ServerMinimumPlayer> redTeam = getRedTeamPlayers();
-		ArrayList<ServerMinimumPlayer>  blueTeam = getBlueTeamPlayers();
+	public ArrayList<EssentialPlayer> getAllPlayers(){
+		ArrayList<EssentialPlayer> redTeam = getRedTeamPlayers();
+		ArrayList<EssentialPlayer>  blueTeam = getBlueTeamPlayers();
 
 		redTeam.addAll(blueTeam);
 

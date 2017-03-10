@@ -4,8 +4,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.AIPlayer;
-import players.GeneralPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 import java.util.ArrayList;
 
@@ -17,8 +16,8 @@ public class BehaviourManager{
     private Behaviour capture;
     private Behaviour retreat;
 
-    private ArrayList<ServerMinimumPlayer> enemies;
-    private ServerMinimumPlayer closestEnemy;
+    private ArrayList<EssentialPlayer> enemies;
+    private EssentialPlayer closestEnemy;
     private double closestDistance = 0;
     private double angle;
     private double closestX, closestY;
@@ -80,7 +79,7 @@ public class BehaviourManager{
 
     public void updateAngle(){
         double minDistance = Double.MAX_VALUE;
-        for(ServerMinimumPlayer enemy: enemies){
+        for(EssentialPlayer enemy: enemies){
             if(!enemy.isEliminated()) {
                 double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
                 if (temp < minDistance) {
@@ -106,7 +105,7 @@ public class BehaviourManager{
         return this.mover;
     }
 
-    public ServerMinimumPlayer getClosestEnemy(){
+    public EssentialPlayer getClosestEnemy(){
         return this.closestEnemy;
     }
 

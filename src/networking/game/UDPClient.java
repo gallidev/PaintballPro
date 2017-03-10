@@ -14,7 +14,7 @@ import networking.client.TeamTable;
 import oldCode.players.GeneralPlayer;
 import physics.Bullet;
 import players.GhostPlayer;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
