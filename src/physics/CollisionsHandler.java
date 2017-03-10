@@ -17,6 +17,7 @@ public class CollisionsHandler
 	private ArrayList<Rectangle> propsWalls;
 	private ArrayList<GeneralPlayer> redTeam;
 	private ArrayList<GeneralPlayer> blueTeam;
+	private boolean collUp, collDown, collRight, collLeft;
 
 	public CollisionsHandler(Map map)
 	{
@@ -28,10 +29,10 @@ public class CollisionsHandler
 
 	public void handlePropWallCollision(GeneralPlayer p)
 	{
-		boolean collUp = false;
-		boolean collDown = false;
-		boolean collRight = false;
-		boolean collLeft = false;
+		collUp = false;
+		collDown = false;
+		collRight = false;
+		collLeft = false;
 		ArrayList<Double> angles = new ArrayList<>();
 		double playerCenterX = p.getLayoutX() + p.getImage().getWidth() / 2;
 		double playerCenterY = p.getLayoutY() + p.getImage().getHeight() / 2;
@@ -140,6 +141,10 @@ public class CollisionsHandler
 
 	}
 
+	public void handleGameobjectCollision(GeneralPlayer p){
+
+	}
+
 	private void checkBulletsAgainstATeam(GeneralPlayer p, ArrayList<GeneralPlayer> opponents)
 	{
 		for(GeneralPlayer enemy : opponents)
@@ -209,6 +214,22 @@ public class CollisionsHandler
 			else
 				blueTeam.add(p);
 		}
+	}
+
+	public boolean getCollUp(){
+		return this.collUp;
+	}
+
+	public boolean getCollDown(){
+		return this.collDown;
+	}
+
+	public boolean getCollLeft(){
+		return this.collLeft;
+	}
+
+	public boolean getCollRight(){
+		return this.collRight;
 	}
 
 }

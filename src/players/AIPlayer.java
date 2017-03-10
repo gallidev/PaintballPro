@@ -121,4 +121,8 @@ public class AIPlayer extends GeneralPlayer{
 	public HashMapGen getHashMaps(){
 		return this.hashMaps;
 	}
+
+	public CollisionsHandler getCollisionHandler(){
+		return this.collisionsHandler;
+	}
 }
