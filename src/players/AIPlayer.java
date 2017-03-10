@@ -15,7 +15,7 @@ import ai.HashMapGen;
 import audio.AudioManager;
 import rendering.Renderer;
 
-public class AIPlayer extends GeneralPlayer{
+public class AIPlayer extends ServerMinimumPlayer{
 
 	private BehaviourManager bManager;
 	private HashMapGen hashMaps;
@@ -24,11 +24,13 @@ public class AIPlayer extends GeneralPlayer{
 	private OfflineTeam myTeam;
 	private boolean moving;
 	private Map map;
-
+	private AudioManager audio;
+	private ArrayList<ServerMinimumPlayer> enemies;
+	private ArrayList<ServerMinimumPlayer> teamPlayers;
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
-		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionsHandler);
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
 		this.hashMaps = hashMaps;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -36,7 +38,7 @@ public class AIPlayer extends GeneralPlayer{
 		this.map = map;
 		this.moving = true;
 		bManager = new BehaviourManager(this);
-		//this.audio = audio;
+		this.audio = audio;
 	}
 
 	/**
@@ -128,10 +130,6 @@ public class AIPlayer extends GeneralPlayer{
 		return map;
 	}
 
-	public ArrayList<AIPlayer> getEnemies(){
-		return oppTeam.getMembers();
-	}
-
 	public double getWidth(){
 		return ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
 	}
@@ -144,4 +142,22 @@ public class AIPlayer extends GeneralPlayer{
 	public HashMapGen getHashMaps(){
 		return this.hashMaps;
 	}
+
+	public ArrayList<ServerMinimumPlayer> getEnemies() {
+		return enemies;
+	}
+
+	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
+		this.enemies = enemies;
+	}
+
+	public ArrayList<ServerMinimumPlayer> getTeamPlayers() {
+		return teamPlayers;
+	}
+
+	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> teamPlayers) {
+		this.teamPlayers = teamPlayers;
+	}
+
+
 }

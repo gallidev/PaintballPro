@@ -1,5 +1,6 @@
 package oldCode.players;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -117,6 +118,18 @@ public class UserPlayer extends ServerMinimumPlayer{
 
 	@Override
 	public void updateScore() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> team) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
 		// TODO Auto-generated method stub
 
 	}

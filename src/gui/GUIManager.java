@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public class GUIManager {
 
-    public static boolean localServerCode = true;
+    public static boolean localServerCode = false;
     // Load the user's settings
     // When set methods are called for this class/object, the class will
     // automatically save the changed preferences
@@ -114,7 +114,7 @@ public class GUIManager {
                     break;
                 case EliminationSingle:
                     if (localServerCode) {
-                    	establishLocalServerConnection();
+                    	//establishLocalServerConnection();
 
                         c.getSender().sendMessage("Play:Mode:1");
                         audio.startMusic(audio.music.getRandomTrack());

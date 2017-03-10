@@ -234,7 +234,7 @@ public class ClientReceiver extends Thread {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						m.setRenderer(r);
+						//m.setRenderer(r);
 						m.transitionTo(Menu.EliminationSingle, null);
 					}
 				});
@@ -245,7 +245,7 @@ public class ClientReceiver extends Thread {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						m.setRenderer(r);
+						//m.setRenderer(r);
 						m.transitionTo(Menu.CTFSingle, null);
 					}
 				});

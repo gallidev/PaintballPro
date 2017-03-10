@@ -27,6 +27,8 @@ public class CollisionsHandler
 		this.propsWalls.addAll(map.getRecWalls());
 		this.redTeam = new ArrayList<>();
 		this.blueTeam = new ArrayList<>();
+		red = new Team(TeamEnum.RED);
+		blue = new Team(TeamEnum.BLUE);
 	}
 
 	public void handlePropWallCollision(ServerMinimumPlayer p){
@@ -37,6 +39,7 @@ public class CollisionsHandler
 		ArrayList<Double> angles = new ArrayList<>();
 		double playerCenterX = p.getLayoutX() + p.getImage().getWidth() / 2;
 		double playerCenterY = p.getLayoutY() + p.getImage().getHeight() / 2;
+
 		for(Rectangle propWall : propsWalls)
 		{
 			double propX = propWall.getX();
@@ -52,6 +55,8 @@ public class CollisionsHandler
 			if(Math.abs(propX - p.getLayoutX()) > 72 || Math.abs(propY - p.getLayoutY()) > 72)
 				continue;
 
+
+			//System.out.println("collsionsss maybee");
 			//it returns a path with the collision with walls
 			//System.out.println("bound player " + p.getPlayerId() + " : " + p.getPolygonBounds().toString());
 			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
@@ -188,6 +193,10 @@ public class CollisionsHandler
 		return redTeam;
 	}
 
+	public void setRedTeam(ArrayList<ServerMinimumPlayer> redTeam) {
+		this.redTeam = redTeam;;
+	}
+
 	public void setRedTeam(Team red) {
 		this.red = red;
 		redTeam = red.getMembers();
@@ -195,6 +204,10 @@ public class CollisionsHandler
 
 	public ArrayList<ServerMinimumPlayer> getBlueTeam() {
 		return blueTeam;
+	}
+
+	public void setBlueTeam(ArrayList<ServerMinimumPlayer> blueTeam) {
+		this.blueTeam = blueTeam;
 	}
 
 	public void setBlueTeam(Team blue) {
@@ -205,10 +218,15 @@ public class CollisionsHandler
 	public void setPlayers(ArrayList<ServerMinimumPlayer> players){
 		for(ServerMinimumPlayer p : players)
 		{
-			if(p.getTeam() == TeamEnum.RED)
+			if(p.getTeam() == TeamEnum.RED){
 				redTeam.add(p);
-			else
+				red.addMember(p);
+			}
+			else{
 				blueTeam.add(p);
+				red.addMember(p);
+			}
+
 		}
 	}
 

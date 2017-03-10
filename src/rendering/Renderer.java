@@ -39,13 +39,12 @@ import static players.GhostPlayer.playerHeadY;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	static ServerMinimumPlayer player;
+	static OfflinePlayer player;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
 	static GhostPlayer cPlayer;
 	private ClientInputSender inputSender;
-	private InputHandler inputHandler;
 	private static Map map;
 	private AnimationTimer timer;
 	private GUIManager guiManager;
@@ -66,31 +65,48 @@ public class Renderer extends Scene
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler);
+		InputHandler inputHandler = new InputHandler();
+		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+		MouseListener mouseListener = new MouseListener(inputHandler);
+
+		setOnKeyPressed(keyPressListener);
+		setOnKeyReleased(keyReleaseListener);
+		setOnMouseDragged(mouseListener);
+		setOnMouseMoved(mouseListener);
+		setOnMousePressed(mouseListener);
+		setOnMouseReleased(mouseListener);
+
+
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
+
+		hud = new HeadUpDisplay(guiManager, player.getTeam());
+		view.getChildren().add(hud);
+		hud.toFront();
 
 		players.add(player);
 		players.addAll(player.getTeamPlayers());
 		players.addAll(player.getEnemies());
-		players.forEach(player -> {
-			player.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
-			view.getChildren().add(player.getNameTag());
-		});
-		view.getChildren().remove(player.getNameTag());
+//		players.forEach(player -> {
+//			player.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+//			view.getChildren().add(player.getNameTag());
+//		});
+//		view.getChildren().remove(player.getNameTag());
 		view.getChildren().addAll(players);
 
 		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
-		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
-		for(GeneralPlayer p : players)
+		ArrayList<ServerMinimumPlayer> redTeam = new ArrayList<>();
+		ArrayList<ServerMinimumPlayer> blueTeam = new ArrayList<>();
+		for(ServerMinimumPlayer p : players)
 		{
-			if(p.getTeam() == Team.RED)
+			if(p.getTeam() == TeamEnum.RED)
 				redTeam.add(p);
 			else
 				blueTeam.add(p);
 		}
-		for(GeneralPlayer p : players)
+		for(ServerMinimumPlayer p : players)
 		{
-			if(p.getTeam() == Team.RED)
+			if(p.getTeam() == TeamEnum.RED)
 			{
 				p.setEnemies(blueTeam);
 				p.setTeamPlayers(redTeam);
@@ -102,10 +118,9 @@ public class Renderer extends Scene
 			}
 		}
 
-		collisionsHandler.setBlueTeam(blueTeam);
-		collisionsHandler.setRedTeam(redTeam);
+		collisionsHandler.setPlayers(players);
 
-		initListeners();
+
 
 		timer = new AnimationTimer()
 		{
@@ -115,7 +130,7 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				updateView();
-				for(GeneralPlayer player : players)
+				for(ServerMinimumPlayer player : players)
 				{
 					for(Bullet pellet : player.getBullets())
 					{
@@ -177,6 +192,10 @@ public class Renderer extends Scene
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
+
+		hud = new HeadUpDisplay(guiManager, player.getTeam());
+		view.getChildren().add(hud);
+		hud.toFront();
 
 		inputSender = new ClientInputSender(receiver.getUdpClient(),inputHandler, cPlayer.getPlayerId());
 
@@ -321,32 +340,32 @@ public class Renderer extends Scene
 
 	private void initListeners()
 	{
-		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
-		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
-		MouseListener mouseListener = new MouseListener(inputHandler);
+//		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+//		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+//		MouseListener mouseListener = new MouseListener(inputHandler);
+//
+//		setOnKeyPressed(keyPressListener);
+//		setOnKeyReleased(keyReleaseListener);
+//		setOnMouseDragged(mouseListener);
+//		setOnMouseMoved(mouseListener);
+//		setOnMousePressed(mouseListener);
+//		setOnMouseReleased(mouseListener);
 
-		setOnKeyPressed(keyPressListener);
-		setOnKeyReleased(keyReleaseListener);
-		setOnMouseDragged(mouseListener);
-		setOnMouseMoved(mouseListener);
-		setOnMousePressed(mouseListener);
-		setOnMouseReleased(mouseListener);
-
-		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
-		view.getChildren().add(hud);
-		hud.toFront();
+//		hud = new HeadUpDisplay(guiManager, player.getTeam());
+//		view.getChildren().add(hud);
+//		hud.toFront();
 	}
 
 	private void updateView()
 	{
-		view.relocate(((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY()) * view.getScaleY());
-		hud.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+		view.relocate(((getWidth() / 2) - playerHeadX - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - player.getLayoutY()) * view.getScaleY());
+		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
 		if(view.getChildren().contains(pauseMenu))
-			pauseMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+			pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
 		if(view.getChildren().contains(settingsMenu))
-			settingsMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+			settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 	}
 
 

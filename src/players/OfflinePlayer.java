@@ -4,38 +4,55 @@ import ai.HashMapGen;
 import audio.AudioManager;
 import enums.TeamEnum;
 import gui.GUIManager;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
 import oldCode.offlineLogic.OfflineTeam;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import physics.InputHandler;
 import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The player, represented by an ImageView that should be running
  */
-public class OfflinePlayer extends GeneralPlayer
+public class OfflinePlayer extends ServerMinimumPlayer
 {
-	private AudioManager audio;
 	private OfflineTeam myTeam;
 	private OfflineTeam oppTeam;
+	private InputHandler inputHandler;
+	private ArrayList<ServerMinimumPlayer> enemies;
+	private ArrayList<ServerMinimumPlayer> teamPlayers;
+	private AudioManager audio;
+	private Random rand;
+	private Label nameTag;
+
+
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
 	 *
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
 	 */
-	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler)
+	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler)
 	{
-		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), guiManager.getAudioManager(), collisionsHandler);
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
 		this.audio = guiManager.getAudioManager();
-		this.mouseX = x;
-		this.mouseY = y;
+		this.inputHandler = inputHandler;
 		angle = 0.0;
 		this.team = team;
+		rand = new Random();
+
+		nameTag = new Label("Player");
+		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
+				"-fx-font-size: 10pt; -fx-text-fill: white");
+		nameTag.setPadding(new Insets(5));
+		nameTag.relocate(x - 15, y - 32);
 		teamPlayers = new ArrayList<>();
 		enemies = new ArrayList<>();
 		HashMapGen hashMaps = new HashMapGen(map);
@@ -135,30 +152,35 @@ public class OfflinePlayer extends GeneralPlayer
 	{
 		//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
-		if(up && !collUp){
+		if(inputHandler.isUp() && !collUp){
 			setLayoutY(getLayoutY() - movementSpeed);
-		}else if(!up && collUp){
+		}else if(!inputHandler.isUp() && collUp){
 			setLayoutY(getLayoutY() + movementSpeed);
 		}
-		if(down && !collDown){
+		if(inputHandler.isDown() && !collDown){
 			setLayoutY(getLayoutY() + movementSpeed);
-		}else if(!down && collDown){
+		}else if(!inputHandler.isDown() && collDown){
 			setLayoutY(getLayoutY() - movementSpeed);
 		}
-		if(left && !collLeft) {
+		if(inputHandler.isLeft() && !collLeft) {
 			setLayoutX(getLayoutX() - movementSpeed);
-		} else if(!left && collLeft){
+		} else if(!inputHandler.isLeft() && collLeft){
 			setLayoutX(getLayoutX() + movementSpeed);
 		}
-		if(right && !collRight){
+		if(inputHandler.isRight() && !collRight){
 			setLayoutX(getLayoutX() + movementSpeed);
-		}else if (!right && collRight){
+		}else if (!inputHandler.isRight() && collRight){
 			setLayoutX(getLayoutX() - movementSpeed);
 		}
 
 	}
 
-
+	protected void updateShooting(){
+		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - shootDelay){
+			shoot();
+			shootTimer = System.currentTimeMillis();
+		}
+	}
 
 	//Calculates the angle the player is facing with respect to the mouse
 	@Override
@@ -168,8 +190,8 @@ public class OfflinePlayer extends GeneralPlayer
 		double x1 = temp.getX();
 		double y1 = temp.getY();
 
-		double deltax = mouseX - x1;
-		double deltay = y1 - mouseY;
+		double deltax = inputHandler.getMouseX() - x1;
+		double deltay = y1 - inputHandler.getMouseY();
 		angle = Math.atan2(deltax, deltay);
 		rotation.setAngle(Math.toDegrees(angle));
 	}
@@ -210,4 +232,34 @@ public class OfflinePlayer extends GeneralPlayer
 	{
 		this.mouseY = my;
 	}
+
+
+	@Override
+	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> team) {
+		this.teamPlayers = team;
+
+	}
+
+
+
+	@Override
+	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
+		this.enemies= enemies;
+
+	}
+
+
+	public ArrayList<ServerMinimumPlayer> getEnemies() {
+		return enemies;
+	}
+
+
+	public ArrayList<ServerMinimumPlayer> getTeamPlayers() {
+		return teamPlayers;
+	}
+
+
+
+
+
 }

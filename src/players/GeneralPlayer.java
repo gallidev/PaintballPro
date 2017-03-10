@@ -23,27 +23,11 @@ import java.util.Random;
  */
 public abstract class GeneralPlayer extends ServerMinimumPlayer implements GameObject{
 
-	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-	protected static long shootDelay = 450;
-	protected static long spawnDelay = 2000;
-	protected final double movementSpeed = 2;
-	protected boolean up, down, left, right, shoot, eliminated, invincible;
-	protected boolean collUp, collDown, collLeft, collRight;
-	protected double angle, lastAngle;
-	protected ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	protected Rotate rotation, boundRotation;
 	protected Map map;
-	protected int id;
-	protected long shootTimer, spawnTimer;
-	protected double lastX, lastY;
-	protected TeamEnum team;
-	protected ArrayList<GeneralPlayer> enemies;
-	protected ArrayList<GeneralPlayer> teamPlayers;
-	protected Polygon bounds = new Polygon();
-	protected ArrayList<Rectangle> propsWalls;
+	protected ArrayList<ServerMinimumPlayer> enemies;
+	protected ArrayList<ServerMinimumPlayer> teamPlayers;
 	protected boolean scoreChanged = false;
 	protected AudioManager audio;
-	protected CollisionsHandler collisionsHandler;
 	protected Random rand;
 	protected Label nameTag;
 
@@ -58,32 +42,8 @@ public abstract class GeneralPlayer extends ServerMinimumPlayer implements GameO
 	 */
 	public GeneralPlayer(double x, double y, int id, Map map, TeamEnum team, Image image, AudioManager audio, CollisionsHandler collisionsHandler){
 		super(y, y, id, map.getSpawns(), team, collisionsHandler, image);
-		setLayoutX(x);
-		setLayoutY(y);
-		this.lastX = x;
-		this.lastY = y;
-		this.lastAngle = angle;
-		this.team = team;
-		this.id = id;
-		this.rand = new Random();
-		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
-	    getTransforms().add(rotation);
-		rotation.setPivotX(playerHeadX);
-		rotation.setPivotY(playerHeadY);
 		this.map = map;
-		propsWalls = map.getRecProps();
-	    propsWalls.addAll(map.getRecWalls());
-		eliminated = false;
-		invincible = false;
 		this.audio = audio;
-		this.collisionsHandler = collisionsHandler;
-		createPlayerBounds();
-		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
-		bounds.getTransforms().add(boundRotation);
-		boundRotation.setPivotX(playerHeadX);
-		boundRotation.setPivotY(playerHeadY);
-		updatePlayerBounds();
-
 		nameTag = new Label("Player");
 		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
 				"-fx-font-size: 10pt; -fx-text-fill: white");
@@ -114,19 +74,19 @@ public abstract class GeneralPlayer extends ServerMinimumPlayer implements GameO
 	//-----------------------------------------------------------------------------
 
 
-	public ArrayList<GeneralPlayer> getGeneralEnemies(){
+	public ArrayList<ServerMinimumPlayer> getEnemies(){
 		return this.enemies;
 	}
 
-	public void setEnemies(ArrayList<GeneralPlayer> enemies) {
+	public void setEnemies(ArrayList<ServerMinimumPlayer> enemies) {
 		this.enemies = enemies;
 	}
 
-	public ArrayList<GeneralPlayer> getTeamPlayers(){
+	public ArrayList<ServerMinimumPlayer> getTeamPlayers(){
 		return teamPlayers;
 	}
 
-	public void setTeamPlayers(ArrayList<GeneralPlayer> teamPlayers) {
+	public void setTeamPlayers(ArrayList<ServerMinimumPlayer> teamPlayers) {
 		this.teamPlayers = teamPlayers;
 	}
 

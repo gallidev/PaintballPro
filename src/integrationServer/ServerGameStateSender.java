@@ -45,7 +45,7 @@ public class ServerGameStateSender {
 		    	   updateScore();
 
 		    	   sendRemainingTime();
-		    	   
+
 		    	   if(gameLoop.getGame().isGameFinished()){
 
 		    		   udpServer.sendToAll("5", lobbyId);
@@ -110,7 +110,7 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.getLayoutX();
 			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngleDegrees();
-			toBeSent += ":" + p.getVisibility();
+			toBeSent += ":" + p.isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 		}

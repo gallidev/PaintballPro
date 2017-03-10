@@ -26,7 +26,7 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 	protected static long shootDelay = 450;
 	protected static long spawnDelay = 2000;
 	protected final double movementSpeed = 2;
-	protected boolean up, down, left, right, shoot, eliminated, invincible, visible;
+	protected boolean up, down, left, right, shoot, eliminated, invincible;
 	protected boolean collUp, collDown, collLeft, collRight;
 	protected double angle, lastAngle;
 	protected double mouseX, mouseY;
@@ -65,10 +65,10 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
+		getTransforms().add(rotation);
 		this.spawn = spawn;
 		eliminated = false;
 		invincible = false;
-		visible = true;
 		this.collisionsHandler = collisionsHandler;
 		createPlayerBounds();
 		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -120,11 +120,12 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 			invincible = true;
 			spawnTimer = System.currentTimeMillis();
 			updatePosition();
-			visible = true;
+			setVisible(true);
 		}
 	}
 
 	protected void checkInvincibility() {
+		boolean visible = true;
 		//Invincible animation
 		if(spawnTimer + spawnDelay > System.currentTimeMillis()){
 			if(System.currentTimeMillis() >= spawnTimer + spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay/8)
@@ -147,6 +148,7 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 			visible = true;
 
 		}
+		setVisible(visible);
 	}
 
 	//Consists of 5 points around player
@@ -227,7 +229,7 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 	public void beenShot() {
 		spawnTimer = System.currentTimeMillis();
 		eliminated = true;
-		visible = false;
+		setVisible(false);
 		updateScore();
 	}
 
@@ -314,14 +316,10 @@ public abstract class ServerMinimumPlayer extends ImageView implements GameObjec
 	public TeamEnum getColour(){
 		return team;
 	}
-	
-	public synchronized boolean getVisibility(){
-		return visible;
-	}
-	
-	public synchronized void setVisibility(boolean visibility){
-		this.visible = visibility;
-	}
+
+
+	public abstract void setTeamPlayers(ArrayList<ServerMinimumPlayer> team);
+	public abstract void setEnemies(ArrayList<ServerMinimumPlayer> enemies);
 
 }
 

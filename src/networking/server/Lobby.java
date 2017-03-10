@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import ai.AIManager;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
@@ -74,9 +73,9 @@ public class Lobby {
 
 		//setting up the map
 		if (PassedGameType == 1)
-			 map = Map.loadRaw("res/maps/" + "elimination" + ".json");
+			 map = Map.loadRaw("elimination");
 		else
-			 map = Map.loadRaw("res/maps/" + "ctf" + ".json");
+			 map = Map.loadRaw("ctf");
 
 		//setting up the collision handler
 		collissionsHandler = new CollisionsHandler(map);
