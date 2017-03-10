@@ -10,10 +10,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+
 import static java.lang.Thread.sleep;
 
 /**
@@ -22,6 +25,17 @@ import static java.lang.Thread.sleep;
 public class GameLobbyMenu {
 
 	public static Scene getScene(GUIManager m, ObservableList<GameLobbyRow> lobbyData) {
+
+		StackPane sp = new StackPane();
+		GridPane mainGrid = new GridPane();
+		GridPane loadingGrid = new GridPane();
+		loadingGrid.setAlignment(Pos.CENTER);
+		loadingGrid.setHgap(10);
+		loadingGrid.setVgap(10);
+		loadingGrid.setPadding(new Insets(25, 25, 25, 25));
+		ProgressIndicator spinner = new ProgressIndicator();
+		spinner.setProgress(-1);
+		loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);
 
 		// Setup table
 		TableView table = new TableView();
@@ -60,6 +74,10 @@ public class GameLobbyMenu {
 							timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
 						});
 						if (m.getTimeLeft() <= 1) {
+							Platform.runLater(() -> {
+								sp.getChildren().remove(mainGrid);
+								sp.getChildren().addAll(loadingGrid);
+							});
 							threadRunning = false;
 						} else {
 							m.fetchLobbyUpdates();
@@ -82,7 +100,7 @@ public class GameLobbyMenu {
 		optionsSection.add(options, 1, 0);
 
 		// Setup the main grid to be displayed, and add sounds to buttons
-		GridPane mainGrid = new GridPane();
+
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
@@ -90,7 +108,8 @@ public class GameLobbyMenu {
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
 		m.addButtonHoverSounds(mainGrid);
-		Scene s = new Scene(mainGrid, m.width, m.height);
+		sp.getChildren().addAll(mainGrid);
+		Scene s = new Scene(sp, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
 		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
 		return s;
