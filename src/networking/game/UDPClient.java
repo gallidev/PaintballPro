@@ -48,25 +48,29 @@ public class UDPClient extends Thread {
 		if(debug) System.out.println("Making new UDP Client");
 		
 		// Let's establish a connection to the running UDP server and send our client id.
-		try{
-			if(debug) System.out.println("Attempting to make client socket");
-			clientSocket = new DatagramSocket(port);
-			if(debug) System.out.println("Attempting to get ip address");
-			IPAddress = InetAddress.getByName(udpServIP);
-			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
-			String sentence = "Connect:"+clientID;
-			if(debug) System.out.println("sending data:"+sentence);
-			sendMessage(sentence);
-			if(debug) System.out.println("sent");
-			byte[] receiveData = new byte[1024];
-			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			clientSocket.receive(receivePacket);
-			String sentSentence = new String(receivePacket.getData());
-			if(debug) System.out.println(sentSentence.trim());
-		}
-		catch (Exception e)
-		{
-			if(debug) System.err.println(e.getMessage());
+		boolean error = true;
+		while (error) {
+			error = false;
+			try {
+				if (debug) System.out.println("Attempting to make client socket");
+				clientSocket = new DatagramSocket(port);
+				if (debug) System.out.println("Attempting to get ip address");
+				IPAddress = InetAddress.getByName(udpServIP);
+				if (debug) System.out.println("IPAddress is:" + IPAddress.getHostAddress());
+				String sentence = "Connect:" + clientID;
+				if (debug) System.out.println("sending data:" + sentence);
+				sendMessage(sentence);
+				if (debug) System.out.println("sent");
+				byte[] receiveData = new byte[1024];
+				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+				clientSocket.receive(receivePacket);
+				String sentSentence = new String(receivePacket.getData());
+				if (debug) System.out.println(sentSentence.trim());
+			} catch (Exception e) {
+				error = true;
+				if (debug) System.err.println(e.getMessage());
+				port++;
+			}
 		}
 	}
 	
