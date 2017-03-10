@@ -125,7 +125,8 @@ public class ServerGameStateSender {
 	}
 
 	public void sendWinner(){
-		String toBeSent = "4:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
+		//Protocol: "2:<winner>"
+		String toBeSent = "2:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
 
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}

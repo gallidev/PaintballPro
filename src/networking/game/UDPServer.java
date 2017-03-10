@@ -116,11 +116,7 @@ public class UDPServer extends Thread{
 							case '0' : playerInputChanged(sentence);
 									   break;
 
-							case '4' : getWinner(sentence);
-									   break;
-
-							case '5' : //exitGame(ipFrom);
-
+							case '2' : getWinner(sentence);
 									   break;
 						}
 

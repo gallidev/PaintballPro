@@ -2,17 +2,30 @@
   
 
 
-  Client		<<<-----------------------------------------------------------------------(WINNER)----------------------------------- Server
+  Client		<<<------------------------------------------------(TIME)----------------------------------------------------------- Server
  	|																															         | 	
   	|																																     |
-ClientPlayer	----------(read a move)------------------------------------------------------------------------------------------->>> ServerPlayer
-				<<<--------(update location/render)----------------------------------------(accept the move/ do collision detection etc)---------
-
-ClientPlayer	----------(shoot)--------------------------------------------------------------------------------------------------->>ServerPlayer
-				<<<--------(reflect the new score/ reder)----------------------------------------(update score(team too)/ respawn)--------------
+ClientInputSender------------------(read a move)---------------------------------------------------------------------------->>>ServerInputReceiver
+			     <<<----------(update location/render)------------------------(perform collision detection)--------------------
 
 
-Server:
-	-run timer
-	-check if the game is finished
-	-manage teams(send the same information to all team members)
+ 				-----------(send bullets)------------------------------------------------------------------------------------>>>
+				<<<--------(reflect the new score/ render)-----------------------(update score(team too)/ respawn)--------------
+
+
+				<<<---------------------------------------------------(WINNER)--------------------------------------------------
+
+
+
+-----------------------------------------	|-----------------------------------------	|
+				SERVER						|				CLIENT						|					
+---------------------------------------	----|-----------------------------------------	|
+		    Runs the game loop				|											|
+---------------------------------------	----|-----------------------------------------	|
+Send start/end signal						|Send player input  						|
+Receive client input   						|Send shooting information					|
+Run collision handling						|Render 									|
+Send new location to client 				|											|
+Send score									|											|	
+Send game remaing time 						|											|
+---------------------------------------	----|-----------------------------------------	|
