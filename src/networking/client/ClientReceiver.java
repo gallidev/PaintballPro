@@ -212,17 +212,21 @@ public class ClientReceiver extends Thread {
 		System.out.println("single player = " + singlePlayer);
 		if (!singlePlayer){
 			if (gameMode == 1){
+				Renderer r = new Renderer("elimination", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						m.setRenderer(r);
 						m.transitionTo(Menu.EliminationMulti, null);
 					}
 				});
 			}
 			else{
+				Renderer r = new Renderer("ctf", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						m.setRenderer(r);
 						m.transitionTo(Menu.CTFMulti, null);
 					}
 				});
@@ -234,7 +238,7 @@ public class ClientReceiver extends Thread {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						//m.setRenderer(r);
+						m.setRenderer(r);
 						m.transitionTo(Menu.EliminationSingle, null);
 					}
 				});
@@ -245,7 +249,7 @@ public class ClientReceiver extends Thread {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						//m.setRenderer(r);
+						m.setRenderer(r);
 						m.transitionTo(Menu.CTFSingle, null);
 					}
 				});

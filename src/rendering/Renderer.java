@@ -48,7 +48,8 @@ public class Renderer extends Scene
 	private static Map map;
 	private AnimationTimer timer;
 	private GUIManager guiManager;
-
+	private boolean singlePlayer = false;
+	
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
@@ -60,6 +61,7 @@ public class Renderer extends Scene
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		this.guiManager = guiManager;
 		init(mapName);
+		singlePlayer = true;
 
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 
@@ -193,7 +195,7 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		hud = new HeadUpDisplay(guiManager, player.getTeam());
+		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
 
@@ -358,14 +360,28 @@ public class Renderer extends Scene
 
 	private void updateView()
 	{
-		view.relocate(((getWidth() / 2) - playerHeadX - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - player.getLayoutY()) * view.getScaleY());
-		hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
-		if(view.getChildren().contains(pauseMenu))
-			pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+		if (singlePlayer){
+			view.relocate(((getWidth() / 2) - playerHeadX - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - player.getLayoutY()) * view.getScaleY());
+			hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 
-		if(view.getChildren().contains(settingsMenu))
-			settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+			if(view.getChildren().contains(pauseMenu))
+				pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+
+			if(view.getChildren().contains(settingsMenu))
+				settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+		}
+		else{
+			view.relocate(((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY()) * view.getScaleY());
+			hud.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+
+			if(view.getChildren().contains(pauseMenu))
+				pauseMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+
+			if(view.getChildren().contains(settingsMenu))
+				settingsMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+		}
+			
 	}
 
 

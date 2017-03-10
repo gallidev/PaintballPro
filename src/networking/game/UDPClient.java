@@ -24,7 +24,7 @@ import players.EssentialPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	private String nickname;
 

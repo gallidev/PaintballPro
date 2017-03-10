@@ -21,7 +21,7 @@ import players.EssentialPlayer;
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;

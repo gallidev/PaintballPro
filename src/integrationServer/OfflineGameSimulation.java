@@ -7,7 +7,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import logic.GameMode;
-import players.ServerMinimumPlayer;
 import serverLogic.Team;
 
 public class OfflineGameSimulation {

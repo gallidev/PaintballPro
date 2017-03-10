@@ -128,7 +128,7 @@ public class GUIManager {
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    r = new Renderer("elimination", c.getReceiver(), this);
+                    //r = new Renderer("elimination", c.getReceiver(), this);
                     s.setScene(r);
                     break;
                 case CTFSingle:
@@ -146,7 +146,7 @@ public class GUIManager {
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    r = new Renderer("ctf", c.getReceiver(), this);
+                    //r = new Renderer("ctf", c.getReceiver(), this);
                     s.setScene(r);
                     break;
                 case EndGame:
@@ -343,6 +343,10 @@ public class GUIManager {
         this.gameObservers.forEach(GameObserver::gameUpdated);
     }
 
+    public void setRenderer(Renderer r){
+    	this.r = r;
+    }
+    
 //    public void setGameTimeLeft(int gameTimeLeft) {
 //        this.gameTimeLeft = gameTimeLeft;
 //        notifyGameChanged();
