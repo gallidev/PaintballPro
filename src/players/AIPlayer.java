@@ -24,12 +24,12 @@ public class AIPlayer extends EssentialPlayer{
 	private OfflineTeam myTeam;
 	private boolean moving;
 	private Map map;
-	private AudioManager audio;
+	//private AudioManager audio;
 	private ArrayList<EssentialPlayer> enemies;
 	private ArrayList<EssentialPlayer> teamPlayers;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
 		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
 		this.hashMaps = hashMaps;
 		angle = Math.toRadians(90);
@@ -38,7 +38,7 @@ public class AIPlayer extends EssentialPlayer{
 		this.map = map;
 		this.moving = true;
 		bManager = new BehaviourManager(this);
-		this.audio = audio;
+		//this.audio = audio;
 	}
 
 	/**

@@ -122,8 +122,6 @@ public class Renderer extends Scene
 
 		collisionsHandler.setPlayers(players);
 
-
-
 		timer = new AnimationTimer()
 		{
 			long lastSecond = 0;

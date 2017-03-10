@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import ai.AIManager;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
@@ -300,7 +301,7 @@ public class Lobby {
 			else
 				curId = newTeam.getMembersNo() + 4;
 
-
+			System.out.println("player id = " + curId);
 			//provisionally hardcoded
 			if (teamNum == 1)
 				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, 2, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
@@ -400,21 +401,24 @@ public class Lobby {
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
-
+		System.out.println("Red user players: " + red.getMembersNo());
+		
 		//filling the game with AI players
-//		AIManager redAIM = new AIManager(red, map, collissionsHandler);
-//		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
-//
-//		redAIM.start();
-//		blueAIM.start();
-//
-//		try {
-//			redAIM.join();
-//			blueAIM.join();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
+		AIManager redAIM = new AIManager(red, map, collissionsHandler);
+		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
+		
+		System.out.println("checking if spwans are the same...");
+		boolean ok = true;
+		for(EssentialPlayer p : red.getMembers()){
+			for(EssentialPlayer q : red.getMembers())
+				if (p!=q && p.getX() == q.getX() && p.getY() == q.getY())
+					ok = false;
+		System.out.println("ok = " + ok);
+				
+		}
 
-//		}
+		redAIM.createPlayers();
+		blueAIM.createPlayers();
 //
 //		System.out.println("Red team members:");
 //		for(ServerMinimumPlayer p : red.getMembers())

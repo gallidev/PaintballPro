@@ -224,7 +224,7 @@ public class CollisionsHandler
 			}
 			else{
 				blueTeam.add(p);
-				red.addMember(p);
+				blue.addMember(p);
 			}
 
 		}

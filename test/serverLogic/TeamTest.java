@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.TeamEnum;
-import players.ServerMinimumPlayer;
+import players.EssentialPlayer;
 
 public class TeamTest {
 	
@@ -45,7 +45,7 @@ public class TeamTest {
 	
 	@Test
 	public void addMembersTest(){
-		ArrayList<ServerMinimumPlayer> players = new ArrayList<>();
+		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		team.setMembers(players);
 		assertEquals(team.getMembersNo(), 0);
 	}
