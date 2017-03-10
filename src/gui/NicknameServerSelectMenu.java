@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import networking.discovery.DiscoveryClientListener;
+
 /**
  * Created by jack on 12/02/2017.
  */
@@ -89,7 +90,8 @@ public class NicknameServerSelectMenu {
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
                 if (automatic.isSelected()) {
-                    String ipPort = DiscoveryClientListener.findServer().split(":")[0];
+                	DiscoveryClientListener client = new DiscoveryClientListener();
+                    String ipPort = client.findServer().split(":")[0];
                     if (ipPort.equals("")) {
                         AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
                     } else {
