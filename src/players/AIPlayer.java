@@ -20,8 +20,8 @@ public class AIPlayer extends EssentialPlayer{
 	private BehaviourManager bManager;
 	private HashMapGen hashMaps;
 	private double movementAngle;
-	private OfflineTeam oppTeam;
-	private OfflineTeam myTeam;
+	private Team oppTeam;
+	private Team myTeam;
 	private boolean moving;
 	private Map map;
 	//private AudioManager audio;
@@ -114,13 +114,20 @@ public class AIPlayer extends EssentialPlayer{
 		this.movementAngle = angle;
 	}
 
+	protected void updateShooting(){
+		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
+			shoot();
+			shootTimer = System.currentTimeMillis();
+		}
+	}
+
 	//public Map getMap() {return this.map;}
 
-	public void setOppTeam(OfflineTeam oppTeam2){
+	public void setOppTeam(Team oppTeam2){
 		oppTeam = oppTeam2;
 	}
 
-	public void setMyTeam(OfflineTeam t){
+	public void setMyTeam(Team t){
 		myTeam = t;
 	}
 

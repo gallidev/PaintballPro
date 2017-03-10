@@ -81,12 +81,7 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 
 	protected abstract void updatePosition();
 
-	protected void updateShooting(){
-		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
-			shoot();
-			shootTimer = System.currentTimeMillis();
-		}
-	}
+	protected abstract void updateShooting();
 
 	//Updates the location of the bullets
 	protected void updateBullets(){
@@ -320,6 +315,8 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 
 	public abstract void setTeamPlayers(ArrayList<EssentialPlayer> team);
 	public abstract void setEnemies(ArrayList<EssentialPlayer> enemies);
+	public abstract void setMyTeam(Team team);
+	public abstract void setOppTeam(Team team);
 
 }
 

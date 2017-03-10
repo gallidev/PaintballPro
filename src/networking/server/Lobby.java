@@ -291,9 +291,9 @@ public class Lobby {
 
 			Image imagePlayer = ImageFactory.getPlayerImage(TeamEnum.RED);
 
-			int serverId = origPlayer.getID();
-
-			int teamMemNo = newTeam.getMembersNo();
+//			int serverId = origPlayer.getID();
+//
+//			int teamMemNo = newTeam.getMembersNo();
 			int curId = 0;
 
 			if (newTeam.getColour() == TeamEnum.RED)
@@ -402,11 +402,12 @@ public class Lobby {
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		System.out.println("Red user players: " + red.getMembersNo());
-		
+
 		//filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler);
+		//AIManager redAIM = new AIManager(red, map, collissionsHandler);
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
-		
+
+
 		System.out.println("checking if spwans are the same...");
 		boolean ok = true;
 		for(EssentialPlayer p : red.getMembers()){
@@ -414,11 +415,15 @@ public class Lobby {
 				if (p!=q && p.getX() == q.getX() && p.getY() == q.getY())
 					ok = false;
 		System.out.println("ok = " + ok);
-				
+
 		}
 
-		redAIM.createPlayers();
+		//redAIM.createPlayers();
 		blueAIM.createPlayers();
+
+		blueAIM.setOpponents(red);
+
+
 //
 //		System.out.println("Red team members:");
 //		for(ServerMinimumPlayer p : red.getMembers())
@@ -428,6 +433,8 @@ public class Lobby {
 //		for(ServerMinimumPlayer p : blue.getMembers())
 //			System.out.println(p.getPlayerId() + " ");
 //
+
+
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 

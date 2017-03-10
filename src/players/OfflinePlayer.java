@@ -14,6 +14,7 @@ import physics.InputHandler;
 import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
+import serverLogic.Team;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,8 +24,8 @@ import java.util.Random;
  */
 public class OfflinePlayer extends EssentialPlayer
 {
-	private OfflineTeam myTeam;
-	private OfflineTeam oppTeam;
+	private Team myTeam;
+	private Team oppTeam;
 	private InputHandler inputHandler;
 	private ArrayList<EssentialPlayer> enemies;
 	private ArrayList<EssentialPlayer> teamPlayers;
@@ -58,33 +59,33 @@ public class OfflinePlayer extends EssentialPlayer
 		HashMapGen hashMaps = new HashMapGen(map);
 
 		//populating the players team and creating a corresponding OfflineTeam for the members
-		ArrayList<AIPlayer> myTeamMembers = new ArrayList<AIPlayer>();
+		//ArrayList<EssentialPlayer> myTeamMembers = new ArrayList<EssentialPlayer>();
+		myTeam = new Team(team);
 
 		for(int i = 1; i < 4; i++){
 			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, collisionsHandler, hashMaps);
 			teamPlayers.add(p);
-			myTeamMembers.add(p);
+			myTeam.addMember(p);
 		}
-
-		myTeam = new OfflineTeam(myTeamMembers, team);
 
 		//populating the opponent team and creating a corresponding OfflineTeam for the members
 		ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
 
+		oppTeam = new Team(team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED);
+
+
 		for (int i = 0; i < 4; i++){
 				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps);
-				oppTeamMembers.add(p);
+				oppTeam.addMember(p);
 				enemies.add(p);
 		}
 
-		oppTeam = new OfflineTeam(oppTeamMembers, oppTeamMembers.get(0).getTeam());
-
-		for(AIPlayer p : myTeam.getMembers()){
+		for(EssentialPlayer p : myTeam.getMembers()){
 			p.setOppTeam(oppTeam);
 			p.setMyTeam(myTeam);
 		}
 
-		for(AIPlayer p : oppTeam.getMembers()){
+		for(EssentialPlayer p : oppTeam.getMembers()){
 			p.setOppTeam(myTeam);
 			p.setMyTeam(oppTeam);
 		}
@@ -256,6 +257,20 @@ public class OfflinePlayer extends EssentialPlayer
 
 	public ArrayList<EssentialPlayer> getTeamPlayers() {
 		return teamPlayers;
+	}
+
+
+	@Override
+	public void setMyTeam(Team team) {
+		this.myTeam = team;
+
+	}
+
+
+	@Override
+	public void setOppTeam(Team team) {
+		this.oppTeam = team;
+
 	}
 
 

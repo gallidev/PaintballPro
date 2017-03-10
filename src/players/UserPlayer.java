@@ -12,6 +12,7 @@ import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Map;
 import rendering.Spawn;
+import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
  */
@@ -107,13 +108,6 @@ public class UserPlayer extends EssentialPlayer{
 		}
 	}
 
-	//Updates the location of the bullets
-	protected void updateBullets(){
-		for(int i = 0; i < firedBullets.size(); i++){
-			firedBullets.get(i).moveInDirection();
-		}
-	}
-
 
 	@Override
 	public void updateScore() {
@@ -129,6 +123,18 @@ public class UserPlayer extends EssentialPlayer{
 
 	@Override
 	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setMyTeam(Team team) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setOppTeam(Team team) {
 		// TODO Auto-generated method stub
 
 	}
