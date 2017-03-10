@@ -47,6 +47,7 @@ public class AIPlayer extends EssentialPlayer{
 	 */
 	@Override
 	public void tick() {
+		System.out.println("start ai tick");
 		bManager.tick();
 
 		collisionsHandler.handlePropWallCollision(this);
@@ -66,6 +67,7 @@ public class AIPlayer extends EssentialPlayer{
 		} else {
 			checkInvincibility();
 		}
+		System.out.println("finished ai tick");
 
 	}
 

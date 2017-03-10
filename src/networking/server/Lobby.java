@@ -419,6 +419,17 @@ public class Lobby {
 
 		redAIM.createPlayers();
 		blueAIM.createPlayers();
+		
+		//seting team playes and enemies
+		for(EssentialPlayer p : red.getMembers()){
+			p.setTeamPlayers(red.getMembers());
+			p.setEnemies(blue.getMembers());
+		}
+		
+		for(EssentialPlayer p : blue.getMembers()){
+			p.setTeamPlayers(blue.getMembers());
+			p.setEnemies(red.getMembers());
+		}
 //
 //		System.out.println("Red team members:");
 //		for(ServerMinimumPlayer p : red.getMembers())

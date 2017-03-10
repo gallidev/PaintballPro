@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import logic.GameMode;
 import players.AIPlayer;
 import players.EssentialPlayer;
+import players.UserPlayer;
 import serverLogic.Team;
 
 
@@ -37,6 +38,10 @@ public class ServerGameSimulation {
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
 
+		for (EssentialPlayer p : players)
+			System.out.print(p.getPlayerId() + " ");
+		System.out.println();
+		
 		game.start();
 
 
@@ -48,7 +53,11 @@ public class ServerGameSimulation {
 					{
 						if (player instanceof AIPlayer)
 							System.out.println("Ticking Ai players...");
+						if (player instanceof UserPlayer)
+							System.out.println("Ticking user players...");
+
 						player.tick();
+						System.out.println("ticked");
 					}
 			    	frames ++;
 		       }
