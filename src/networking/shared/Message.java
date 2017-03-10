@@ -26,13 +26,4 @@ public class Message {
 	public String getText() {
 		return text;
 	}
-
-	/**
-	 * Gets the general contents of the object - the message stored.
-	 * 
-	 * @return The message text.
-	 */
-	public String toString() {
-		return text;
-	}
 }

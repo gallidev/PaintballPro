@@ -25,7 +25,7 @@ public class GameTypeMenu {
 		    	if (loc == GameLocation.MultiplayerServer) {
 					m.transitionTo(Menu.Lobby, "Elimination");
 				} else {
-					m.transitionTo(Menu.EliminationSingle, null);
+					m.transitionTo(Menu.EliminationSingle);
 				}
 			}
 		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
@@ -33,13 +33,13 @@ public class GameTypeMenu {
 				if (loc == GameLocation.MultiplayerServer) {
 					m.transitionTo(Menu.Lobby, "CTF");
 				} else {
-					m.transitionTo(Menu.CTFSingle, null);
+					m.transitionTo(Menu.CTFSingle);
 				}
 
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.MainMenu, null);
+		    	m.transitionTo(Menu.MainMenu);
 		    }
 		})};
 		
@@ -50,6 +50,7 @@ public class GameTypeMenu {
 		m.addButtonHoverSounds(grid);
 		Scene s = new Scene(grid, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
+		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
 		return s;
 	}
 }

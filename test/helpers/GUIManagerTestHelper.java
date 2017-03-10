@@ -5,6 +5,7 @@ import gui.GUIManager;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,18 @@ public class GUIManagerTestHelper extends GUIManager {
 
     public GUIManagerTestHelper() {
         super();
+    }
+
+    public static ArrayList<TableView> findTableViewInParent(Parent root) {
+        ArrayList<TableView> returnArr = new ArrayList<>();
+        for (Node n : root.getChildrenUnmodifiable()) {
+            if (n instanceof TableView) {
+                returnArr.add((TableView)n);
+            } else if (n instanceof Parent) {
+                returnArr.addAll(findTableViewInParent((Parent)n));
+            }
+        }
+        return returnArr;
     }
 
     private static ArrayList<Button> navigateParentForButtons(Parent root) {
@@ -41,7 +54,7 @@ public class GUIManagerTestHelper extends GUIManager {
     }
 
     @Override
-    public void transitionTo(Menu menu, Object o) {
+    public void transitionTo(Menu menu, Object... o) {
         currentMenu = menu;
     }
 

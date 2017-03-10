@@ -74,9 +74,9 @@ public class Lobby {
 
 		//setting up the map
 		if (PassedGameType == 1)
-			 map = Map.load("res/maps/" + "elimination" + ".json");
+			 map = Map.loadRaw("res/maps/" + "elimination" + ".json");
 		else
-			 map = Map.load("res/maps/" + "ctf" + ".json");
+			 map = Map.loadRaw("res/maps/" + "ctf" + ".json");
 
 		//setting up the collision handler
 		collissionsHandler = new CollisionsHandler(map);
@@ -401,14 +401,14 @@ public class Lobby {
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
-		
+
 		//filling the game with AI players
 //		AIManager redAIM = new AIManager(red, map, collissionsHandler);
 //		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
 //
 //		redAIM.start();
 //		blueAIM.start();
-//		
+//
 //		try {
 //			redAIM.join();
 //			blueAIM.join();
@@ -416,7 +416,7 @@ public class Lobby {
 //			e.printStackTrace();
 
 //		}
-//		
+//
 //		System.out.println("Red team members:");
 //		for(ServerMinimumPlayer p : red.getMembers())
 //			System.out.println(p.getPlayerId() + " ");
@@ -424,7 +424,7 @@ public class Lobby {
 //		System.out.println("Blue team members:");
 //		for(ServerMinimumPlayer p : blue.getMembers())
 //			System.out.println(p.getPlayerId() + " ");
-//		
+//
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 

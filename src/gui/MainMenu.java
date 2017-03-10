@@ -33,16 +33,16 @@ public class MainMenu {
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Single Player", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.SingleplayerGameType, null);
+		    	m.transitionTo(Menu.SingleplayerGameType);
 		    }
 		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.NicknameServerConnection, null);
+		    	m.transitionTo(Menu.NicknameServerConnection);
 //		    	m.transitionTo("Multiplayer", null);
 		    }
 		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.Settings, null);
+		    	m.transitionTo(Menu.Settings);
 		    }
 		})};
 		
@@ -62,6 +62,7 @@ public class MainMenu {
 		m.addButtonHoverSounds(view);
 		Scene s = new Scene(view, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
+		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
 		return s;
 	}
 }

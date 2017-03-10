@@ -9,44 +9,62 @@
 //import javafx.scene.shape.Shape;
 //import players.GeneralPlayer;
 //import rendering.Map;
+//import serverLogic.Team;
 //
-//public class CollisionsHandlerGeneralPlayer {
-//
+//public class CollisionsHandler
+//{
 //
 //	private ArrayList<Rectangle> propsWalls;
 //	private ArrayList<GeneralPlayer> redTeam;
 //	private ArrayList<GeneralPlayer> blueTeam;
 //
-//	public CollisionsHandlerGeneralPlayer(Map map){
+//	private Team red;
+//	private Team blue;
+//
+//	public CollisionsHandler(Map map)
+//	{
 //		this.propsWalls = map.getRecProps();
-//	    this.propsWalls.addAll(map.getRecWalls());
-//	    this.redTeam = new ArrayList<>();
-//	    this.blueTeam = new ArrayList<>();
+//		this.propsWalls.addAll(map.getRecWalls());
+//		this.redTeam = new ArrayList<>();
+//		this.blueTeam = new ArrayList<>();
 //	}
 //
-//	public void handlePropWallCollision(GeneralPlayer p){
+//	public void handlePropWallCollision(ServerMinimumPlayer p){
 //		boolean collUp = false;
 //		boolean collDown = false;
 //		boolean collRight = false;
 //		boolean collLeft = false;
 //		ArrayList<Double> angles = new ArrayList<>();
-//		double playerCenterX = p.getLayoutX() + p.getImage().getWidth()/2;
-//		double playerCenterY = p.getLayoutY() + p.getImage().getHeight()/2;
-//		for(Rectangle propWall : propsWalls){
-//			//it returns a path with the collision with walls
-//			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
-//			if(tmp.getBoundsInLocal().isEmpty() == false) {
+//		double playerCenterX = p.getLayoutX() + p.getImage().getWidth() / 2;
+//		double playerCenterY = p.getLayoutY() + p.getImage().getHeight() / 2;
+//		for(Rectangle propWall : propsWalls)
+//		{
+//			double propX = propWall.getX();
+//			double propY = propWall.getY();
 //
-//				//System.out.println("Collisionssss ");
-//				double propX = propWall.getX();
-//				double propY = propWall.getY();
+//			for(Bullet bullet : p.getBullets())
+//			{
+//				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent()))
+//					bullet.disable(propWall);
+//			}
+//
+//			//filter out walls and props far away from the player
+//			if(Math.abs(propX - p.getLayoutX()) > 72 || Math.abs(propY - p.getLayoutY()) > 72)
+//				continue;
+//
+//			//it returns a path with the collision with walls
+//			//System.out.println("bound player " + p.getPlayerId() + " : " + p.getPolygonBounds().toString());
+//			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
+//			if(!tmp.getBoundsInLocal().isEmpty())
+//			{
+//				//System.out.println("Collision of :" +  propWall.toString()+  " and " + p.getPolygonBounds());
 //				double propWidth = propWall.getWidth();
 //				double propHeight = propWall.getHeight();
 //
 //				//find angle between center of player and center of the prop
 //				//MoveTo moveToValues = (MoveTo) tmp.getElements().get(0);
-//				double propCenterX = (propX +propWidth/2);
-//				double propCenterY = (propY + propHeight/2);
+//				double propCenterX = (propX + propWidth / 2);
+//				double propCenterY = (propY + propHeight / 2);
 //				double deltax = propCenterX - playerCenterX;
 //				double deltay = playerCenterY - propCenterY;
 //
@@ -54,42 +72,46 @@
 //				double propAngle = Math.toDegrees(tempAngle);
 //
 //				angles.add(propAngle);
-//				if(propAngle < 135 && propAngle >= 45){
+//				if(propAngle < 135 && propAngle >= 45)
+//				{
 //					collUp = true;
 //				}
-//				if( propAngle < 45 && propAngle >= -45){
+//				if(propAngle < 45 && propAngle >= -45)
+//				{
 //					collRight = true;
 //				}
-//				if(propAngle < -45 && propAngle >= -135){
+//				if(propAngle < -45 && propAngle >= -135)
+//				{
 //					collDown = true;
 //				}
-//				if(propAngle < -135 || propAngle >= 135 ){
+//				if(propAngle < -135 || propAngle >= 135)
+//				{
 //					collLeft = true;
 //				}
 //			}
-//			for(Bullet bullet : p.getBullets()){
-//				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
-//					bullet.setActive(false);
-//				}
-//			}
 //		}
-//		if(!angles.isEmpty()){
+//		if(!angles.isEmpty())
+//		{
 //			double mean = getMeanAngle(angles);
 //			//System.out.println("mean: " + mean);
-//			if(mean < 135 && mean >= 45){
+//			if(mean < 135 && mean >= 45)
+//			{
 //				collUp = true;
 //			}
-//			if( mean < 45 && mean >= -45){
+//			if(mean < 45 && mean >= -45)
+//			{
 //				collRight = true;
 //			}
-//			if(mean < -45 && mean >= -135){
+//			if(mean < -45 && mean >= -135)
+//			{
 //				collDown = true;
 //			}
-//			if(mean < -135 || mean >= 135 ){
+//			if(mean < -135 || mean >= 135)
+//			{
 //				collLeft = true;
 //			}
 //		}
-//		//System.out.println("CollisionsHandler collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
+//		//System.out.println("CollisionsHandler " + p.getPlayerId() + " collup :" + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 //
 //		p.setCollUp(collUp);
 //		p.setCollDown(collDown);
@@ -98,30 +120,43 @@
 //
 //	}
 //
-//	public void handleBulletCollision(GeneralPlayer p)
+//	public void handleBulletCollision(ServerMinimumPlayer p)
 //	{
-//		switch(p.getTeam()){
-//		case RED:{
-//			checkBulletsAgainstATeam(p, blueTeam);
-//			break;
-//		}
-//		case BLUE:{
-//			checkBulletsAgainstATeam(p, redTeam);
-//			break;
-//		}
-//		default: System.out.println("the player does not have a team");
-//			break;
+//		switch(p.getTeam())
+//		{
+//			case RED:
+//			{
+//				checkBulletsAgainstATeam(p, blueTeam);
+//				break;
+//			}
+//			case BLUE:
+//			{
+//				checkBulletsAgainstATeam(p, redTeam);
+//				break;
+//			}
+//			default:
+//				System.out.println("the player does not have a team");
+//				break;
 //		}
 //
 //	}
 //
-//	private void checkBulletsAgainstATeam(GeneralPlayer p, ArrayList<GeneralPlayer> opponents){
-//		for(GeneralPlayer enemy : opponents){
+//	private void checkBulletsAgainstATeam(ServerMinimumPlayer p, ArrayList<ServerMinimumPlayer> opponents){
+//		for(ServerMinimumPlayer enemy : opponents){
 //
-//			for(Bullet bullet : enemy.getBullets()){
-//				if(bullet.isActive() && p.getPolygonBounds().intersects(bullet.getBoundsInParent()) && !p.isEliminated()){
-//					bullet.setActive(false);
+//			for(Bullet bullet : enemy.getBullets())
+//			{
+//				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
+//				{
+//					bullet.disable();
 //					p.beenShot();
+//
+//					//update score
+//					if (red.containsPlayer(p))
+//						blue.incrementScore(1);
+//					else
+//						red.incrementScore(1);
+//
 //					return;
 //				}
 //			}
@@ -149,24 +184,26 @@
 //	    return avg_d;
 //	  }
 //
-//	public ArrayList<GeneralPlayer> getRedTeam() {
+//	public ArrayList<ServerMinimumPlayer> getRedTeam() {
 //		return redTeam;
 //	}
 //
-//	public void setRedTeam(ArrayList<GeneralPlayer> redTeam) {
-//		this.redTeam = redTeam;
+//	public void setRedTeam(Team red) {
+//		this.red = red;
+//		redTeam = red.getMembers();
 //	}
 //
-//	public ArrayList<GeneralPlayer> getBlueTeam() {
+//	public ArrayList<ServerMinimumPlayer> getBlueTeam() {
 //		return blueTeam;
 //	}
 //
-//	public void setBlueTeam(ArrayList<GeneralPlayer> blueTeam) {
-//		this.blueTeam = blueTeam;
+//	public void setBlueTeam(Team blue) {
+//		this.blue = blue;
+//		blueTeam = blue.getMembers();
 //	}
 //
-//	public void setPlayers(ArrayList<GeneralPlayer> players){
-//		for(GeneralPlayer p : players)
+//	public void setPlayers(ArrayList<ServerMinimumPlayer> players){
+//		for(ServerMinimumPlayer p : players)
 //		{
 //			if(p.getTeam() == TeamEnum.RED)
 //				redTeam.add(p);

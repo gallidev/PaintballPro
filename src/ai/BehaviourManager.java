@@ -1,56 +1,121 @@
 package ai;
 
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import players.AIPlayer;
+import players.GeneralPlayer;
+import players.ServerMinimumPlayer;
+
+import java.util.ArrayList;
 
 public class BehaviourManager{
     private AIPlayer ai;
-    private Pathfinding pathFinder;
-    private Path path;
     private Mover mover;
     private Behaviour move;
-    private Behaviour tactical;
+    private Behaviour combat;
     private Behaviour capture;
     private Behaviour retreat;
-    private Behaviour random;
-    private Behaviour defaultB;
+
+    private ArrayList<ServerMinimumPlayer> enemies;
+    private ServerMinimumPlayer closestEnemy;
+    private double closestDistance = 0;
+    private double angle;
+    private double closestX, closestY;
 
     //Behaviours
-    //    Default - no movement, just shooting
-    //    Move - Move towards enemy
-    //    Tactical  - Move towards cover
-    //    Capture - Goes to the flag
-    //    Retreat - Goes to base
-    //    Random - Random movement
+    //    Move - Move towards nearest enemy
+    //    Combat  - Tactical movement i.e. take cover
+    //    CTFCapture - Goes to the flag
+    //    CTFRetreat - Goes to base
+    //    Random - Random movement - TEMP
 
     public BehaviourManager(AIPlayer ai){
         this.ai = ai;
-        pathFinder = new Pathfinding(ai.getMap());
-        defaultB = new DefaultBehaviour(ai, pathFinder);
-        move = new MoveBehaviour(ai, pathFinder);
-        tactical = new TacticalBehaviour(ai, pathFinder);
-        capture = new CaptureBehaviour(ai, pathFinder);
-        retreat = new RetreatBehaviour(ai, pathFinder);
-        random = new RandomBehaviour(ai, pathFinder);
-        mover = new Mover(ai, pathFinder);
-        path = pathFinder.getPath((int)ai.getLayoutX()/64, (int)ai.getLayoutY()/64, 15, 10);
-        mover.setPath(path);
+        this.enemies = new ArrayList<>();
+        mover = new Mover(ai);
+        move = new MoveBehaviour(ai, this);
+        combat = new CombatBehaviour(ai, this);
+        capture = new CTFCaptureBehaviour(ai, this);
+        retreat = new CTFRetreatBehaviour(ai, this);
+
+
     }
 
     public void tick(){
-        if(!mover.isFinished()) {
-            mover.tick();
+        enemies = ai.getEnemies();
+        updateAngle();
+        ai.setAngle(angle);
+        ai.setShoot(updateShooting(closestX, closestY));
+        if(closestDistance < 400){
+            combat.tick();
         } else {
-            random.tick();
+            //move.tick();
+        }
+        //temp
+        move.tick();
+
+    }
+
+    private boolean updateShooting(double x, double y){
+
+        double distance = Math.sqrt(Math.pow(x - ai.getLayoutX(), 2) + (Math.pow(ai.getLayoutY() - y, 2)));
+        if(closestEnemy == null) return false;
+        if(closestEnemy.isEliminated()) return false;
+        if(canSee(x, y) && distance < 350) return true;
+        return false;
+    }
+
+    public boolean canSee(double x, double y){
+        Line line = new Line(ai.getLayoutX() + ai.getImage().getWidth()/2, ai.getLayoutY() + ai.getImage().getHeight()/2, x, y);
+        ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
+        propsWalls.addAll(ai.getMap().getRecWalls());
+        for(Rectangle propWall : propsWalls){
+            if(Shape.intersect(line, propWall).getBoundsInLocal().isEmpty() == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void updateAngle(){
+        double minDistance = Double.MAX_VALUE;
+        for(ServerMinimumPlayer enemy: enemies){
+            if(!enemy.isEliminated()) {
+                double temp = Math.sqrt((Math.pow(enemy.getLayoutX() - ai.getLayoutX(), 2) + Math.pow(enemy.getLayoutY() - ai.getLayoutY(), 2)));
+                if (temp < minDistance) {
+                    closestEnemy = enemy;
+                    closestX = enemy.getLayoutX();
+                    closestY = enemy.getLayoutY();
+                    minDistance = temp;
+                }
+            }
+        }
+        closestDistance = minDistance;
+        if(minDistance < 400){
+            double deltaX = closestX - ai.getLayoutX();
+            double deltaY = ai.getLayoutY() - closestY;
+            angle = Math.atan2(deltaX, deltaY);
+
+        } else {
+            angle = ai.getMovementAngle();
         }
     }
 
-    public void change(){
-        if(mover.isFinished()) {
-            random.change();
-        } else {
-            mover.change();
-        }
+    public Mover getMover(){
+        return this.mover;
     }
 
-    //TODO - Implement behaviours
+    public ServerMinimumPlayer getClosestEnemy(){
+        return this.closestEnemy;
+    }
+
+    public double getClosestX(){
+        return this.closestX;
+    }
+
+    public double getClosestY(){
+        return this.closestY;
+    }
+
 }

@@ -17,7 +17,7 @@ import javafx.scene.layout.GridPane;
 
 class PauseMenu extends SubScene
 {
-	private static GridPane p = new GridPane();
+	static GridPane p = new GridPane();
 	boolean opened = false;
 
 	PauseMenu(GUIManager m)
@@ -29,8 +29,6 @@ class PauseMenu extends SubScene
 		p.setHgap(10);
 		p.setVgap(10);
 		p.setPadding(new Insets(25, 25, 25, 25));
-		p.setPrefWidth(Renderer.view.getWidth());
-		p.setPrefHeight(Renderer.view.getHeight());
 
 		Image i = new Image("assets/paintballlogo.png");
 		ImageView iv = new ImageView(i);
@@ -55,8 +53,7 @@ class PauseMenu extends SubScene
 			}
 		}), new MenuOption("Back to Main Menu", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
-				m.transitionTo(Menu.MainMenu, null);
-				Renderer.timer.stop();
+				m.transitionTo(Menu.MainMenu);
 				System.out.println("ActionEvent: " + event);
 			}
 		})};

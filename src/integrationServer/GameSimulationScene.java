@@ -25,7 +25,7 @@ public class GameSimulationScene extends Scene{
 
 	public GameSimulationScene(ServerReceiver receiver, Team redTeam, Team blueTeam) {
 		super(view);
-		Map map = Map.load("res/maps/" + "elimination" + ".json");
+		Map map = Map.loadRaw("res/maps/" + "elimination" + ".json");
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 

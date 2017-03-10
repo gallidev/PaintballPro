@@ -4,6 +4,8 @@ import java.util.List;
 
 import audio.AudioManager;
 import enums.TeamEnum;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.MoveTo;
@@ -29,8 +31,8 @@ public class GhostPlayer extends ImageView {
 	private TeamEnum team;
 	private AudioManager audio;
 	private String nickname;
-	
-	
+	private Label nameTag;
+
 	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio) {
 		super(image);
 		setLayoutX(x);
@@ -41,6 +43,11 @@ public class GhostPlayer extends ImageView {
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
+		nameTag = new Label("Player");
+		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
+				"-fx-font-size: 10pt; -fx-text-fill: white");
+		nameTag.setPadding(new Insets(5));
+		nameTag.relocate(x - 15, y - 32);
 	}
 
 	public void beenShot() {
@@ -103,11 +110,11 @@ public class GhostPlayer extends ImageView {
 	public TeamEnum getTeam(){
 		return team;
 	}
-	
+
 	public String getNickname(){
 		return nickname;
 	}
-	
+
 	public void  setNickname(String name){
 		nickname = name;
 	}

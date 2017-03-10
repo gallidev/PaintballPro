@@ -30,7 +30,7 @@ public class AudioManager implements gui.UserSettingsObserver {
         float musicVol = s.getMusicVolume();
         musicVolume = musicVol / (float) 100.0;
         if (musicPlayer != null) {
-            musicPlayer.setVolume(musicVol);
+            musicPlayer.setVolume(musicVolume);
         }
 
         float sfxVol = s.getSfxVolume();
