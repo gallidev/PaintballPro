@@ -53,7 +53,7 @@ public class BehaviourManager{
         } else {
             //move.tick();
         }
-        //temp
+        //temp until combat behaviour has been implemented
         move.tick();
 
     }
