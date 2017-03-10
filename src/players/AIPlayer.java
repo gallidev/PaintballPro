@@ -41,7 +41,7 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	public void tick() {
 		bManager.tick();
-
+		cleanBullets();
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
 			updatePosition();

@@ -56,6 +56,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 	@Override
 	public void tick()
 	{
+		cleanBullets();
 		// handle the collisions with walls and props before moving the position
 		// of the player so to understand if he can move or not in a specific direction
 		collisionsHandler.handlePropWallCollision(this);

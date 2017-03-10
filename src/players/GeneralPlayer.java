@@ -124,6 +124,14 @@ public abstract class GeneralPlayer extends ImageView implements GameObject{
 			firedBullet.moveInDirection();
 	}
 
+	void cleanBullets(){
+		if(firedBullets.size() > 0) {
+			if (!firedBullets.get(0).isActive()) {
+				firedBullets.remove(0);
+			}
+		}
+	}
+
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
 
