@@ -47,7 +47,6 @@ public class AIPlayer extends EssentialPlayer{
 	 */
 	@Override
 	public void tick() {
-		System.out.println("start ai tick");
 		bManager.tick();
 
 		collisionsHandler.handlePropWallCollision(this);
@@ -67,8 +66,6 @@ public class AIPlayer extends EssentialPlayer{
 		} else {
 			checkInvincibility();
 		}
-		System.out.println("finished ai tick");
-
 	}
 
 	@Override
@@ -93,14 +90,14 @@ public class AIPlayer extends EssentialPlayer{
 		Renderer.incrementScore(oppTeam.getColour(), 1);
 
 
-		if (myTeam.getColour() == TeamEnum.RED){
-			System.out.println( "Red team score: " + myTeam.getScore());
-			System.out.println( "Blue team score: " + oppTeam.getScore());
-		}
-		else{
-			System.out.println( "Blue team score: " + myTeam.getScore());
-			System.out.println( "Red team score: " + oppTeam.getScore());
-		}
+//		if (myTeam.getColour() == TeamEnum.RED){
+//			System.out.println( "Red team score: " + myTeam.getScore());
+//			System.out.println( "Blue team score: " + oppTeam.getScore());
+//		}
+//		else{
+//			System.out.println( "Blue team score: " + myTeam.getScore());
+//			System.out.println( "Red team score: " + oppTeam.getScore());
+//		}
 
 
 	}

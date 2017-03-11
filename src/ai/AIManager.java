@@ -1,6 +1,7 @@
 package ai;
 
 import enums.TeamEnum;
+import networking.server.Lobby;
 import physics.CollisionsHandler;
 import players.AIPlayer;
 import players.EssentialPlayer;
@@ -12,12 +13,14 @@ public class AIManager{
 	private Team team;
 	private Map map;
 	private CollisionsHandler collissionsHandler;
+	int nextId;
 
-	public AIManager(Team t, Map m, CollisionsHandler ch){
+	public AIManager(Team t, Map m, CollisionsHandler ch, int maxId){
 		super();
 		team = t;
 		this.map = m;
 		this.collissionsHandler = ch;
+		nextId = maxId + 1;
 	}
 
 	public void createPlayers(){
@@ -25,18 +28,22 @@ public class AIManager{
 		HashMapGen hashMaps = new HashMapGen(map);
 		
 		while (currentPlayersNo < 4){
-			int newID = 0;
+			int spawnLoc = 0;
 			if (team.getColour() == TeamEnum.RED)
-				newID = currentPlayersNo;
+				spawnLoc = currentPlayersNo;
 			else
-				newID = currentPlayersNo + 4;
+				spawnLoc = currentPlayersNo + 4;
 
-			System.out.println("new id = " + newID);
-			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[newID].x * 64, map.getSpawns()[newID].y * 64, newID, map, team.getColour(), collissionsHandler, hashMaps);
+			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, nextId, map, team.getColour(), collissionsHandler, hashMaps);
 		
+			System.out.println("Created AI with id " + newPlayer.getPlayerId());
+			
 			team.addMember(newPlayer);
 			currentPlayersNo++;
+			nextId++;
 		}
+		
+		Lobby.setMaxId(nextId);
 
 	}
 

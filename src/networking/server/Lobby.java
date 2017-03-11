@@ -50,6 +50,7 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 	private ArrayList<EssentialPlayer> players;
+	private static int maxId;
 
 	//required for all players
 	Map map;
@@ -294,19 +295,18 @@ public class Lobby {
 			int serverId = origPlayer.getID();
 
 			int teamMemNo = newTeam.getMembersNo();
-			int curId = 0;
+			int spawnLoc = 0;
 
 			if (newTeam.getColour() == TeamEnum.RED)
-				curId = newTeam.getMembersNo();
+				spawnLoc = newTeam.getMembersNo();
 			else
-				curId = newTeam.getMembersNo() + 4;
+				spawnLoc = newTeam.getMembersNo() + 4;
 
-			System.out.println("player id = " + curId);
 			//provisionally hardcoded
 			if (teamNum == 1)
-				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, 2, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
 			else
-				player = new UserPlayer(map.getSpawns()[curId].x * 64, map.getSpawns()[curId].y * 64, 1, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer);
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer);
 
 			newTeam.addMember(player);
 		}
@@ -395,8 +395,7 @@ public class Lobby {
 	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
-
-
+		
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
@@ -404,20 +403,10 @@ public class Lobby {
 		System.out.println("Red user players: " + red.getMembersNo());
 		
 		//filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler);
-		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
-		
-		System.out.println("checking if spwans are the same...");
-		boolean ok = true;
-		for(EssentialPlayer p : red.getMembers()){
-			for(EssentialPlayer q : red.getMembers())
-				if (p!=q && p.getX() == q.getX() && p.getY() == q.getY())
-					ok = false;
-		System.out.println("ok = " + ok);
-				
-		}
-
+		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
 		redAIM.createPlayers();
+		
+		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
 		blueAIM.createPlayers();
 		
 		//seting team playes and enemies
@@ -430,15 +419,7 @@ public class Lobby {
 			p.setTeamPlayers(blue.getMembers());
 			p.setEnemies(red.getMembers());
 		}
-//
-//		System.out.println("Red team members:");
-//		for(ServerMinimumPlayer p : red.getMembers())
-//			System.out.println(p.getPlayerId() + " ");
-//
-//		System.out.println("Blue team members:");
-//		for(ServerMinimumPlayer p : blue.getMembers())
-//			System.out.println(p.getPlayerId() + " ");
-//
+		
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 
@@ -486,6 +467,23 @@ public class Lobby {
 		stateSender.setGameLoop(gameloop);
 		stateSender.startSending();
 
+	}
+	
+	private int getMaxId(){
+		int id = -1;
+		for(EssentialPlayer p: red.getMembers())
+			if (p.getPlayerId() > id )
+				id = p.getPlayerId();
+		
+		for(EssentialPlayer p: blue.getMembers())
+			if (p.getPlayerId() > id )
+				id = p.getPlayerId();
+		
+		return id;
+	}
+	
+	public static void setMaxId(int newMax){
+		maxId = newMax;
 	}
 
 }

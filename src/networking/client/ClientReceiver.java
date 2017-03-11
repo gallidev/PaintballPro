@@ -183,17 +183,17 @@ public class ClientReceiver extends Thread {
 			int id = Integer.parseInt(data[i]);
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red"))
-					myTeam.add(new GhostPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id,
+					myTeam.add(new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.RED), null));
 				else
-					myTeam.add(new GhostPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id,
+					myTeam.add(new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
 			} else {
 				if (clientTeam.equals("Red"))
-					enemies.add(new GhostPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id,
+					enemies.add(new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
 				else
-					enemies.add(new GhostPlayer(map.getSpawns()[id].x * 64, map.getSpawns()[id].y * 64, id,
+					enemies.add(new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.RED), null));
 			}
 		}

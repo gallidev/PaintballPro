@@ -38,6 +38,7 @@ public class ServerGameSimulation {
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
 
+		System.out.println("All player id: ");
 		for (EssentialPlayer p : players)
 			System.out.print(p.getPlayerId() + " ");
 		System.out.println();
@@ -51,13 +52,7 @@ public class ServerGameSimulation {
 		       public void run() {
 					for(EssentialPlayer player : players)
 					{
-						if (player instanceof AIPlayer)
-							System.out.println("Ticking Ai players...");
-						if (player instanceof UserPlayer)
-							System.out.println("Ticking user players...");
-
 						player.tick();
-						System.out.println("ticked");
 					}
 			    	frames ++;
 		       }

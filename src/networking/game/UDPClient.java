@@ -177,7 +177,7 @@ public class UDPClient extends Thread {
 				visibility = false;
 
 			if (visibility == false)
-				System.out.println("I'm invisible");
+				System.out.println("I'm invisible " + id);
 
 			if(gameStateReceiver != null){
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
