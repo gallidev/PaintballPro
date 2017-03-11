@@ -404,10 +404,10 @@ public class Lobby {
 
 		//filling the game with AI players
 		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
-		//redAIM.createPlayers();
+		redAIM.createPlayers();
 		
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
-		//blueAIM.createPlayers();
+		blueAIM.createPlayers();
 
 
 	    //redAIM.createPlayers();
