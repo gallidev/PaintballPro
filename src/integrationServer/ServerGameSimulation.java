@@ -7,12 +7,14 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import logic.GameMode;
-import players.AIPlayer;
 import players.EssentialPlayer;
-import players.UserPlayer;
 import serverLogic.Team;
 
-
+/**
+ * Class that represents a simulation of the enitre game logic, running on the server.
+ * @author Alexandra Paduraru
+ * @author Filippo Galli
+ */
 public class ServerGameSimulation {
 
 	private Team redTeam;
@@ -22,8 +24,12 @@ public class ServerGameSimulation {
 	private long delayMilliseconds = 17;
 	private int frames = 0;
 
-	private boolean debug = true;
+	private boolean debug = false;
 
+	/**
+	 * Initialises a new game simulation, in a given game mode.
+	 * @param game The game mode which is played.
+	 */
 	public ServerGameSimulation(GameMode game){
 
 		this.game = game;
@@ -33,18 +39,15 @@ public class ServerGameSimulation {
 
 	}
 
+	/**
+	 * Starts the simulation. Method to be called after the lobby time finishes.
+	 */
 	public void startExecution(){
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		players.addAll(redTeam.getMembers());
 		players.addAll(blueTeam.getMembers());
 
-		System.out.println("All player id: ");
-		for (EssentialPlayer p : players)
-			System.out.print(p.getPlayerId() + " ");
-		System.out.println();
-
 		game.start();
-
 
 		ScheduledExecutorService scheduler =
 			     Executors.newScheduledThreadPool(1);
@@ -80,10 +83,10 @@ public class ServerGameSimulation {
 	//	new GameSimulation();
 	//}
 
-	public void stopExecution(){
-
-	}
-
+	/**
+	 * Retrieves the current game mode.
+	 * @return The game mode which is played in the particular game.
+	 */
 	public GameMode getGame(){
 		return game;
 	}

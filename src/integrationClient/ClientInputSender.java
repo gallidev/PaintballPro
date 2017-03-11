@@ -10,7 +10,9 @@ import physics.InputHandler;
 
 /**
  * Sends user inputs(client-sided) to the server.
+ * 
  * @author Alexandra Paduraru
+ * @author Filippo Galli
  *
  */
 public class ClientInputSender {
@@ -25,7 +27,7 @@ public class ClientInputSender {
 
 	/**
 	 * Initialises a new input sender.
-	 * @param sender The client sender used by networking to send all information to the server.
+	 * @param udpClient The client sender used by networking to send all information to the server.
 	 * @param handler The handler which handles all user inputs in the player.
 	 * @param playerId The current player's id.
 	 */
@@ -35,6 +37,9 @@ public class ClientInputSender {
 		id = playerId;
 	}
 
+	/**
+	 * Starts sending client inputs to the server at a rate of 30 frames per second.
+	 */
 	public void startSending(){
 
 		ScheduledExecutorService scheduler =
@@ -69,7 +74,7 @@ public class ClientInputSender {
 	 * Checks to see if the player's position has changed. If so, it sends to the server the user action
 	 * (player goes up/down, left/right, mouse position changes) through the protocol.
 	 */
-	public void sendServer(){
+	private void sendServer(){
 		//Protocol: "0:id:" + Up/Down/Left/Right/Shooting/Mouse, depending on the player's action
 
 		String toBeSent = "0:" + id + ":";

@@ -20,7 +20,10 @@ import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 
-
+/**
+ * Class that creates and sets the scene for a new game.
+ *
+ */
 public class GameSimulationJavaFxApplication extends Application {
 	static Pane view = new Pane();
 

@@ -19,16 +19,23 @@ public class ClientGameStateReceiver {
 	private ArrayList<GhostPlayer> players;
 
 	/**
-	 * Initializes a new action receiver with a player which will be controlled
+	 * Initialises a new action receiver with a player which will be controlled
 	 * by the actions received from the server.
 	 *
-	 * @param player
-	 *            The player upon which the actions take place.
+	 * @param players The list of all players in the game.
 	 */
 	public ClientGameStateReceiver(ArrayList<GhostPlayer> players) {
 		this.players = players;
 	}
 
+	/**
+	 * Updates a ghost player's location.
+	 * @param id The id of the player which has changed location.
+	 * @param x The new x coordinate of the player.
+	 * @param y The new y coordinate of the player.
+	 * @param angle The new angle of the player.
+	 * @param visible Whether or not the player is visible(i.e. it has been eliminated>
+	 */
 	public void updatePlayer(int id, double x, double y, double angle, boolean visible){
 
 		GhostPlayer playerToBeUpdated = getPlayerWithId(id);
@@ -40,17 +47,11 @@ public class ClientGameStateReceiver {
 	}
 
 	/**
-	 * Helper method to find the player with a specific id from the entire list of players in the game.
-	 * @param id The player's id.
+	 * Update a player's active bullets. 
+	 * @param id The id of the player.
+	 * @param bullets String which contains the coordinates and the angle of the bullets fired by this player,
+	 * 				  according to the protocol.
 	 */
-	public GhostPlayer getPlayerWithId(int id){
-		for (GhostPlayer p : players){
-			if (p.getPlayerId() == id)
-				return p;
-		}
-		return null;
-	}
-
 	public void updateBullets(int id, String[] bullets){
 		GhostPlayer p = getPlayerWithId(id);
 
@@ -70,6 +71,18 @@ public class ClientGameStateReceiver {
 //			p.getFiredBullets().clear();
 //			p.setFiredBullets(firedBullets);
 		}
+	}
+	
+	/**
+	 * Helper method to find the player with a specific id from the entire list of players in the game.
+	 * @param id The player's id.
+	 */
+	public GhostPlayer getPlayerWithId(int id){
+		for (GhostPlayer p : players){
+			if (p.getPlayerId() == id)
+				return p;
+		}
+		return null;
 	}
 	
 

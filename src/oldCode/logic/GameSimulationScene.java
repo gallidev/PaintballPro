@@ -1,4 +1,4 @@
-package integrationServer;
+package oldCode.logic;
 
 import java.util.ArrayList;
 
@@ -15,6 +15,11 @@ import rendering.ImageFactory;
 import rendering.Map;
 import serverLogic.Team;
 
+/**
+ * Class that creates the scene for a new game.
+ * @author Alexandra Paduraru
+ * @author Fillipo Galli
+ */
 public class GameSimulationScene extends Scene{
 
 	private Team redTeam;

@@ -13,7 +13,9 @@ import players.EssentialPlayer;
 
 /**
  * Sends user inputs(client-sided) to the server.
+ * 
  * @author Alexandra Paduraru
+ * @author Filippo Galli
  *
  */
 public class ServerGameStateSender {
@@ -22,18 +24,28 @@ public class ServerGameStateSender {
 	private UDPServer udpServer;
 	private ArrayList<EssentialPlayer> players;
 	private int frames = 0;
+	private ServerGameSimulation gameLoop;
+	private ScheduledExecutorService scheduler;
+	
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
 
-	private ServerGameSimulation gameLoop;
-	private ScheduledExecutorService scheduler;
-
+	/**
+	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby 
+	 * corresponding to that game.
+	 * @param udpServer The server used to send information to all clients involved in a game.
+	 * @param players A list of players currently involved in a game.
+	 * @param lobbyId The id of the lobby corresponding to the current game.
+	 */
 	public ServerGameStateSender(UDPServer udpServer, ArrayList<EssentialPlayer> players, int lobbyId){
 		this.udpServer = udpServer;
 		this.players = players;
 		this.lobbyId = lobbyId;
 	}
 
+	/**
+	 * Starts sending client inputs to the server at a rate of 30 frames per second.
+	 */
 	public void startSending(){
 
 		scheduler = Executors.newScheduledThreadPool(1);
@@ -73,11 +85,17 @@ public class ServerGameStateSender {
 
 	}
 	
+	/**
+	 * Stops the server from sending information when the game finishes.
+	 */
 	public void stopSending(){
 		scheduler.shutdown();
 	}
 	
 
+	/**
+	 * Sends the remaining game time to clients.
+	 */
 	private void sendRemainingTime() {
 		//Protocol: 6:<remaining seconds>
 		String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
@@ -85,6 +103,9 @@ public class ServerGameStateSender {
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
+	/**
+	 * Send the active bullets of each player to the client, according to the protocol.
+	 */
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
@@ -107,6 +128,9 @@ public class ServerGameStateSender {
 		}
 	}
 
+	/**
+	 * Sends the clients the new location,angle and visibility of each player, according to the protocol.
+	 */
 	private void sendClient() {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 
@@ -123,6 +147,9 @@ public class ServerGameStateSender {
 
 	}
 
+	/**
+	 * Sends the clients the new score of each team.
+	 */
 	public void updateScore(){
 		//Protocol: "3:<redTeamScore>:<blueTeamScore>
 		String toBeSent = "3:" +  gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
@@ -130,6 +157,9 @@ public class ServerGameStateSender {
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
+	/**
+	 * Sends the clients the game winner when the game finishes.
+	 */
 	public void sendWinner(){
 		//Protocol: "2:<winner>"
 		String toBeSent = "2:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
@@ -137,6 +167,10 @@ public class ServerGameStateSender {
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
+	/*
+	 * Sets tthe game simulation.
+	 * @param sim The simulation of the game, which runs on the server.
+	 */
 	public void setGameLoop(ServerGameSimulation sim){
 		gameLoop = sim;
 	}

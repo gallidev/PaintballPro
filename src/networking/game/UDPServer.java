@@ -188,10 +188,10 @@ public class UDPServer extends Thread{
 
 		Lobby lobby = lobbyTab.getLobby(lobbyID);
 
-		//Given a move, the server player's location needs to be updated
-		if (toBeSent.contains("Move")){
-				makeMove(lobby,toBeSent);
-		}
+//		//Given a move, the server player's location needs to be updated
+//		if (toBeSent.contains("Move")){
+//				makeMove(lobby,toBeSent);
+//		}
 	}
 
 	/**
@@ -218,6 +218,13 @@ public class UDPServer extends Thread{
 	// -------------------------------------
 
 
+	/**
+	 * Interprets the client message containing the user inputs and calls the corresponding method in the ServerInputReceiver
+	 * class, which computes the player's new location.
+	 * @param text The protocol string received from the client.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	public void playerInputChanged(String text){
 		//Protocol: "O:<id>:Up:Down:Left:Right:Shoot:Mouse:<mX>:<mY>"
 
@@ -260,6 +267,12 @@ public class UDPServer extends Thread{
 
 	}
 
+	/**
+	 * Receives the game winner from the clients.
+	 * @param text The protocol string containing the winner.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	public void getWinner(String text){
 		String winner = text.split(":")[1];
 
@@ -268,9 +281,7 @@ public class UDPServer extends Thread{
 		//dp stuff here tp update gui
 	}
 
-	public void setInputReceiver(ServerInputReceiver inputReceiver){
-		this.inputReceiver = inputReceiver;
-	}
+	
 
 	/**
 	 * Updates a team's score based on the information got from a client. Helps
@@ -313,29 +324,39 @@ public class UDPServer extends Thread{
 	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-	private void makeMove(Lobby lobby, String text)
-	{
-		//extract the id of the server player with a new location
-		String[] parsedMsg = text.split(":");
-		int id = Integer.parseInt(parsedMsg[2]);
-		double x = Double.parseDouble(parsedMsg[3]);
-		double y = Double.parseDouble(parsedMsg[4]);
-		double angle = Double.parseDouble(parsedMsg[5]);
-
-		//get that server player from the lobby
-		EssentialPlayer currentPlayer = null;
-		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
-			if( id == p.getPlayerId())
-				currentPlayer = p;
-
-		if (currentPlayer == null){
-			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
-				if( id == p.getPlayerId())
-					currentPlayer = p;
-		}
-		//update its location
-		currentPlayer.setLayoutX(x);
-		currentPlayer.setLayoutY(y);
-		currentPlayer.setAngle(angle);
+//	private void makeMove(Lobby lobby, String text)
+//	{
+//		//extract the id of the server player with a new location
+//		String[] parsedMsg = text.split(":");
+//		int id = Integer.parseInt(parsedMsg[2]);
+//		double x = Double.parseDouble(parsedMsg[3]);
+//		double y = Double.parseDouble(parsedMsg[4]);
+//		double angle = Double.parseDouble(parsedMsg[5]);
+//
+//		//get that server player from the lobby
+//		EssentialPlayer currentPlayer = null;
+//		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
+//			if( id == p.getPlayerId())
+//				currentPlayer = p;
+//
+//		if (currentPlayer == null){
+//			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
+//				if( id == p.getPlayerId())
+//					currentPlayer = p;
+//		}
+//		//update its location
+//		currentPlayer.setLayoutX(x);
+//		currentPlayer.setLayoutY(y);
+//		currentPlayer.setAngle(angle);
+//	}
+//	
+	/* Getters and setters below */
+	
+	/**
+	 * Sets the input receiver.
+	 * @param inputReceiver The new ServerInputReceiver.
+	 */
+	public void setInputReceiver(ServerInputReceiver inputReceiver){
+		this.inputReceiver = inputReceiver;
 	}
 }

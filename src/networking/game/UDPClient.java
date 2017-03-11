@@ -93,15 +93,6 @@ public class UDPClient extends Thread {
 	}
 
 	/**
-	 * For tests, we check whether SendToAll has worked correctly.
-	 * @return Returns testSendToAll variable.
-	 */
-	public boolean getTestSend()
-	{
-		return this.testSendToAll;
-	}
-
-	/**
 	 * Loop through, reading messages from the server.
 	 * Main method, ran when the thread is started.
 	 */
@@ -117,7 +108,9 @@ public class UDPClient extends Thread {
 			    String receivedPacket = new String(receivePacket.getData(), 0, receivePacket.getLength());
 				if(debug) System.out.println("Received from server:"+receivedPacket);
 
-				// In-game messages
+				// -------------------------------------
+				// -----------Game Messages-------------
+				// -------------------------------------
 				switch(receivedPacket.charAt(0)){
 
 					case '1' : updatePlayerAction(receivedPacket) ;
@@ -192,6 +185,13 @@ public class UDPClient extends Thread {
 	// -------------------------------------
 
 
+	/**
+	 * Update the player's location, based on the coordinates received from the server.
+	 * @param text The protocol message containing the new coordinates of the player.
+	 * 
+	 * @author Alexandra Paduraru
+	 * @author Filippo Galli
+	 */
 	private void updatePlayerAction(String text) {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if(debug)System.out.println(text);
@@ -220,6 +220,12 @@ public class UDPClient extends Thread {
 
 	}
 
+	/**
+	 * Method which enables the client to receive the game score, in order to be shown in the client's GUI.
+	 * @param text The protocol message containing the score.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	public void updateScoreAction(String text){
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
@@ -230,13 +236,15 @@ public class UDPClient extends Thread {
 		//do stuff here to update the GUI
 	}
 
-	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
-		this.gameStateReceiver = gameStateReceiver;
 
-		//set the corresponding GhostPlayer's nickname
-		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
-	}
-
+	/**
+	 * Receives all the player's active bullets and updates them accordingly on the client side,
+	 * using the client game state receiver.
+	 * @param text The protocol message containg the active bullets and the id of the player.
+	 * 
+	 * @author Alexandra Paduraru
+	 * @author Filippo Galli
+	 */
 	public void updateBulletAction(String text){
 		// Protocol message: 4:id:idBullet:x:y:...
 
@@ -298,5 +306,27 @@ public class UDPClient extends Thread {
 				return p;
 
 		return null;
+	}
+	
+	/**
+	 * For tests, we check whether SendToAll has worked correctly.
+	 * @return Returns testSendToAll variable.
+	 */
+	public boolean getTestSend()
+	{
+		return this.testSendToAll;
+	}
+	
+	/**
+	 * Sets the client game state receiver, which deals with all the in-game information from the server.
+	 * @param gameStateReceiver The new client game state receiver.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
+	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){
+		this.gameStateReceiver = gameStateReceiver;
+
+		//set the corresponding GhostPlayer's nickname
+		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 }

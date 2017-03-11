@@ -9,9 +9,7 @@ import players.EssentialPlayer;
  * Receives input information (server-side) from all clients and updates the
  * server game information accordingly.
  *
- * The class uses a ServerReceiver in order to receive the inputs from clients.
- * Then it performs the computation required server-side(collision-handling, etc)
- * It uses after a ClientSender to send the clients the action they need to perform.
+ * The class  performs the computation required server-side(collision-handling, etc)
  * @author Alexandra Paduraru
  *
  */
@@ -20,24 +18,31 @@ public class ServerInputReceiver {
 	private ArrayList<EssentialPlayer> players;
 	
 	/**
-	 * Initializes a new input receiver with a server receiver which will
-	 * receive information from clients and an client sender, which will send
-	 * the clients the action that they will need to perform after the server
-	 * computes it.
-	 *
-	 * @param toClients The client sender which will send clients what they should do.
+	 * Initialises a new Server input receiver with all the players currently playing in the game.
+	 * @param players A list of all the players involved in the game.
 	 */
+	public ServerInputReceiver(ArrayList<EssentialPlayer> players) {
+		super();
+		this.players = players;
+	}
+	
 	public ServerInputReceiver() {
 		super();
 	}
 
 
-	public ServerInputReceiver(ArrayList<EssentialPlayer> players) {
-		super();
-		this.players = players;
-	}
-
-
+	/**
+	 * Computes all the required changes on a player, based on the inputs received from the client. This method performs all the
+	 * collision handling and updates the player based on that and the user input.
+	 * @param id The id of the player to be updated.
+	 * @param up Whether or not a player has moved up. 
+	 * @param down Whether or not a player has moved down. 
+	 * @param left Whether or not a player has moved left. 
+	 * @param right Whether or not a player has moved right. 
+	 * @param shooting Whether or not a player has started shooting.
+	 * @param mouseX The new x coordinate of the user.
+	 * @param mouseY The new y coordinate of the user.
+	 */
 	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, int mouseX,
 			int mouseY) {
 
@@ -66,7 +71,10 @@ public class ServerInputReceiver {
 		return null;
 	}
 
-
+	/**
+	 * Sets the game players.
+	 * @param players A list of all the players involved in the game.
+	 */
 	public void setPlayers(ArrayList<EssentialPlayer> players){
 		this.players = players;
 	}
