@@ -59,6 +59,8 @@ public class Lobby {
 	private boolean debug = false;
 	private CollisionsHandler collissionsHandler;
 
+	public boolean testEnv = false;
+
 	/**
 	 * Sets passed variables and inialised some defaults.
 	 * @param myid ID of lobby.
@@ -241,8 +243,11 @@ public class Lobby {
 		}
 		String redMems = "Ret:Red:" + getTeam(2);
 		String blueMems = "Ret:Blue:" + getTeam(1);
-		receiver.sendToAll(redMems);
-		receiver.sendToAll(blueMems);
+		if(!testEnv)
+		{
+					receiver.sendToAll(redMems);
+					receiver.sendToAll(blueMems);
+		}
 	}
 
 	/**

@@ -5,6 +5,9 @@ import players.AIPlayer;
 
 import java.util.ArrayList;
 
+import static players.EssentialPlayer.playerHeadX;
+import static players.EssentialPlayer.playerHeadY;
+
 /**
  * Moves an AI Player along a path
  */
@@ -16,6 +19,7 @@ public class Mover {
     private AIPlayer ai;
     private long timer;
     private static long delay = 4000;
+    private Point2D target;
 
     public Mover(AIPlayer ai){
         this.ai = ai;
@@ -28,7 +32,7 @@ public class Mover {
             return;
         }
         timer = System.currentTimeMillis();
-        this.path = path;
+        this.path = (ArrayList<Point2D>)path.clone();
     }
 
     private void followPath(){
@@ -51,9 +55,9 @@ public class Mover {
     }
 
     private void move(){
-        Point2D target = path.get(0);
-        double deltaX = (target.getX() * 64) - ai.getLayoutX() + 32;
-        double deltaY = ai.getLayoutY() - (target.getY() * 64) + 32;
+        target = path.get(0);
+        double deltaX = (target.getX() * 64) - (ai.getLayoutX() + playerHeadX) + 32;
+        double deltaY = (ai.getLayoutY() + playerHeadY) - (target.getY() * 64 + 32);
         if(Math.abs(deltaX) < 20 && Math.abs(deltaY) < 20) targetReached = true;
         double movementAngle = Math.atan2(deltaX, deltaY);
         ai.setMovementAngle(movementAngle);
@@ -68,5 +72,9 @@ public class Mover {
 
     public boolean isFinished(){
         return this.finished;
+    }
+
+    public Point2D getTarget(){
+        return this.target;
     }
 }

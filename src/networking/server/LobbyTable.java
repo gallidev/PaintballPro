@@ -17,6 +17,8 @@ public class LobbyTable {
 	// Each lobby will have an incrementing unique id - allows for each lobby to be identified.
 	private int id = 1;
 	
+	public boolean testEnv = false;
+	
 	/**
 	 * Remove lobby information from the data structures.
 	 * @param lobbyID The id of the lobby to remove from the tables.
@@ -69,11 +71,16 @@ public class LobbyTable {
 		if (!addedToGame) // all lobbies of that type are full, make a new one.
 		{
 			Lobby newLobby = new Lobby(id, gameMode);
+			if(testEnv)
+			{
+				newLobby.testEnv = true;
+			}
 			newLobby.addPlayer(player, 0);
 			lobbyAllocated = newLobby.getID();
 			lobbyList.put(id, newLobby);
 			id++;
 		}
+		System.out.println("Allocated:"+lobbyAllocated);
 		player.setAllocatedLobby(lobbyAllocated);
 		if (this.getLobby(lobbyAllocated).isMaxPlayersReached()) {
 			this.getLobby(lobbyAllocated).timerStart(receiver,udpReceiver, gameMode);
@@ -81,8 +88,11 @@ public class LobbyTable {
 		}
 		String redMems = "Ret:Red:" + this.getLobby(lobbyAllocated).getTeam(2);
 		String blueMems = "Ret:Blue:" + this.getLobby(lobbyAllocated).getTeam(1);
-		receiver.sendToAll(redMems);
-		receiver.sendToAll(blueMems);
+		if(!testEnv){
+			receiver.sendToAll(redMems);
+			receiver.sendToAll(blueMems);
+		}
+		
 	}
 	
 	/**

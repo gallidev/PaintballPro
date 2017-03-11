@@ -1,19 +1,21 @@
 package oldCode.players;
-
-import audio.AudioManager;
-import enums.TeamEnum;
-import networking.game.UDPClient;
-import physics.Bullet;
-import rendering.ImageFactory;
-import rendering.Map;
-
-import java.util.ArrayList;
-
-/**
- * The player, represented by an ImageView that should be running
- */
-public class PhysicsClientPlayer extends GeneralPlayer
-{
+//package players;
+//
+//import audio.AudioManager;
+//import enums.Team;
+//import networking.game.UDPClient;
+//import physics.Bullet;
+//import physics.CollisionsHandler;
+//import rendering.ImageFactory;
+//import rendering.Map;
+//
+//import java.util.ArrayList;
+//
+///**
+// * The player, represented by an ImageView that should be running
+// */
+//public class PhysicsClientPlayer extends GeneralPlayer
+//{
 //
 //	//flag for keeping track of scores
 //	boolean scoreChanged = true;
@@ -29,8 +31,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //	 * @param y             The y-coordinate of the player with respect to the map
 //	 * @param controlScheme True - movement with respect to cursor location, False - movement with respect to global position
 //	 */
-//
-//	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, TeamEnum team, UDPClient sender, CollisionsHandlerGeneralPlayer collisionHandler)
+//	public PhysicsClientPlayer(double x, double y, int id, boolean controlScheme, Map map, AudioManager audio, Team team, UDPClient sender, CollisionsHandler collisionHandler)
 //	{
 //		super(x, y, id, map, team, ImageFactory.getPlayerImage(team), audio, collisionHandler);
 //		this.mx = x;
@@ -40,7 +41,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //		this.sender = sender;
 //	}
 //
-//	public PhysicsClientPlayer(double x, double y, int id, TeamEnum team, UDPClient sender)
+//	public PhysicsClientPlayer(double x, double y, int id, Team team, UDPClient sender)
 //	{
 //		super(x, y, id, ImageFactory.getPlayerImage(team));
 //		controlScheme = false;
@@ -54,8 +55,9 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed
 //	 */
 //	@Override
-	public void tick()
-	{
+//	public void tick()
+//	{
+//		cleanBullets();
 //		// handle the collisions with walls and props before moving the position
 //		// of the player so to understand if he can move or not in a specific direction
 //		collisionsHandler.handlePropWallCollision(this);
@@ -87,7 +89,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //		{
 //			checkInvincibility();
 //		}
-	}
+//	}
 //
 //	protected void handleBulletCollision()
 //	{
@@ -102,7 +104,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //					eliminated = true;
 //					updateScore();
 //					setVisible(false);
-//					bullet.setActive(false);
+//					bullet.disable();
 //					return;
 //				}
 //			}
@@ -196,7 +198,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //		String msg = "Scored:";
 //
 //		//The current player has been shot, so the point goes to the other team
-//		if(team == TeamEnum.RED)
+//		if(team == Team.RED)
 //			msg += "Blue";
 //		else
 //			msg += "Red";
@@ -237,7 +239,7 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //		} else {
 //			bulletAngle -= deviation;
 //		}
-//		Bullet bullet = new Bullet(0,bulletX, bulletY, bulletAngle, team);
+//		Bullet bullet = new Bullet(bulletX, bulletY, bulletAngle, team);
 //		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 //		firedBullets.add(bullet);
 //	}
@@ -263,4 +265,4 @@ public class PhysicsClientPlayer extends GeneralPlayer
 //	{
 //		this.clientEnemies = enemies;
 //	}
-}
+//}

@@ -146,6 +146,10 @@ public class CollisionsHandler
 
 	}
 
+	public void handleGameobjectCollision(EssentialPlayer p){
+
+	}
+
 	private void checkBulletsAgainstATeam(EssentialPlayer p, ArrayList<EssentialPlayer> opponents){
 		for(EssentialPlayer enemy : opponents){
 

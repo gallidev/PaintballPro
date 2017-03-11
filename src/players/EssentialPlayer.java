@@ -84,12 +84,18 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 	protected abstract void updateShooting();
 
 	//Updates the location of the bullets
-	protected void updateBullets(){
-		for(int i = 0; i < firedBullets.size(); i++){
-			firedBullets.get(i).moveInDirection();
-		}
+	void updateBullets(){
+		for(Bullet firedBullet : firedBullets)
+			firedBullet.moveInDirection();
 	}
 
+	void cleanBullets(){
+		if(firedBullets.size() > 0) {
+			if (!firedBullets.get(0).isActive()) {
+				firedBullets.remove(0);
+			}
+		}
+	}
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
 

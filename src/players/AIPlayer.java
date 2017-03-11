@@ -44,7 +44,7 @@ public class AIPlayer extends EssentialPlayer{
 	@Override
 	public void tick() {
 		bManager.tick();
-
+		cleanBullets();
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
 			lastX = getLayoutX();
@@ -155,6 +155,8 @@ public class AIPlayer extends EssentialPlayer{
 		return myTeam.getMembers();
 	}
 
-
+//	public CollisionsHandler getCollisionHandler(){
+//		return this.collisionsHandler;
+//	}
 
 }

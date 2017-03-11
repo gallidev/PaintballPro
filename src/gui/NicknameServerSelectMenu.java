@@ -2,6 +2,7 @@ package gui;
 
 
 import enums.Menu;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,7 +12,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import networking.discovery.DiscoveryClientListener;
+
 /**
  * Created by jack on 12/02/2017.
  */
@@ -20,11 +23,20 @@ public class NicknameServerSelectMenu {
         // Obtain the user's settings
         UserSettings s = GUIManager.getUserSettings();
         // Create the main grid (to contain the options grid, and the apply/cancel buttons)
+        StackPane sp = new StackPane();
         GridPane mainGrid = new GridPane();
         mainGrid.setAlignment(Pos.CENTER);
         mainGrid.setHgap(10);
         mainGrid.setVgap(10);
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
+        GridPane loadingGrid = new GridPane();
+        loadingGrid.setAlignment(Pos.CENTER);
+        loadingGrid.setHgap(10);
+        loadingGrid.setVgap(10);
+        loadingGrid.setPadding(new Insets(25, 25, 25, 25));
+        ProgressIndicator spinner = new ProgressIndicator();
+        spinner.setProgress(-1);
+        loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);
         // Create the top grid (grid to contain all possible options)
         GridPane topGrid = new GridPane();
         topGrid.setAlignment(Pos.CENTER);
@@ -86,24 +98,53 @@ public class NicknameServerSelectMenu {
             @Override public void handle(ActionEvent event) {
                 // Update the preferences (these will automatically be saved
                 // when set is called)
+                sp.getChildren().removeAll(mainGrid);
+                sp.getChildren().addAll(loadingGrid);
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
-                if (automatic.isSelected()) {
-                    String ipPort = DiscoveryClientListener.findServer().split(":")[0];
-                    if (ipPort.equals("")) {
-                        AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
-                    } else {
-                        m.setIpAddress(ipPort);
-                        // Transition back to the main menu
-                        if (m.establishConnection())
-                            m.transitionTo(Menu.MultiplayerGameType);
+
+                (new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (automatic.isSelected()) {
+                            DiscoveryClientListener client = new DiscoveryClientListener();
+                            String ipPort = client.findServer().split(":")[0];
+                            if (ipPort.equals("")) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+                                        sp.getChildren().addAll(mainGrid);
+                                        sp.getChildren().removeAll(loadingGrid);
+                                    }
+                                });
+
+                            } else {
+
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        m.setIpAddress(ipPort);
+                                        // Transition back to the main menu
+                                        if (m.establishConnection())
+                                            m.transitionTo(Menu.MultiplayerGameType);
+                                    }
+                                });
+                            }
+                        } else {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    m.setIpAddress(ipText.getText());
+                                    // Transition back to the main menu
+                                    if (m.establishConnection())
+                                        m.transitionTo(Menu.MultiplayerGameType);
+                                }
+                            });
+
+                        }
                     }
-                } else {
-                    m.setIpAddress(ipText.getText());
-                    // Transition back to the main menu
-                    if (m.establishConnection())
-                        m.transitionTo(Menu.MultiplayerGameType);
-                }
+                })).start();
             }
         }), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
             @Override
@@ -116,8 +157,11 @@ public class NicknameServerSelectMenu {
         // Add the options grid and the button grid to the main grid
         mainGrid.add(topGrid, 0, 0);
         mainGrid.add(connectGrid, 0, 1);
+
+        sp.getChildren().addAll(mainGrid);
+
         // Create a new scene using the main grid
-        Scene scene = new Scene(mainGrid, m.width, m.height);
+        Scene scene = new Scene(sp, m.width, m.height);
         scene.getStylesheets().add("styles/menu.css");
         scene.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
         return scene;

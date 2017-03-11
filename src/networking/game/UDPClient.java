@@ -26,17 +26,22 @@ public class UDPClient extends Thread {
 
 	private boolean debug = false;
 	private int clientID;
+
 	private String nickname;
 
-	DatagramSocket clientSocket;
-	InetAddress IPAddress;
-
-	GUIManager m;
-
-	TeamTable teams;
 	private ClientGameStateReceiver gameStateReceiver;
 
 	public boolean bulletDebug = false;
+
+	private DatagramSocket clientSocket;
+	private InetAddress IPAddress;
+
+	private GUIManager m;
+
+	private TeamTable teams;
+
+	public boolean connected = false;
+	private boolean testSendToAll = false;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -58,26 +63,41 @@ public class UDPClient extends Thread {
 		if(debug) System.out.println("Making new UDP Client");
 
 		// Let's establish a connection to the running UDP server and send our client id.
-		try{
-			if(debug) System.out.println("Attempting to make client socket");
-			clientSocket = new DatagramSocket(port);
-			if(debug) System.out.println("Attempting to get ip address");
-			IPAddress = InetAddress.getByName(udpServIP);
-			if(debug) System.out.println("IPAddress is:"+IPAddress.getHostAddress());
-			String sentence = "Connect:"+clientID;
-			if(debug) System.out.println("sending data:"+sentence);
-			sendMessage(sentence);
-			if(debug) System.out.println("sent");
-			byte[] receiveData = new byte[1024];
-			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			clientSocket.receive(receivePacket);
-			String sentSentence = new String(receivePacket.getData());
-			if(debug) System.out.println(sentSentence.trim());
+		boolean error = true;
+		while (error) {
+			error = false;
+			try {
+				if (debug) System.out.println("Attempting to make client socket");
+				clientSocket = new DatagramSocket(port);
+				if (debug) System.out.println("Attempting to get ip address");
+				IPAddress = InetAddress.getByName(udpServIP);
+				if (debug) System.out.println("IPAddress is:" + IPAddress.getHostAddress());
+				String sentence = "Connect:" + clientID;
+				if (debug) System.out.println("sending data:" + sentence);
+				sendMessage(sentence);
+				if (debug) System.out.println("sent");
+				byte[] receiveData = new byte[1024];
+				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+				clientSocket.receive(receivePacket);
+				String sentSentence = new String(receivePacket.getData());
+				if(sentSentence.contains("Successfully Connected"))
+					connected = true;
+				if (debug) System.out.println(sentSentence.trim());
+			} catch (Exception e) {
+				error = true;
+				if (debug) System.err.println(e.getMessage());
+				port++;
+			}
 		}
-		catch (Exception e)
-		{
-			if(debug) e.printStackTrace();
-		}
+	}
+
+	/**
+	 * For tests, we check whether SendToAll has worked correctly.
+	 * @return Returns testSendToAll variable.
+	 */
+	public boolean getTestSend()
+	{
+		return this.testSendToAll;
 	}
 
 	/**
@@ -112,6 +132,12 @@ public class UDPClient extends Thread {
 
 
 				}
+				if (receivedPacket.contains("Exit"))
+					break;
+				else if (receivedPacket.contains("TestSendToAll"))
+				{
+					testSendToAll = true;
+				}
 			}
 		}
 		catch (Exception e)
@@ -119,6 +145,11 @@ public class UDPClient extends Thread {
 			e.printStackTrace(System.out);
 			if(debug) System.err.println(e.getStackTrace());
 		}
+		finally{
+			if(debug) System.out.println("Closing Client.");
+			clientSocket.close();
+		}
+		if(debug) System.out.println("Closing Client.");
 		clientSocket.close();
 		if(debug) System.err.println("Socket closed");
 	}

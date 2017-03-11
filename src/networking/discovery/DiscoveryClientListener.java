@@ -14,55 +14,28 @@ import java.util.Enumeration;
  */
 public class DiscoveryClientListener {
 	
+	DiscoveryClient client;
+	
 	/**
 	 * Get the IP address and port of the first server found
 	 * 
 	 * @return IP address and port, separated by a colon
 	 */
-	public static String findServer() {
-		
+	public String findServer() {
+		client = new DiscoveryClient();
+		client.start();
 		try {
-			InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
-			System.setProperty("java.net.preferIPv4Stack", "true");
-			MulticastSocket socket = new MulticastSocket(25566);
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-	        while (networkInterfaces.hasMoreElements()) {
-	            NetworkInterface iface = networkInterfaces.nextElement();
-	            try {
-	            	if (!iface.isLoopback())
-	            	{
-						socket.setNetworkInterface(iface);
-	            	}
-	            } catch (IOException e) {
-	            	//e.printStackTrace();
-	            }
-	        }
-			socket.joinGroup(broadcastAddress);
-			
-			byte[] buf = new byte[1023];
-			DatagramPacket packetFromServer = new DatagramPacket(buf, buf.length);
-//			if(!socket.isConnected())
-//			{
-//				socket.close();
-//				return "";
-//			}
-				
-			socket.receive(packetFromServer);
-			String data = new String(packetFromServer.getData(), packetFromServer.getOffset(),
-					packetFromServer.getLength());
-			socket.leaveGroup(broadcastAddress);
-			socket.close();
-			return data;
-		} catch (Exception e) {
-			System.err.println("Socket Client Exception!" + e);
+			client.join(10000);
+		} catch (InterruptedException e) {
+			return client.retVal;
 		}
-		return "";
+		return client.retVal;
 	}
 	
 	public boolean test() {
 		Thread t = new Thread(new DiscoveryServerAnnouncer(25566));
 		t.start();
-		String ret = DiscoveryClientListener.findServer();
+		String ret = this.findServer();
 
 		if(ret.split(":")[1].contains("25566"))
 			return true;

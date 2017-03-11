@@ -18,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import networking.client.ClientReceiver;
-import oldCode.players.GeneralPlayer;
 import physics.*;
 import players.GhostPlayer;
 import players.OfflinePlayer;
