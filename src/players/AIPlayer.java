@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import ai.BehaviourManager;
 import enums.TeamEnum;
-import javafx.scene.image.Image;
-import oldCode.offlineLogic.OfflineTeam;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
-import rendering.Spawn;
 import serverLogic.Team;
 import ai.HashMapGen;
-import audio.AudioManager;
 import rendering.Renderer;
 
 public class AIPlayer extends EssentialPlayer{
@@ -51,6 +47,9 @@ public class AIPlayer extends EssentialPlayer{
 
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
+			lastX = getLayoutX();
+			lastY = getLayoutY();
+			lastAngle = angle;
 			updatePosition();
 			updateAngle();
 			updateShooting();
@@ -59,7 +58,6 @@ public class AIPlayer extends EssentialPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
-
 
 		if(!invincible){
 			collisionsHandler.handleBulletCollision(this);
@@ -86,8 +84,8 @@ public class AIPlayer extends EssentialPlayer{
 	 * @author atp575
 	 */
 	public void updateScore(){
-		oppTeam.incrementScore();
-		Renderer.incrementScore(oppTeam.getColour(), 1);
+		//oppTeam.incrementScore();
+		//Renderer.incrementScore(oppTeam.getColour(), 1);
 
 
 //		if (myTeam.getColour() == TeamEnum.RED){

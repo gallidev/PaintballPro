@@ -1,16 +1,11 @@
 package players;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 import enums.TeamEnum;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Polygon;
-import physics.Bullet;
 import physics.CollisionsHandler;
-import rendering.Map;
 import rendering.Spawn;
 import serverLogic.Team;
 /**
@@ -47,10 +42,6 @@ public class UserPlayer extends EssentialPlayer{
 
 		updatePlayerBounds();
 		updateBullets();
-//		if(!(lastX == getX() && lastY == getY() && lastAngle == angle)){
-//			//sendServerNewPosition(getX(), getY(), angle);
-//		}
-		//sendActiveBullets();
 
 		if(!invincible)
 		{

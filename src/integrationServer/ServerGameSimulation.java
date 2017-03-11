@@ -22,7 +22,7 @@ public class ServerGameSimulation {
 	private long delayMilliseconds = 17;
 	private int frames = 0;
 
-	private boolean debug = false;
+	private boolean debug = true;
 
 	public ServerGameSimulation(GameMode game){
 
@@ -42,7 +42,7 @@ public class ServerGameSimulation {
 		for (EssentialPlayer p : players)
 			System.out.print(p.getPlayerId() + " ");
 		System.out.println();
-		
+
 		game.start();
 
 
@@ -55,7 +55,7 @@ public class ServerGameSimulation {
 						player.tick();
 					}
 			    	frames ++;
-			    	
+
 		       }
 		     };
 
@@ -81,7 +81,7 @@ public class ServerGameSimulation {
 	//}
 
 	public void stopExecution(){
-		
+
 	}
 
 	public GameMode getGame(){
