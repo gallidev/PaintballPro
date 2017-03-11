@@ -1,10 +1,11 @@
 package serverLogic;
 
+import enums.TeamEnum;
+import oldCode.players.ServerPlayer;
+import players.EssentialPlayer;
+
 import java.util.ArrayList;
 
-import enums.TeamEnum;
-import players.ServerPlayer;
-import rendering.Map;
 
 /**
  * Class to represent a team of players in the game.
@@ -13,16 +14,17 @@ import rendering.Map;
  */
 public class Team {
 
-	private ArrayList<ServerPlayer> members;
+	private ArrayList<EssentialPlayer> members;
 	private int score;
 	private TeamEnum colour;
 
 	/**
 	 * Initialises a new empty team, with 0 members and no score.
 	 */
-	public Team(){
+	public Team(TeamEnum colour){
 		members = new ArrayList<>();
 		score = 0;
+		this.colour = colour;
 	}
 
 	/**
@@ -32,47 +34,34 @@ public class Team {
 	public void incrementScore(int additionalScore){
 		score += additionalScore;
 	}
+	
+	public void incrementScore(){
+		score++;
+	}
 
 	/**
 	 * Adds another player to the team and increments the number of team players.
 	 * @param p The new team player.
 	 */
-	public void addMember(ServerPlayer p){
+	public void addMember(EssentialPlayer p){
 		members.add(p);
 		colour = p.getColour();
 	}
 
-	/**
-	 * Adds players as a member of the team.
-	 * @param teamPlayers The array of players to team.
-	 */
-	public void setMembers(ArrayList<ServerPlayer> teamPlayers) {
-		for (ServerPlayer p : teamPlayers)
-			addMember(p);
-		colour = teamPlayers.get(0).getColour();
-	}
-//	public void updatePlayerLocation(ClientPlayer p, int newXCoord, int newYCoord){
-//		p.getsetXCoord(newXCoord);
-//		p.setYCoord(newYCoord);
-//	}
-
-	// Probably not needed here.
-//	 /**
-//	 * Change one of the team player's location.
-//	 * @param p The player to be moved.
-//	 * @param newXCoord The new x coordinate of the player.
-//	 * @param newYCoord The new y coordinate of the player.
-//	 */
-//	public void updatePlayerLocation(Player p, int newXCoord, int newYCoord){
-//		p.setXCoordinate(newXCoord);
-//		p.setYCoordinate(newYCoord);
-//	}
-
-	/* Getters and setters */
 
 	public int getMembersNo() {
 		return members.size();
 	}
+
+	public boolean containsPlayer(EssentialPlayer player){
+		for(EssentialPlayer p: getMembers())
+			if ( p == player )
+				return true;
+		return false;
+	}
+	
+
+	/* Getters and setters */
 
 	public int getScore() {
 		return score;
@@ -83,12 +72,28 @@ public class Team {
 	}
 
 
-	public ArrayList<ServerPlayer> getMembers(){
+	public ArrayList<EssentialPlayer> getMembers(){
+
 		return members;
+	}
+
+	/**
+	 * Adds players as a member of the team.
+	 * @param teamPlayers The array of players to team.
+	 */
+	public void setMembers(ArrayList<EssentialPlayer> teamPlayers) {
+		members = teamPlayers;
+		
+		if (!teamPlayers.isEmpty())
+		colour = teamPlayers.get(0).getColour();
 	}
 
 	public TeamEnum getColour(){
 		return colour;
+	}
+
+	public void setColour(TeamEnum c){
+		colour = c;
 	}
 
 //	public void setMap(Map map){
@@ -97,9 +102,5 @@ public class Team {
 //		}
 //	}
 	
-	public void setColour(TeamEnum c){
-		colour = c;
-	}
-
 
 }

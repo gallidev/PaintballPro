@@ -1,0 +1,44 @@
+Networking Protocols
+--------------------
+We work using strings between the client and the server. This document outlines the protocols for particular events that may occur during the game.
+--------------------
+
+
+-------------------------------------------	|-----------------------------------------	|-------------------------------------
+				ACTION						|				PROTOCOL					|					NOTES
+---------------------------------------	----|-----------------------------------------	|-------------------------------------
+				IN-GAME						|/////////////////////////////////////		|/////////////////////////////////////
+--------------------------------------------|----------------------------------------	|-------------------------------------
+Send scores									|"3:<redTeamScore>:<blueTeamScore>"			|
+Send bullets								|"4:<id>:<bulletX>:<bulletY>:<angle>:...	|																						
+---------------------------------------	----|----------------------------------------	|
+				GAME STATUS					|/////////////////////////////////////		|
+-------------------------------------------	|---------------------------------------	|
+End game									|"5"										|
+Winner										|"2:<winner>"								| Winner is either Red or Blue
+--------------------------------------------|-------------------------------------		|
+			CLIENT ACTIONS					|/////////////////////////////////////		|
+--------------------------------------------|-------------------------------------		|
+Move up/down/left/right/mouse/start shooting|"O:Up:Down:Left:Right:Mouse:Shooting:<id>"	|	Not all of these have to be in the message. Only the 																							ones that are true will appear in the string
+											|
+			CLIENT REQUESTS					|/////////////////////////////////////		|
+--------------------------------------------|---------------------------------------	|
+											|											|
+											|											|
+--------------------------------------------|---------------------------------------	|
+			SERVER ACTIONS					|/////////////////////////////////////		|
+--------------------------------------------|---------------------------------------	|
+Send clients new location					|"1:<id>:<x>:<y>:<angle>:<visibility>"
+--------------------------------------------|---------------------------------------	|--------------------------------------------
+
+
+
+Number meanings:
+
+0 - client sends input to server
+1 - server sends new location to client
+2 - server sends winner to the players
+3 - server sends scores to the client
+4 - server sends bullets to be rendered on the client
+5 - end game 
+6 - server sends remaining time to the clients

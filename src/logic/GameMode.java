@@ -9,8 +9,8 @@ import serverLogic.Team;
  */
 public abstract class GameMode {
 	
-	private Team t1;
-	private Team t2;
+	private Team red;
+	private Team blue;
 	
 	/**
 	 * Creates a new game and initialises the two teams which are playing.
@@ -19,8 +19,8 @@ public abstract class GameMode {
 	 */
 	public GameMode(Team t1, Team t2) {
 		super();
-		this.t1 = t1;
-		this.t2 = t2;
+		this.red = t1;
+		this.blue = t2;
 	}
 	
 	public abstract void start();
@@ -39,22 +39,24 @@ public abstract class GameMode {
 	public abstract Team whoWon();
 	
 	
+	public abstract long getRemainingTime();
+	
 	/** Getters and setters */
 	
-	public Team getFirstTeam() {
-		return t1;
+	public Team getRedTeam() {
+		return red;
 	}
 
-	public void setFirstTeam(Team t1) {
-		this.t1 = t1;
+	public void setRedTeam(Team t1) {
+		this.red = t1;
 	}
 
-	public Team getSecondTeam() {
-		return t2;
+	public Team getBlueTeam() {
+		return blue;
 	}
 
-	public void setSecondTeam(Team t2) {
-		this.t2 = t2;
+	public void setBlueTeam(Team t2) {
+		this.blue = t2;
 	}
 	
 }

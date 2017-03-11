@@ -9,7 +9,7 @@ public class Node {
     public int y;
     public Node parent;
     public float heuristicCost = 0;
-    public float finalCost = 99999;
+    public float finalCost = 9999999;
 
     /**
      * Create a node with the given coordinates
@@ -19,6 +19,12 @@ public class Node {
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void reset(){
+        parent = null;
+        heuristicCost = 0;
+        finalCost = 9999999;
     }
 
     /**
@@ -46,6 +52,6 @@ public class Node {
 
     @Override
     public String toString(){
-        return "(" + x + ", " + y + ", Cost: " + finalCost + ")";
+        return "(" + x + ", " + y + ")";
     }
 }

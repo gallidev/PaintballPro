@@ -1,230 +1,317 @@
 package rendering;
-
-import java.util.ArrayList;
-
-import audio.AudioManager;
 import enums.TeamEnum;
+import integrationClient.ClientInputSender;
+import gui.GUIManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import networkingClient.ClientReceiver;
-import offlineLogic.OfflineGameMode;
-import offlineLogic.OfflineTeamMatchMode;
-import physics.Bullet;
-import physics.CollisionsHandler;
-import physics.KeyPressListener;
-import physics.KeyReleaseListener;
-import physics.MouseListener;
-import players.AIPlayer;
-import players.GeneralPlayer;
+import networking.client.ClientReceiver;
+import physics.*;
+import players.GhostPlayer;
 import players.OfflinePlayer;
-
+import players.EssentialPlayer;
+import serverLogic.Team;
+import java.util.ArrayList;
+import java.util.Random;
+import static players.GhostPlayer.playerHeadX;
+import static players.GhostPlayer.playerHeadY;
 /**
- * A scene of a game instance. All assets are drawn on a <i>view</i> pane.
+ * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.
  *
  * @author Artur Komoter
  */
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	private double scale = 1;
-	private GeneralPlayer player;
-	private AudioManager audio;
-	private Map map;
-
+	static OfflinePlayer player;
+	private static PauseMenu pauseMenu;
+	private static PauseSettingsMenu settingsMenu;
+	private static HeadUpDisplay hud;
+	static GhostPlayer cPlayer;
+	private ClientInputSender inputSender;
+	private static Map map;
+	private AnimationTimer timer;
+	private GUIManager guiManager;
+	private boolean singlePlayer = false;
 	/**
-	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
+	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
-	 * @param mapName Name of the selected map
+	 * @param mapName    Name of the selected map
+	 * @param guiManager GUI manager that creates this object
 	 */
-	public Renderer(String mapName, ClientReceiver receiver)
+	public Renderer(String mapName, GUIManager guiManager)
 	{
-		super(view, 1024, 576);
-		setFill(Color.BLACK);
-		setCursor(Cursor.CROSSHAIR);
-		view.setStyle("-fx-background-color: black;");
-
-		//16:9 aspect ratio
-		widthProperty().addListener(observable ->
-		{
-			scale = getWidth() / 1024;
-			view.setScaleX(scale);
-			view.setScaleY((getWidth() * 0.5625) / 576);
-		});
-
-		Map.load("res/maps/" + mapName + ".json");
-
-		player = receiver.getClientPlayer();
-		player.setCache(true);
-		player.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		view.getChildren().add(player);
-
-		receiver.getMyTeam().forEach(localPlayer ->
-		{
-			localPlayer.setCache(true);
-			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		});
-		view.getChildren().addAll(receiver.getMyTeam());
-
-		receiver.getEnemies().forEach(localPlayer ->
-		{
-			localPlayer.setCache(true);
-			localPlayer.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		});
-		view.getChildren().addAll(receiver.getEnemies());
-
-		KeyPressListener keyPressListener = new KeyPressListener(player);
-		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
-		MouseListener mouseListener = new MouseListener(player);
-
-		setOnKeyPressed(keyPressListener);
-		setOnKeyReleased(keyReleaseListener);
-		setOnMouseDragged(mouseListener);
-		setOnMouseMoved(mouseListener);
-		setOnMousePressed(mouseListener);
-		setOnMouseReleased(mouseListener);
-
-		ArrayList<Bullet> pellets = new ArrayList<>();
-		new AnimationTimer()
-		{
-			@Override
-			public void handle(long now)
-			{
-				updateView();
-
-				view.getChildren().removeAll(pellets);
-				pellets.clear();
-
-				for(Bullet pellet : player.getBullets())
-				{
-					if(pellet.isActive())
-						pellets.add(pellet);
-				}
-				for(GeneralPlayer player : receiver.getMyTeam())
-					pellets.addAll(player.getBullets());
-				for(GeneralPlayer player : receiver.getEnemies())
-					pellets.addAll(player.getBullets());
-				view.getChildren().addAll(pellets);
-
-				player.tick();
-			}
-		}.start();
-	}
-
-	/**
-	 * Renders a game instance by loading the selected map, spawning the players and responding to changes in game logic.
-	 *
-	 * @param mapName Name of the selected map
-	 */
-	public Renderer(String mapName, AudioManager audio)
-	{
-		super(view, 1024, 576);
-		setFill(Color.BLACK);
-		setCursor(Cursor.CROSSHAIR);
-		view.setStyle("-fx-background-color: black;");
-
-		this.audio = audio;
-		
-		//16:9 aspect ratio
-		widthProperty().addListener(observable ->
-		{
-			scale = getWidth() / 1024;
-			view.setScaleX(scale);
-			view.setScaleY((getWidth() * 0.5625) / 576);
-		});
-
-		map = Map.load("res/maps/" + mapName + ".json");
-
+		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		this.guiManager = guiManager;
+		init(mapName);
+		singlePlayer = true;
+		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
-
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, false, map, audio, TeamEnum.RED, collisionsHandler);
-
-		ArrayList<GeneralPlayer> players = setUpOfflineGame(player, new OfflineTeamMatchMode((OfflinePlayer) player));
-
-		KeyPressListener keyPressListener = new KeyPressListener(player);
-		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(player);
-		MouseListener mouseListener = new MouseListener(player);
+		InputHandler inputHandler = new InputHandler();
+		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+		MouseListener mouseListener = new MouseListener(inputHandler);
 		setOnKeyPressed(keyPressListener);
 		setOnKeyReleased(keyReleaseListener);
 		setOnMouseDragged(mouseListener);
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
-
-		new AnimationTimer()
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
+		hud = new HeadUpDisplay(guiManager, player.getTeam());
+		view.getChildren().add(hud);
+		hud.toFront();
+		//players.add(player);
+		players.addAll(player.getMyTeam().getMembers());
+		players.addAll(player.getOppTeam().getMembers());
+//		players.forEach(player -> {
+//			player.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+//			view.getChildren().add(player.getNameTag());
+//		});
+//		view.getChildren().remove(player.getNameTag());
+		view.getChildren().addAll(players);
+		collisionsHandler.setPlayers(players);
+		timer = new AnimationTimer()
 		{
+			long lastSecond = 0;
 			@Override
 			public void handle(long now)
 			{
 				updateView();
-
-				for(GeneralPlayer p : players)
+				for(EssentialPlayer player : players)
 				{
-					p.tick();
-					for(Bullet pellet : p.getBullets())
+					for(Bullet pellet : player.getBullets())
 					{
 						if(pellet.isActive())
 						{
 							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(pellet);
+								view.getChildren().add(view.getChildren().size() - 2, pellet);
 						}
 						else if(view.getChildren().contains(pellet))
-							view.getChildren().remove((pellet));
+						{
+							if(pellet.getCollision() != null)
+								generateSpray(pellet, player.getTeam());
+							view.getChildren().remove(pellet);
+						}
+					}
+					player.tick();
+				}
+				if(now - lastSecond >= 1000000000)
+				{
+					hud.tick();
+					lastSecond = now;
+				}
+			}
+		};
+		timer.start();
+	}
+	/**
+	 * Renders an online game instance by loading the selected map, receiving data from the client receiver and responding to changes in game logic.
+	 *
+	 * @param mapName    Name of the selected map
+	 * @param receiver   Client receiver for communication with the game server
+	 * @param guiManager GUI manager that creates this object
+	 */
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
+	{
+		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		this.guiManager = guiManager;
+		init(mapName);
+		cPlayer = receiver.getClientPlayer();
+		ArrayList<GhostPlayer> allplayers = receiver.getAllPlayers();
+		view.getChildren().add(cPlayer);
+		view.getChildren().addAll(receiver.getMyTeam());
+		view.getChildren().addAll(receiver.getEnemies());
+		InputHandler inputHandler = new InputHandler();
+		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+		MouseListener mouseListener = new MouseListener(inputHandler);
+		setOnKeyPressed(keyPressListener);
+		setOnKeyReleased(keyReleaseListener);
+		setOnMouseDragged(mouseListener);
+		setOnMouseMoved(mouseListener);
+		setOnMousePressed(mouseListener);
+		setOnMouseReleased(mouseListener);
+		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
+		view.getChildren().add(hud);
+		hud.toFront();
+		inputSender = new ClientInputSender(receiver.getUdpClient(),inputHandler, cPlayer.getPlayerId());
+		inputSender.startSending();
+		Group displayBullets = new Group();
+		view.getChildren().add(displayBullets);
+		timer = new AnimationTimer()
+		{
+			@Override
+			public void handle(long now)
+			{
+				updateView();
+				for(GhostPlayer player : allplayers)
+				{
+					for(GhostBullet pellet : player.getFiredBullets())
+					{
+						if(!displayBullets.getChildren().contains(pellet))
+							displayBullets.getChildren().add(pellet);
 					}
 				}
 			}
-		}.start();
+		};
+		timer.start();
 	}
-
+	/**
+	 * Toggles the pause menu whilst in-game
+	 */
+	public static void togglePauseMenu()
+	{
+		if(!pauseMenu.opened)
+			view.getChildren().add(pauseMenu);
+		else
+			view.getChildren().remove(pauseMenu);
+		pauseMenu.opened = !pauseMenu.opened;
+	}
+	/**
+	 * Toggles the settings scene from the pause menu whilst in-game
+	 */
+	public static void toggleSettingsMenu()
+	{
+		if(!settingsMenu.opened)
+		{
+			view.getChildren().remove(pauseMenu);
+			view.getChildren().add(settingsMenu);
+		}
+		else
+		{
+			view.getChildren().remove(settingsMenu);
+			view.getChildren().add(pauseMenu);
+		}
+		settingsMenu.opened = !settingsMenu.opened;
+	}
+	/**
+	 * Get the current state of the pause menu
+	 *
+	 * @return <code>true</code> if the pause menu is active, <code>false</code> otherwise
+	 */
+	public static boolean getPauseMenuState()
+	{
+		return pauseMenu.opened;
+	}
+	/**
+	 * Get the current state of the settings scene in the pause menu
+	 *
+	 * @return <code>true</code> if the settings scene is active, <code>false</code> otherwise
+	 */
+	public static boolean getSettingsMenuState()
+	{
+		return settingsMenu.opened;
+	}
+	/**
+	 * Increment the score on the HUD for a given team by a given amount
+	 *
+	 * @param team   The team that has scored
+	 * @param amount The amount to increase the score by
+	 */
+	public static void incrementScore(TeamEnum team, int amount)
+	{
+		hud.incrementScore(team, amount);
+	}
+	public static void destroy(Renderer renderer)
+	{
+		if(renderer != null)
+		{
+			renderer.timer.stop();
+			view = new Pane();
+			PauseMenu.p = new GridPane();
+			pauseMenu = null;
+			PauseSettingsMenu.p = new GridPane();
+			settingsMenu = null;
+			HeadUpDisplay.view = new BorderPane();
+			hud = null;
+			cPlayer = null;
+			map = null;
+		}
+	}
+	private static void generateSpray(Bullet pellet, TeamEnum team)
+	{
+		WritableImage paint = new WritableImage(64, 64);
+		PixelWriter pixelWriter = paint.getPixelWriter();
+		Random random = new Random();
+		double probability = 0.1;
+		for(int i = 0; i < 60; i++)
+		{
+			for(int j = 0; j < 60; j++)
+				if(random.nextDouble() < probability)
+					pixelWriter.setArgb(i, j, (team == TeamEnum.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
+		}
+		ImageView imageView = new ImageView(paint);
+		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
+		imageView.setCache(true);
+		view.getChildren().add(view.getChildren().size() - 2, imageView);
+	}
+	private void init(String mapName)
+	{
+		setFill(Color.BLACK);
+		setCursor(Cursor.CROSSHAIR);
+		view.setStyle("-fx-background-color: black;");
+		view.getStylesheets().add("styles/menu.css");
+		String[] resolution = GUIManager.getUserSettings().getResolution().split("x");
+		view.setScaleX(Double.parseDouble(resolution[0]) / 1024);
+		view.setScaleY(Double.parseDouble(resolution[1]) / 576);
+		pauseMenu = new PauseMenu(guiManager);
+		settingsMenu = new PauseSettingsMenu(guiManager);
+		map = Map.load(mapName);
+	}
+	private void initListeners()
+	{
+//		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
+//		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
+//		MouseListener mouseListener = new MouseListener(inputHandler);
+//
+//		setOnKeyPressed(keyPressListener);
+//		setOnKeyReleased(keyReleaseListener);
+//		setOnMouseDragged(mouseListener);
+//		setOnMouseMoved(mouseListener);
+//		setOnMousePressed(mouseListener);
+//		setOnMouseReleased(mouseListener);
+//		hud = new HeadUpDisplay(guiManager, player.getTeam());
+//		view.getChildren().add(hud);
+//		hud.toFront();
+	}
 	private void updateView()
 	{
-		view.setLayoutX(((getWidth() / 2) - player.getImage().getWidth() - player.getLayoutX()) * scale);
-		view.setLayoutY(((getHeight() / 2) - player.getImage().getHeight() - player.getLayoutY()) * scale);
+		if (singlePlayer){
+			view.relocate(((getWidth() / 2) - playerHeadX - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - player.getLayoutY()) * view.getScaleY());
+			hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+			if(view.getChildren().contains(pauseMenu))
+				pauseMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+			if(view.getChildren().contains(settingsMenu))
+				settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
+		}
+		else{
+			view.relocate(((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY()) * view.getScaleY());
+			hud.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+			if(view.getChildren().contains(pauseMenu))
+				pauseMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+			if(view.getChildren().contains(settingsMenu))
+				settingsMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
+		}
 	}
-	
-	private ArrayList<GeneralPlayer> setUpOfflineGame(GeneralPlayer player, OfflineGameMode game){
-		ArrayList<GeneralPlayer> players = new ArrayList<>();
-		players.add(player);
-		
-		//Adding the player's team mates to the view
-		for(int i = 1; i < 4; i++){
-			GeneralPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, player.getTeam(), audio, player.getCollisionsHandler());
-			players.add(p);
-		}
-
-		//Adding the enemies to the view
-		for (int i = 0; i < 4; i++){
-			GeneralPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, player.getTeam() == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, audio, player.getCollisionsHandler());
-			players.add(p);
-		}
-
-		players.forEach(p -> {
-			p.setCache(true);
-			p.setCacheHint(CacheHint.SCALE_AND_ROTATE);
-		});
-		view.getChildren().addAll(players);
-
-		//provisional way to differ enemies and team players
-		ArrayList<GeneralPlayer> redTeam = new ArrayList<>();
-		ArrayList<GeneralPlayer> blueTeam = new ArrayList<>();
-		for(GeneralPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-				redTeam.add(p);
-			else
-				blueTeam.add(p);
-		}
-
-		player.getCollisionsHandler().setBlueTeam(blueTeam);
-		player.getCollisionsHandler().setRedTeam(redTeam);
-		
-		game.start();
-		
-		return players;
-
+	@Override
+	protected void finalize() throws Throwable
+	{
+		view = null;
+		pauseMenu = null;
+		settingsMenu = null;
+		hud = null;
+		timer = null;
+		super.finalize();
 	}
-
 }

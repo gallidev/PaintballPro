@@ -1,5 +1,6 @@
 package serverLogic;
 
+import enums.TeamEnum;
 import logic.GameMode;
 import logic.RoundTimer;
 
@@ -28,8 +29,6 @@ public class TeamMatchMode extends GameMode {
 	 */
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
-		if (debug) System.out.println("First team colour is : " + t1.getColour());
-		if (debug) System.out.println("second team colour is : " + t2.getColour());
 		timer = new RoundTimer(gameTime);
 	}
 
@@ -50,15 +49,17 @@ public class TeamMatchMode extends GameMode {
 	 */
 	@Override
 	public Team whoWon() {
-		if (getFirstTeam().getScore() > getSecondTeam().getScore())
-			return getFirstTeam();
-		else if (getFirstTeam().getScore() < getSecondTeam().getScore())
-			return getSecondTeam();
+		if (getRedTeam().getScore() > getBlueTeam().getScore())
+			return getRedTeam();
+		else if (getRedTeam().getScore() < getBlueTeam().getScore())
+			return getBlueTeam();
 		else{
 			//allocate 30 more seconds to the game.
-			RoundTimer delay = new RoundTimer(30);
-			delay.startTimer();
-			while (!delay.isTimeElapsed()){}
+			timer = new RoundTimer(10);
+			timer.startTimer();
+			while (!timer.isTimeElapsed()){
+				if (debug) System.out.println("Timer running for more " + timer.getTimeLeft() + " seconds ...");
+			}
 			return whoWon();
 		}
 	}
@@ -67,5 +68,14 @@ public class TeamMatchMode extends GameMode {
 	public void start() {
 		timer.startTimer();
 	}
+	
+	public RoundTimer getTimer(){
+		return timer;
+	}
 
+	@Override
+	public long getRemainingTime() {
+		return timer.getTimeLeft();
+	}
+	
 }

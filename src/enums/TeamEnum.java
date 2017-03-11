@@ -1,5 +1,6 @@
 package enums;
 
-public enum TeamEnum {
+public enum TeamEnum
+{
 	RED, BLUE
 }

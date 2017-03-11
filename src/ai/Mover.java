@@ -1,39 +1,80 @@
 package ai;
 
+import javafx.geometry.Point2D;
 import players.AIPlayer;
+
+import java.util.ArrayList;
+
+import static players.EssentialPlayer.playerHeadX;
+import static players.EssentialPlayer.playerHeadY;
+
 /**
  * Moves an AI Player along a path
  */
 public class Mover {
 
-    private Path path;
-    private AIPlayer ai;
     private boolean targetReached;
+    private boolean finished = false;
+    private ArrayList<Point2D> path;
+    private AIPlayer ai;
+    private long timer;
+    private static long delay = 4000;
+    private Point2D target;
 
     public Mover(AIPlayer ai){
         this.ai = ai;
+        path = new ArrayList<>();
     }
 
-    public void followPath(Path path){
-        this.path = path;
-        while(path.getLength() > 0){
-            targetReached = false;
-            Node current = path.getNode(0);
-            move(current);
-            if(targetReached){
-                path.removeFirst();
-            }
+    public void setPath(ArrayList<Point2D> path){
+        if(path == null) {
+            finished = true;
+            return;
+        }
+        timer = System.currentTimeMillis();
+        this.path = (ArrayList<Point2D>)path.clone();
+    }
 
+    private void followPath(){
+        finished = false;
+
+        if(path == null) {
+            finished = true;
+            return;
+        }
+        if(path.size() == 0) {
+            finished = true;
+            return;
+        }
+
+        targetReached = false;
+        move();
+        if(targetReached){
+            path.remove(0);
         }
     }
 
-    private void move(Node n){
-        double targetX = n.x * 64;
-        double targetY = n.y * 64;
-        double deltaX = targetX - ai.getLayoutX();
-        double deltaY = ai.getLayoutY() - targetY;
-        if(Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) targetReached = true;
+    private void move(){
+        target = path.get(0);
+        double deltaX = (target.getX() * 64) - (ai.getLayoutX() + playerHeadX) + 32;
+        double deltaY = (ai.getLayoutY() + playerHeadY) - (target.getY() * 64 + 32);
+        if(Math.abs(deltaX) < 20 && Math.abs(deltaY) < 20) targetReached = true;
         double movementAngle = Math.atan2(deltaX, deltaY);
         ai.setMovementAngle(movementAngle);
+    }
+
+    public void tick(){
+        followPath();
+        if(ai.isEliminated() || timer < System.currentTimeMillis() - delay) {
+            finished = true;
+        }
+    }
+
+    public boolean isFinished(){
+        return this.finished;
+    }
+
+    public Point2D getTarget(){
+        return this.target;
     }
 }

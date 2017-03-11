@@ -1,33 +1,40 @@
 package players;
 
-import ai.*;
-import audio.AudioManager;
+import java.util.ArrayList;
+
+import ai.BehaviourManager;
 import enums.TeamEnum;
-import offlineLogic.OfflineTeam;
 import physics.CollisionsHandler;
+import rendering.ImageFactory;
 import rendering.Map;
+import serverLogic.Team;
+import ai.HashMapGen;
+import rendering.Renderer;
 
-import static gui.GUIManager.bluePlayerImage;
-import static gui.GUIManager.redPlayerImage;
-
-public class AIPlayer extends GeneralPlayer{
+public class AIPlayer extends EssentialPlayer{
 
 	private BehaviourManager bManager;
-	private AudioManager audio;
+	private HashMapGen hashMaps;
 	private double movementAngle;
-	private OfflineTeam oppTeam;
-	private OfflineTeam myTeam;
+	private Team oppTeam;
+	private Team myTeam;
+	private boolean moving;
+	private Map map;
+	//private AudioManager audio;
+	private ArrayList<EssentialPlayer> enemies;
+	private ArrayList<EssentialPlayer> teamPlayers;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, AudioManager audio, CollisionsHandler collisionsHandler){
-		super(x, y, id, map, team, team == TeamEnum.RED ? redPlayerImage : bluePlayerImage, audio, collisionsHandler);
-		this.audio = audio;
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
+		this.hashMaps = hashMaps;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
 		right = true;
 		this.map = map;
+		this.moving = true;
 		bManager = new BehaviourManager(this);
-		this.audio = audio;
+		//this.audio = audio;
 	}
 
 	/**
@@ -37,8 +44,12 @@ public class AIPlayer extends GeneralPlayer{
 	@Override
 	public void tick() {
 		bManager.tick();
+		cleanBullets();
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated){
+			lastX = getLayoutX();
+			lastY = getLayoutY();
+			lastAngle = angle;
 			updatePosition();
 			updateAngle();
 			updateShooting();
@@ -47,23 +58,24 @@ public class AIPlayer extends GeneralPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
+
 		if(!invincible){
 			collisionsHandler.handleBulletCollision(this);
 		} else {
 			checkInvincibility();
 		}
-
 	}
 
 	@Override
 	protected void updatePosition(){
-		if(collUp || collLeft || collRight || collDown) bManager.change();
 
 		double yToReduce = movementSpeed * Math.cos(movementAngle);
 		double xToAdd = movementSpeed * Math.sin(movementAngle);
 
-		if((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown )) setLayoutY(getLayoutY() - yToReduce);
-		if((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft ) ) setLayoutX(getLayoutX() + xToAdd);
+		if(moving) {
+			if ((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown)) setLayoutY(getLayoutY() - yToReduce);
+			if ((xToAdd > 0 && !collRight) || (xToAdd < 0 && !collLeft)) setLayoutX(getLayoutX() + xToAdd);
+		}
 	}
 
 
@@ -73,15 +85,17 @@ public class AIPlayer extends GeneralPlayer{
 	 */
 	public void updateScore(){
 		oppTeam.incrementScore();
+		//Renderer.incrementScore(oppTeam.getColour(), 1);
 
-		if (myTeam.getColour() == TeamEnum.RED){
-			System.out.println( "Red team score: " + myTeam.getScore());
-			System.out.println( "Blue team score: " + oppTeam.getScore());
-		}
-		else{
-			System.out.println( "Blue team score: " + myTeam.getScore());
-			System.out.println( "Red team score: " + oppTeam.getScore());
-		}
+
+//		if (myTeam.getColour() == TeamEnum.RED){
+//			System.out.println( "Red team score: " + myTeam.getScore());
+//			System.out.println( "Blue team score: " + oppTeam.getScore());
+//		}
+//		else{
+//			System.out.println( "Blue team score: " + myTeam.getScore());
+//			System.out.println( "Red team score: " + oppTeam.getScore());
+//		}
 
 
 	}
@@ -91,19 +105,58 @@ public class AIPlayer extends GeneralPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	public double getMovementAngle() { return this.movementAngle;}
+
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
 	}
 
-	public Map getMap(){
-		return this.map;
+	protected void updateShooting(){
+		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
+			shoot();
+			shootTimer = System.currentTimeMillis();
+		}
 	}
 
-	public void setOppTeam(OfflineTeam t){
-		oppTeam = t;
+	//public Map getMap() {return this.map;}
+
+	public void setOppTeam(Team oppTeam){
+		this.oppTeam = oppTeam;
 	}
 
-	public void setMyTeam(OfflineTeam t){
+	public void setMyTeam(Team t){
 		myTeam = t;
 	}
+
+	public void setMoving(boolean b) { this.moving = b;}
+
+	public Map getMap(){
+		return map;
+	}
+
+	public double getWidth(){
+		return ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
+	}
+
+	public double getHeight(){
+		return ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
+	}
+
+
+	public HashMapGen getHashMaps(){
+		return this.hashMaps;
+	}
+
+	public ArrayList<EssentialPlayer> getEnemies() {
+		return oppTeam.getMembers();
+	}
+
+	public ArrayList<EssentialPlayer> getTeamPlayers() {
+		return myTeam.getMembers();
+	}
+
+//	public CollisionsHandler getCollisionHandler(){
+//		return this.collisionsHandler;
+//	}
+
 }

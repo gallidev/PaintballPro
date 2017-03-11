@@ -1,2 +1,13 @@
-/AIPlayer.class
+/Behaviour.class
+/BehaviourManager.class
+/CaptureBehaviour.class
+/CostComparator.class
+/DefaultBehaviour.class
+/MoveBehaviour.class
+/Mover.class
+/Node.class
+/Path.class
+/Pathfinding.class
 /RandomBehaviour.class
+/RetreatBehaviour.class
+/TacticalBehaviour.class

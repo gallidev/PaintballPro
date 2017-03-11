@@ -1,15 +1,14 @@
 package gui;
+
+import enums.Menu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-
 import javafx.scene.image.ImageView;
-
-import javax.swing.*;
+import javafx.scene.layout.GridPane;
 
 /**
  * Main Menu scene class
@@ -32,22 +31,19 @@ public class MainMenu {
 		iv.setFitWidth(400);
 		
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Single player", true, new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Single Player", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Singleplayer", null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    	m.transitionTo(Menu.SingleplayerGameType);
+		    }
 		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Nickname", null);
+		    	m.transitionTo(Menu.NicknameServerConnection);
 //		    	m.transitionTo("Multiplayer", null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    }
 		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Settings", null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    	m.transitionTo(Menu.Settings);
+		    }
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed
@@ -66,6 +62,7 @@ public class MainMenu {
 		m.addButtonHoverSounds(view);
 		Scene s = new Scene(view, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
+		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
 		return s;
 	}
 }

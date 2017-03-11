@@ -1,12 +1,13 @@
 package ai;
 
+import rendering.Floor;
 import rendering.Map;
+import rendering.Prop;
+import rendering.Wall;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import rendering.Floor;
-import rendering.Prop;
-import rendering.Wall;
+import java.util.Random;
 
 /**
  * Pathfinding uses A* search to compute an efficient path from the current position to a given target position
@@ -24,44 +25,48 @@ public class Pathfinding {
 
     private Path path;
 
+    private Random random;
+
     //Initialise Pathfinding for each AI
     public Pathfinding(Map map) {
         //Initialise nodes array from map
-        nodes = new Node[32][32];
+        nodes = new Node[48][48];
         Floor[] floors = map.getFloors();
         Prop[] props = map.getProps();
         Wall[] walls = map.getWalls();
+        random = new Random();
 
         path = new Path();
-        for(int i = 0; i < floors.length; i++){
-            int x = floors[i].getX();
-            int y = floors[i].getY();
-            int width = floors[i].getWidth();
-            int height = floors[i].getHeight();
-            for(int w = x; w <= x + width; w ++){
-                for(int h = y; h <= y + height; h++){
+        for(Floor floor : floors) {
+            int x = floor.getX();
+            int y = floor.getY();
+            int width = floor.getWidth();
+            int height = floor.getHeight();
+            for(int w = x; w < x + width; w++) {
+                for(int h = y; h < y + height; h++) {
                     nodes[w][h] = new Node(w, h);
                 }
             }
         }
 
-        for(int i = 0; i < props.length; i++){
-            int x = props[i].getX();
-            int y = props[i].getY();
+        for(Prop prop : props) {
+            int x = prop.getX();
+            int y = prop.getY();
             nodes[x][y] = null;
         }
 
-        for(int i = 0; i < walls.length; i++){
-            int x = walls[i].getX();
-            int y = walls[i].getY();
-            int length = walls[i].getLength();
-            boolean orientation = walls[i].getOrientation();
-            if(orientation){
-                for(int w = x; w <= x + length; w++){
+        for(Wall wall : walls) {
+            int x = wall.getX();
+            int y = wall.getY();
+            int length = wall.getLength();
+            boolean orientation = wall.getOrientation();
+            if(orientation) {
+                for(int w = x; w < x + length; w++) {
                     nodes[w][y] = null;
                 }
-            } else {
-                for(int h = y; h <= y + length; h++){
+            }
+            else {
+                for(int h = y; h < y + length; h++) {
                     nodes[x][h] = null;
                 }
             }
@@ -72,18 +77,18 @@ public class Pathfinding {
         path.clearPath();
         closed.clear();
         open.clear();
-        open.add(nodes[x][y]);
+        open.add(nodes[x][y]); //find nearest non null node
 
         Node start = nodes[x][y];
         start.heuristicCost = euclideanCost(x, y, tx, ty);
         start.finalCost = 0;
-        Node current;
         Node goal = nodes[tx][ty];
-        if(goal == null) return;
 
         while(true){
-            current = open.poll();
-            if (current == null) break;
+            Node current = open.poll();
+            if (current == null) {
+                break;
+            }
             closed.add(current);
             if (current.equals(goal)) {
                 break;
@@ -94,33 +99,43 @@ public class Pathfinding {
             //Left
             if (current.x - 1 >= 0){
                 n = nodes[current.x-1][current.y];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Right
             if (current.x + 1 < nodes.length){
                 n = nodes[current.x+1][current.y];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Top
             if (current.y - 1 >= 0){
                 n = nodes[current.x][current.y-1];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Bottom
             if (current.y + 1 < nodes[0].length){
                 n = nodes[current.x][current.y+1];
-                processNode(current, n, goal);
+                if(n != null) {
+                    processNode(current, n, goal);
+                }
             }
 
             //Top Left
             if (current.x - 1 >= 0 && current.y - 1 >= 0){
-                //check of top and left are not obstacles
+                //check if top and left are not obstacles
                 if(nodes[current.x][current.y-1] != null && nodes[current.x-1][current.y] != null) {
                     n = nodes[current.x - 1][current.y - 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -129,7 +144,9 @@ public class Pathfinding {
                 //check if bottom and left are not obstacles
                 if(nodes[current.x][current.y+1] != null && nodes[current.x-1][current.y] != null) {
                     n = nodes[current.x - 1][current.y + 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -138,7 +155,9 @@ public class Pathfinding {
                 //check if top and right are not obstacles
                 if(nodes[current.x+1][current.y] != null && nodes[current.x][current.y-1] != null){
                     n = nodes[current.x + 1][current.y - 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
 
@@ -147,7 +166,9 @@ public class Pathfinding {
                 //check if bottom and right are not obstacles
                 if(nodes[current.x+1][current.y] != null && nodes[current.x][current.y+1] != null) {
                     n = nodes[current.x + 1][current.y + 1];
-                    processNode(current, n, goal);
+                    if(n != null) {
+                        processNode(current, n, goal);
+                    }
                 }
             }
         }
@@ -166,13 +187,12 @@ public class Pathfinding {
         if(closed.contains(target)) return;
         if(current == null || target == null) return;
         target.heuristicCost = euclideanCost(target.x, target.y, goal.x, goal.y);
-
         float tempFinalCost = target.heuristicCost + current.finalCost + 1;
-        if(!closed.contains(target) && tempFinalCost < target.finalCost){
+        if(tempFinalCost < target.finalCost){ //check this
             target.finalCost = tempFinalCost;
             target.parent = current;
             if(!open.contains(target)){
-                open.offer(target);
+                open.add(target);
             }
         }
 
@@ -189,7 +209,7 @@ public class Pathfinding {
     }
 
     //Cheaper, but not efficient for diagonal movements
-    private float manhattanDistance(int x, int y, int tx, int ty) {
+    private float manhattanCost(int x, int y, int tx, int ty) {
         float dx = Math.abs(tx - x);
         float dy = Math.abs(ty - y);
 
@@ -202,17 +222,34 @@ public class Pathfinding {
             path.prependNode(n.parent);
             n = n.parent;
         }
+        if(path.getLength() != 0){
+            path.appendNode(goal);
+            path.removeFirst();
+        }
 
-        path.appendNode(goal);
-        if (!path.getNode(0).equals(start)) path = null;
+
     }
 
     public Path getPath(int x, int y, int tx, int ty){
+        if(path == null){
+            path = new Path();
+        }
+        resetNodes();
         AStar(x, y, tx, ty);
-        //for(int i = 0; i < path.getLength(); i++){
-        //    System.out.println(path.getX(i) + ", " + path.getY(i));
-        //}
-        //System.out.println("\n");
         return path;
+    }
+
+    private void resetNodes(){
+        for (Node[] nodeRow:nodes) {
+            for (Node node:nodeRow) {
+                if(node != null){
+                    node.reset();
+                }
+            }
+        }
+    }
+
+    public Node[][] getNodeGrid(){
+        return this.nodes;
     }
 }

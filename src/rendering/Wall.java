@@ -1,7 +1,5 @@
 package rendering;
 
-import javafx.scene.Group;
-
 /**
  * A group of blocks that form a wall which players cannot walk through. Each wall is <i>l</i> blocks long, spans at a certain <code>orientation</code>:
  * <ul>
@@ -20,16 +18,12 @@ public class Wall
 	String material;
 	boolean orientation;
 	int length, x, y;
-
 	public int getLength() {
 		return length;
 	}
-
 	public int getY() {
 		return y;
 	}
-
 	public int getX() { return x; }
-
 	public boolean getOrientation() { return orientation; }
 }

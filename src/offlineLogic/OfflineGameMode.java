@@ -3,8 +3,8 @@ package offlineLogic;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
+import oldCode.offlineLogic.OfflineTeam;
 import players.AIPlayer;
-import players.GeneralPlayer;
 import players.OfflinePlayer;
 
 /**

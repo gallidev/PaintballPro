@@ -8,6 +8,7 @@ import javafx.scene.media.MediaPlayer;
 public class AudioManager implements gui.UserSettingsObserver {
 
     public SFXResources sfx = new SFXResources();
+    public MusicResources music = new MusicResources();
     public MediaPlayer musicPlayer;
     private float musicVolume = (float) 100.0;
     private float sfxVolume = (float) 100.0;
@@ -29,7 +30,7 @@ public class AudioManager implements gui.UserSettingsObserver {
         float musicVol = s.getMusicVolume();
         musicVolume = musicVol / (float) 100.0;
         if (musicPlayer != null) {
-            musicPlayer.setVolume(musicVol);
+            musicPlayer.setVolume(musicVolume);
         }
 
         float sfxVol = s.getSfxVolume();

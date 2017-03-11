@@ -1,6 +1,7 @@
 package gui;
 
 import enums.GameLocation;
+import enums.Menu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -22,28 +23,24 @@ public class GameTypeMenu {
 		MenuOption[] set = {new MenuOption("Elimination", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo("Lobby", "Elimination");
+					m.transitionTo(Menu.Lobby, "Elimination");
 				} else {
-					m.transitionTo("EliminationSingle", null);
+					m.transitionTo(Menu.EliminationSingle);
 				}
-
-		        System.out.println("ActionEvent: (Elimination) " + event);
-		    }     
+			}
 		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo("Lobby", "CTF");
+					m.transitionTo(Menu.Lobby, "CTF");
 				} else {
-					m.transitionTo("CTFSingle", null);
+					m.transitionTo(Menu.CTFSingle);
 				}
 
-				System.out.println("ActionEvent: (CTF) " + event);
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo("Main", null);
-		        System.out.println("ActionEvent: " + event);
-		    }     
+		    	m.transitionTo(Menu.MainMenu);
+		    }
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed
@@ -53,6 +50,7 @@ public class GameTypeMenu {
 		m.addButtonHoverSounds(grid);
 		Scene s = new Scene(grid, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");
+		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
 		return s;
 	}
 }
