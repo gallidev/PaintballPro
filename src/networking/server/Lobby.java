@@ -418,15 +418,11 @@ public class Lobby {
 
 		//seting team playes and enemies
 		for(EssentialPlayer p : red.getMembers()){
-			p.setTeamPlayers(red.getMembers());
-			p.setEnemies(blue.getMembers());
 			p.setOppTeam(blue);
 			p.setMyTeam(red);
 		}
 
 		for(EssentialPlayer p : blue.getMembers()){
-			p.setTeamPlayers(blue.getMembers());
-			p.setEnemies(red.getMembers());
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
 		}

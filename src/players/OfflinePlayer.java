@@ -27,8 +27,6 @@ public class OfflinePlayer extends EssentialPlayer
 	private Team myTeam;
 	private Team oppTeam;
 	private InputHandler inputHandler;
-	private ArrayList<EssentialPlayer> enemies;
-	private ArrayList<EssentialPlayer> teamPlayers;
 	private AudioManager audio;
 	private Random rand;
 	private Label nameTag;
@@ -54,8 +52,6 @@ public class OfflinePlayer extends EssentialPlayer
 				"-fx-font-size: 10pt; -fx-text-fill: white");
 		nameTag.setPadding(new Insets(5));
 		nameTag.relocate(x - 15, y - 32);
-		teamPlayers = new ArrayList<>();
-		enemies = new ArrayList<>();
 		HashMapGen hashMaps = new HashMapGen(map);
 
 		//populating the players team and creating a corresponding OfflineTeam for the members
@@ -64,7 +60,6 @@ public class OfflinePlayer extends EssentialPlayer
 
 		for(int i = 1; i < 4; i++){
 			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, collisionsHandler, hashMaps);
-			teamPlayers.add(p);
 			myTeam.addMember(p);
 		}
 
@@ -77,7 +72,6 @@ public class OfflinePlayer extends EssentialPlayer
 		for (int i = 0; i < 4; i++){
 				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps);
 				oppTeam.addMember(p);
-				enemies.add(p);
 		}
 
 		for(EssentialPlayer p : myTeam.getMembers()){
@@ -236,31 +230,6 @@ public class OfflinePlayer extends EssentialPlayer
 
 
 	@Override
-	public void setTeamPlayers(ArrayList<EssentialPlayer> team) {
-		this.teamPlayers = team;
-
-	}
-
-
-
-	@Override
-	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
-		this.enemies= enemies;
-
-	}
-
-
-	public ArrayList<EssentialPlayer> getEnemies() {
-		return enemies;
-	}
-
-
-	public ArrayList<EssentialPlayer> getTeamPlayers() {
-		return teamPlayers;
-	}
-
-
-	@Override
 	public void setMyTeam(Team team) {
 		this.myTeam = team;
 
@@ -273,7 +242,13 @@ public class OfflinePlayer extends EssentialPlayer
 
 	}
 
+	public Team getMyTeam(){
+		return this.myTeam;
+	}
 
+	public Team getOppTeam(){
+		return this.oppTeam;
+	}
 
 
 

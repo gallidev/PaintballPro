@@ -49,7 +49,7 @@ public class Renderer extends Scene
 	private AnimationTimer timer;
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
-	
+
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
@@ -87,38 +87,16 @@ public class Renderer extends Scene
 		hud.toFront();
 
 		players.add(player);
-		players.addAll(player.getTeamPlayers());
-		players.addAll(player.getEnemies());
+		players.addAll(player.getMyTeam().getMembers());
+		players.addAll(player.getOppTeam().getMembers());
+
 //		players.forEach(player -> {
 //			player.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
 //			view.getChildren().add(player.getNameTag());
 //		});
 //		view.getChildren().remove(player.getNameTag());
-		view.getChildren().addAll(players);
 
-		//provisional way to differ enemies and team players
-		ArrayList<EssentialPlayer> redTeam = new ArrayList<>();
-		ArrayList<EssentialPlayer> blueTeam = new ArrayList<>();
-		for(EssentialPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-				redTeam.add(p);
-			else
-				blueTeam.add(p);
-		}
-		for(EssentialPlayer p : players)
-		{
-			if(p.getTeam() == TeamEnum.RED)
-			{
-				p.setEnemies(blueTeam);
-				p.setTeamPlayers(redTeam);
-			}
-			else
-			{
-				p.setEnemies(redTeam);
-				p.setTeamPlayers(blueTeam);
-			}
-		}
+		view.getChildren().addAll(players);
 
 		collisionsHandler.setPlayers(players);
 
@@ -379,7 +357,7 @@ public class Renderer extends Scene
 			if(view.getChildren().contains(settingsMenu))
 				settingsMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
 		}
-			
+
 	}
 
 

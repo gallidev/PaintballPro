@@ -148,20 +148,13 @@ public class AIPlayer extends EssentialPlayer{
 	}
 
 	public ArrayList<EssentialPlayer> getEnemies() {
-		return enemies;
-	}
-
-	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
-		this.enemies = enemies;
+		return oppTeam.getMembers();
 	}
 
 	public ArrayList<EssentialPlayer> getTeamPlayers() {
-		return teamPlayers;
+		return myTeam.getMembers();
 	}
 
-	public void setTeamPlayers(ArrayList<EssentialPlayer> teamPlayers) {
-		this.teamPlayers = teamPlayers;
-	}
 
 
 }

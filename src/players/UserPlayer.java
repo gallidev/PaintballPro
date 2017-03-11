@@ -16,6 +16,9 @@ public class UserPlayer extends EssentialPlayer{
     public final int widthScreen = 1024;
     public final int heightScreen = 576;
 
+	private Team oppTeam;
+	private Team myTeam;
+
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image) {
 		super(x, y, id, spawn, team, collisionsHandler, image);
@@ -102,32 +105,20 @@ public class UserPlayer extends EssentialPlayer{
 
 	@Override
 	public void updateScore() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTeamPlayers(ArrayList<EssentialPlayer> team) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
-		// TODO Auto-generated method stub
+		oppTeam.incrementScore();
 
 	}
 
 	@Override
 	public void setMyTeam(Team team) {
-		// TODO Auto-generated method stub
+		this.myTeam = team;
 
 	}
 
 	@Override
-	public void setOppTeam(Team team) {
+	public void setOppTeam(Team oppTeam) {
 		// TODO Auto-generated method stub
-
+		this.oppTeam = oppTeam;
 	}
 
 
