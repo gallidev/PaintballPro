@@ -175,26 +175,26 @@ public class ClientReceiver extends Thread {
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
-			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null);
+			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
 		else
-			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null);
+			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.RED);
 		// extract the other members
 		for (int i = 4; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red"))
 					myTeam.add(new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), null));
+							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED));
 				else
 					myTeam.add(new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
+							ImageFactory.getPlayerImage(TeamEnum.BLUE),null,  TeamEnum.BLUE));
 			} else {
 				if (clientTeam.equals("Red"))
 					enemies.add(new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE), null));
+							ImageFactory.getPlayerImage(TeamEnum.BLUE), null, TeamEnum.BLUE));
 				else
 					enemies.add(new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), null));
+							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED));
 			}
 		}
 

@@ -33,7 +33,7 @@ public class GhostPlayer extends ImageView {
 	private String nickname;
 	private Label nameTag;
 
-	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio) {
+	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio, TeamEnum team) {
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
@@ -48,6 +48,7 @@ public class GhostPlayer extends ImageView {
 				"-fx-font-size: 10pt; -fx-text-fill: white");
 		nameTag.setPadding(new Insets(5));
 		nameTag.relocate(x - 15, y - 32);
+		this.team = team;
 	}
 
 	public void beenShot() {
@@ -71,7 +72,7 @@ public class GhostPlayer extends ImageView {
 				return;
 			}
 		}
-		GhostBullet bullet = new GhostBullet(bulletId, x, y, this.team);
+		GhostBullet bullet = new GhostBullet(bulletId, x, y, team);
 		this.firedBullets.add(bullet);
 	}
 
