@@ -395,7 +395,7 @@ public class Lobby {
 	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
-		
+
 		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
 		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
 
@@ -405,7 +405,7 @@ public class Lobby {
 		//filling the game with AI players
 		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
 		redAIM.createPlayers();
-		
+
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
 		blueAIM.createPlayers();
 
@@ -420,11 +420,15 @@ public class Lobby {
 		for(EssentialPlayer p : red.getMembers()){
 			p.setTeamPlayers(red.getMembers());
 			p.setEnemies(blue.getMembers());
+			p.setOppTeam(blue);
+			p.setMyTeam(red);
 		}
 
 		for(EssentialPlayer p : blue.getMembers()){
 			p.setTeamPlayers(blue.getMembers());
 			p.setEnemies(red.getMembers());
+			p.setOppTeam(red);
+			p.setMyTeam(blue);
 		}
 
 //
@@ -486,20 +490,20 @@ public class Lobby {
 		stateSender.startSending();
 
 	}
-	
+
 	private int getMaxId(){
 		int id = -1;
 		for(EssentialPlayer p: red.getMembers())
 			if (p.getPlayerId() > id )
 				id = p.getPlayerId();
-		
+
 		for(EssentialPlayer p: blue.getMembers())
 			if (p.getPlayerId() > id )
 				id = p.getPlayerId();
-		
+
 		return id;
 	}
-	
+
 	public static void setMaxId(int newMax){
 		maxId = newMax;
 	}

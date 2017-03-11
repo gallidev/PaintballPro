@@ -84,7 +84,7 @@ public class AIPlayer extends EssentialPlayer{
 	 * @author atp575
 	 */
 	public void updateScore(){
-		//oppTeam.incrementScore();
+		oppTeam.incrementScore();
 		//Renderer.incrementScore(oppTeam.getColour(), 1);
 
 
@@ -120,8 +120,8 @@ public class AIPlayer extends EssentialPlayer{
 
 	//public Map getMap() {return this.map;}
 
-	public void setOppTeam(Team oppTeam2){
-		oppTeam = oppTeam2;
+	public void setOppTeam(Team oppTeam){
+		this.oppTeam = oppTeam;
 	}
 
 	public void setMyTeam(Team t){
