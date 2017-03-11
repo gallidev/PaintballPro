@@ -141,7 +141,6 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 		} else {
 			invincible = false;
 			visible = true;
-
 		}
 		setVisible(visible);
 	}

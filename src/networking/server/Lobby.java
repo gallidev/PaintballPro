@@ -404,7 +404,7 @@ public class Lobby {
 		System.out.println("Red user players: " + red.getMembersNo());
 
 		//filling the game with AI players
-		//AIManager redAIM = new AIManager(red, map, collissionsHandler);
+		AIManager redAIM = new AIManager(red, map, collissionsHandler);
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler);
 
 
@@ -418,11 +418,22 @@ public class Lobby {
 
 		}
 
-		//redAIM.createPlayers();
+	    redAIM.createPlayers();
 		blueAIM.createPlayers();
 
-		blueAIM.setOpponents(red);
+		//blueAIM.setOpponents(red);
 
+
+		//seting team playes and enemies
+		for(EssentialPlayer p : red.getMembers()){
+			p.setTeamPlayers(red.getMembers());
+			p.setEnemies(blue.getMembers());
+		}
+
+		for(EssentialPlayer p : blue.getMembers()){
+			p.setTeamPlayers(blue.getMembers());
+			p.setEnemies(red.getMembers());
+		}
 
 //
 //		System.out.println("Red team members:");

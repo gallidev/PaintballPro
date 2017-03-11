@@ -26,7 +26,7 @@ public class AIManager{
 		int currentPlayersNo = team.getMembersNo();
 		HashMapGen hashMaps = new HashMapGen(map);
 
-		while (currentPlayersNo < 2){
+		while (currentPlayersNo < 4	){
 			int newID = 0;
 			if (team.getColour() == TeamEnum.RED)
 				newID = currentPlayersNo;
@@ -40,17 +40,17 @@ public class AIManager{
 			currentPlayersNo++;
 		}
 
-		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
-		for(int i = 0; i<yourTeam.size(); i++){
-			yourTeam.get(i).setMyTeam(team);
-		}
+//		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
+//		for(int i = 0; i<yourTeam.size(); i++){
+//			yourTeam.get(i).setMyTeam(team);
+//		}
 	}
 
 	public void setOpponents(Team oppTeam){
-		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
-		for(int i = 0; i < yourTeam.size(); i++){
-			yourTeam.get(i).setOppTeam(oppTeam);
-		}
+//		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
+//		for(int i = 0; i < yourTeam.size(); i++){
+//			yourTeam.get(i).setOppTeam(oppTeam);
+//		}
 	}
 
 
