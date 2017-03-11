@@ -26,6 +26,7 @@ public class ServerGameStateSender {
 	private long delayMilliseconds = 33;
 
 	private ServerGameSimulation gameLoop;
+	private ScheduledExecutorService scheduler;
 
 	public ServerGameStateSender(UDPServer udpServer, ArrayList<EssentialPlayer> players, int lobbyId){
 		this.udpServer = udpServer;
@@ -35,8 +36,7 @@ public class ServerGameStateSender {
 
 	public void startSending(){
 
-		ScheduledExecutorService scheduler =
-			     Executors.newScheduledThreadPool(1);
+		scheduler = Executors.newScheduledThreadPool(1);
 		Runnable sender = new Runnable() {
 		       public void run() {
 		    	   frames ++;
@@ -50,6 +50,7 @@ public class ServerGameStateSender {
 
 		    		   udpServer.sendToAll("5", lobbyId);
 		    		   sendWinner();
+		    		   scheduler.shutdown();
 		    	   }
 		       }
 		     };
@@ -71,6 +72,11 @@ public class ServerGameStateSender {
 //				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 
 	}
+	
+	public void stopSending(){
+		scheduler.shutdown();
+	}
+	
 
 	private void sendRemainingTime() {
 		//Protocol: 6:<remaining seconds>

@@ -404,24 +404,14 @@ public class Lobby {
 
 		//filling the game with AI players
 		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
-		redAIM.createPlayers();
+		//redAIM.createPlayers();
 		
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
-		blueAIM.createPlayers();
+		//blueAIM.createPlayers();
 
 
-		System.out.println("checking if spwans are the same...");
-		boolean ok = true;
-		for(EssentialPlayer p : red.getMembers()){
-			for(EssentialPlayer q : red.getMembers())
-				if (p!=q && p.getX() == q.getX() && p.getY() == q.getY())
-					ok = false;
-		System.out.println("ok = " + ok);
-
-		}
-
-	    redAIM.createPlayers();
-		blueAIM.createPlayers();
+	    //redAIM.createPlayers();
+		//blueAIM.createPlayers();
 
 		//blueAIM.setOpponents(red);
 

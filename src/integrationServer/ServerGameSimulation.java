@@ -55,6 +55,7 @@ public class ServerGameSimulation {
 						player.tick();
 					}
 			    	frames ++;
+			    	
 		       }
 		     };
 
@@ -80,7 +81,7 @@ public class ServerGameSimulation {
 	//}
 
 	public void stopExecution(){
-
+		
 	}
 
 	public GameMode getGame(){
