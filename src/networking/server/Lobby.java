@@ -292,17 +292,10 @@ public class Lobby {
 
 			Image imagePlayer = ImageFactory.getPlayerImage(TeamEnum.RED);
 
-<<<<<<< HEAD
 			int serverId = origPlayer.getID();
 
 			int teamMemNo = newTeam.getMembersNo();
 			int spawnLoc = 0;
-=======
-//			int serverId = origPlayer.getID();
-//
-//			int teamMemNo = newTeam.getMembersNo();
-			int curId = 0;
->>>>>>> fc2a69791710bbcc75e14b360cd9a200035e9d3e
 
 			if (newTeam.getColour() == TeamEnum.RED)
 				spawnLoc = newTeam.getMembersNo();
@@ -433,7 +426,6 @@ public class Lobby {
 		//blueAIM.setOpponents(red);
 
 
->>>>>>> fc2a69791710bbcc75e14b360cd9a200035e9d3e
 		//seting team playes and enemies
 		for(EssentialPlayer p : red.getMembers()){
 			p.setTeamPlayers(red.getMembers());
@@ -444,9 +436,6 @@ public class Lobby {
 			p.setTeamPlayers(blue.getMembers());
 			p.setEnemies(red.getMembers());
 		}
-<<<<<<< HEAD
-		
-=======
 
 //
 //		System.out.println("Red team members:");
@@ -459,7 +448,6 @@ public class Lobby {
 //
 
 
->>>>>>> fc2a69791710bbcc75e14b360cd9a200035e9d3e
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 
