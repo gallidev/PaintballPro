@@ -85,7 +85,7 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
-		players.add(player);
+		//players.add(player);
 		players.addAll(player.getMyTeam().getMembers());
 		players.addAll(player.getOppTeam().getMembers());
 
