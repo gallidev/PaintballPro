@@ -1,7 +1,6 @@
 package oldCode.offlineLogic;
 
 import enums.TeamEnum;
-import oldCode.players.GeneralPlayer;
 import players.AIPlayer;
 import players.EssentialPlayer;
 

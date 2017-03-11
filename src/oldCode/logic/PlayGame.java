@@ -3,7 +3,6 @@ package oldCode.logic;
 import java.util.ArrayList;
 
 import logic.GameMode;
-import oldCode.players.PhysicsClientPlayer;
 import oldCode.players.ServerPlayer;
 import rendering.Map;
 import serverLogic.Team;
@@ -11,7 +10,7 @@ import serverLogic.Team;
 /**
  * Class to play a game in a chosen Game Mode, initialises both teams and sends
  * the server a signal when the game is finished.
- * 
+ *
  * @author Alexandra Paduraru
  */
 public class PlayGame {
@@ -23,7 +22,7 @@ public class PlayGame {
 
 	/**
 	 * Starts the game in the chosen mode and sets the teams in the game.
-	 * 
+	 *
 	 * @param mode
 	 *            The chosen game mode to play the game.
 	 * @param team1Players
@@ -39,7 +38,7 @@ public class PlayGame {
 
 	/**
 	 * Adds the players to the first and second team.
-	 * 
+	 *
 	 * @param team1Players
 	 *            All players that will form the first team.
 	 * @param team2Players
