@@ -292,10 +292,17 @@ public class Lobby {
 
 			Image imagePlayer = ImageFactory.getPlayerImage(TeamEnum.RED);
 
+<<<<<<< HEAD
 			int serverId = origPlayer.getID();
 
 			int teamMemNo = newTeam.getMembersNo();
 			int spawnLoc = 0;
+=======
+//			int serverId = origPlayer.getID();
+//
+//			int teamMemNo = newTeam.getMembersNo();
+			int curId = 0;
+>>>>>>> fc2a69791710bbcc75e14b360cd9a200035e9d3e
 
 			if (newTeam.getColour() == TeamEnum.RED)
 				spawnLoc = newTeam.getMembersNo();
@@ -401,25 +408,58 @@ public class Lobby {
 
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		System.out.println("Red user players: " + red.getMembersNo());
-		
+
 		//filling the game with AI players
 		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
 		redAIM.createPlayers();
 		
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
 		blueAIM.createPlayers();
-		
+
+
+		System.out.println("checking if spwans are the same...");
+		boolean ok = true;
+		for(EssentialPlayer p : red.getMembers()){
+			for(EssentialPlayer q : red.getMembers())
+				if (p!=q && p.getX() == q.getX() && p.getY() == q.getY())
+					ok = false;
+		System.out.println("ok = " + ok);
+
+		}
+
+	    redAIM.createPlayers();
+		blueAIM.createPlayers();
+
+		//blueAIM.setOpponents(red);
+
+
+>>>>>>> fc2a69791710bbcc75e14b360cd9a200035e9d3e
 		//seting team playes and enemies
 		for(EssentialPlayer p : red.getMembers()){
 			p.setTeamPlayers(red.getMembers());
 			p.setEnemies(blue.getMembers());
 		}
-		
+
 		for(EssentialPlayer p : blue.getMembers()){
 			p.setTeamPlayers(blue.getMembers());
 			p.setEnemies(red.getMembers());
 		}
+<<<<<<< HEAD
 		
+=======
+
+//
+//		System.out.println("Red team members:");
+//		for(ServerMinimumPlayer p : red.getMembers())
+//			System.out.println(p.getPlayerId() + " ");
+//
+//		System.out.println("Blue team members:");
+//		for(ServerMinimumPlayer p : blue.getMembers())
+//			System.out.println(p.getPlayerId() + " ");
+//
+
+
+>>>>>>> fc2a69791710bbcc75e14b360cd9a200035e9d3e
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
 

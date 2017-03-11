@@ -1,5 +1,7 @@
 package ai;
 
+import java.util.ArrayList;
+
 import enums.TeamEnum;
 import networking.server.Lobby;
 import physics.CollisionsHandler;
@@ -17,7 +19,7 @@ public class AIManager{
 
 	public AIManager(Team t, Map m, CollisionsHandler ch, int maxId){
 		super();
-		team = t;
+		this.team = t;
 		this.map = m;
 		this.collissionsHandler = ch;
 		nextId = maxId + 1;
@@ -29,6 +31,7 @@ public class AIManager{
 		
 		while (currentPlayersNo < 4){
 			int spawnLoc = 0;
+
 			if (team.getColour() == TeamEnum.RED)
 				spawnLoc = currentPlayersNo;
 			else
@@ -37,7 +40,6 @@ public class AIManager{
 			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, nextId, map, team.getColour(), collissionsHandler, hashMaps);
 		
 			System.out.println("Created AI with id " + newPlayer.getPlayerId());
-			
 			team.addMember(newPlayer);
 			currentPlayersNo++;
 			nextId++;
@@ -45,6 +47,19 @@ public class AIManager{
 		
 		Lobby.setMaxId(nextId);
 
+//		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
+//		for(int i = 0; i<yourTeam.size(); i++){
+//			yourTeam.get(i).setMyTeam(team);
+//		}
 	}
+
+	public void setOpponents(Team oppTeam){
+//		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
+//		for(int i = 0; i < yourTeam.size(); i++){
+//			yourTeam.get(i).setOppTeam(oppTeam);
+//		}
+	}
+
+
 
 }
