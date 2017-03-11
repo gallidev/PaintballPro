@@ -42,6 +42,7 @@ public class LobbyTable {
 		{
 			Lobby allocatedLobby = lobbyList.get(playerToRemove.getAllocatedLobby());
 			allocatedLobby.removePlayer(playerToRemove);
+			playerToRemove.setAllocatedLobby(-1);
 		}
 		catch(Exception e)
 		{
@@ -70,11 +71,7 @@ public class LobbyTable {
 		}
 		if (!addedToGame) // all lobbies of that type are full, make a new one.
 		{
-			Lobby newLobby = new Lobby(id, gameMode);
-			if(testEnv)
-			{
-				newLobby.testEnv = true;
-			}
+			Lobby newLobby = new Lobby(id, gameMode, testEnv);
 			newLobby.addPlayer(player, 0);
 			lobbyAllocated = newLobby.getID();
 			lobbyList.put(id, newLobby);

@@ -49,6 +49,8 @@ public class UDPClient extends Thread {
 	 * @param udpServIP IP for the server-side UDP socket.
 	 * @param guiManager Manager of GUI.
 	 * @param teams Both client's and opposing teams.
+	 * @param portNum port to send and receive packets.
+	 * @param nickname Nickname of client.
 	 */
 	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum, String nickname)
 	{

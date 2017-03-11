@@ -34,11 +34,11 @@ public class TestUDP {
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 		server = new UDPServer(table, lobby);
 		server.start();
-		client1 = new UDPClient(id, "127.0.0.1", null, null, 25567);
+		client1 = new UDPClient(id, "127.0.0.1", null, null, 25567, "test");
 		id = table.add("test2");
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 		lobby.switchTeams(table.getPlayer(id), null);
-		client2 = new UDPClient(id, "127.0.0.1", null, null, 25568);
+		client2 = new UDPClient(id, "127.0.0.1", null, null, 25568, "test");
 		client1.start();
 		client2.start();
 		server.sendToAll("TestSendToAll", "127.0.0.1:25567");

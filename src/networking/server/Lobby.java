@@ -59,14 +59,14 @@ public class Lobby {
 	private boolean debug = false;
 	private CollisionsHandler collissionsHandler;
 
-	public boolean testEnv = false;
+	private boolean testEnv = false;
 
 	/**
 	 * Sets passed variables and inialised some defaults.
 	 * @param myid ID of lobby.
 	 * @param PassedGameType Game mode that the lobby is used for.
 	 */
-	public Lobby(int myid, int PassedGameType) {
+	public Lobby(int myid, int PassedGameType, boolean testEnv) {
 		inGameStatus = false;
 		GameType = PassedGameType;
 		MaxPlayers = 8;
@@ -74,17 +74,22 @@ public class Lobby {
 		currPlayerRedNum = 0;
 		id = myid;
 		players = new ArrayList<>();
+		this.testEnv = testEnv;
+		
+		if(!testEnv)
+		{
+					//setting up the map
+			if (PassedGameType == 1)
+				map = Map.loadRaw("elimination");
+			else
+				map = Map.loadRaw("ctf");
 
-		//setting up the map
-		if (PassedGameType == 1)
-			 map = Map.loadRaw("elimination");
-		else
-			 map = Map.loadRaw("ctf");
+			//setting up the collision handler
+			collissionsHandler = new CollisionsHandler(map);
+			red = new Team(TeamEnum.RED);
+			blue = new Team(TeamEnum.BLUE);
+		}
 
-		//setting up the collision handler
-		collissionsHandler = new CollisionsHandler(map);
-		red = new Team(TeamEnum.RED);
-		blue = new Team(TeamEnum.BLUE);
 	}
 
 	/**

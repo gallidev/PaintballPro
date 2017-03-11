@@ -23,13 +23,12 @@ public class TestLobbies {
 	Lobby lobby;
 	LobbyTable lobbytable;
 	ServerBasicPlayer player;
-	ServerReceiver receiver;
-	UDPServer udpReceiver;
 
 	@Before
 	public void setUp() throws Exception {
-		lobby = new Lobby(1, 1);
+		lobby = new Lobby(1, 1,true);
 		lobbytable = new LobbyTable();
+		lobbytable.testEnv = true;
 		player = new ServerBasicPlayer(1);
 	}
 
@@ -148,37 +147,40 @@ public class TestLobbies {
 	
 	@Test
 	public void testAddPlayerToLobby() {
-		assertEquals(player.getAllocatedLobby(),-1);
-		lobbytable.addPlayerToLobby(player, 1, receiver, udpReceiver);
-		assertEquals(player.getAllocatedLobby(),0);
+		ServerBasicPlayer player2 = new ServerBasicPlayer(2);
+		assertEquals(player2.getAllocatedLobby(),-1);
+		lobbytable.addPlayerToLobby(player2, 1, null, null);
+		assertEquals(player2.getAllocatedLobby(),1);
 	}
 
 	@Test
 	public void testGetLobby() {
-		lobbytable.addPlayerToLobby(player, 1, receiver, udpReceiver);
-		assertEquals(lobbytable.getLobby(0).getPlayers().length,1);
+		lobbytable.addPlayerToLobby(player, 1, null, null);
+		assertEquals(lobbytable.getLobby(1).getPlayers().length,1);
 	}
 		
 	@Test
 	public void testSwitchTeams() {
-		lobbytable.addPlayerToLobby(player, 1, receiver, udpReceiver);
-		assertEquals(lobby.getTeam(2),"USER1");
-		lobbytable.switchTeams(player, receiver);
-		assertEquals(lobby.getTeam(1),"USER1");
+		lobbytable.addPlayerToLobby(player, 1, null, null);
+		assertEquals(lobbytable.getLobby(1).getTeam(2),"USER1");
+		lobbytable.switchTeams(player, null);
+		assertEquals(lobbytable.getLobby(1).getTeam(1),"USER1");
 		assertEquals(lobby.getTeam(2),"");
 	}
 	
 	@Test
 	public void testRemovePlayer2() {
-		lobbytable.addPlayerToLobby(player, 1, receiver, udpReceiver);
+		lobbytable.addPlayerToLobby(player, 1, null, null);
+		assertEquals(player.getAllocatedLobby(),1);
 		assertEquals(lobbytable.removePlayer(player),1);
 		assertEquals(player.getAllocatedLobby(),-1);
 	}
 	
 	@Test
 	public void testRemoveLobby() {
-		lobbytable.addPlayerToLobby(player, 1, receiver, udpReceiver);
-		lobbytable.removeLobby(0);
-		assertNull(lobbytable.getLobby(0));
+		lobbytable.addPlayerToLobby(player, 1, null, null);
+		assertNotNull(lobbytable.getLobby(1));
+		lobbytable.removeLobby(1);
+		assertNull(lobbytable.getLobby(1));
 	}
 }
