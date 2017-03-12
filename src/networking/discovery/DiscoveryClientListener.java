@@ -33,11 +33,12 @@ public class DiscoveryClientListener {
 	}
 	
 	public boolean test() {
-		Thread t = new Thread(new DiscoveryServerAnnouncer(25566));
+		Thread t = new Thread(new DiscoveryServerAnnouncer(25561));
 		t.start();
 		String ret = this.findServer();
-
-		if(ret.split(":")[1].contains("25566"))
+		t.interrupt();
+		client.interrupt();
+		if(ret.split(":")[1].contains("25561"))
 			return true;
 		else
 			return false;

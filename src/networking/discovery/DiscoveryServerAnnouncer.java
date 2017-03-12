@@ -36,7 +36,7 @@ public class DiscoveryServerAnnouncer implements Runnable {
 
             InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 			System.setProperty("java.net.preferIPv4Stack", "true");
-			MulticastSocket socket = new MulticastSocket(25566);
+			MulticastSocket socket = new MulticastSocket(25561);
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 	        while (networkInterfaces.hasMoreElements()) {
 	            NetworkInterface iface = networkInterfaces.nextElement();
@@ -50,12 +50,12 @@ public class DiscoveryServerAnnouncer implements Runnable {
 
             // Keep broadcasting the server, every 5 seconds.
             while (true) {
-                DatagramPacket broadcast = new DatagramPacket(messageToClients.getBytes(), messageToClients.length(), broadcastAddress, 25566);
+                DatagramPacket broadcast = new DatagramPacket(messageToClients.getBytes(), messageToClients.length(), broadcastAddress, 25561);
                 socket.send(broadcast);
                 Thread.sleep(5000);
             }
         } catch (Exception e) {
-            System.err.println("Socket Server Exception: " + e);
+        	//
         }
     }
 }

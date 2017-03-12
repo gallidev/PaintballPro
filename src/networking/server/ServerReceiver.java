@@ -2,15 +2,11 @@ package networking.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import integrationServer.ServerInputReceiver;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
-import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
-import players.EssentialPlayer;
 
 
 // Gets messages from client and puts them in a queue, for another
@@ -20,7 +16,7 @@ import players.EssentialPlayer;
  * Class to get messages from client, process and put appropriate message for a
  * client.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class ServerReceiver extends Thread {
 
@@ -32,8 +28,6 @@ public class ServerReceiver extends Thread {
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
 	private UDPServer udpReceiver;
-
-	private ServerInputReceiver inputReceiver;
 
 	private boolean debug = false;
 	
@@ -59,7 +53,6 @@ public class ServerReceiver extends Thread {
 		gameLobby = passedGameLobby;
 		myMsgQueue = clientTable.getQueue(myClientsID);
 		this.udpReceiver = udpReceiver;
-		this.inputReceiver = new ServerInputReceiver();
 		this.singlePlayer = single;
 	}
 
@@ -87,6 +80,7 @@ public class ServerReceiver extends Thread {
 					// When user specifies a game mode to play, add them to a
 					// lobby.
 					if (debug) System.out.println("Server single player = " + singlePlayer);
+					
 					if (text.contains("Play:Mode:"))
 						if (singlePlayer){
 							playModeSingleAction(text);
@@ -96,11 +90,11 @@ public class ServerReceiver extends Thread {
 							playModeAction(text);
 
 					// When user attempts to switch teams, try to switch.
-					if (text.contains("SwitchTeam"))
+					else if (text.contains("SwitchTeam"))
 						gameLobby.switchTeams(clientTable.getPlayer(myClientsID), this);
 
 					// When user tries to change their username.
-					if (text.contains("Set:Username:"))
+					else if (text.contains("Set:Username:"))
 						setUsernameAction(text);
 
 
@@ -108,28 +102,29 @@ public class ServerReceiver extends Thread {
 					// ------------------
 					// Team 1 for blue, 2 for red.
 					// Get usernames of people currently in red team of lobby.
+					else if (text.contains("Get:Red"))
 						getRedTeamAction();
 
 
 					// Get usernames of people currently in blue team of lobby.
-					if (text.contains("Get:Blue"))
+					else if (text.contains("Get:Blue"))
 						getBlueTeamAction();
 
 
 					// Get the client's currently set username.
-					if (text.contains("Get:Username"))
+					else if (text.contains("Get:Username"))
 						getUsernameAction();
 
 
 					// Reset the client when they exit the game.
-					if (text.contains("Exit:Game"))
+					else if (text.contains("Exit:Game"))
 						exitGame();
 
 					// Server Actions
 					// ---------------
 					// Send a message to all clients in the game.
 					// Includes : sending moves, bullets
-					if (text.contains("SendToAll:"))
+					else if (text.contains("SendToAll:"))
 						sendToAll(text);
 
 

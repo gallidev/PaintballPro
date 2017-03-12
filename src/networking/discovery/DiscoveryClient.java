@@ -26,7 +26,7 @@ public class DiscoveryClient extends Thread{
 		try {
 			InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 			System.setProperty("java.net.preferIPv4Stack", "true");
-			MulticastSocket socket = new MulticastSocket(25566);
+			MulticastSocket socket = new MulticastSocket(25561);
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 	        while (networkInterfaces.hasMoreElements()) {
 	            NetworkInterface iface = networkInterfaces.nextElement();
