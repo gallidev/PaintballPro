@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import networking.discovery.DiscoveryClientListener;
+import networking.discovery.IPAddress;
 
 /**
  * Created by jack on 12/02/2017.
@@ -135,7 +136,11 @@ public class NicknameServerSelectMenu {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    m.setIpAddress(ipText.getText());
+                                    String ipAddr = ipText.getText();
+                                    if (ipText.getText().equals("127.0.0.1") || ipText.getText().equals("localhost")) {
+                                        ipAddr = IPAddress.getLAN();
+                                    }
+                                    m.setIpAddress(ipAddr);
                                     // Transition back to the main menu
                                     if (m.establishConnection())
                                         m.transitionTo(Menu.MultiplayerGameType);
