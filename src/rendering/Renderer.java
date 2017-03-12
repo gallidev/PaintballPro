@@ -1,13 +1,12 @@
 package rendering;
+
 import enums.TeamEnum;
-import integrationClient.ClientInputSender;
 import gui.GUIManager;
+import integrationClient.ClientInputSender;
 import javafx.animation.AnimationTimer;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -17,14 +16,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import networking.client.ClientReceiver;
 import physics.*;
+import players.EssentialPlayer;
 import players.GhostPlayer;
 import players.OfflinePlayer;
-import players.EssentialPlayer;
-import serverLogic.Team;
+
 import java.util.ArrayList;
 import java.util.Random;
+
 import static players.GhostPlayer.playerHeadX;
 import static players.GhostPlayer.playerHeadY;
+
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.
  *
@@ -33,16 +34,16 @@ import static players.GhostPlayer.playerHeadY;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	static OfflinePlayer player;
+	static GhostPlayer cPlayer;
+	private static OfflinePlayer player;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
-	static GhostPlayer cPlayer;
-	private ClientInputSender inputSender;
 	private static Map map;
 	private AnimationTimer timer;
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
+
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
@@ -55,7 +56,7 @@ public class Renderer extends Scene
 		this.guiManager = guiManager;
 		init(mapName);
 		singlePlayer = true;
-		ArrayList<EssentialPlayer> players = new ArrayList<>();
+
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
@@ -67,23 +68,24 @@ public class Renderer extends Scene
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
+
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
+		ArrayList<EssentialPlayer> players = new ArrayList<>();
+
+		players.addAll(player.getMyTeam().getMembers());
+		players.addAll(player.getOppTeam().getMembers());
+
+		view.getChildren().addAll(players);
+		collisionsHandler.setPlayers(players);
+
 		hud = new HeadUpDisplay(guiManager, player.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
-		//players.add(player);
-		players.addAll(player.getMyTeam().getMembers());
-		players.addAll(player.getOppTeam().getMembers());
-//		players.forEach(player -> {
-//			player.setEffect(new DropShadow(16, 0, 0, Color.BLACK));
-//			view.getChildren().add(player.getNameTag());
-//		});
-//		view.getChildren().remove(player.getNameTag());
-		view.getChildren().addAll(players);
-		collisionsHandler.setPlayers(players);
+
 		timer = new AnimationTimer()
 		{
 			long lastSecond = 0;
+
 			@Override
 			public void handle(long now)
 			{
@@ -115,6 +117,7 @@ public class Renderer extends Scene
 		};
 		timer.start();
 	}
+
 	/**
 	 * Renders an online game instance by loading the selected map, receiving data from the client receiver and responding to changes in game logic.
 	 *
@@ -127,11 +130,15 @@ public class Renderer extends Scene
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		this.guiManager = guiManager;
 		init(mapName);
+
 		cPlayer = receiver.getClientPlayer();
-		ArrayList<GhostPlayer> allplayers = receiver.getAllPlayers();
+		ArrayList<GhostPlayer> players = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 		view.getChildren().addAll(receiver.getMyTeam());
+		receiver.getMyTeam().forEach(GhostPlayer::getNameTag);
 		view.getChildren().addAll(receiver.getEnemies());
+		receiver.getEnemies().forEach(GhostPlayer::getNameTag);
+
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
@@ -142,20 +149,23 @@ public class Renderer extends Scene
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
+
 		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
-		inputSender = new ClientInputSender(receiver.getUdpClient(),inputHandler, cPlayer.getPlayerId());
+
+		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer.getPlayerId());
 		inputSender.startSending();
 		Group displayBullets = new Group();
 		view.getChildren().add(displayBullets);
+
 		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
 			{
 				updateView();
-				for(GhostPlayer player : allplayers)
+				for(GhostPlayer player : players)
 				{
 					for(GhostBullet pellet : player.getFiredBullets())
 					{
@@ -167,6 +177,7 @@ public class Renderer extends Scene
 		};
 		timer.start();
 	}
+
 	/**
 	 * Toggles the pause menu whilst in-game
 	 */
@@ -178,6 +189,7 @@ public class Renderer extends Scene
 			view.getChildren().remove(pauseMenu);
 		pauseMenu.opened = !pauseMenu.opened;
 	}
+
 	/**
 	 * Toggles the settings scene from the pause menu whilst in-game
 	 */
@@ -195,6 +207,7 @@ public class Renderer extends Scene
 		}
 		settingsMenu.opened = !settingsMenu.opened;
 	}
+
 	/**
 	 * Get the current state of the pause menu
 	 *
@@ -204,6 +217,7 @@ public class Renderer extends Scene
 	{
 		return pauseMenu.opened;
 	}
+
 	/**
 	 * Get the current state of the settings scene in the pause menu
 	 *
@@ -213,6 +227,7 @@ public class Renderer extends Scene
 	{
 		return settingsMenu.opened;
 	}
+
 	/**
 	 * Increment the score on the HUD for a given team by a given amount
 	 *
@@ -223,6 +238,7 @@ public class Renderer extends Scene
 	{
 		hud.incrementScore(team, amount);
 	}
+
 	public static void destroy(Renderer renderer)
 	{
 		if(renderer != null)
@@ -239,15 +255,16 @@ public class Renderer extends Scene
 			map = null;
 		}
 	}
+
 	private static void generateSpray(Bullet pellet, TeamEnum team)
 	{
 		WritableImage paint = new WritableImage(64, 64);
 		PixelWriter pixelWriter = paint.getPixelWriter();
 		Random random = new Random();
 		double probability = 0.1;
-		for(int i = 0; i < 60; i++)
+		for(int i = 1; i < 63; i++)
 		{
-			for(int j = 0; j < 60; j++)
+			for(int j = 1; j < 63; j++)
 				if(random.nextDouble() < probability)
 					pixelWriter.setArgb(i, j, (team == TeamEnum.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
 		}
@@ -256,6 +273,7 @@ public class Renderer extends Scene
 		imageView.setCache(true);
 		view.getChildren().add(view.getChildren().size() - 2, imageView);
 	}
+
 	private void init(String mapName)
 	{
 		setFill(Color.BLACK);
@@ -269,25 +287,11 @@ public class Renderer extends Scene
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
 	}
-	private void initListeners()
-	{
-//		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
-//		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
-//		MouseListener mouseListener = new MouseListener(inputHandler);
-//
-//		setOnKeyPressed(keyPressListener);
-//		setOnKeyReleased(keyReleaseListener);
-//		setOnMouseDragged(mouseListener);
-//		setOnMouseMoved(mouseListener);
-//		setOnMousePressed(mouseListener);
-//		setOnMouseReleased(mouseListener);
-//		hud = new HeadUpDisplay(guiManager, player.getTeam());
-//		view.getChildren().add(hud);
-//		hud.toFront();
-	}
+
 	private void updateView()
 	{
-		if (singlePlayer){
+		if(singlePlayer)
+		{
 			view.relocate(((getWidth() / 2) - playerHeadX - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - player.getLayoutY()) * view.getScaleY());
 			hud.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 			if(view.getChildren().contains(pauseMenu))
@@ -295,7 +299,8 @@ public class Renderer extends Scene
 			if(view.getChildren().contains(settingsMenu))
 				settingsMenu.relocate(player.getLayoutX() + playerHeadX - getWidth() / 2, player.getLayoutY() + playerHeadY - getHeight() / 2);
 		}
-		else{
+		else
+		{
 			view.relocate(((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY()) * view.getScaleY());
 			hud.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
 			if(view.getChildren().contains(pauseMenu))
@@ -303,15 +308,5 @@ public class Renderer extends Scene
 			if(view.getChildren().contains(settingsMenu))
 				settingsMenu.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
 		}
-	}
-	@Override
-	protected void finalize() throws Throwable
-	{
-		view = null;
-		pauseMenu = null;
-		settingsMenu = null;
-		hud = null;
-		timer = null;
-		super.finalize();
 	}
 }

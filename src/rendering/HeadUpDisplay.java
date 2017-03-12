@@ -22,12 +22,10 @@ class HeadUpDisplay extends SubScene
 
 	HeadUpDisplay(GUIManager guiManager, TeamEnum playerTeam)
 	{
-		super(view, Renderer.view.getWidth(), Renderer.view.getHeight());
+		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		this.guiManager = guiManager;
 		view.setStyle("-fx-background-color: transparent");
 		view.getStylesheets().add("styles/menu.css");
-//		view.setScaleX(Renderer.view.getScaleX());
-//		view.setScaleY(Renderer.view.getScaleY());
 
 		Circle redTeam = new Circle(view.getWidth() / 64, Color.RED),
 				blueTeam = new Circle(view.getWidth() / 64, Color.BLUE);

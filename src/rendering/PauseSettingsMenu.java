@@ -27,7 +27,7 @@ class PauseSettingsMenu extends SubScene
 
     PauseSettingsMenu(GUIManager m)
     {
-        super(p, Renderer.view.getWidth(), Renderer.view.getHeight());
+        super(p, m.getStage().getWidth(), m.getStage().getHeight());
         p.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
         p.getStylesheets().add("styles/menu.css");
 

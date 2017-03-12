@@ -1,18 +1,17 @@
 package players;
 
 import enums.TeamEnum;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandler;
-import rendering.Map;
-
 import rendering.Spawn;
 import serverLogic.Team;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +56,7 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 		this.angle = 0;
 		setLayoutX(x);
 		setLayoutY(y);
+		setEffect(new DropShadow(16, 0, 0, Color.BLACK));
 		this.lastX = x;
 		this.lastY = y;
 		this.lastAngle = angle;
@@ -245,12 +245,12 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 		return this.angle;
 	}
 
-	public double getAngleDegrees(){
-		return Math.toDegrees(this.angle);
-	}
-
 	public void setAngle(double angle){
 		this.angle = angle;
+	}
+
+	public double getAngleDegrees(){
+		return Math.toDegrees(this.angle);
 	}
 
 	public synchronized void setUp(boolean up){

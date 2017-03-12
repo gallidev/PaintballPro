@@ -1,24 +1,17 @@
 package players;
-import java.util.ArrayList;
-import java.util.List;
 
 import audio.AudioManager;
 import enums.TeamEnum;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
-import logic.GameObject;
-import physics.Bullet;
 import physics.GhostBullet;
-import rendering.Map;
-import serverLogic.Team;
+
+import java.util.ArrayList;
 /**
  *  The player, represented by an ImageView
  */
@@ -37,13 +30,16 @@ public class GhostPlayer extends ImageView {
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
+		setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+
 		this.playerId = playerId;
 		this.audio = audio;
 		rotation = new Rotate(Math.toDegrees(0), 0, 0, 0, Rotate.Z_AXIS);
 	    getTransforms().add(rotation);
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
-		nameTag = new Label("Player");
+
+		nameTag = new Label(nickname);
 		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
 				"-fx-font-size: 10pt; -fx-text-fill: white");
 		nameTag.setPadding(new Insets(5));
@@ -102,10 +98,12 @@ public class GhostPlayer extends ImageView {
 
 	public synchronized void setSyncX(double x){
 		setLayoutX(x);
+		nameTag.setLayoutX(x - 15);
 	}
 
 	public synchronized void setSyncY(double y){
 		setLayoutY(y);
+		nameTag.setLayoutY(y - 32);
 	}
 
 	public TeamEnum getTeam(){
@@ -120,5 +118,9 @@ public class GhostPlayer extends ImageView {
 		nickname = name;
 	}
 
+	public Label getNameTag()
+	{
+		return nameTag;
+	}
 }
 
