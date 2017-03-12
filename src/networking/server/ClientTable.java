@@ -92,7 +92,7 @@ public class ClientTable {
 	{
 		return clientIPTableIDKEY.get(id);
 	}
-	
+
 	/**
 	 * Get player instance of a particular client.
 	 * @param clientID ID of client to get their player instance for.

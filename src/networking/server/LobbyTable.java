@@ -77,7 +77,7 @@ public class LobbyTable {
 			lobbyList.put(id, newLobby);
 			id++;
 		}
-		System.out.println("Allocated:"+lobbyAllocated);
+		
 		player.setAllocatedLobby(lobbyAllocated);
 		if (this.getLobby(lobbyAllocated).isMaxPlayersReached()) {
 			this.getLobby(lobbyAllocated).timerStart(receiver,udpReceiver, gameMode);

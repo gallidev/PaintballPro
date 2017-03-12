@@ -117,7 +117,7 @@ public class ServerReceiver extends Thread {
 
 
 					// Reset the client when they exit the game.
-					else if (text.contains("Exit:Game"))
+					else if (text.contains("Exit:Game") || text.contains("QuitLobby"))
 						exitGame();
 
 					// Server Actions
