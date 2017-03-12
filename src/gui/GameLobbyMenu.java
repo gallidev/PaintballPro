@@ -1,6 +1,7 @@
 package gui;
 
 import enums.GameLocation;
+import enums.Menu;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,6 +60,11 @@ public class GameLobbyMenu {
 			@Override public void handle(ActionEvent event) {
 				m.getClient().getSender().sendMessage("SwitchTeam");
 				m.fetchLobbyUpdates();
+			}
+		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent event) {
+				m.getClient().getSender().sendMessage("QuitLobby");
+				m.transitionTo(Menu.MainMenu);
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);
