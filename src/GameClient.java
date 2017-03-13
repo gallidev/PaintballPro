@@ -16,7 +16,7 @@ public class GameClient extends Application {
 	//for testing use ports  9878 first and then 9879 and make sure you close the server first
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) throws Exception{
 		m.udpPortNumber = 9878;
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 16);
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 32);

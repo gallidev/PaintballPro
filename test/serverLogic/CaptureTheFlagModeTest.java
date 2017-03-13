@@ -11,12 +11,21 @@ import org.junit.Test;
 import enums.TeamEnum;
 import logic.GameMode;
 
+/**
+ * Tester class for the CaptureTheFlagGameMode.
+ * @author Alexandra Paduraru
+ *
+ */
 public class CaptureTheFlagModeTest {
 
 	CaptureTheFlagMode game;
 	Team red;
 	Team blue;
 	
+	/**
+	 * Initialises the game and the two teams.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		red = new Team(TeamEnum.RED);
@@ -24,6 +33,8 @@ public class CaptureTheFlagModeTest {
 		game = new CaptureTheFlagMode(red, blue);
 	}
 
+	/* Testers for all the functionality needed to run the logic in the Capture the Flag Mode*/
+	
 	@Test
 	public void startTest() {
 		game.start();

@@ -376,7 +376,7 @@ public class Lobby {
 	 * Return blue converted team.
 	 * @return Blue Team object.
 	 */
-	public serverLogic.Team getBlueTeam() {
+	public Team getBlueTeam() {
 		return blue;
 	}
 
@@ -400,8 +400,16 @@ public class Lobby {
 	}
 
 
-	//====================NEW INTEGRATION BELOW=================================
 
+	/**
+	 * Creates all the necessary information to start a new game.
+	 * @param receiver A server receiver used to send the start game information to the clients.
+	 * @param udpServer An UDP server used after the game starts.
+	 * @param gameMode The game mode to be played : 1 for Team Match Mode and 2 for CTF
+	 * 
+	 * @author Alexandra Paduraru
+	 * @author Filippo Galli
+	 */
 	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
@@ -419,10 +427,6 @@ public class Lobby {
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
 		blueAIM.createPlayers();
 
-
-	    //redAIM.createPlayers();
-		//blueAIM.createPlayers();
-
 		//blueAIM.setOpponents(red);
 
 
@@ -436,16 +440,6 @@ public class Lobby {
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
 		}
-
-//
-//		System.out.println("Red team members:");
-//		for(ServerMinimumPlayer p : red.getMembers())
-//			System.out.println(p.getPlayerId() + " ");
-//
-//		System.out.println("Blue team members:");
-//		for(ServerMinimumPlayer p : blue.getMembers())
-//			System.out.println(p.getPlayerId() + " ");
-//
 
 
 		collissionsHandler.setRedTeam(red);
@@ -482,6 +476,11 @@ public class Lobby {
 
 	}
 
+	/**
+	 * Starts the game simulation on the server in a given game mode.
+	 * @param udpServer The UDP server used to send in-game information.
+	 * @param gameMode The game mode that is going to be played.
+	 */
 	public void startGameLoop(UDPServer udpServer, int gameMode){
 
 		ServerGameSimulation gameloop = null;
@@ -497,6 +496,11 @@ public class Lobby {
 
 	}
 
+	/**
+	 * Computes the maximum ID assigned to a user player in the game.
+	 * This method is used to assign ID to AI players filling up the teams.
+	 * @return The maximum id of a user player.
+	 */
 	private int getMaxId(){
 		int id = -1;
 		for(EssentialPlayer p: red.getMembers())
@@ -510,6 +514,10 @@ public class Lobby {
 		return id;
 	}
 
+	/**
+	 * Sets the current maximum id of a user player.
+	 * @param newMax The new maximum id.
+	 */
 	public static void setMaxId(int newMax){
 		maxId = newMax;
 	}

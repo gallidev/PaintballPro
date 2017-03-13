@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Tester class for the timer used in all game modes.
+ * Tester class for the timer used as a countdown in all game modes.
  * 
  * @author Alexandra Paduraru
  *

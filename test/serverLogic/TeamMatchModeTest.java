@@ -9,18 +9,29 @@ import enums.TeamEnum;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
+/**
+ * Tester for the TeamMatchMode logic simulation.
+ * @author Alexandra Paduraru
+ *
+ */
 public class TeamMatchModeTest {
 	
 	private Team red;
 	private Team blue;
 	private TeamMatchMode game;
 
+	/**
+	 * Initialises the game with the red and blue team.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
 		game = new TeamMatchMode(red, blue);
 	}
+
+	/* Testers for all the functionality needed to run the logic in the Team Match Mode.*/
 
 	@Test
 	public void gameTimeTest() throws InterruptedException{

@@ -85,7 +85,7 @@ public class Team {
 		members = teamPlayers;
 		
 		if (!teamPlayers.isEmpty())
-		colour = teamPlayers.get(0).getColour();
+			colour = teamPlayers.get(0).getColour();
 	}
 
 	public TeamEnum getColour(){
