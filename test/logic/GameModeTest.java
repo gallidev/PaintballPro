@@ -9,17 +9,28 @@ import enums.TeamEnum;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
+/**
+ * Testing class for the GameMode abstract class.
+ * @author Alexandra Paduraru
+ *
+ */
 public class GameModeTest {
 
 	GameMode game;
 	Team red = new Team(TeamEnum.RED);
 	Team blue = new Team(TeamEnum.BLUE);
 	
+	/**
+	 * Initialises the team.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		game = new TeamMatchMode(red, blue);
 	}
 
+	/* Testers for all methods implemented in the GameMode class */
+	
 	@Test
 	public void getRedTeamTest() {
 		assertTrue(game.getRedTeam() == red);

@@ -155,6 +155,16 @@ public class ClientReceiver extends Thread {
 	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
 	//							NEW INTEGRATION BELOW
 
+	/**
+	 * Method which creates everything on the client-side required to start a new game.
+	 * It does this based on a string received from the server which contains the information about all the other players.
+	 * 
+	 *  This method also starts the renderer and updates the GUI manager.
+	 * @param text The protocol message containing all the start game information.
+	 * 
+	 * @author Alexandra Paduraru
+	 * @author Filippo Galli
+	 */
 	public void startGameAction(String text) {
 		// get all the relevant data from the message : 2:<gameMode>:2:Red:1:Red:
 		String[] data = text.split(":");

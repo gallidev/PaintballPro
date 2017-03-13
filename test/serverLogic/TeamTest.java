@@ -9,17 +9,34 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.TeamEnum;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import players.EssentialPlayer;
+import rendering.Map;
 
+/**
+ * Tester for the Team class.
+ * @author Alexandra Paduraru
+ *
+ */
 public class TeamTest {
 	
 	private Team team;
 
+	/**
+	 * Initialises a new team.
+	 * @throws Exception
+	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		team = new Team(TeamEnum.RED);
+		
 	}
 
+	/* Testers for all the game logic functionality for teams */
+
+	
 	@Test
 	public void incrementScoreTest() {
 		assertEquals(team.getScore(),  0);
@@ -44,7 +61,12 @@ public class TeamTest {
 	}
 	
 	@Test
-	public void addMembersTest(){
+	public void addMember(){
+		//Map map = Map.loadRaw("ctf");
+	}
+	
+	@Test
+	public void setMembersTest(){
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		team.setMembers(players);
 		assertEquals(team.getMembersNo(), 0);
