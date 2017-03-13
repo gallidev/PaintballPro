@@ -82,4 +82,34 @@ public class Path {
         return Nodes.toString();
     }
 
+    /**
+     * HashCode is used to object comparison
+     * @return x*y
+     */
+    public int hashCode() {
+        int sum = 0;
+        for(int i = 0; i < Nodes.size(); i++){
+            sum += (Nodes.get(i).x * Nodes.get(i).y);
+        }
+        return sum;
+    }
+
+    /**
+     * Compares an object to the node. If the other object is a node, the two nodes are equal of they represent the same coordinates
+     * @param other
+     * @return True if the object is equal to the node, false otherwise
+     */
+    public boolean equals(Object other) {
+        if (other instanceof Path) {
+            Path o = (Path) other;
+            if(Nodes.size() != o.getLength()) return false;
+            for(int i = 0; i < Nodes.size(); i++){
+                if(!Nodes.get(i).equals(o.getNode(i))) return false;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
 }
