@@ -130,6 +130,9 @@ public class ServerGameStateSender {
 
 	/**
 	 * Sends the clients the new location,angle and visibility of each player, according to the protocol.
+	 * This method also sends the server if a player has captured the flag, according to the protocol message.
+	 * Both of these things are done in a single method in order to increase efficiency, as it has to go through all players in
+	 * the current game.
 	 */
 	private void sendClient() {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
@@ -143,8 +146,10 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
+			
+//			if (p.getFlag() != null && p.getFlag().isCaptured())
+//				udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
 		}
-
 	}
 
 	/**
@@ -167,8 +172,9 @@ public class ServerGameStateSender {
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
+	
 	/*
-	 * Sets tthe game simulation.
+	 * Sets the game simulation.
 	 * @param sim The simulation of the game, which runs on the server.
 	 */
 	public void setGameLoop(ServerGameSimulation sim){

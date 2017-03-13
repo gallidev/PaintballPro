@@ -23,7 +23,7 @@ import players.EssentialPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 
 	private String nickname;
@@ -123,7 +123,9 @@ public class UDPClient extends Thread {
 							   break;
 					case '6' : getRemainingTime(receivedPacket);
 							   break;
-
+					case '7' : capturedFlagAction();
+							   break;
+						
 
 				}
 				if (receivedPacket.contains("Exit"))
@@ -148,15 +150,7 @@ public class UDPClient extends Thread {
 		if(debug) System.err.println("Socket closed");
 	}
 
-	private void endGameAction() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				m.transitionTo(Menu.EndGame, 0);
-			}
-		});
-
-	}
+	
 
 	/**
 	 * Send messages to the server.
@@ -281,6 +275,21 @@ public class UDPClient extends Thread {
 		//do stuff here to update the UI
 
 		if (debug) System.out.println("remaining time on client: " + time);
+
+	}
+	
+	private void capturedFlagAction() {
+		// TODO Auto-generated method stub
+		//do stuff here to render
+	}
+
+	private void endGameAction() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				m.transitionTo(Menu.EndGame, 0);
+			}
+		});
 
 	}
 

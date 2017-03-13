@@ -10,6 +10,7 @@ import javafx.scene.transform.Rotate;
 import logic.GameObject;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import physics.Flag;
 import rendering.Spawn;
 import serverLogic.Team;
 
@@ -39,6 +40,8 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 	protected Polygon bounds = new Polygon();
 	protected CollisionsHandler collisionsHandler;
 	protected int bulletCounter;
+	
+	private Flag flag;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -317,7 +320,14 @@ public abstract class EssentialPlayer extends ImageView implements GameObject{
 		return team;
 	}
 
-
+	public void setFlag(Flag f){
+		flag = f;
+	}
+	
+	public Flag getFlag(){
+		return flag;
+	}
+	
 	public abstract void setMyTeam(Team team);
 	public abstract void setOppTeam(Team team);
 
