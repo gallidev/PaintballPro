@@ -19,20 +19,34 @@ import networking.shared.MessageQueue;
  * 
  * @author MattW
  */
-public class Server {
+public class Server extends Thread {
 	
 	
 	static boolean singlePlayer;
 	
+	public boolean isRunning = true;
+	
+	private int portNumber;
+	private InetAddress listenAddress;
+	private ServerView gui;
+	
+	public boolean testing = false;
+	
+	public Server(int portNumber, String host, ServerView gui)
+	{
+		this.portNumber = portNumber;
+		try {
+			this.listenAddress = InetAddress.getByName(host);
+		} catch (UnknownHostException e) {
+			//
+		}
+		this.gui = gui;
+	}
+	
 	/**
 	 * Main implementation method, handles connecting clients.
-	 * 
-	 * @param args
-	 *            Arguments passed through from the user.
-	 *            0 - port number
-	 *            1 - listen address
 	 */
-	public static void main(String[] args, ServerView gui) {
+	public void run() {
 		
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();
@@ -40,22 +54,7 @@ public class Server {
 		LobbyTable gameLobbies = new LobbyTable();
 		// Open a server socket:
 		ServerSocket serverSocket = null;
-		// Port number to connect through to.
-		int portNumber;
-		InetAddress listenAddress;
-		// If number of arguments does not match expected, provide correct
-		// usage.
-		if (args.length != 2) {
-			throw new IllegalArgumentException("Usage: java Server portNumber");
-		} else {
-			// Parse passed string to an Integer for port number.
-			portNumber = Integer.parseInt(args[0]);
-			try {
-				listenAddress = InetAddress.getByName(args[1]);
-			} catch (UnknownHostException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
+
 		// We must try because it may fail with a checked exception:
 		try {
 			// Open server socket
@@ -65,10 +64,9 @@ public class Server {
 			System.exit(1); // Exit.
 		}
 		// Good. We succeeded. But we must try again for the same reason:
-		boolean isRunning = true;
 		
 		// We start a new UDP server receiver to receive all UDP messages.
-		UDPServer udpReceiver = new UDPServer(clientTable, gameLobbies);
+		UDPServer udpReceiver = new UDPServer(clientTable, gameLobbies,19876);
 		udpReceiver.start();
 		while (isRunning) {
 			try {
@@ -81,7 +79,7 @@ public class Server {
 				ServerExitListener listener = new ServerExitListener(input);
 				listener.start();
 				
-				while (true && listener.isAlive()) {
+				while (!isInterrupted() && listener.isAlive()) {
 					// Listen to the socket, accepting connections from new
 					// clients:
 					Socket socket = serverSocket.accept();
@@ -94,7 +92,7 @@ public class Server {
 					String text = "";
 					int clientID;
 					// For debugging:
-					gui.addMessage(clientName + " connected");
+					//gui.addMessage(clientName + " connected");
 					
 					// We add the client to the table. Returns a unique client
 					// id
@@ -112,7 +110,7 @@ public class Server {
 			
 					// For debugging
 					text = "UserID is:" + clientID;
-					gui.addMessage(text);
+					if(!testing) gui.addMessage(text);
 					
 					if (singlePlayer)
 						singlePlayerIntegration();
@@ -123,12 +121,13 @@ public class Server {
 					MessageQueue recipientsQueue = clientTable.getQueue(clientID);
 					recipientsQueue.offer(msg);
 				}
+				udpReceiver.interrupt();
 			// Catch some possible errors - IO.
 			} catch (IOException e) {
 				System.err.println("IO error " + e.getMessage() + ". Attempting to re-establish...");
 				try {
 					serverSocket = new ServerSocket(portNumber);
-					gui.addMessage("Connection re-established.");
+					if(!testing) gui.addMessage("Connection re-established.");
 				} catch (IOException f) {
 					System.err.println("Couldn't listen on port " + portNumber + ". Giving up.");
 					System.exit(1); // Give up.
@@ -148,7 +147,6 @@ public class Server {
 		
 	}
 	
-
 	public  void setSinglePlayer(boolean b){
 		singlePlayer = b;
 	}

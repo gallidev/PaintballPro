@@ -21,13 +21,15 @@ public class Client {
 
 	ClientSender sender;
 	ClientReceiver receiver;
-	int clientID;
+	int clientID = 0;
 	PrintStream toServer = null;
 	BufferedReader fromServer = null;
 	Socket server = null;
 	private String nickname;
 	
 	boolean singlePlayer;
+	
+	private boolean testing;
 
 	/**
 	 * Sets up Client, starts up threads and connects to the server, retrieving an id for this client.
@@ -35,9 +37,12 @@ public class Client {
 	 * @param portNum Port number on server to connect to.
 	 * @param serverIP IP address of the server.
 	 * @param guiManager GUI Manager object.
+	 * @param udpPortSenderNum Port Number to send UDP messages on.
 	 */
-	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager, int udpPortSenderNum) throws Exception {
+	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager, int udpPortSenderNum, boolean testing) {
 
+		this.testing = testing;
+		
 		nickname = passedNickname;
 
 		// We check that nickname does not contain - or : as these are used in our protocols.
@@ -56,17 +61,17 @@ public class Client {
 			}
 			// If host cannot be found
 			catch (UnknownHostException e) {
-				AlertBox.showAlert("Connection Failed", "Please check that the server is running, and the IP address is correct.");
+				if(!testing) AlertBox.showAlert("Connection Failed", "Please check that the server is running, and the IP address is correct.");
 				System.err.println("Unknown host: " + hostname);
 //				System.exit(1); // Exit
-				throw new Exception();
+				//throw new Exception();
 			}
 			// If server isn't running.
 			catch (IOException e) {
-				AlertBox.showAlert("Connection Failed", "Please check that the server is running, and the IP address is correct.");
+				if(!testing) AlertBox.showAlert("Connection Failed", "Please check that the server is running, and the IP address is correct.");
 				System.err.println("The server doesn't seem to be running " + e.getMessage());
 //				System.exit(1); // Exit
-				throw new Exception();
+				//throw new Exception();
 			}
 
 			// Create two client threads, one for sending and one for receiving
@@ -102,13 +107,12 @@ public class Client {
 			TeamTable teams = new TeamTable();
 
 			//Make a UDP Receiver and Sender for low-latency in-game.
-			UDPClient udpReceiver = new UDPClient(clientID,hostname,guiManager,teams,udpPortSenderNum, nickname);
+			UDPClient udpReceiver = new UDPClient(clientID,hostname,19876,guiManager,teams,udpPortSenderNum, nickname);
 			udpReceiver.start();
-
+			
 			// We can now set up the message received for the client.
 			receiver = new ClientReceiver(clientID, fromServer, sender, guiManager, udpReceiver,teams);
 			receiver.start();
-
 
 			// Wait for them to end and then close sockets.
 			Thread t = new Thread(new Runnable() {
@@ -141,8 +145,8 @@ public class Client {
 		// If username contains the character : (used for a string information separator so cannot be in a nickname).
 		else {
 			System.out.println("Error: Username cannot contain character ':', please change it.");
-			AlertBox.showAlert("Username error", "Your username cannot contain a ':' character");
-			throw new Exception();
+			if(!testing) AlertBox.showAlert("Username error", "Your username cannot contain a ':' character");
+			//throw new IllegalArgumentException();
 //			System.exit(1);
 		}
 	}

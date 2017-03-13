@@ -32,6 +32,8 @@ public class UDPServer extends Thread{
 	private DatagramSocket serverSocket;
 
 	private ServerInputReceiver inputReceiver;
+	
+	private int sIP;
 
 
 	/**
@@ -39,9 +41,10 @@ public class UDPServer extends Thread{
 	 * @param clientTable Table storing all necessary client information.
 	 * @param lobby Table storing all necessary lobby information.
 	 */
-	public UDPServer(ClientTable clientTable, LobbyTable lobby) {
+	public UDPServer(ClientTable clientTable, LobbyTable lobby, int sIP) {
 		clients = clientTable;
 		this.lobbyTab = lobby;
+		this.sIP = sIP;
 	}
 
 	/**
@@ -53,7 +56,7 @@ public class UDPServer extends Thread{
 		try {
 			if(debug) System.out.println("Starting server");
 
-			serverSocket = new DatagramSocket(19876);
+			serverSocket = new DatagramSocket(sIP);
 
 			if(debug) System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:" +serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];

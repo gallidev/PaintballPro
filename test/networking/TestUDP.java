@@ -32,13 +32,13 @@ public class TestUDP {
 		lobby.testEnv = true;
 		int id = table.add("test");
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
-		server = new UDPServer(table, lobby);
+		server = new UDPServer(table, lobby, 19877);
 		server.start();
-		client1 = new UDPClient(id, "127.0.0.1", null, null, 25567, "test");
+		client1 = new UDPClient(id, "127.0.0.1", 19877,null, null, 25567, "test");
 		id = table.add("test2");
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 		lobby.switchTeams(table.getPlayer(id), null);
-		client2 = new UDPClient(id, "127.0.0.1", null, null, 25569, "test");
+		client2 = new UDPClient(id, "127.0.0.1", 19877,null, null, 25569, "test");
 		client1.start();
 		client2.start();
 		server.sendToAll("TestSendToAll", "127.0.0.1:25567");
@@ -58,7 +58,7 @@ public class TestUDP {
 		assertNotNull(client1);
 		assertTrue(client1.connected);
 		assertTrue(client2.connected);
-		assertTrue(client1.getTestSend());
-		assertTrue(client2.getTestSend());
+		assertTrue(client1.testSendToAll);
+		assertTrue(client2.testSendToAll);
 	}
 }

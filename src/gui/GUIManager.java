@@ -163,17 +163,14 @@ public class GUIManager {
     private boolean establishLocalServerConnection() {
         if (localServerCode) {
             ipAddress = "127.0.0.1";
-            Server local = new Server();
+            Server local = new Server(25566,ipAddress,new ServerConsole());
             local.setSinglePlayer(true);
            // s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 
             localServer = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    int portNo = 25566;
-                    String[] serverArgs = {portNo + "", ipAddress};
-
-                    local.main(serverArgs, new ServerConsole());
+                    local.start();
                 }
             });
             localServer.start();
@@ -199,7 +196,7 @@ public class GUIManager {
 
             // This loads up the client code.
             try {
-                c = new Client(nickname, portNumber, machName, this,udpPortNumber);
+                c = new Client(nickname, portNumber, machName, this, udpPortNumber, false);
 
                 // We can then get the client sender and receiver threads.
                 ClientSender sender = c.getSender();

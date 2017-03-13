@@ -40,7 +40,9 @@ public class UDPClient extends Thread {
 	private TeamTable teams;
 
 	public boolean connected = false;
-	private boolean testSendToAll = false;
+	public boolean testSendToAll = false;
+	
+	int sIP;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -52,7 +54,7 @@ public class UDPClient extends Thread {
 	 * @param portNum port to send and receive packets.
 	 * @param nickname Nickname of client.
 	 */
-	public UDPClient(int clientID, String udpServIP, GUIManager guiManager, TeamTable teams, int portNum, String nickname)
+	public UDPClient(int clientID, String udpServIP, int udpServPort,GUIManager guiManager, TeamTable teams, int portNum, String nickname)
 	{
 		int port = portNum;
 		// 9877
@@ -61,6 +63,8 @@ public class UDPClient extends Thread {
 		this.teams = teams;
 		this.nickname = nickname;
 
+		sIP = udpServPort;
+		
 		if(debug) System.out.println("Making new UDP Client");
 
 		// Let's establish a connection to the running UDP server and send our client id.
@@ -168,7 +172,7 @@ public class UDPClient extends Thread {
 			if(debug) System.out.println("Attempting to send:"+msg);
 			byte[] sendData = new byte[1024];
 			sendData = msg.getBytes();
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 19876);
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, sIP);
 			clientSocket.send(sendPacket);
 		}
 		catch(Exception e)
@@ -306,15 +310,6 @@ public class UDPClient extends Thread {
 				return p;
 
 		return null;
-	}
-	
-	/**
-	 * For tests, we check whether SendToAll has worked correctly.
-	 * @return Returns testSendToAll variable.
-	 */
-	public boolean getTestSend()
-	{
-		return this.testSendToAll;
 	}
 	
 	/**
