@@ -135,7 +135,15 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
+			e.printStackTrace();
+			Platform.runLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
+					
+				}
+			});
 		}
 		finally{
 			if(debug) System.out.println("Closing Client.");
