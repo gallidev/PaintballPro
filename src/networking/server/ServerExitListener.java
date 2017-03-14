@@ -9,7 +9,7 @@ import java.net.Socket;
  * Class to wait for an Exit input in the command line of the server and act
  * accordingly.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class ServerExitListener extends Thread {
 
@@ -66,6 +66,9 @@ public class ServerExitListener extends Thread {
 		sockets.add(socket);
 	}
 
+	/**
+	 * Stops the Server from running.
+	 */
 	public void stopServer() {
 		// Cycle through all sockets...
 		for (int i = 0; i < sockets.size(); i++) {

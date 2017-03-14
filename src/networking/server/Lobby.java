@@ -14,9 +14,8 @@ import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
 import physics.CollisionsHandler;
-import players.AIPlayer;
-import players.ServerBasicPlayer;
 import players.EssentialPlayer;
+import players.ServerBasicPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
@@ -27,13 +26,13 @@ import serverLogic.TeamMatchMode;
 /**
  * Class to represent a lobby.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class Lobby {
 	// Structures storing relevant data.
 
-	private static final int lobbyTime = 30;
 	// Lobby information
+	private static final int lobbyTime = 30;
 	private int id;
 	private boolean inGameStatus;
 
@@ -55,7 +54,6 @@ public class Lobby {
 
 	//required for all players
 	Map map;
-	//CollisionsHandler collisionsHandler;
 
 	private boolean debug = false;
 	private CollisionsHandler collissionsHandler;
@@ -63,11 +61,13 @@ public class Lobby {
 	private boolean testEnv = false;
 
 	/**
-	 * Sets passed variables and inialised some defaults.
+	 * Sets passed variables and initialises some defaults.
 	 * @param myid ID of lobby.
 	 * @param PassedGameType Game mode that the lobby is used for.
+	 * @param testEnv Flag to determine whether this class is under test.
 	 */
 	public Lobby(int myid, int PassedGameType, boolean testEnv) {
+		
 		inGameStatus = false;
 		GameType = PassedGameType;
 		MaxPlayers = 8;
@@ -76,10 +76,10 @@ public class Lobby {
 		id = myid;
 		players = new ArrayList<>();
 		this.testEnv = testEnv;
-		
+
 		if(!testEnv)
 		{
-					//setting up the map
+			//setting up the map
 			if (PassedGameType == 1)
 				map = Map.loadRaw("elimination");
 			else
@@ -90,7 +90,6 @@ public class Lobby {
 			red = new Team(TeamEnum.RED);
 			blue = new Team(TeamEnum.BLUE);
 		}
-
 	}
 
 	/**
@@ -157,13 +156,14 @@ public class Lobby {
 			blueTeam.put(currPlayerBlueNum, playerToAdd);
 			currPlayerBlueNum++;
 		}
-
 	}
+	
 	/**
 	 * Remove player from a team and re-order other team members as appropriate.
 	 * @param playerToRemove Player obejct to remove from the team.
 	 */
 	public void removePlayer(ServerBasicPlayer playerToRemove) {
+		
 		boolean removed = false;
 		int counter = 0;
 		for (ServerBasicPlayer player : blueTeam.values()) {
@@ -214,6 +214,7 @@ public class Lobby {
 	 * @param receiver Server Receiver used to retrieve/send messages between clients
 	 */
 	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
+		
 		boolean switched = false;
 		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
@@ -251,8 +252,8 @@ public class Lobby {
 		String blueMems = "Ret:Blue:" + getTeam(1);
 		if(!testEnv)
 		{
-					receiver.sendToAll(redMems);
-					receiver.sendToAll(blueMems);
+			receiver.sendToAll(redMems);
+			receiver.sendToAll(blueMems);
 		}
 	}
 
@@ -291,21 +292,23 @@ public class Lobby {
 		return playArrReturn;
 	}
 
-
+	/**
+	 * Convert teams from Lobby structures to in-game Structures.
+	 * @param receiver Server receiver to retrieve messages sent to the server.
+	 * @param team Team representation.
+	 * @param teamNum Team number.
+	 * @return Team class.
+	 */
 	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team(teamNum == 1 ? TeamEnum.BLUE : TeamEnum.RED);
 		for (ServerBasicPlayer origPlayer : team.values()) {
 
 			UserPlayer player = null;
 
-//			double imageWidth = ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
-//			double imageHeight = ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
-
 			Image imagePlayer = ImageFactory.getPlayerImage(TeamEnum.RED);
 
 			int serverId = origPlayer.getID();
 
-			int teamMemNo = newTeam.getMembersNo();
 			int spawnLoc = 0;
 
 			if (newTeam.getColour() == TeamEnum.RED)
@@ -313,7 +316,7 @@ public class Lobby {
 			else
 				spawnLoc = newTeam.getMembersNo() + 4;
 
-			//provisionally hardcoded
+			//provisionally hard-coded
 			if (teamNum == 1)
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
 			else
@@ -327,12 +330,13 @@ public class Lobby {
 	/**
 	 * A timer, accessed by the client for game countdown.
 	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
-	 * @param udpReceiver UDP Server Receiver used to retrieve/send messages between clients in game.
+	 * @param udpServer UDP Server Receiver used to retrieve/send messages between clients in game.
+	 * @param gameMode Mode of the game : 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
 	 *
 	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
 		if (timer == null){
-			 timer = new Thread(new Runnable() {
+			timer = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					RoundTimer timer = new RoundTimer(lobbyTime);
@@ -357,11 +361,11 @@ public class Lobby {
 			});
 			timer.start();
 		}
-		
+
 	}
 
 	/**
-	 * Return winned of a game.
+	 * Return winner of a game.
 	 * @return Winner team enum of a game.
 	 */
 	public TeamEnum getWinner() {
@@ -385,27 +389,6 @@ public class Lobby {
 	}
 
 	/**
-	 * Return the team association of a player.
-	 * @param playerID Player to determine team association of.
-	 * @return Team association.
-	 */
-	private String getTeamAssoc(int playerID) {
-		for (ServerBasicPlayer player : redTeam.values()) {
-			if (player.getID() == playerID) {
-				return "Red";
-			}
-		}
-		for (ServerBasicPlayer player : blueTeam.values()) {
-			if (player.getID() == playerID) {
-				return "Blue";
-			}
-		}
-		return "";
-	}
-
-
-
-	/**
 	 * Creates all the necessary information to start a new game.
 	 * @param receiver A server receiver used to send the start game information to the clients.
 	 * @param udpServer An UDP server used after the game starts.
@@ -418,9 +401,6 @@ public class Lobby {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
-		//GameSimulationJavaFxApplication.launch(GameSimulationJavaFxApplication.class);
-		//GameSimulationScene gameScene = new GameSimulationScene(receiver, red, blue);
-
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		System.out.println("Red user players: " + red.getMembersNo());
 
@@ -431,10 +411,7 @@ public class Lobby {
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
 		blueAIM.createPlayers();
 
-		//blueAIM.setOpponents(red);
-
-
-		//seting team playes and enemies
+		//setting team players and enemies
 		for(EssentialPlayer p : red.getMembers()){
 			p.setOppTeam(blue);
 			p.setMyTeam(red);
@@ -444,7 +421,6 @@ public class Lobby {
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
 		}
-
 
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
@@ -477,7 +453,6 @@ public class Lobby {
 			if (p instanceof UserPlayer)
 				receiver.sendToSpec(p.getPlayerId(), toBeSent);
 		}
-
 	}
 
 	/**
@@ -489,15 +464,14 @@ public class Lobby {
 
 		ServerGameSimulation gameloop = null;
 		if (gameMode == 1)
-			 gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
+			gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
 		else
-			 gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
+			gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
 
 		gameloop.startExecution();
 		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
 		stateSender.setGameLoop(gameloop);
 		stateSender.startSending();
-
 	}
 
 	/**
@@ -526,8 +500,12 @@ public class Lobby {
 		maxId = newMax;
 	}
 
+	/**
+	 * Get maximum number of players that the Lobby will allow.
+	 * @return Max player value.
+	 */
 	public int getMaxPlayers(){
 		return MaxPlayers;
 	}
-	
+
 }

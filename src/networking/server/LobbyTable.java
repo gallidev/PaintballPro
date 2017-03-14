@@ -1,19 +1,22 @@
 package networking.server;
-import java.util.concurrent.*;
 
+import java.util.concurrent.*;
 import networking.game.UDPServer;
 import players.ServerBasicPlayer;
+
 /**
  * Class to store important client-related information used by Client and Server.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class LobbyTable {
 	// Structures storing relevant data.
 	
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
+	
 	// Each open lobby is stored here.
 	private ConcurrentMap<Integer, Lobby> lobbyList = new ConcurrentHashMap<Integer, Lobby>();
+	
 	// Each lobby will have an incrementing unique id - allows for each lobby to be identified.
 	private int id = 1;
 	
@@ -89,7 +92,6 @@ public class LobbyTable {
 			receiver.sendToAll(redMems);
 			receiver.sendToAll(blueMems);
 		}
-		
 	}
 	
 	/**
