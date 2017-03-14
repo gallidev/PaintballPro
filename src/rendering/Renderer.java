@@ -86,6 +86,7 @@ public class Renderer extends Scene
 		timer = new AnimationTimer()
 		{
 			long lastSecond = 0;
+			int timeLeft = 180;
 
 			@Override
 			public void handle(long now)
@@ -111,7 +112,7 @@ public class Renderer extends Scene
 				}
 				if(now - lastSecond >= 1000000000)
 				{
-					hud.tick();
+					hud.tick(timeLeft--);
 					lastSecond = now;
 				}
 			}
@@ -227,6 +228,11 @@ public class Renderer extends Scene
 	public static boolean getSettingsMenuState()
 	{
 		return settingsMenu.opened;
+	}
+
+	public static HeadUpDisplay getHud()
+	{
+		return hud;
 	}
 
 	/**
