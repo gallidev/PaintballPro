@@ -148,25 +148,25 @@ public class CollisionsHandler
 	}
 
 	public void handleFlagCollision(EssentialPlayer p){
-//		if(!flag.isCaptured() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
-//			flag.setCaptured(true);
-//			flag.setVisible(false);
-//			p.setHasFlag(true);
-//		}
-//		if(p.isEliminated() && p.hasFlag()){
-//			flag.setLayoutX(p.getLayoutX());
-//			flag.setLayoutY(p.getLayoutY());
-//			flag.setCaptured(false);
-//			flag.setVisible(true);
-//			p.setHasFlag(false);
-//		}
-//		if(p.hasFlag() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
-//			flag.setLayoutX(p.getLayoutX());
-//			flag.setLayoutY(p.getLayoutY());
-//			flag.setCaptured(false);
-//			flag.setVisible(true);
-//			p.setHasFlag(false);
-//		}
+		if(!flag.isCaptured() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
+			flag.setCaptured(true);
+			flag.setVisible(false);
+			p.setHasFlag(true);
+		}
+		if(p.isEliminated() && p.hasFlag()){
+			flag.setLayoutX(p.getLayoutX());
+			flag.setLayoutY(p.getLayoutY());
+			flag.setCaptured(false);
+			flag.setVisible(true);
+			p.setHasFlag(false);
+		}
+		if(p.hasFlag() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
+			flag.setLayoutX(p.getLayoutX());
+			flag.setLayoutY(p.getLayoutY());
+			flag.setCaptured(false);
+			flag.setVisible(true);
+			p.setHasFlag(false);
+		}
 
 	}
 
