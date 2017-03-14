@@ -169,8 +169,8 @@ package oldCode.players;
 //	@Override
 //	protected void updateAngle()
 //	{
-//		double deltax = mx - (1.65 * playerHeadX);
-//		double deltay = playerHeadY - my;
+//		double deltax = mx - (1.65 * PLAYER_HEAD_X);
+//		double deltay = PLAYER_HEAD_Y - my;
 //		angle = Math.atan2(deltax, deltay);
 //		rotation.setAngle(Math.toDegrees(angle));
 //	}
@@ -222,14 +222,14 @@ package oldCode.players;
 //	public void shoot()
 //	{
 //
-//		double x1 = (83 * getImage().getWidth() / 120) - playerHeadX;
-//		double y1 = (12 * getImage().getHeight() / 255) - playerHeadY;
+//		double x1 = (83 * getImage().getWidth() / 120) - PLAYER_HEAD_X;
+//		double y1 = (12 * getImage().getHeight() / 255) - PLAYER_HEAD_Y;
 //
 //		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 //
-//		double bulletX = getLayoutX() + x2 + playerHeadX;
-//		double bulletY = getLayoutY() + y2 + playerHeadY;
+//		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
+//		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 //
 //		double bulletAngle = angle;
 //		boolean sign= rand.nextBoolean();

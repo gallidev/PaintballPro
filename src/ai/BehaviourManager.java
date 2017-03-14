@@ -8,8 +8,8 @@ import players.EssentialPlayer;
 
 import java.util.ArrayList;
 
-import static players.EssentialPlayer.playerHeadX;
-import static players.EssentialPlayer.playerHeadY;
+import static players.EssentialPlayer.PLAYER_HEAD_X;
+import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 public class BehaviourManager{
     private AIPlayer ai;
@@ -60,15 +60,14 @@ public class BehaviourManager{
 
     private boolean updateShooting(double x, double y){
 
-        double distance = Math.sqrt(Math.pow(x - (ai.getLayoutX() + playerHeadX), 2) + (Math.pow((ai.getLayoutY() + playerHeadY) - y, 2)));
+        double distance = Math.sqrt(Math.pow(x - (ai.getLayoutX() + PLAYER_HEAD_X), 2) + (Math.pow((ai.getLayoutY() + PLAYER_HEAD_Y) - y, 2)));
         if(closestEnemy == null) return false;
         if(closestEnemy.isEliminated()) return false;
-        if(canSee(x, y) && distance < 350) return true;
-        return false;
+	    return canSee(x, y) && distance < 350;
     }
 
     public boolean canSee(double x, double y){
-        Line line = new Line((ai.getLayoutX() + playerHeadX), (ai.getLayoutY() + playerHeadY), x, y);
+        Line line = new Line((ai.getLayoutX() + PLAYER_HEAD_X), (ai.getLayoutY() + PLAYER_HEAD_Y), x, y);
         ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
         propsWalls.addAll(ai.getMap().getRecWalls());
         for(Rectangle propWall : propsWalls){
@@ -83,19 +82,19 @@ public class BehaviourManager{
         double minDistance = Double.MAX_VALUE;
         for(EssentialPlayer enemy: enemies){
             if(!enemy.isEliminated()) {
-                double temp = Math.sqrt((Math.pow((enemy.getLayoutX() + playerHeadX) - (ai.getLayoutX() + playerHeadX), 2) + Math.pow((enemy.getLayoutY() + playerHeadY) - (ai.getLayoutY() + playerHeadY), 2)));
+                double temp = Math.sqrt((Math.pow((enemy.getLayoutX() + PLAYER_HEAD_X) - (ai.getLayoutX() + PLAYER_HEAD_X), 2) + Math.pow((enemy.getLayoutY() + PLAYER_HEAD_Y) - (ai.getLayoutY() + PLAYER_HEAD_Y), 2)));
                 if (temp < minDistance) {
                     closestEnemy = enemy;
-                    closestX = enemy.getLayoutX() + playerHeadX;
-                    closestY = enemy.getLayoutY() + playerHeadY;
+                    closestX = enemy.getLayoutX() + PLAYER_HEAD_X;
+                    closestY = enemy.getLayoutY() + PLAYER_HEAD_Y;
                     minDistance = temp;
                 }
             }
         }
         closestDistance = minDistance;
         if(minDistance < 400){
-            double deltaX = closestX - (ai.getLayoutX()+playerHeadX);
-            double deltaY = (ai.getLayoutY()+playerHeadY) - closestY;
+            double deltaX = closestX - (ai.getLayoutX()+ PLAYER_HEAD_X);
+            double deltaY = (ai.getLayoutY()+ PLAYER_HEAD_Y) - closestY;
             angle = Math.atan2(deltaX, deltaY);
 
         } else {

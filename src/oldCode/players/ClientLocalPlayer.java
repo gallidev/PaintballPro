@@ -18,8 +18,8 @@ package oldCode.players;
 //		super(x,y,id, ImageFactory.getPlayerImage(team));
 //		rotation = new Rotate(Math.toDegrees(0.0), 0, 0, 0, Rotate.Z_AXIS);
 //		getTransforms().add(rotation);
-//		rotation.setPivotX(playerHeadX);
-//		rotation.setPivotY(playerHeadY);
+//		rotation.setPivotX(PLAYER_HEAD_X);
+//		rotation.setPivotY(PLAYER_HEAD_Y);
 //		this.team = team;
 //	}
 //

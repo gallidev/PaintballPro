@@ -40,6 +40,7 @@ public class Renderer extends Scene
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
 	private static Map map;
+	private static int paintIndex;
 	private AnimationTimer timer;
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
@@ -253,6 +254,7 @@ public class Renderer extends Scene
 			hud = null;
 			cPlayer = null;
 			map = null;
+			paintIndex = 0;
 		}
 	}
 
@@ -271,7 +273,7 @@ public class Renderer extends Scene
 		ImageView imageView = new ImageView(paint);
 		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
 		imageView.setCache(true);
-		view.getChildren().add(view.getChildren().size() - 2, imageView);
+		view.getChildren().add(paintIndex, imageView);
 	}
 
 	private void init(String mapName)
@@ -286,6 +288,7 @@ public class Renderer extends Scene
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
+		paintIndex = view.getChildren().size();
 	}
 
 	private void updateView()

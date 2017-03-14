@@ -5,20 +5,20 @@ import players.AIPlayer;
 
 import java.util.ArrayList;
 
-import static players.EssentialPlayer.playerHeadX;
-import static players.EssentialPlayer.playerHeadY;
+import static players.EssentialPlayer.PLAYER_HEAD_X;
+import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 /**
  * Moves an AI Player along a path
  */
 public class Mover {
 
+    private static long delay = 4000;
     private boolean targetReached;
     private boolean finished = false;
     private ArrayList<Point2D> path;
     private AIPlayer ai;
     private long timer;
-    private static long delay = 4000;
     private Point2D target;
 
     public Mover(AIPlayer ai){
@@ -56,8 +56,8 @@ public class Mover {
 
     private void move(){
         target = path.get(0);
-        double deltaX = (target.getX() * 64) - (ai.getLayoutX() + playerHeadX) + 32;
-        double deltaY = (ai.getLayoutY() + playerHeadY) - (target.getY() * 64 + 32);
+        double deltaX = (target.getX() * 64) - (ai.getLayoutX() + PLAYER_HEAD_X) + 32;
+        double deltaY = (ai.getLayoutY() + PLAYER_HEAD_Y) - (target.getY() * 64 + 32);
         if(Math.abs(deltaX) < 20 && Math.abs(deltaY) < 20) targetReached = true;
         double movementAngle = Math.atan2(deltaX, deltaY);
         ai.setMovementAngle(movementAngle);
