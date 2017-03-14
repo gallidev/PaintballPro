@@ -3,10 +3,9 @@ package ai;
 
 import enums.TeamEnum;
 import players.AIPlayer;
-import rendering.Map;
 
-import static players.EssentialPlayer.playerHeadX;
-import static players.EssentialPlayer.playerHeadY;
+import static players.EssentialPlayer.PLAYER_HEAD_X;
+import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 public class CTFRetreatBehaviour extends Behaviour {
 
@@ -20,10 +19,10 @@ public class CTFRetreatBehaviour extends Behaviour {
     @Override
     public void tick() {
         if (ai.getTeam() == TeamEnum.RED){
-            PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + playerHeadX) / 64), Math.floor((ai.getLayoutY() + playerHeadY) / 64), 4, 23);
+            PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 4, 23);
             mover.setPath(ai.getHashMaps().getPathMap().get(p));
         } else {
-            PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + playerHeadX) / 64), Math.floor((ai.getLayoutY() + playerHeadY) / 64), 26, 5);
+            PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 26, 5);
             mover.setPath(ai.getHashMaps().getPathMap().get(p));
         }
     }

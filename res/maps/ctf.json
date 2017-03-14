@@ -11,6 +11,10 @@
 		{"x": 26, "y": 5, "team": "BLUE"},
 		{"x": 26, "y": 6, "team": "BLUE"}
 	],
+	"objectives": [
+		{"type": "flag", "x": 8, "y": 7},
+		{"type": "flag", "x": 27, "y": 22}
+	],
 	"floors": [
 		{"material": "gravel_cobble", "width": 18, "height": 1, "x": 1, "y": 5},
 		{"material": "gravel_cobble", "width": 6, "height": 3, "x": 1, "y": 6},
