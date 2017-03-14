@@ -2,6 +2,7 @@ package rendering;
 
 import com.google.gson.Gson;
 import enums.GameMode;
+import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
@@ -196,6 +197,14 @@ public class Map
 	public ArrayList<Rectangle> getRecProps()
 	{
 		return getCollisions(propGroup);
+	}
+
+	public Rectangle getRecSpawn(TeamEnum team)
+	{
+		if(team == TeamEnum.RED)
+			return new Rectangle(spawns[0].x * 64, spawns[0].y * 64, 128, 128);
+		else
+			return new Rectangle(spawns[4].x * 64, spawns[4].y * 64, 128, 128);
 	}
 
 	public Floor[] getFloors()
