@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import gui.ServerGUI;
 import gui.ServerView;
 import networking.game.UDPServer;
 import networking.shared.Message;
@@ -66,8 +65,10 @@ public class Server extends Thread {
 		// Good. We succeeded. But we must try again for the same reason:
 		
 		// We start a new UDP server receiver to receive all UDP messages.
-		UDPServer udpReceiver = new UDPServer(clientTable, gameLobbies,19876);
+		UDPServer udpReceiver = null;
+		udpReceiver = new UDPServer(clientTable, gameLobbies,19876);
 		udpReceiver.start();
+		
 		while (isRunning) {
 			try {
 				// We loop for ever, as servers usually do, we can exit by
@@ -134,6 +135,7 @@ public class Server extends Thread {
 				}
 			}
 		}
+		udpReceiver.interrupt();
 	}
 	
 	/**
