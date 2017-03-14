@@ -38,21 +38,7 @@ public class ServerExitListener extends Thread {
 			while (true) {
 				// If client types 'Exit' onto server command line...
 				if (myClient.readLine().compareTo("Exit") == 0) {
-					// Cycle through all sockets...
-					for (int i = 0; i < sockets.size(); i++) {
-						// If socket isn't already closed, close.
-						if (!sockets.get(i).isClosed())
-							sockets.get(i).close();
-					}
-					// Give everything enough time to close.
-					try {
-						sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					System.out.println("All clients disconnected. Exiting now.");
-					// Exit.
-					System.exit(0);
+					stopServer();
 				}
 				// If typed input does not match expected
 				else {
@@ -78,5 +64,29 @@ public class ServerExitListener extends Thread {
 	 */
 	public void addSocket(Socket socket) {
 		sockets.add(socket);
+	}
+
+	public void stopServer() {
+		// Cycle through all sockets...
+		for (int i = 0; i < sockets.size(); i++) {
+			// If socket isn't already closed, close.
+			if (!sockets.get(i).isClosed()) {
+				try {
+					sockets.get(i).close();
+				} catch (IOException e) {
+					System.err.println("Something went wrong with the client " + e.getMessage());
+				}
+			}
+
+		}
+		// Give everything enough time to close.
+		try {
+			sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("All clients disconnected. Exiting now.");
+		// Exit.
+		System.exit(0);
 	}
 }

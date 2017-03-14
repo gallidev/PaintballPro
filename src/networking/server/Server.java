@@ -34,7 +34,8 @@ public class Server extends Thread {
 	
 	private int testing = 0;
 	
-	public int exceptionCheck = 0; 
+	public int exceptionCheck = 0;
+	private ServerExitListener exitListener;
 	
 	public Server(int portNumber, String host, ServerView gui, int testing)
 	{
@@ -85,10 +86,10 @@ public class Server extends Thread {
 					BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 					// Creates a thread which looks for messages of a certain format
 					// and acts accordingly if they match.
-					ServerExitListener listener = new ServerExitListener(input);
-					listener.start();
+					exitListener = new ServerExitListener(input);
+					exitListener.start();
 
-					while (!isInterrupted() && listener.isAlive()) {
+					while (!isInterrupted() && exitListener.isAlive()) {
 						
 						if(testing == 2)
 							throw new IOException();
@@ -96,7 +97,7 @@ public class Server extends Thread {
 						// Listen to the socket, accepting connections from new
 						// clients:
 						Socket socket = serverSocket.accept();
-						listener.addSocket(socket);
+						exitListener.addSocket(socket);
 						// This is so that we can use readLine():
 						BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 						// We ask the client what its name is:
@@ -173,5 +174,9 @@ public class Server extends Thread {
 	
 	public  void setSinglePlayer(boolean b){
 		singlePlayer = b;
+	}
+
+	public ServerExitListener getExitListener() {
+		return exitListener;
 	}
 }
