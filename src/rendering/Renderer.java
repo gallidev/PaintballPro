@@ -86,7 +86,7 @@ public class Renderer extends Scene
 		timer = new AnimationTimer()
 		{
 			long lastSecond = 0;
-			int timeLeft = 10;
+			int timeLeft = 180;
 
 			@Override
 			public void handle(long now)
