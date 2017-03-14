@@ -18,7 +18,6 @@ import physics.Flag;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static rendering.Renderer.view;
 
@@ -98,9 +97,7 @@ public class Map
 
 			if(map.gameMode == GameMode.CAPTURETHEFLAG)
 			{
-				int randomFlag = (new Random()).nextInt(map.objectives.length);
-				Flag flag = new Flag(map.objectives[randomFlag].x, map.objectives[randomFlag].y);
-				flag.setEffect(new DropShadow(16, Color.BLACK));
+				Flag flag = new Flag(map.objectives);
 				view.getChildren().add(flag);
 			}
 
