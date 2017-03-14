@@ -6,9 +6,9 @@ package networking.discovery;
  * @author Matthew Walters
  */
 public class DiscoveryClientListener {
-	
+
 	DiscoveryClient client;
-	
+
 	/**
 	 * Get the IP address and port of the first server found
 	 * 
@@ -24,7 +24,7 @@ public class DiscoveryClientListener {
 		}
 		return client.retVal;
 	}
-	
+
 	/**
 	 * Test method to test finding a running server.
 	 * @return Test result - did it pass?

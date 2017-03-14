@@ -13,6 +13,8 @@ import networking.server.Server;
 public class GameServer extends Application {
 
 	ServerGUI gui = new ServerGUI();
+	Server server;
+	Thread discovery;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -20,13 +22,20 @@ public class GameServer extends Application {
 		stage.getIcons().addAll(new Image("assets/icon_dock.png"), new Image("assets/icon_32.png"), new Image("assets/icon_16.png"));
 		stage.setScene(gui);
 		stage.setTitle("Paintball Pro Server");
-		stage.setOnCloseRequest((event) -> System.exit(0));
+		stage.setOnCloseRequest((event) -> {
+			if (server != null)
+				server.getExitListener().stopServer();
+			if (discovery != null)
+				discovery.interrupt();
+			System.exit(0);
+		});
 		stage.show();
 		int portNo = 25566;
 		DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(portNo);
 		discovery.start();
-		Server server = new Server(portNo, IPAddress.getLAN(), gui, 0);
+		server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 		server.start();
+		gui.setServer(server, discovery);
 	}
 
 	public static void main(String[] args) {

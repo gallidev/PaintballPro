@@ -55,61 +55,61 @@ public class UDPServer extends Thread{
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			while(m_running)
 			{
-			      if(debug) System.out.println("Waiting to receive packet");
-			      
-			      serverSocket.receive(receivePacket);
+				if(debug) System.out.println("Waiting to receive packet");
 
-			      if(debug) System.out.println("packetLength: " + receivePacket.getLength());
-			      
-			      String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
+				serverSocket.receive(receivePacket);
 
-			      if(debug) System.out.println("Packet received with text:"+sentence);
+				if(debug) System.out.println("packetLength: " + receivePacket.getLength());
 
-			      InetAddress IPAddress;
-			      int port;
+				String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
 
-			      if(sentence.contains("ExitUDP"))
-			    	  break;
-			      else if(sentence.contains("Connect:"))
-			      {
-			    	  if(debug) System.out.println("Trying to connect now");
-			    	  IPAddress = receivePacket.getAddress();
-			    	  port = receivePacket.getPort();
-			    	  if(debug) System.out.println("Received message from:"+IPAddress.toString()+ " on port:"+ port);
-			    	  if(debug) System.out.println("Attempting to parse client id");
-			    	  int clientID = Integer.parseInt(sentence.substring(8));
-			    	  if(debug) System.out.println("Parsed");
-			    	  if(debug) System.out.println("Client id is:"+clientID);
-			    	  if(debug) System.out.println("Their ip is:"+IPAddress.toString());
-			    	  String ipStr = IPAddress.toString().substring(1, IPAddress.toString().length());
-			    	  String ipAdd = ipStr + ":" + port;
-			    	  clients.addNewIP(ipAdd, clientID);
-			    	  clients.addUDPQueue(ipAdd);
-			  		  byte[] sendData = new byte[1024];
-			  		  sendData = "Successfully Connected".getBytes();
-			  		  IPAddress = InetAddress.getByName(ipStr);
-			  		  if(debug) System.out.println("Sending packet back");
-			  		  DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-			  		  serverSocket.send(sendPacket);
-			      }
-			      else
-			      {
-			    	  // We assume that all players in a game are now connected and their ip addresses inserted into clientTable.
-			    	  // if they are not, we will not be able to send messaged to them using sendToAll.
-			    	  	String ip = receivePacket.getAddress().toString();
-			    	  	String ipFrom = ip.substring(1, ip.length());
-			    	  	if(debug) System.out.println("Message was received from:"+ipFrom);
-			    	  	ipFrom = ipFrom +":"+receivePacket.getPort();
-			    	  	sentence = sentence.trim();
-			    	  	
-						switch(sentence.charAt(0)){
-							case '0' : playerInputChanged(sentence);
-									   break;
+				if(debug) System.out.println("Packet received with text:"+sentence);
 
-							case '2' : getWinner(sentence);
-									   break;
-						}
-			      }
+				InetAddress IPAddress;
+				int port;
+
+				if(sentence.contains("ExitUDP"))
+					break;
+				else if(sentence.contains("Connect:"))
+				{
+					if(debug) System.out.println("Trying to connect now");
+					IPAddress = receivePacket.getAddress();
+					port = receivePacket.getPort();
+					if(debug) System.out.println("Received message from:"+IPAddress.toString()+ " on port:"+ port);
+					if(debug) System.out.println("Attempting to parse client id");
+					int clientID = Integer.parseInt(sentence.substring(8));
+					if(debug) System.out.println("Parsed");
+					if(debug) System.out.println("Client id is:"+clientID);
+					if(debug) System.out.println("Their ip is:"+IPAddress.toString());
+					String ipStr = IPAddress.toString().substring(1, IPAddress.toString().length());
+					String ipAdd = ipStr + ":" + port;
+					clients.addNewIP(ipAdd, clientID);
+					clients.addUDPQueue(ipAdd);
+					byte[] sendData = new byte[1024];
+					sendData = "Successfully Connected".getBytes();
+					IPAddress = InetAddress.getByName(ipStr);
+					if(debug) System.out.println("Sending packet back");
+					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+					serverSocket.send(sendPacket);
+				}
+				else
+				{
+					// We assume that all players in a game are now connected and their ip addresses inserted into clientTable.
+					// if they are not, we will not be able to send messaged to them using sendToAll.
+					String ip = receivePacket.getAddress().toString();
+					String ipFrom = ip.substring(1, ip.length());
+					if(debug) System.out.println("Message was received from:"+ipFrom);
+					ipFrom = ipFrom +":"+receivePacket.getPort();
+					sentence = sentence.trim();
+
+					switch(sentence.charAt(0)){
+					case '0' : playerInputChanged(sentence);
+					break;
+
+					case '2' : getWinner(sentence);
+					break;
+					}
+				}
 			}
 		} catch(Exception e)
 		{
@@ -205,21 +205,21 @@ public class UDPServer extends Thread{
 		for(int i = 0; i < actions.length; i++){
 			String act = actions[i];
 			switch(act){
-				case "Up"    : up = true;
-							   break;
-				case "Down"  : down = true;
-							   break;
-				case "Left"  : left = true;
-							   break;
-				case "Right" : right = true;
-				   			   break;
-				case "Mouse" : mX = Integer.parseInt(actions[i+1]);
-							   mY = Integer.parseInt(actions[i+2]);
-							   i = i + 3;
-							   break;
-				case "Shoot" : shoot = true;
-							   break;
-				default		 : break;
+			case "Up"    : up = true;
+			break;
+			case "Down"  : down = true;
+			break;
+			case "Left"  : left = true;
+			break;
+			case "Right" : right = true;
+			break;
+			case "Mouse" : mX = Integer.parseInt(actions[i+1]);
+			mY = Integer.parseInt(actions[i+2]);
+			i = i + 3;
+			break;
+			case "Shoot" : shoot = true;
+			break;
+			default		 : break;
 			}
 		}
 
@@ -242,7 +242,7 @@ public class UDPServer extends Thread{
 		//dp stuff here tp update gui
 	}
 
-	
+
 
 	/**
 	 * Updates a team's score based on the information got from a client. Helps
@@ -285,34 +285,34 @@ public class UDPServer extends Thread{
 	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-//	private void makeMove(Lobby lobby, String text)
-//	{
-//		//extract the id of the server player with a new location
-//		String[] parsedMsg = text.split(":");
-//		int id = Integer.parseInt(parsedMsg[2]);
-//		double x = Double.parseDouble(parsedMsg[3]);
-//		double y = Double.parseDouble(parsedMsg[4]);
-//		double angle = Double.parseDouble(parsedMsg[5]);
-//
-//		//get that server player from the lobby
-//		EssentialPlayer currentPlayer = null;
-//		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
-//			if( id == p.getPlayerId())
-//				currentPlayer = p;
-//
-//		if (currentPlayer == null){
-//			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
-//				if( id == p.getPlayerId())
-//					currentPlayer = p;
-//		}
-//		//update its location
-//		currentPlayer.setLayoutX(x);
-//		currentPlayer.setLayoutY(y);
-//		currentPlayer.setAngle(angle);
-//	}
-//	
+	//	private void makeMove(Lobby lobby, String text)
+	//	{
+	//		//extract the id of the server player with a new location
+	//		String[] parsedMsg = text.split(":");
+	//		int id = Integer.parseInt(parsedMsg[2]);
+	//		double x = Double.parseDouble(parsedMsg[3]);
+	//		double y = Double.parseDouble(parsedMsg[4]);
+	//		double angle = Double.parseDouble(parsedMsg[5]);
+	//
+	//		//get that server player from the lobby
+	//		EssentialPlayer currentPlayer = null;
+	//		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
+	//			if( id == p.getPlayerId())
+	//				currentPlayer = p;
+	//
+	//		if (currentPlayer == null){
+	//			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
+	//				if( id == p.getPlayerId())
+	//					currentPlayer = p;
+	//		}
+	//		//update its location
+	//		currentPlayer.setLayoutX(x);
+	//		currentPlayer.setLayoutY(y);
+	//		currentPlayer.setAngle(angle);
+	//	}
+	//	
 	/* Getters and setters below */
-	
+
 	/**
 	 * Sets the input receiver.
 	 * @param inputReceiver The new ServerInputReceiver.

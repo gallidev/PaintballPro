@@ -12,16 +12,22 @@ public class Powerup extends ImageView implements GameObject {
         //setImage
     }
 
-    public void setTaken(boolean b){
-        taken = b;
-    }
-
     public boolean isTaken(){
         return taken;
     }
 
+    public void setTaken(boolean b){
+        taken = b;
+    }
+
     @Override
     public void tick(){
+
+    }
+
+    @Override
+    public void interact()
+    {
 
     }
 }

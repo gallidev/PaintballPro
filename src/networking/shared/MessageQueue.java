@@ -7,7 +7,7 @@ import java.util.concurrent.*;
  * @author Matthew Walters
  */
 public class MessageQueue {
-	
+
 	private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>();
 	/**
 	 * Inserts the specified message into this queue.

@@ -24,10 +24,10 @@ package oldCode.players;
 // */
 //public abstract class GeneralPlayer extends ImageView implements GameObject{
 //
-//	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-//	protected static long shootDelay = 450;
-//	protected static long spawnDelay = 2000;
-//	protected final double movementSpeed = 2;
+//	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
+//	protected static long SHOOT_DELAY = 450;
+//	protected static long SPAWN_DELAY = 2000;
+//	protected final double MOVEMENT_SPEED = 2;
 //	protected boolean up, down, left, right, shoot, eliminated, invincible;
 //	protected boolean collUp, collDown, collLeft, collRight;
 //	protected double angle, lastAngle;
@@ -69,8 +69,8 @@ package oldCode.players;
 //		this.rand = new Random();
 //		rotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 //	    getTransforms().add(rotation);
-//		rotation.setPivotX(playerHeadX);
-//		rotation.setPivotY(playerHeadY);
+//		rotation.setPivotX(PLAYER_HEAD_X);
+//		rotation.setPivotY(PLAYER_HEAD_Y);
 //		this.map = map;
 //		propsWalls = map.getRecProps();
 //	    propsWalls.addAll(map.getRecWalls());
@@ -81,8 +81,8 @@ package oldCode.players;
 //		createPlayerBounds();
 //		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
 //		bounds.getTransforms().add(boundRotation);
-//		boundRotation.setPivotX(playerHeadX);
-//		boundRotation.setPivotY(playerHeadY);
+//		boundRotation.setPivotX(PLAYER_HEAD_X);
+//		boundRotation.setPivotY(PLAYER_HEAD_Y);
 //		updatePlayerBounds();
 //
 //		nameTag = new Label("Player");
@@ -113,7 +113,7 @@ package oldCode.players;
 //	protected abstract void updatePosition();
 //
 //	void updateShooting(){
-//		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
+//		if(shoot && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 //			shoot();
 //			shootTimer = System.currentTimeMillis();
 //		}
@@ -147,7 +147,7 @@ package oldCode.players;
 //	public abstract void updateScore();
 //
 //	protected void checkSpawn() {
-//		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
+//		if(spawnTimer + SPAWN_DELAY <= System.currentTimeMillis()){
 //			int i = 0;
 //			if(team == Team.BLUE) i = 4;
 //			setLayoutX(map.getSpawns()[i].x * 64);
@@ -162,20 +162,20 @@ package oldCode.players;
 //
 //	protected void checkInvincibility() {
 //		//Invincible animation
-//		if(spawnTimer + spawnDelay > System.currentTimeMillis()){
-//			if(System.currentTimeMillis() >= spawnTimer + spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay/8)
+//		if(spawnTimer + SPAWN_DELAY > System.currentTimeMillis()){
+//			if(System.currentTimeMillis() >= spawnTimer + SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 2 * SPAWN_DELAY/8)
 //				setVisible(false);
-//			if(System.currentTimeMillis() >= spawnTimer + 2* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 3* spawnDelay/8)
+//			if(System.currentTimeMillis() >= spawnTimer + 2* SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 3* SPAWN_DELAY/8)
 //				setVisible(true);
-//			if(System.currentTimeMillis() >= spawnTimer + 3* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 4* spawnDelay/8)
+//			if(System.currentTimeMillis() >= spawnTimer + 3* SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 4* SPAWN_DELAY/8)
 //				setVisible(false);
-//			if(System.currentTimeMillis() >= spawnTimer + 4* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 5* spawnDelay/8)
+//			if(System.currentTimeMillis() >= spawnTimer + 4* SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 5* SPAWN_DELAY/8)
 //				setVisible(true);
-//			if(System.currentTimeMillis() >= spawnTimer + 5* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 6* spawnDelay/8)
+//			if(System.currentTimeMillis() >= spawnTimer + 5* SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 6* SPAWN_DELAY/8)
 //				setVisible(false);
-//			if(System.currentTimeMillis() >= spawnTimer + 6* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 7* spawnDelay/8)
+//			if(System.currentTimeMillis() >= spawnTimer + 6* SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 7* SPAWN_DELAY/8)
 //				setVisible(true);
-//			if(System.currentTimeMillis() >= spawnTimer + 7* spawnDelay/8 && System.currentTimeMillis() < spawnTimer + 8* spawnDelay/8)
+//			if(System.currentTimeMillis() >= spawnTimer + 7* SPAWN_DELAY/8 && System.currentTimeMillis() < spawnTimer + 8* SPAWN_DELAY/8)
 //				setVisible(false);
 //
 //		} else {
@@ -188,40 +188,40 @@ package oldCode.players;
 //	//Consists of 5 points around player
 //	public void createPlayerBounds(){
 //		//Point1
-//		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
-//		double y1 = (5 * getImage().getHeight()/255) - playerHeadY;
+//		double x1 = (83 * getImage().getWidth()/120) - PLAYER_HEAD_X;
+//		double y1 = (5 * getImage().getHeight()/255) - PLAYER_HEAD_Y;
 //		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-//		double boundx1 = x2 + playerHeadX;
-//		double boundy1 = y2 + playerHeadY;
+//		double boundx1 = x2 + PLAYER_HEAD_X;
+//		double boundy1 = y2 + PLAYER_HEAD_Y;
 //		//Point2
-//		x1 = (getImage().getWidth()) - playerHeadX;
-//		y1 = (233 * getImage().getHeight()/255) - playerHeadY;
+//		x1 = (getImage().getWidth()) - PLAYER_HEAD_X;
+//		y1 = (233 * getImage().getHeight()/255) - PLAYER_HEAD_Y;
 //		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-//		double boundx2 = x2 + playerHeadX;
-//		double boundy2 = y2 + playerHeadY;
+//		double boundx2 = x2 + PLAYER_HEAD_X;
+//		double boundy2 = y2 + PLAYER_HEAD_Y;
 //		//Point3
-//		x1 = (57 * getImage().getWidth()/120) - playerHeadX;
-//		y1 = (getImage().getHeight()) - playerHeadY;
+//		x1 = (57 * getImage().getWidth()/120) - PLAYER_HEAD_X;
+//		y1 = (getImage().getHeight()) - PLAYER_HEAD_Y;
 //		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-//		double boundx3 = x2 + playerHeadX;
-//		double boundy3 = y2 + playerHeadY;
+//		double boundx3 = x2 + PLAYER_HEAD_X;
+//		double boundy3 = y2 + PLAYER_HEAD_Y;
 //		//Point4
-//		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
-//		y1 = (183 * getImage().getHeight()/255) - playerHeadY;
+//		x1 = (1 * getImage().getWidth()/120) - PLAYER_HEAD_X;
+//		y1 = (183 * getImage().getHeight()/255) - PLAYER_HEAD_Y;
 //		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-//		double boundx4 = x2 + playerHeadX;
-//		double boundy4 = y2 + playerHeadY;
+//		double boundx4 = x2 + PLAYER_HEAD_X;
+//		double boundy4 = y2 + PLAYER_HEAD_Y;
 //		//Point5
-//		x1 = (1 * getImage().getWidth()/120) - playerHeadX;
-//		y1 = (128 * getImage().getHeight()/255) - playerHeadY;
+//		x1 = (1 * getImage().getWidth()/120) - PLAYER_HEAD_X;
+//		y1 = (128 * getImage().getHeight()/255) - PLAYER_HEAD_Y;
 //		x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
-//		double boundx5 = x2 + playerHeadX;
-//		double boundy5 = y2 + playerHeadY;
+//		double boundx5 = x2 + PLAYER_HEAD_X;
+//		double boundy5 = y2 + PLAYER_HEAD_Y;
 //		bounds.getPoints().clear();
 //		bounds.getPoints().addAll(boundx1, boundy1,
 //				boundx2, boundy2,
@@ -245,14 +245,14 @@ package oldCode.players;
 //	 */
 //	public void shoot(){
 //
-//		double x1 = (83 * getImage().getWidth()/120) - playerHeadX;
-//		double y1 = (12 * getImage().getHeight()/255) - playerHeadY;
+//		double x1 = (83 * getImage().getWidth()/120) - PLAYER_HEAD_X;
+//		double y1 = (12 * getImage().getHeight()/255) - PLAYER_HEAD_Y;
 //
 //		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 //		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 //
-//		double bulletX = getLayoutX() + x2 + playerHeadX;
-//		double bulletY = getLayoutY() + y2 + playerHeadY;
+//		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
+//		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 //
 //		double bulletAngle = angle;
 //		boolean sign= rand.nextBoolean();

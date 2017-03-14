@@ -7,7 +7,6 @@ import gui.GUIManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
-import oldCode.offlineLogic.OfflineTeam;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import physics.InputHandler;
@@ -16,7 +15,6 @@ import rendering.Map;
 import rendering.Renderer;
 import serverLogic.Team;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -150,30 +148,30 @@ public class OfflinePlayer extends EssentialPlayer
 		//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
 		if(inputHandler.isUp() && !collUp){
-			setLayoutY(getLayoutY() - movementSpeed);
+			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
 		}else if(!inputHandler.isUp() && collUp){
-			setLayoutY(getLayoutY() + movementSpeed);
+			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
 		}
 		if(inputHandler.isDown() && !collDown){
-			setLayoutY(getLayoutY() + movementSpeed);
+			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
 		}else if(!inputHandler.isDown() && collDown){
-			setLayoutY(getLayoutY() - movementSpeed);
+			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
 		}
 		if(inputHandler.isLeft() && !collLeft) {
-			setLayoutX(getLayoutX() - movementSpeed);
+			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
 		} else if(!inputHandler.isLeft() && collLeft){
-			setLayoutX(getLayoutX() + movementSpeed);
+			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
 		}
 		if(inputHandler.isRight() && !collRight){
-			setLayoutX(getLayoutX() + movementSpeed);
+			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
 		}else if (!inputHandler.isRight() && collRight){
-			setLayoutX(getLayoutX() - movementSpeed);
+			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
 		}
 
 	}
 
 	protected void updateShooting(){
-		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - shootDelay){
+		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 			shoot();
 			shootTimer = System.currentTimeMillis();
 		}
@@ -183,7 +181,7 @@ public class OfflinePlayer extends EssentialPlayer
 	@Override
 	protected void updateAngle()
 	{
-		Point2D temp = this.localToScene(1.65 * playerHeadX, playerHeadY);
+		Point2D temp = this.localToScene(1.65 * PLAYER_HEAD_X, PLAYER_HEAD_Y);
 		double x1 = temp.getX();
 		double y1 = temp.getY();
 
@@ -197,14 +195,14 @@ public class OfflinePlayer extends EssentialPlayer
 	public void shoot()
 	{
 
-		double x1 = (83 * getImage().getWidth() / 120) - playerHeadX;
-		double y1 = (12 * getImage().getHeight() / 255) - playerHeadY;
+		double x1 = (83 * getImage().getWidth() / 120) - PLAYER_HEAD_X;
+		double y1 = (12 * getImage().getHeight() / 255) - PLAYER_HEAD_Y;
 
 		double x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
 		double y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
 
-		double bulletX = getLayoutX() + x2 + playerHeadX;
-		double bulletY = getLayoutY() + y2 + playerHeadY;
+		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
+		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 
 		double bulletAngle = angle;
 		boolean sign= rand.nextBoolean();
@@ -230,6 +228,9 @@ public class OfflinePlayer extends EssentialPlayer
 		this.mouseY = my;
 	}
 
+	public Team getMyTeam(){
+		return this.myTeam;
+	}
 
 	@Override
 	public void setMyTeam(Team team) {
@@ -237,19 +238,14 @@ public class OfflinePlayer extends EssentialPlayer
 
 	}
 
+	public Team getOppTeam(){
+		return this.oppTeam;
+	}
 
 	@Override
 	public void setOppTeam(Team team) {
 		this.oppTeam = team;
 
-	}
-
-	public Team getMyTeam(){
-		return this.myTeam;
-	}
-
-	public Team getOppTeam(){
-		return this.oppTeam;
 	}
 
 }

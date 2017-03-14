@@ -13,6 +13,8 @@ import javafx.application.Platform;
 import networking.client.TeamTable;
 import players.GhostPlayer;
 
+import rendering.Renderer;
+
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
  * One per client.
@@ -23,6 +25,9 @@ public class UDPClient extends Thread {
 
 	private boolean debug = false;
 	private int clientID;
+	public boolean bulletDebug = false;
+	public boolean connected = false;
+	public boolean testSendToAll = false;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
@@ -30,10 +35,6 @@ public class UDPClient extends Thread {
 	private GUIManager m;
 	private TeamTable teams;
 	private int sIP;
-	
-	public boolean bulletDebug = false;
-	public boolean connected = false;
-	public boolean testSendToAll = false;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -102,7 +103,7 @@ public class UDPClient extends Thread {
 			{
 				clientSocket.receive(receivePacket);
 			    String receivedPacket = new String(receivePacket.getData(), 0, receivePacket.getLength());
-				
+	
 			    if(debug) System.out.println("Received from server:"+receivedPacket);
 
 				// -------------------------------------
@@ -199,9 +200,6 @@ public class UDPClient extends Thread {
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
 			}
 		}
-
-
-
 	}
 
 	/**
@@ -219,7 +217,6 @@ public class UDPClient extends Thread {
 
 		//do stuff here to update the GUI
 	}
-
 
 	/**
 	 * Receives all the player's active bullets and updates them accordingly on the client side,
@@ -265,7 +262,7 @@ public class UDPClient extends Thread {
 		//do stuff here to update the UI
 
 		if (debug) System.out.println("remaining time on client: " + time);
-
+		Renderer.getHud().tick(Integer.parseInt(time));
 	}
 	
 	private void capturedFlagAction() {
@@ -282,7 +279,6 @@ public class UDPClient extends Thread {
 		});
 
 	}
-
 
 	/**
 	 * Retrieves a player with a specific id from the current game.

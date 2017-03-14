@@ -12,10 +12,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import physics.Flag;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static rendering.Renderer.view;
 
@@ -31,6 +33,7 @@ public class Map
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
+	private Objective[] objectives;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
 
 	/**
@@ -91,6 +94,14 @@ public class Map
 			map.wallGroup.setCache(true);
 
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
+
+			if(map.gameMode == GameMode.CAPTURETHEFLAG)
+			{
+				int randomFlag = (new Random()).nextInt(map.objectives.length);
+				Flag flag = new Flag(map.objectives[randomFlag].x, map.objectives[randomFlag].y);
+				flag.setEffect(new DropShadow(16, Color.BLACK));
+				view.getChildren().add(flag);
+			}
 
 			//turn on shading if the user has it enabled
 			if(GUIManager.getUserSettings().getShading())

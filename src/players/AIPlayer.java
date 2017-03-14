@@ -1,15 +1,15 @@
 package players;
 
-import java.util.ArrayList;
-
 import ai.BehaviourManager;
+import ai.HashMapGen;
 import enums.TeamEnum;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
-import serverLogic.Team;
-import ai.HashMapGen;
 import rendering.Renderer;
+import serverLogic.Team;
+
+import java.util.ArrayList;
 
 public class AIPlayer extends EssentialPlayer{
 
@@ -69,8 +69,8 @@ public class AIPlayer extends EssentialPlayer{
 	@Override
 	protected void updatePosition(){
 
-		double yToReduce = movementSpeed * Math.cos(movementAngle);
-		double xToAdd = movementSpeed * Math.sin(movementAngle);
+		double yToReduce = MOVEMENT_SPEED * Math.cos(movementAngle);
+		double xToAdd = MOVEMENT_SPEED * Math.sin(movementAngle);
 
 		if(moving) {
 			if ((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown)) setLayoutY(getLayoutY() - yToReduce);
@@ -112,7 +112,7 @@ public class AIPlayer extends EssentialPlayer{
 	}
 
 	protected void updateShooting(){
-		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
+		if(shoot && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 			shoot();
 			shootTimer = System.currentTimeMillis();
 		}
@@ -122,10 +122,12 @@ public class AIPlayer extends EssentialPlayer{
 
 	public void setOppTeam(Team oppTeam){
 		this.oppTeam = oppTeam;
+		enemies = oppTeam.getMembers();
 	}
 
 	public void setMyTeam(Team t){
 		myTeam = t;
+		teamPlayers = t.getMembers();
 	}
 
 	public void setMoving(boolean b) { this.moving = b;}

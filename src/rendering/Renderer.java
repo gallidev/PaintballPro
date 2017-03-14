@@ -40,6 +40,7 @@ public class Renderer extends Scene
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
 	private static Map map;
+	private static int paintIndex;
 	private AnimationTimer timer;
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
@@ -85,6 +86,7 @@ public class Renderer extends Scene
 		timer = new AnimationTimer()
 		{
 			long lastSecond = 0;
+			int timeLeft = 180;
 
 			@Override
 			public void handle(long now)
@@ -110,7 +112,7 @@ public class Renderer extends Scene
 				}
 				if(now - lastSecond >= 1000000000)
 				{
-					hud.tick();
+					hud.tick(timeLeft--);
 					lastSecond = now;
 				}
 			}
@@ -228,6 +230,11 @@ public class Renderer extends Scene
 		return settingsMenu.opened;
 	}
 
+	public static HeadUpDisplay getHud()
+	{
+		return hud;
+	}
+
 	/**
 	 * Increment the score on the HUD for a given team by a given amount
 	 *
@@ -253,6 +260,7 @@ public class Renderer extends Scene
 			hud = null;
 			cPlayer = null;
 			map = null;
+			paintIndex = 0;
 		}
 	}
 
@@ -271,7 +279,7 @@ public class Renderer extends Scene
 		ImageView imageView = new ImageView(paint);
 		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
 		imageView.setCache(true);
-		view.getChildren().add(view.getChildren().size() - 2, imageView);
+		view.getChildren().add(paintIndex, imageView);
 	}
 
 	private void init(String mapName)
@@ -286,6 +294,7 @@ public class Renderer extends Scene
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
+		paintIndex = view.getChildren().size();
 	}
 
 	private void updateView()

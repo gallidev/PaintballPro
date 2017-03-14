@@ -8,7 +8,7 @@ import java.net.InetAddress;
  * @author Matthew Walters
  */
 public class IPAddress {
-	
+
 	/**
 	 * Get the LAN IP for the current machine
 	 * 

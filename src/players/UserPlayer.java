@@ -1,7 +1,5 @@
 package players;
 
-import java.util.ArrayList;
-
 
 import enums.TeamEnum;
 import javafx.scene.image.Image;
@@ -60,24 +58,24 @@ public class UserPlayer extends EssentialPlayer{
 	{
 		//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 		if(up && !collUp){
-			setLayoutY(getLayoutY() - movementSpeed);
+			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
 		}else if(!up && collUp){
-			setLayoutY(getLayoutY() + movementSpeed);
+			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
 		}
 		if(down && !collDown){
-			setLayoutY(getLayoutY() + movementSpeed);
+			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
 		}else if(!down && collDown){
-			setLayoutY(getLayoutY() - movementSpeed);
+			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
 		}
 		if(left && !collLeft) {
-			setLayoutX(getLayoutX() - movementSpeed);
+			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
 		} else if(!left && collLeft){
-			setLayoutX(getLayoutX() + movementSpeed);
+			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
 		}
 		if(right && !collRight){
-			setLayoutX(getLayoutX() + movementSpeed);
+			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
 		}else if (!right && collRight){
-			setLayoutX(getLayoutX() - movementSpeed);
+			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
 		}
 	}
 
@@ -87,7 +85,7 @@ public class UserPlayer extends EssentialPlayer{
 	protected void updateAngle()
 	{
 		double deltax = mouseX  - widthScreen/2;
-		double deltay = heightScreen/2 + playerHeadY/6 -  mouseY ;
+		double deltay = heightScreen/2 + PLAYER_HEAD_Y /6 -  mouseY ;
 		angle = Math.atan2(deltax, deltay);
 		double degrees = Math.toDegrees(angle);
 		rotation.setAngle(degrees);
@@ -96,7 +94,7 @@ public class UserPlayer extends EssentialPlayer{
 	}
 
 	protected void updateShooting(){
-		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
+		if(shoot && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 			shoot();
 			shootTimer = System.currentTimeMillis();
 		}

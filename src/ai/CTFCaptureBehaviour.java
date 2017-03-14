@@ -1,12 +1,10 @@
 package ai;
 
 
-import enums.TeamEnum;
 import players.AIPlayer;
-import rendering.Map;
 
-import static players.EssentialPlayer.playerHeadX;
-import static players.EssentialPlayer.playerHeadY;
+import static players.EssentialPlayer.PLAYER_HEAD_X;
+import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 public class CTFCaptureBehaviour extends Behaviour {
 
@@ -21,7 +19,7 @@ public class CTFCaptureBehaviour extends Behaviour {
     public void tick() {
         int flagX = 3; //temp value
         int flagY = 3; //temp value
-        PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + playerHeadX) / 64), Math.floor((ai.getLayoutY() + playerHeadY) / 64), flagX, flagY);
+        PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), flagX, flagY);
         mover.setPath(ai.getHashMaps().getPathMap().get(p));
     }
 

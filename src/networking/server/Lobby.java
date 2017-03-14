@@ -32,7 +32,7 @@ import serverLogic.TeamMatchMode;
 public class Lobby {
 	// Structures storing relevant data.
 
-	private static final int lobbyTime = 10;
+	private static final int lobbyTime = 30;
 	// Lobby information
 	private int id;
 	private boolean inGameStatus;
@@ -41,6 +41,7 @@ public class Lobby {
 	private int GameType;
 	private int MaxPlayers;
 	private ServerGame currentSessionGame;
+	private Thread timer;
 
 	// Team information
 	private int currPlayerBlueNum;
@@ -330,30 +331,33 @@ public class Lobby {
 	 *
 	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				RoundTimer timer = new RoundTimer(lobbyTime);
-				timer.startTimer();
-				long lastTime = -1;
-				while (!timer.isTimeElapsed()) {
-					try {
-						if (lastTime != timer.getTimeLeft()) {
-							// System.out.println("Timer changed: from " +
-							// lastTime + " to " + timer.getTimeLeft());
-							lastTime = timer.getTimeLeft();
-							receiver.sendToAll("LTime:" + timer.getTimeLeft());
-						}
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
+		if (timer == null){
+			 timer = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					RoundTimer timer = new RoundTimer(lobbyTime);
+					timer.startTimer();
+					long lastTime = -1;
+					while (!timer.isTimeElapsed()) {
+						try {
+							if (lastTime != timer.getTimeLeft()) {
+								// System.out.println("Timer changed: from " +
+								// lastTime + " to " + timer.getTimeLeft());
+								lastTime = timer.getTimeLeft();
+								receiver.sendToAll("LTime:" + timer.getTimeLeft());
+							}
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
 
+						}
 					}
+					playGame(receiver,udpServer, gameMode);
+					startGameLoop(udpServer, gameMode);
 				}
-				playGame(receiver,udpServer, gameMode);
-				startGameLoop(udpServer, gameMode);
-			}
-		});
-		t.start();
+			});
+			timer.start();
+		}
+		
 	}
 
 	/**
@@ -522,4 +526,8 @@ public class Lobby {
 		maxId = newMax;
 	}
 
+	public int getMaxPlayers(){
+		return MaxPlayers;
+	}
+	
 }

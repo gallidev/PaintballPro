@@ -13,37 +13,37 @@ import java.util.Enumeration;
  * @author Matthew Walters
  */
 public class DiscoveryClient extends Thread{
-	
+
 	public String retVal = "";
-	
+
 	/**
 	 * Get the IP address and port of the first server found
 	 * 
 	 * @return IP address and port, separated by a colon
 	 */
 	public String findServer() {
-		
+
 		try {
 			InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 			System.setProperty("java.net.preferIPv4Stack", "true");
 			MulticastSocket socket = new MulticastSocket(25561);
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-	        while (networkInterfaces.hasMoreElements()) {
-	            NetworkInterface iface = networkInterfaces.nextElement();
-	            try {
-	            	if (!iface.isLoopback())
-	            	{
+			while (networkInterfaces.hasMoreElements()) {
+				NetworkInterface iface = networkInterfaces.nextElement();
+				try {
+					if (!iface.isLoopback())
+					{
 						socket.setNetworkInterface(iface);
-	            	}
-	            } catch (IOException e) {
-	            	//e.printStackTrace();
-	            }
-	        }
+					}
+				} catch (IOException e) {
+					//e.printStackTrace();
+				}
+			}
 			socket.joinGroup(broadcastAddress);
-			
+
 			byte[] buf = new byte[1023];
 			DatagramPacket packetFromServer = new DatagramPacket(buf, buf.length);
-			
+
 			socket.receive(packetFromServer);
 			String data = new String(packetFromServer.getData(), packetFromServer.getOffset(),
 					packetFromServer.getLength());
@@ -55,7 +55,7 @@ public class DiscoveryClient extends Thread{
 		}
 		return "";
 	}
-	
+
 	/**
 	 * Run the main method of this thread.
 	 */
