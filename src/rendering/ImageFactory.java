@@ -1,9 +1,9 @@
 package rendering;
 
+import java.util.HashMap;
+
 import enums.TeamEnum;
 import javafx.scene.image.Image;
-
-import java.util.HashMap;
 
 public class ImageFactory
 {

@@ -76,7 +76,6 @@ public class GameLobbyMenu {
 				try {
 					if (m.isTimerStarted()) {
 						Platform.runLater(() -> {
-							options.setVisible(false);
 							timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
 						});
 						if (m.getTimeLeft() <= 1) {

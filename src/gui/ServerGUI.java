@@ -3,10 +3,12 @@ package gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import networking.server.Server;
 
 /**
  * Server GUI scene class
@@ -17,6 +19,8 @@ public class ServerGUI extends Scene implements ServerView {
 
     private String messages = "";
     private TextArea textArea;
+    private Server server;
+    private Thread discovery;
 
     public ServerGUI() {
         super(view, new GUIManager().width, new GUIManager().height);
@@ -38,6 +42,18 @@ public class ServerGUI extends Scene implements ServerView {
         textArea.setPrefHeight(300);
         view.add(textArea, 0, 1);
 
+        Button exitButton = new Button("Exit");
+        exitButton.setOnAction((event) -> {
+            if (server != null) {
+                server.getExitListener().stopServer();
+            }
+            if (discovery != null) {
+                discovery.interrupt();
+            }
+        });
+        view.add(exitButton, 0, 2);
+
+
         getStylesheets().add("styles/menu.css");
         getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
     }
@@ -47,4 +63,10 @@ public class ServerGUI extends Scene implements ServerView {
         messages += message + "\n";
         textArea.setText(messages);
     }
+
+    public void setServer(Server server, Thread discovery) {
+        this.server = server;
+        this.discovery = discovery;
+    }
+
 }

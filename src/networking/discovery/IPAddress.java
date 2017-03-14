@@ -1,16 +1,14 @@
 package networking.discovery;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 
 /**
  * Class to get the LAN IP for a user
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class IPAddress {
-	
+
 	/**
 	 * Get the LAN IP for the current machine
 	 * 
@@ -21,7 +19,7 @@ public class IPAddress {
 		try {
 			ret = InetAddress.getLocalHost().getHostAddress();
 		} catch (Exception e) {
-			//
+			// Will never be reached.
 		}
 		return ret;
 	}

@@ -1,42 +1,45 @@
 package networking.game;
 
-import enums.Menu;
-import gui.GUIManager;
-import integrationClient.ClientGameStateReceiver;
-import javafx.application.Platform;
-import networking.client.TeamTable;
-import players.GhostPlayer;
-import rendering.Renderer;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Arrays;
 
+import enums.Menu;
+import gui.AlertBox;
+import gui.GUIManager;
+import integrationClient.ClientGameStateReceiver;
+import javafx.application.Platform;
+import networking.client.TeamTable;
+import players.GhostPlayer;
+
+import rendering.Renderer;
+
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
  * One per client.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class UDPClient extends Thread {
 
+	private boolean debug = false;
+	private int clientID;
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	int sIP;
-	private boolean debug = true;
-	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
 	private InetAddress IPAddress;
 	private GUIManager m;
 	private TeamTable teams;
+	private int sIP;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
 	 * it stores our information server-side.
+	 * 
 	 * @param clientID ID allocated to the client.
 	 * @param udpServIP IP for the server-side UDP socket.
 	 * @param guiManager Manager of GUI.
@@ -44,10 +47,9 @@ public class UDPClient extends Thread {
 	 * @param portNum port to send and receive packets.
 	 * @param nickname Nickname of client.
 	 */
-	public UDPClient(int clientID, String udpServIP, int udpServPort,GUIManager guiManager, TeamTable teams, int portNum, String nickname)
+	public UDPClient(int clientID, String udpServIP, int udpServPort, GUIManager guiManager, TeamTable teams, int portNum, String nickname)
 	{
 		int port = portNum;
-		// 9877
 		this.clientID = clientID;
 		this.m = guiManager;
 		this.teams = teams;
@@ -96,11 +98,13 @@ public class UDPClient extends Thread {
 		try{
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			
 			while(true)
 			{
 				clientSocket.receive(receivePacket);
 			    String receivedPacket = new String(receivePacket.getData(), 0, receivePacket.getLength());
-				if(debug) System.out.println("Received from server:"+receivedPacket);
+	
+			    if(debug) System.out.println("Received from server:"+receivedPacket);
 
 				// -------------------------------------
 				// -----------Game Messages-------------
@@ -120,7 +124,6 @@ public class UDPClient extends Thread {
 					case '7' : capturedFlagAction();
 							   break;
 						
-
 				}
 				if (receivedPacket.contains("Exit"))
 					break;
@@ -132,19 +135,13 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace(System.out);
-			if(debug) System.err.println(e.getStackTrace());
+			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
 		}
 		finally{
 			if(debug) System.out.println("Closing Client.");
 			clientSocket.close();
 		}
-		if(debug) System.out.println("Closing Client.");
-		clientSocket.close();
-		if(debug) System.err.println("Socket closed");
 	}
-
-	
 
 	/**
 	 * Send messages to the server.
@@ -162,8 +159,8 @@ public class UDPClient extends Thread {
 		catch(Exception e)
 		{
 			if (debug) System.out.println("Exception in sendMessage");
-			e.printStackTrace();
-			if(debug) System.err.println(e.getStackTrace());
+			if (debug) System.err.println(e.getStackTrace());
+			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
 		}
 	}
 
@@ -203,9 +200,6 @@ public class UDPClient extends Thread {
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
 			}
 		}
-
-
-
 	}
 
 	/**
@@ -223,7 +217,6 @@ public class UDPClient extends Thread {
 
 		//do stuff here to update the GUI
 	}
-
 
 	/**
 	 * Receives all the player's active bullets and updates them accordingly on the client side,
@@ -286,7 +279,6 @@ public class UDPClient extends Thread {
 		});
 
 	}
-
 
 	/**
 	 * Retrieves a player with a specific id from the current game.

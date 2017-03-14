@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import gui.AlertBox;
 import gui.GUIManager;
@@ -26,9 +25,8 @@ public class Client {
 	private BufferedReader fromServer = null;
 	private Socket server = null;
 	private String nickname;
-	private boolean singlePlayer;
-	private boolean testing;
 	public int exceptionCheck = 0; 
+	private boolean debug = false;
 
 	/**
 	 * Sets up Client, starts up threads and connects to the server, retrieving
@@ -44,11 +42,11 @@ public class Client {
 	 *            GUI Manager object.
 	 * @param udpPortSenderNum
 	 *            Port Number to send UDP messages on.
+	 * @param testing
+	 * 			  Is this class under testing?
 	 */
 	public Client(String passedNickname, int portNum, String serverIP, GUIManager guiManager, int udpPortSenderNum,
 			boolean testing) {
-
-		this.testing = testing;
 
 		nickname = passedNickname;
 
@@ -92,7 +90,7 @@ public class Client {
 					}
 
 					// Sanity output.
-					System.out.println("Client has id:" + clientID);
+					if(debug) System.out.println("Client has id:" + clientID);
 
 					TeamTable teams = new TeamTable();
 
@@ -111,16 +109,16 @@ public class Client {
 						@Override
 						public void run() {
 							try {
-								System.out.println("Client Started");
+								if(debug) System.out.println("Client Started");
 								sender.join(); // Wait for sender to close
 								toServer.close(); // Close connection to server
 								receiver.join(); // Wait for receiver to stop
-								fromServer.close(); // Close connection from
-													// server
+								fromServer.close(); // Close connection from server
 								server.close(); // Close server socket
+								udpReceiver.join(1000);
 								// Acknowledge to the client that everything has
 								// stopped.
-								System.out.println("Client has been stopped.");
+								if(debug) System.out.println("Client has been stopped.");
 								// Catch possible errors.
 							} catch (InterruptedException | IOException e) {
 								if (!testing)
@@ -142,14 +140,6 @@ public class Client {
 						exceptionCheck = 4;
 				}
 			}
-			// If host cannot be found
-//			catch (UnknownHostException e) {
-//				if (!testing)
-//					AlertBox.showAlert("Connection Failed",
-//							"Please check that the server is running, and the IP address is correct.");
-//				else
-//					exceptionCheck = 3;
-//			}
 			// If server isn't running.
 			catch (IOException e) {
 				if (!testing)

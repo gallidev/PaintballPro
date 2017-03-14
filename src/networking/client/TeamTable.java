@@ -6,7 +6,7 @@ import players.GhostPlayer;
 /**
  * Stores teams for each client - their team and enemy team by their perspective.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class TeamTable {
 	private ArrayList<GhostPlayer> myTeam;

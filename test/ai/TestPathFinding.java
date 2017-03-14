@@ -103,6 +103,24 @@ public class TestPathFinding {
         assertTrue(newPath.equals(elimPath2));
     }
 
+    /**
+     * Goal node is not reachable
+     */
+    @Test
+    public void elimEmptyPath1Test() {
+        Path newPath = elimPathfinder.getPath(2, 6, 1, 1);
+        assertTrue(newPath.getLength() == 0);
+    }
+
+    /**
+     * Start node is not reachable
+     */
+    @Test
+    public void elimEmptyPath2Test() {
+        Path newPath = elimPathfinder.getPath(1, 1, 22, 10);
+        assertTrue(newPath.getLength() == 0);
+    }
+
     @Test
     public void ctfPath1Test() {
         Path newPath = ctfPathfinder.getPath(1,6,4,6);
@@ -113,6 +131,31 @@ public class TestPathFinding {
     public void ctfPath2Test() {
         Path newPath = ctfPathfinder.getPath(1,6,10,3);
         assertTrue(newPath.equals(ctfPath2));
+    }
+
+    /**
+     * Goal node is not reachable
+     */
+    @Test
+    public void ctfEmptyPath1Test() {
+        Path newPath = ctfPathfinder.getPath(10,3, 1, 1);
+        assertTrue(newPath.getLength() == 0);
+    }
+
+    /**
+     * Start node is not reachable
+     */
+    @Test
+    public void ctfEmptyPath2Test() {
+        Path newPath = ctfPathfinder.getPath(1,1,4,6);
+        assertTrue(newPath.getLength() == 0);
+    }
+
+    @Test
+    public void testElimNodeGrid(){
+        Node[][] grid = elimPathfinder.getNodeGrid();
+        assertTrue(grid[1][1] == null);
+        assertTrue(grid[22][10].equals(new Node(22, 10)));
     }
 
 

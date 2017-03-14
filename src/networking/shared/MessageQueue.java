@@ -1,12 +1,13 @@
 package networking.shared;
 import java.util.concurrent.*;
+
 /**
  * Class to store messages pending for a particular client.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class MessageQueue {
-	
+
 	private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>();
 	/**
 	 * Inserts the specified message into this queue.
@@ -27,10 +28,7 @@ public class MessageQueue {
 				return (queue.take());
 			} catch (InterruptedException e) {
 				// This can in principle be triggered by queue.take().
-				// But this would only happen if we had interrupt() in our code,
-				// which we don't for this thread.
-				// In any case, if it could happen, we should do nothing here
-				// and try again until we succeed without interruption.
+				// We should do nothing here and try again until we succeed without interruption.
 			}
 		}
 	}
