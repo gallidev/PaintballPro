@@ -32,7 +32,7 @@ public class Lobby {
 	// Structures storing relevant data.
 
 	// Lobby information
-	private static final int lobbyTime = 30;
+	private static final int lobbyTime = 10;
 	private int id;
 	private boolean inGameStatus;
 
@@ -311,10 +311,14 @@ public class Lobby {
 
 			int spawnLoc = 0;
 
-			if (newTeam.getColour() == TeamEnum.RED)
+			if (newTeam.getColour() == TeamEnum.RED){
 				spawnLoc = newTeam.getMembersNo();
-			else
+				newTeam.setColour(TeamEnum.RED);
+			}
+			else{
 				spawnLoc = newTeam.getMembersNo() + 4;
+				newTeam.setColour(TeamEnum.BLUE);
+			}
 
 			//provisionally hard-coded
 			if (teamNum == 1)

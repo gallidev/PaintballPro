@@ -129,7 +129,7 @@ public class OfflinePlayer extends EssentialPlayer
 	public void updateScore() {
 
 		oppTeam.incrementScore();
-		Renderer.incrementScore(oppTeam.getColour(), 1);
+		//Renderer.incrementScore(oppTeam.getColour(), 1);
 
 //		if (myTeam.getColour() == Team.RED){
 //			System.out.println( "Red team score: " + myTeam.getScore());

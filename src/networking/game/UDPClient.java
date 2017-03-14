@@ -1,6 +1,7 @@
 package networking.game;
 
 import enums.Menu;
+import enums.TeamEnum;
 import gui.AlertBox;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
@@ -218,11 +219,20 @@ public class UDPClient extends Thread {
 	public void updateScoreAction(String text){
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
+		
+		if (Renderer.getHud() != null){
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Renderer.incrementScore(TeamEnum.RED, redScore);
+					Renderer.incrementScore(TeamEnum.BLUE, blueScore);
+				}
+			});
+		}
 
-//		System.out.println("Red score: " + redScore);
-//		System.out.println("Blue score: " + blueScore);
+		if (debug) System.out.println("Red score: " + redScore);
+		if (debug) System.out.println("Blue score: " + blueScore);
 
-		//do stuff here to update the GUI
 	}
 
 	/**
@@ -265,8 +275,6 @@ public class UDPClient extends Thread {
 	private void getRemainingTime(String sentence) {
 
 		String time = sentence.split(":")[1];
-
-		//do stuff here to update the UI
 
 		if (debug) System.out.println("remaining time on client: " + time);
 		if(Renderer.getHud() != null){
