@@ -35,7 +35,7 @@ public class Renderer extends Scene
 {
 	static Pane view = new Pane();
 	static GhostPlayer cPlayer;
-	private static OfflinePlayer player;
+	static OfflinePlayer player;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
 	private static HeadUpDisplay hud;
@@ -137,9 +137,9 @@ public class Renderer extends Scene
 		ArrayList<GhostPlayer> players = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 		view.getChildren().addAll(receiver.getMyTeam());
-		receiver.getMyTeam().forEach(GhostPlayer::getNameTag);
+		receiver.getMyTeam().forEach(player -> view.getChildren().add(player.getNameTag()));
 		view.getChildren().addAll(receiver.getEnemies());
-		receiver.getEnemies().forEach(GhostPlayer::getNameTag);
+		receiver.getEnemies().forEach(player -> view.getChildren().add(player.getNameTag()));
 
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);

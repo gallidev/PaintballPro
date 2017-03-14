@@ -1,6 +1,3 @@
-blue_spawn.png - based on:
-http://opengameart.org/node/8867
-
 clean_brick.png
 http://www.textures.com/download/brickmedievalblocks0001/67002
 
@@ -24,9 +21,6 @@ http://www.textures.com/download/floorsmedieval0063/24636
 
 pad.png
 http://opengameart.org/node/8849
-
-red_spawn.png
-http://opengameart.org/node/8856
 
 sand.png
 http://www.textures.com/download/soilsand0200/51849

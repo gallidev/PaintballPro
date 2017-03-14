@@ -1,10 +1,5 @@
 package networking.game;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.Arrays;
-
 import enums.Menu;
 import gui.AlertBox;
 import gui.GUIManager;
@@ -12,8 +7,12 @@ import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
 import players.GhostPlayer;
-
 import rendering.Renderer;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.Arrays;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -23,11 +22,11 @@ import rendering.Renderer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = false;
-	private int clientID;
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
+	private boolean debug = false;
+	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
@@ -270,7 +269,8 @@ public class UDPClient extends Thread {
 		//do stuff here to update the UI
 
 		if (debug) System.out.println("remaining time on client: " + time);
-		Renderer.getHud().tick(Integer.parseInt(time));
+		if(Renderer.getHud() != null)
+			Renderer.getHud().tick(Integer.parseInt(time));
 	}
 	
 	private void capturedFlagAction() {

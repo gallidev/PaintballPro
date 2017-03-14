@@ -60,21 +60,11 @@ public class HeadUpDisplay extends SubScene
 
 	public void tick(int time)
 	{
-//		if(timer.getText().equals("0:00"))
-//		{
-//			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), Renderer.cPlayer.getTeam());
-//			return;
-//		}
-//		String[] timeParse = timer.getText().split(":");
-//		if(timeParse[1].equals("00"))
-//			timer.setText(String.valueOf(Integer.parseInt(timeParse[0]) - 1) + ":59");
-//		else
-//			timer.setText(String.format("%s:%02d", timeParse[0], Integer.parseInt(timeParse[1]) - 1));
 		if(time < 0)
 			return;
 		else if(time == 0)
 		{
-			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), Renderer.cPlayer.getTeam());
+			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), (Renderer.cPlayer == null ? Renderer.player.getTeam() : Renderer.cPlayer.getTeam()));
 			return;
 		}
 		int minutes = (time % 3600) / 60, seconds = time % 60;

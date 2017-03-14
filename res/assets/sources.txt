@@ -1,2 +1,8 @@
 flag.png - based on:
 http://flaticons.net/customize.php?dir=Miscellaneous&icon=Flag.png
+
+powerup_speed.png - based on:
+http://opengameart.org/content/power-up-icons
+
+powerup_shield.png - based on:
+http://opengameart.org/content/some-hud-elements-icons-and-crosshairs
