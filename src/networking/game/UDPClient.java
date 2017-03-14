@@ -269,8 +269,14 @@ public class UDPClient extends Thread {
 		//do stuff here to update the UI
 
 		if (debug) System.out.println("remaining time on client: " + time);
-		if(Renderer.getHud() != null)
-			Renderer.getHud().tick(Integer.parseInt(time));
+		if(Renderer.getHud() != null){
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Renderer.getHud().tick(Integer.parseInt(time));
+				}
+			});
+		}
 	}
 	
 	private void capturedFlagAction() {

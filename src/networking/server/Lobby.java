@@ -445,6 +445,8 @@ public class Lobby {
 			p.setMyTeam(blue);
 		}
 
+		
+		
 
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
