@@ -1,7 +1,6 @@
 package physics;
 
 import enums.TeamEnum;
-import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -20,8 +19,6 @@ public class GhostBullet extends Circle{
 	 * @param angle The angle at which the bullet will travel
 	 */
 	public GhostBullet(int id,double x, double y, TeamEnum team) {
-		setCache(true);
-		setCacheHint(CacheHint.SPEED);
 		this.id = id;
 		this.x = x;
 		this.y = y;
