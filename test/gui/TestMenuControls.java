@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 /**
  * Created by jack on 01/03/2017.
  */
-public class MenuControlsTest {
+public class TestMenuControls {
     @Test
     public void centreInPane() throws Exception {
         JavaFXTestHelper.setupApplication();

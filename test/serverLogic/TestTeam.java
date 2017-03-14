@@ -20,7 +20,7 @@ import rendering.Map;
  * @author Alexandra Paduraru
  *
  */
-public class TeamTest {
+public class TestTeam {
 	
 	private Team team;
 

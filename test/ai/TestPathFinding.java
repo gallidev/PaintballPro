@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests AI Pathfinding
  */
-public class PathFindingTest {
+public class TestPathFinding {
 
     Pathfinding elimPathfinder;
     Pathfinding ctfPathfinder;

@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author Alexandra Paduraru
  *
  */
-public class RoundTimerTest {
+public class TestRoundTimer {
 
 	/**
 	 * Creates three timers with different lasting times: one with 0

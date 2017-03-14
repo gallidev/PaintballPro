@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by jack on 02/03/2017.
  */
-public class GameTypeMenuTest {
+public class TestGameTypeMenu {
 
     @Before
     public void setUp() throws Exception {

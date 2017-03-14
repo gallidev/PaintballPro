@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by jack on 01/03/2017.
  */
-public class MainMenuTest {
+public class TestMainMenu {
 
     @Before
     public void setUp() throws Exception {

@@ -1,3 +1,4 @@
+package integrationClient;
 //package integrationClient;
 //
 //import static org.junit.Assert.*;

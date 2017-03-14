@@ -14,7 +14,7 @@ import serverLogic.TeamMatchMode;
  * @author Alexandra Paduraru
  *
  */
-public class GameModeTest {
+public class TestGameMode {
 
 	GameMode game;
 	Team red = new Team(TeamEnum.RED);

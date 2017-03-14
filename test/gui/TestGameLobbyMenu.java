@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * Created by jack on 07/03/2017.
  */
-public class GameLobbyMenuTest {
+public class TestGameLobbyMenu {
 
     @Before
     public void setUp() throws Exception {

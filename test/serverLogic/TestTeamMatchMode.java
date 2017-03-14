@@ -14,7 +14,7 @@ import serverLogic.TeamMatchMode;
  * @author Alexandra Paduraru
  *
  */
-public class TeamMatchModeTest {
+public class TestTeamMatchMode {
 	
 	private Team red;
 	private Team blue;

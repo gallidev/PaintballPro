@@ -16,7 +16,7 @@ import logic.GameMode;
  * @author Alexandra Paduraru
  *
  */
-public class CaptureTheFlagModeTest {
+public class TestCaptureTheFlagMode {
 
 	CaptureTheFlagMode game;
 	Team red;
