@@ -20,6 +20,7 @@ public class ServerGUI extends Scene implements ServerView {
     private String messages = "";
     private TextArea textArea;
     private Server server;
+    private Thread discovery;
 
     public ServerGUI() {
         super(view, new GUIManager().width, new GUIManager().height);
@@ -46,6 +47,9 @@ public class ServerGUI extends Scene implements ServerView {
             if (server != null) {
                 server.getExitListener().stopServer();
             }
+            if (discovery != null) {
+                discovery.interrupt();
+            }
         });
         view.add(exitButton, 0, 2);
 
@@ -60,8 +64,9 @@ public class ServerGUI extends Scene implements ServerView {
         textArea.setText(messages);
     }
 
-    public void setServer(Server server) {
+    public void setServer(Server server, Thread discovery) {
         this.server = server;
+        this.discovery = discovery;
     }
 
 }

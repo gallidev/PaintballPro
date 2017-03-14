@@ -14,6 +14,7 @@ public class GameServer extends Application {
 
 	ServerGUI gui = new ServerGUI();
 	Server server;
+	Thread discovery;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -22,16 +23,19 @@ public class GameServer extends Application {
 		stage.setScene(gui);
 		stage.setTitle("Paintball Pro Server");
 		stage.setOnCloseRequest((event) -> {
-			server.getExitListener().stopServer();
+			if (server != null)
+				server.getExitListener().stopServer();
+			if (discovery != null)
+				discovery.interrupt();
 			System.exit(0);
 		});
 		stage.show();
 		int portNo = 25566;
-		Thread discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
+		discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
 		discovery.start();
 		server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 		server.start();
-		gui.setServer(server);
+		gui.setServer(server, discovery);
 
 	}
 
