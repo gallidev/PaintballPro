@@ -15,6 +15,8 @@ public class CollisionsHandler
 {
 
 	private ArrayList<Rectangle> propsWalls;
+	private Rectangle spawnAreaRed;
+	private Rectangle spawnAreaBlue;
 	private ArrayList<EssentialPlayer> redTeam;
 	private ArrayList<EssentialPlayer> blueTeam;
 	private Flag flag;
@@ -30,6 +32,8 @@ public class CollisionsHandler
 		this.blueTeam = new ArrayList<>();
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
+		this.spawnAreaBlue = map.getRecSpawn(TeamEnum.BLUE);
+		this.spawnAreaRed = map.getRecSpawn(TeamEnum.RED);
 	}
 
 	public void handlePropWallCollision(EssentialPlayer p){
@@ -160,12 +164,23 @@ public class CollisionsHandler
 			flag.setVisible(true);
 			p.setHasFlag(false);
 		}
-		if(p.hasFlag() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
-			flag.setLayoutX(p.getLayoutX());
-			flag.setLayoutY(p.getLayoutY());
-			flag.setCaptured(false);
-			flag.setVisible(true);
-			p.setHasFlag(false);
+
+		if(p.hasFlag()){
+			boolean baseTouched = true;
+			switch(p.getTeam())
+			{
+				case RED: baseTouched = spawnAreaRed.intersects(flag.getBoundsInParent());
+					break;
+				case BLUE: baseTouched = spawnAreaBlue.intersects(flag.getBoundsInParent());
+					break;
+				default: break;
+			}
+			if(baseTouched && !p.isEliminated()){
+
+				flag.setCaptured(false);
+				flag.setVisible(true);
+				p.setHasFlag(false);
+			}
 		}
 
 	}

@@ -150,10 +150,10 @@ public class ClientReceiver extends Thread {
 	/**
 	 * Method which creates everything on the client-side required to start a new game.
 	 * It does this based on a string received from the server which contains the information about all the other players.
-	 * 
+	 *
 	 *  This method also starts the renderer and updates the GUI manager.
 	 * @param text The protocol message containing all the start game information.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
@@ -179,7 +179,7 @@ public class ClientReceiver extends Thread {
 		if (clientTeam.equals("Red"))
 			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
 		else
-			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.RED);
+			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
 		// extract the other members
 		for (int i = 4; i < data.length - 1; i = i + 2) {
 			int id = Integer.parseInt(data[i]);
@@ -200,6 +200,7 @@ public class ClientReceiver extends Thread {
 			}
 		}
 
+		// don't we need to add your player in myTeam? do we need these classes ?
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
 
@@ -208,7 +209,6 @@ public class ClientReceiver extends Thread {
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
-
 
 		//changing the scene
 		System.out.println("single player = " + singlePlayer);
@@ -260,11 +260,6 @@ public class ClientReceiver extends Thread {
 
 
 	}
-
-
-
-
-
 
 
 	// Different actions to handle the server messages

@@ -194,6 +194,7 @@ public class GUIManager {
             int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
             String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 
+            System.out.println("machName: " + machName);
             // This loads up the client code.
             try {
                 c = new Client(nickname, portNumber, machName, this, udpPortNumber, false);
@@ -343,7 +344,7 @@ public class GUIManager {
     public void setRenderer(Renderer r){
     	this.r = r;
     }
-    
+
 //    public void setGameTimeLeft(int gameTimeLeft) {
 //        this.gameTimeLeft = gameTimeLeft;
 //        notifyGameChanged();
