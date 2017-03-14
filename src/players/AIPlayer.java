@@ -85,7 +85,6 @@ public class AIPlayer extends EssentialPlayer{
 	 */
 	public void updateScore(){
 		oppTeam.incrementScore();
-		Renderer.incrementScore(oppTeam.getColour(), 1);
 
 
 //		if (myTeam.getColour() == TeamEnum.RED){

@@ -17,6 +17,7 @@ public class CollisionsHandler
 	private ArrayList<Rectangle> propsWalls;
 	private ArrayList<EssentialPlayer> redTeam;
 	private ArrayList<EssentialPlayer> blueTeam;
+	private Flag flag;
 
 	private Team red;
 	private Team blue;
@@ -146,7 +147,26 @@ public class CollisionsHandler
 
 	}
 
-	public void handleGameobjectCollision(EssentialPlayer p){
+	public void handleFlagCollision(EssentialPlayer p){
+		if(!flag.isCaptured() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
+			flag.setCaptured(true);
+			flag.setVisible(false);
+			p.setHasFlag(true);
+		}
+		if(p.isEliminated() && p.hasFlag()){
+			flag.setLayoutX(p.getLayoutX());
+			flag.setLayoutY(p.getLayoutY());
+			flag.setCaptured(false);
+			flag.setVisible(true);
+			p.setHasFlag(false);
+		}
+		if(p.hasFlag() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
+			flag.setLayoutX(p.getLayoutX());
+			flag.setLayoutY(p.getLayoutY());
+			flag.setCaptured(false);
+			flag.setVisible(true);
+			p.setHasFlag(false);
+		}
 
 	}
 
