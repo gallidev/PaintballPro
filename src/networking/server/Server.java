@@ -23,19 +23,16 @@ import networking.shared.MessageQueue;
  */
 public class Server extends Thread {
 	
-	
 	static boolean singlePlayer;
 	
 	public boolean isRunning = true;
+	public int exceptionCheck = 0;
 	
 	private int portNumber;
 	private InetAddress listenAddress;
 	private ServerView gui;
-	
-	private int testing = 0;
-	
-	public int exceptionCheck = 0;
 	private ServerExitListener exitListener;
+	private int testing = 0;
 	
 	public Server(int portNumber, String host, ServerView gui, int testing)
 	{

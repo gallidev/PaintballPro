@@ -6,12 +6,12 @@ import java.io.IOException;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
+
 import players.ServerBasicPlayer;
 
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
-
 /**
  * Class to get messages from client, process and put appropriate message for a
  * client.
@@ -28,14 +28,11 @@ public class ServerReceiver extends Thread {
 	private MessageQueue myMsgQueue;
 	private Lobby lobby;
 	private UDPServer udpReceiver;
-
-	private boolean debug = false;
-	
 	private boolean singlePlayer;
+	private boolean debug = false;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
-
 	 *
 	 * @param clientID The ID of the client.
 	 * @param reader Input stream reader for data.
@@ -43,6 +40,7 @@ public class ServerReceiver extends Thread {
 	 * @param sender Sender class for sending messages to the client.
 	 * @param passedGameLobby Table storing all lobby information.
 	 * @param udpReceiver UDP Server sender/receiver.
+	 * @param single Are we playing in Single Player mode?
 	 */
 	public ServerReceiver(int clientID, BufferedReader reader, ClientTable table, ServerSender sender,
 			LobbyTable passedGameLobby, UDPServer udpReceiver, boolean single) {

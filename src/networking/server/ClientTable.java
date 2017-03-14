@@ -1,15 +1,16 @@
 package networking.server;
-import java.util.ArrayList;
-import java.util.concurrent.*;
 
+import java.util.concurrent.*;
 import networking.shared.MessageQueue;
 import players.ServerBasicPlayer;
+
 /**
  * Class to store important client-related information used by Client and Server.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class ClientTable {
+	
 	//Structures storing relevant data
 	
 	//Each client has a message queue.
