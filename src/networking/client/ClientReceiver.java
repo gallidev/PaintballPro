@@ -22,7 +22,7 @@ import rendering.Renderer;
  * Class to get messages from client, process and put appropriate message for a
  * client.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class ClientReceiver extends Thread {
 	private int clientID;
@@ -32,12 +32,9 @@ public class ClientReceiver extends Thread {
 	private GhostPlayer cPlayer;
 	private ArrayList<GhostPlayer> myTeam;
 	private ArrayList<GhostPlayer> enemies;
-	private ClientGameStateReceiver actionReceiver;
 	private UDPClient udpClient;
 	private TeamTable teams;
-
 	private boolean singlePlayer;
-
 	private boolean debug = false;
 
 
@@ -50,6 +47,12 @@ public class ClientReceiver extends Thread {
 	 *            Input stream reader for data.
 	 * @param sender
 	 *            Sender class for sending messages to the client.
+	 * @param m
+	 * 			  GUI manager to pop-up Alert Boxes to the Client.
+	 * @param udpClient
+	 * 			  UDP Game Client to transmit messages to UDP Server.
+	 * @param teams
+	 * 			  Friendly and Opposing Teams stored in an object.
 	 */
 	public ClientReceiver(int Cid, BufferedReader reader, ClientSender sender, GUIManager m, UDPClient udpClient, TeamTable teams) {
 		this.m = m;
@@ -77,27 +80,21 @@ public class ClientReceiver extends Thread {
 
 					// UI Requests
 					if (text.contains("Ret:Red:")) {
-						//if(debug) System.out.println("Got red");
 						String[] red = text.substring(8).split("-");
 						m.updateRedLobby(red);
 					}
 					else if (text.contains("Ret:Blue:")) {
-						//if(debug) System.out.println("Got blue");
 						String[] blue = text.substring(9).split("-");
 						m.updateBlueLobby(blue);
 					}
 					else if (text.contains("Ret:Username:")) {
 						// do nothing.
 					}
-
 					// Lobby status
 					else if (text.contains("TimerStart")) {
 						if(debug) System.out.println("Timer Started");
-						// Do stuff here, we have 10 secs till game start
-						// message sent.
 						m.setTimerStarted();
 					}
-
 					else if (text.contains("LTime:")) {
 						String remTime = text.split(":")[1];
 						int time = Integer.parseInt(remTime);
@@ -105,27 +102,22 @@ public class ClientReceiver extends Thread {
 						m.setTimerStarted();
 						if(debug) System.out.println("Lobby has " + time + " left");
 					}
-
 					else if (text.contains("Single")){
 						singlePlayer = true;
 						if (debug) System.out.println("Single player: " + singlePlayer);
 					}
-
 					// Game status
 					else if (text.contains("StartGame"))
 						startGameAction(text);
-
 					else if (text.contains("EndGame")) {
 						if(debug) System.out.println("Game has ended for player with ID " + clientID);
-						// Get data about scores, and pass into transition
-						// method
+						// Get data about scores, and pass into transition method
 						int someScore = 0;
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
 								m.transitionTo(Menu.EndGame, someScore);
 							}
-
 						});
 					}
 

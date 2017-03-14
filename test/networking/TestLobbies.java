@@ -6,10 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import networking.game.UDPServer;
 import networking.server.Lobby;
 import networking.server.LobbyTable;
-import networking.server.ServerReceiver;
 import players.ServerBasicPlayer;
 
 /**

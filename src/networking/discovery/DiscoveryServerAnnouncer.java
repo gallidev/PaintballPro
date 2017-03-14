@@ -10,11 +10,12 @@ import java.util.Enumeration;
 /**
  * Class to announce a server's presence to a LAN
  * 
- * @author MattW
+ * @author Matthew Walters
  */
-public class DiscoveryServerAnnouncer implements Runnable {
+public class DiscoveryServerAnnouncer extends Thread {
 
     private int portNo;
+    public boolean m_running = true;
 
     /**
      * Create a new announcer
@@ -49,11 +50,12 @@ public class DiscoveryServerAnnouncer implements Runnable {
             socket.joinGroup(broadcastAddress);
 
             // Keep broadcasting the server, every 5 seconds.
-            while (true) {
+            while (m_running) {
                 DatagramPacket broadcast = new DatagramPacket(messageToClients.getBytes(), messageToClients.length(), broadcastAddress, 25561);
                 socket.send(broadcast);
                 Thread.sleep(5000);
             }
+            socket.close();
         } catch (Exception e) {
         	//
         }

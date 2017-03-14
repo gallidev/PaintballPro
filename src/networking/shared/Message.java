@@ -3,7 +3,7 @@ package networking.shared;
 /**
  * Store message information to send to a client.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class Message {
 

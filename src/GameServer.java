@@ -23,11 +23,10 @@ public class GameServer extends Application {
 		stage.setOnCloseRequest((event) -> System.exit(0));
 		stage.show();
 		int portNo = 25566;
-		Thread discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
+		DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(portNo);
 		discovery.start();
 		Server server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 		server.start();
-
 	}
 
 	public static void main(String[] args) {

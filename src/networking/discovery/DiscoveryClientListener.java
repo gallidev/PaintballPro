@@ -1,16 +1,9 @@
 package networking.discovery;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
-
 /**
  * Class to listen out for servers in the LAN
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class DiscoveryClientListener {
 	
@@ -32,16 +25,19 @@ public class DiscoveryClientListener {
 		return client.retVal;
 	}
 	
+	/**
+	 * Test method to test finding a running server.
+	 * @return Test result - did it pass?
+	 */
 	public boolean test() {
-		Thread t = new Thread(new DiscoveryServerAnnouncer(25561));
-		t.start();
+		DiscoveryServerAnnouncer annoc = new DiscoveryServerAnnouncer(25561);
+		annoc.start();
 		String ret = this.findServer();
-		t.interrupt();
+		annoc.m_running = false;
 		client.interrupt();
 		if(ret.split(":")[1].contains("25561"))
 			return true;
 		else
 			return false;
 	}
-	
 }

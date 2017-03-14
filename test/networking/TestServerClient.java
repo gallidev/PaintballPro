@@ -87,6 +87,4 @@ public class TestServerClient {
 		Client client3 = new Client("test:5", 9854, "127.0.0.1", new GUIManager(), 9884, true);
 		assertEquals(client3.exceptionCheck,1);
 	}
-	
-
 }

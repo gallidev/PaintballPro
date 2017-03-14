@@ -43,11 +43,6 @@ public class DiscoveryClient extends Thread{
 			
 			byte[] buf = new byte[1023];
 			DatagramPacket packetFromServer = new DatagramPacket(buf, buf.length);
-//			if(!socket.isConnected())
-//			{
-//				socket.close();
-//				return "";
-//			}
 			
 			socket.receive(packetFromServer);
 			String data = new String(packetFromServer.getData(), packetFromServer.getOffset(),

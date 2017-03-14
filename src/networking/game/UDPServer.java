@@ -1,45 +1,37 @@
 package networking.game;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
-
 
 import integrationServer.ServerInputReceiver;
-import org.junit.Test;
 
 import networking.server.ClientTable;
 import networking.server.Lobby;
 import networking.server.LobbyTable;
-import oldCode.players.ServerPlayer;
 import players.ServerBasicPlayer;
-import players.EssentialPlayer;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
  * One per server.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class UDPServer extends Thread{
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
-
 	private ServerInputReceiver inputReceiver;
-	
 	private int sIP;
-
+	public boolean m_running = true;
 
 	/**
-	 * Constructor, sets global variables to those passed.
+	 * Constructor, sets global variables to those passed for the UDP Server.
 	 * @param clientTable Table storing all necessary client information.
 	 * @param lobby Table storing all necessary lobby information.
+	 * @param sIP Server IP Address.
 	 */
 	public UDPServer(ClientTable clientTable, LobbyTable lobby, int sIP) {
 		clients = clientTable;
@@ -61,12 +53,14 @@ public class UDPServer extends Thread{
 			if(debug) System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:" +serverSocket.getInetAddress());
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			while(true)
+			while(m_running)
 			{
 			      if(debug) System.out.println("Waiting to receive packet");
+			      
 			      serverSocket.receive(receivePacket);
 
 			      if(debug) System.out.println("packetLength: " + receivePacket.getLength());
+			      
 			      String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
 
 			      if(debug) System.out.println("Packet received with text:"+sentence);
@@ -106,25 +100,8 @@ public class UDPServer extends Thread{
 			    	  	String ipFrom = ip.substring(1, ip.length());
 			    	  	if(debug) System.out.println("Message was received from:"+ipFrom);
 			    	  	ipFrom = ipFrom +":"+receivePacket.getPort();
-
-//						// In-Game Status'
-//						// ---------------
-//						if (sentence.contains("Scored"))
-//							newScoreAction(sentence,ipFrom);
-//
-//						// Server Actions
-//						// ---------------
-//						// Send a message to all clients in the game.
-//						// Includes : sending moves, bullets
-//						if (sentence.contains("SendToAll:"))
-//						{
-//							if(debug) System.out.println("Attempting to send all:"+sentence);
-//							sendToAll(sentence,ipFrom);
-//						}
-//						// Reset the client when they exit the game.
-//						if (sentence.contains("Exit:Game"))
-//							exitGame(ipFrom);
 			    	  	sentence = sentence.trim();
+			    	  	
 						switch(sentence.charAt(0)){
 							case '0' : playerInputChanged(sentence);
 									   break;
@@ -132,20 +109,15 @@ public class UDPServer extends Thread{
 							case '2' : getWinner(sentence);
 									   break;
 						}
-
-
 			      }
 			}
 		} catch(Exception e)
 		{
-			e.printStackTrace();
 			if(debug) System.err.println(e.getMessage());
 		}
 		finally
 		{
-			// TODO - Let's do some closing stuff here.
 			if(debug) System.out.println("Closing Server");
-			//this.sendToAll("Exit", "127.0.0.1");
 			serverSocket.close();
 		}
 	}
@@ -161,40 +133,26 @@ public class UDPServer extends Thread{
 
 		// We get all players in the same game as the transmitting player.
 		ServerBasicPlayer[] players = lobbyTab.getLobby(lobbyID).getPlayers();
-		//if(debug) System.out.println("2 Attempting to send to all:"+toBeSent);
 		// Let's send a message to them all.
 		for(ServerBasicPlayer player : players)
 		{
 			int id = player.getID();
-			//if(debug) System.out.println("Trying to send messages to player with id:"+id);
 			String playerIP = clients.getIP(id);
-			//if(debug) System.out.println("Their ip is:"+playerIP);
 			// Parse IP to get first part and port number.
 			String ipAddr = playerIP.split(":")[0];
 			int port = Integer.parseInt(playerIP.split(":")[1]);
-			//if(debug) System.out.println("trying to get port");
 			//String ipPort = playerIP.split(":")[1];
-			//if(debug) System.out.println("All parsed, ip is:"+ipAddr);
 			try{
 				// Let's send the message.
 				InetAddress sendAddress = InetAddress.getByName(ipAddr);
 				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, port);
-				//if(debug) System.out.println("Sending to:"+ipAddr+" port num:" + port);
 				serverSocket.send(sendPacket);
-				//if(debug) System.out.println("Message sent.");
 			}
 			catch(Exception e)
 			{
-				//if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
+				if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
 			}
 		}
-
-		Lobby lobby = lobbyTab.getLobby(lobbyID);
-
-//		//Given a move, the server player's location needs to be updated
-//		if (toBeSent.contains("Move")){
-//				makeMove(lobby,toBeSent);
-//		}
 	}
 
 	/**
