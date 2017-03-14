@@ -83,19 +83,6 @@ public class SettingsMenu {
 			}
 		});
 		
-		// Create the username label and text field
-		Label usernameLabel = new Label("Username");
-		
-		TextField usernameText = new TextField();
-		usernameText.setText(s.getUsername());
-		usernameText.addEventHandler(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				s.setUsername(usernameText.getText());
-				m.notifySettingsObservers();
-			}
-		});
-		
 		// Create the shading option label and checkbox
 		Label shadingLabel = new Label("Use shading (default on)");
 		
@@ -150,12 +137,10 @@ public class SettingsMenu {
 		optGrid.add(musicSlider, 1, 0);
 		optGrid.add(sfxLabel, 0, 1);
 		optGrid.add(sfxSlider, 1, 1);
-		optGrid.add(usernameLabel, 0, 2);
-		optGrid.add(usernameText, 1, 2);
-		optGrid.add(shadingLabel, 0, 3);
-		optGrid.add(shadingCheckbox, 1, 3);
-		optGrid.add(resolutionLabel, 0, 4);
-		optGrid.add(resolutionComboBox, 1, 4);
+		optGrid.add(shadingLabel, 0, 2);
+		optGrid.add(shadingCheckbox, 1, 2);
+		optGrid.add(resolutionLabel, 0, 3);
+		optGrid.add(resolutionComboBox, 1, 3);
 
 		// Create a array of options for the cancel and apply buttons
 		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
