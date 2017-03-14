@@ -71,7 +71,7 @@ public class Server extends Thread {
 			
 			// We start a new UDP server receiver to receive all UDP messages.
 			UDPServer udpServer = null;
-			udpServer = new UDPServer(clientTable, gameLobbies,9800);
+			udpServer = new UDPServer(clientTable, gameLobbies,19857);
 			udpServer.start();
 
 			while (isRunning) {

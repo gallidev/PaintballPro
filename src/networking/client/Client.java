@@ -95,7 +95,7 @@ public class Client {
 					TeamTable teams = new TeamTable();
 
 					// Make a UDP Receiver and Sender for low-latency in-game.
-					UDPClient udpReceiver = new UDPClient(clientID, hostname, 19876, guiManager, teams,
+					UDPClient udpReceiver = new UDPClient(clientID, hostname, 19857, guiManager, teams,
 							udpPortSenderNum, nickname);
 					udpReceiver.start();
 
