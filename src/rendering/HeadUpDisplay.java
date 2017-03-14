@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-class HeadUpDisplay extends SubScene
+public class HeadUpDisplay extends SubScene
 {
 	static BorderPane view = new BorderPane();
 	private final Label timer = new Label("3:00"),
@@ -58,20 +58,27 @@ class HeadUpDisplay extends SubScene
 		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == TeamEnum.RED ? redScore : blueScore).getText()) + amount));
 	}
 
-	void tick()
+	public void tick(int time)
 	{
-		if(timer.getText().equals("BOOM!"))
+//		if(timer.getText().equals("0:00"))
+//		{
+//			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), Renderer.cPlayer.getTeam());
+//			return;
+//		}
+//		String[] timeParse = timer.getText().split(":");
+//		if(timeParse[1].equals("00"))
+//			timer.setText(String.valueOf(Integer.parseInt(timeParse[0]) - 1) + ":59");
+//		else
+//			timer.setText(String.format("%s:%02d", timeParse[0], Integer.parseInt(timeParse[1]) - 1));
+		if(time < 0)
 			return;
-		if(timer.getText().equals("0:00"))
+		else if(time == 0)
 		{
 			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), Renderer.cPlayer.getTeam());
 			return;
 		}
-		String[] timeParse = timer.getText().split(":");
-		if(timeParse[1].equals("00"))
-			timer.setText(String.valueOf(Integer.parseInt(timeParse[0]) - 1) + ":59");
-		else
-			timer.setText(String.format("%s:%02d", timeParse[0], Integer.parseInt(timeParse[1]) - 1));
+		int minutes = (time % 3600) / 60, seconds = time % 60;
+		timer.setText(String.format("%02d:%02d", minutes, seconds));
 
 	}
 }

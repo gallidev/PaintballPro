@@ -1,19 +1,17 @@
 package networking.game;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import enums.Menu;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
-import physics.Bullet;
 import players.GhostPlayer;
-import players.EssentialPlayer;
+import rendering.Renderer;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.Arrays;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -23,26 +21,18 @@ import players.EssentialPlayer;
  */
 public class UDPClient extends Thread {
 
-	private boolean debug = true;
-	private int clientID;
-
-	private String nickname;
-
-	private ClientGameStateReceiver gameStateReceiver;
-
 	public boolean bulletDebug = false;
-
-	private DatagramSocket clientSocket;
-	private InetAddress IPAddress;
-
-	private GUIManager m;
-
-	private TeamTable teams;
-
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	
 	int sIP;
+	private boolean debug = true;
+	private int clientID;
+	private String nickname;
+	private ClientGameStateReceiver gameStateReceiver;
+	private DatagramSocket clientSocket;
+	private InetAddress IPAddress;
+	private GUIManager m;
+	private TeamTable teams;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -279,7 +269,7 @@ public class UDPClient extends Thread {
 		//do stuff here to update the UI
 
 		if (debug) System.out.println("remaining time on client: " + time);
-
+		Renderer.getHud().tick(Integer.parseInt(time));
 	}
 	
 	private void capturedFlagAction() {
