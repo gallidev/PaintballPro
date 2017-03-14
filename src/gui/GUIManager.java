@@ -191,6 +191,8 @@ public class GUIManager {
 
 		    String serverLocation = ipAddress + ":25566";
 
+            System.out.println("Connecting to: " + serverLocation);
+
             int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
             String machName = serverLocation.split(":")[0]; // The machine has a particular name.
 

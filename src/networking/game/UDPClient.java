@@ -180,7 +180,7 @@ public class UDPClient extends Thread {
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if(debug)System.out.println(text);
 
-		if(text != ""){
+		if(!text.equals("")){
 			String[] actions = text.split(":");
 
 			int id = Integer.parseInt(actions[1]);

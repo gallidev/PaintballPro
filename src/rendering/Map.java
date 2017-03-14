@@ -2,6 +2,7 @@ package rendering;
 
 import com.google.gson.Gson;
 import enums.GameMode;
+import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
@@ -17,7 +18,6 @@ import physics.Flag;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static rendering.Renderer.view;
 
@@ -97,9 +97,7 @@ public class Map
 
 			if(map.gameMode == GameMode.CAPTURETHEFLAG)
 			{
-				int randomFlag = (new Random()).nextInt(map.objectives.length);
-				Flag flag = new Flag(map.objectives[randomFlag].x, map.objectives[randomFlag].y);
-				flag.setEffect(new DropShadow(16, Color.BLACK));
+				Flag flag = new Flag(map.objectives);
 				view.getChildren().add(flag);
 			}
 
@@ -196,6 +194,14 @@ public class Map
 	public ArrayList<Rectangle> getRecProps()
 	{
 		return getCollisions(propGroup);
+	}
+
+	public Rectangle getRecSpawn(TeamEnum team)
+	{
+		if(team == TeamEnum.RED)
+			return new Rectangle(spawns[0].x * 64, spawns[0].y * 64, 128, 128);
+		else
+			return new Rectangle(spawns[4].x * 64, spawns[4].y * 64, 128, 128);
 	}
 
 	public Floor[] getFloors()

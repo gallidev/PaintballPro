@@ -39,7 +39,7 @@ public abstract class EssentialPlayer extends ImageView {
 	int bulletCounter;
 	private Spawn[] spawn;
 	private Polygon bounds = new Polygon();
-	private Flag flag;
+	private boolean hasFlag;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -291,14 +291,14 @@ public abstract class EssentialPlayer extends ImageView {
 		mouseY = newY;
 	}
 
-	public Flag getFlag()
+	public boolean hasFlag()
 	{
-		return flag;
+		return hasFlag;
 	}
 
-	public void setFlag(Flag flag)
+	public void setHasFlag(boolean hasFlag)
 	{
-		this.flag = flag;
+		this.hasFlag = hasFlag;
 	}
 
 	public boolean isEliminated(){
@@ -325,7 +325,6 @@ public abstract class EssentialPlayer extends ImageView {
 	public TeamEnum getColour(){
 		return team;
 	}
-
 
 	public abstract void setMyTeam(Team team);
 	public abstract void setOppTeam(Team team);
