@@ -257,9 +257,10 @@ public class ServerReceiver extends Thread {
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 		int curTotal = lobby.getCurrPlayerTotal();
 		// lobby.timerStart(this);
-		if (curTotal == 2) {
+		lobby.timerStart(this, udpReceiver, gameMode);
+		if (curTotal == lobby.getMaxPlayers()) {
 			lobby.switchGameStatus();
-			lobby.timerStart(this, udpReceiver, gameMode);
+			
 		}
 	}
 

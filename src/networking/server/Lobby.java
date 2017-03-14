@@ -32,7 +32,7 @@ import serverLogic.TeamMatchMode;
 public class Lobby {
 	// Structures storing relevant data.
 
-	private static final int lobbyTime = 10;
+	private static final int lobbyTime = 30;
 	// Lobby information
 	private int id;
 	private boolean inGameStatus;
@@ -522,4 +522,8 @@ public class Lobby {
 		maxId = newMax;
 	}
 
+	public int getMaxPlayers(){
+		return MaxPlayers;
+	}
+	
 }
