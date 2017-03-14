@@ -15,7 +15,7 @@ import networking.shared.MessageQueue;
 /**
  * Controls main client code - holds server sender and receiver threads.
  *
- * @author MattW
+ * @author Matthew Walters
  */
 public class Client {
 

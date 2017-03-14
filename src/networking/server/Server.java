@@ -1,4 +1,5 @@
 package networking.server;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,15 +9,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import gui.AlertBox;
 import gui.ServerView;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
+
 /**
  * Class to represent a running server that connects to multiple clients via
  * sockets.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class Server extends Thread {
 	
@@ -29,17 +32,26 @@ public class Server extends Thread {
 	private InetAddress listenAddress;
 	private ServerView gui;
 	
-	public boolean testing = false;
+	private int testing = 0;
 	
-	public Server(int portNumber, String host, ServerView gui)
+	public int exceptionCheck = 0; 
+	
+	public Server(int portNumber, String host, ServerView gui, int testing)
 	{
-		this.portNumber = portNumber;
+		this.testing = testing;
 		try {
+			this.portNumber = portNumber;
 			this.listenAddress = InetAddress.getByName(host);
+			this.gui = gui;
 		} catch (UnknownHostException e) {
-			//
+			if(testing == 0) 
+			{
+				AlertBox.showAlert("Connection Failed","Unknown host.");
+				System.exit(1);
+			}
+			else
+				exceptionCheck = 1;
 		}
-		this.gui = gui;
 	}
 	
 	/**
@@ -58,84 +70,96 @@ public class Server extends Thread {
 		try {
 			// Open server socket
 			serverSocket = new ServerSocket(portNumber, 1, listenAddress);
-		} catch (IOException e) {
-			System.err.println("Couldn't listen on port " + portNumber);
-			System.exit(1); // Exit.
-		}
-		// Good. We succeeded. But we must try again for the same reason:
-		
-		// We start a new UDP server receiver to receive all UDP messages.
-		UDPServer udpReceiver = null;
-		udpReceiver = new UDPServer(clientTable, gameLobbies,19876);
-		udpReceiver.start();
-		
-		while (isRunning) {
-			try {
-				// We loop for ever, as servers usually do, we can exit by
-				// typing Exit into command line though.
-				// Server input stream.
-				BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-				// Creates a thread which looks for messages of a certain format
-				// and acts accordingly if they match.
-				ServerExitListener listener = new ServerExitListener(input);
-				listener.start();
-				
-				while (!isInterrupted() && listener.isAlive()) {
-					// Listen to the socket, accepting connections from new
-					// clients:
-					Socket socket = serverSocket.accept();
-					listener.addSocket(socket);
-					// This is so that we can use readLine():
-					BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					// We ask the client what its name is:
-					String clientName = fromClient.readLine();
-					PrintStream toClient = new PrintStream(socket.getOutputStream());
-					String text = "";
-					int clientID;
-					// For debugging:
-					//gui.addMessage(clientName + " connected");
-					
-					// We add the client to the table. Returns a unique client
-					// id
-					clientID = clientTable.add(clientName);
-					// We create and start a new thread to write to the client:
-					ServerSender sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
-					sender.start();
-					
-					// We start a new UDP server sender to send messages to a client.
-					// UDPServerSender udpSender = new UDPServerSender(clientTable.getUDPqueue(clientID));
-					
-					// We create and start a new thread to read from the client:
-					ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpReceiver, singlePlayer);
-					reciever.start();
 			
-					// For debugging
-					text = "UserID is:" + clientID;
-					if(!testing) gui.addMessage(text);
-					
-					if (singlePlayer)
-						singlePlayerIntegration();
-					
-					// Sends a message to the client detailing their unique user
-					// id.
-					Message msg = new Message(text);
-					MessageQueue recipientsQueue = clientTable.getQueue(clientID);
-					recipientsQueue.offer(msg);
-				}
-				udpReceiver.interrupt();
-			// Catch some possible errors - IO.
-			} catch (IOException e) {
-				System.err.println("IO error " + e.getMessage() + ". Attempting to re-establish...");
+			// We start a new UDP server receiver to receive all UDP messages.
+			UDPServer udpServer = null;
+			udpServer = new UDPServer(clientTable, gameLobbies,19876);
+			udpServer.start();
+
+			while (isRunning) {
 				try {
-					serverSocket = new ServerSocket(portNumber);
-					if(!testing) gui.addMessage("Connection re-established.");
-				} catch (IOException f) {
-					System.err.println("Couldn't listen on port " + portNumber + ". Giving up.");
-					System.exit(1); // Give up.
+					// We loop for-ever, as servers usually do, we can exit by
+					// typing Exit into command line though.
+					
+					// Server input stream.
+					BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+					// Creates a thread which looks for messages of a certain format
+					// and acts accordingly if they match.
+					ServerExitListener listener = new ServerExitListener(input);
+					listener.start();
+
+					while (!isInterrupted() && listener.isAlive()) {
+						
+						if(testing == 2)
+							throw new IOException();
+						
+						// Listen to the socket, accepting connections from new
+						// clients:
+						Socket socket = serverSocket.accept();
+						listener.addSocket(socket);
+						// This is so that we can use readLine():
+						BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						// We ask the client what its name is:
+						String clientName = fromClient.readLine();
+						PrintStream toClient = new PrintStream(socket.getOutputStream());
+						String text = "";
+						int clientID;
+						
+						// For debugging:
+						if(testing == 0) gui.addMessage(clientName + " connected");
+
+						// We add the client to the table. Returns a unique client
+						// id
+						clientID = clientTable.add(clientName);
+						// We create and start a new thread to write to the client:
+						ServerSender sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
+						sender.start();
+
+						// We create and start a new thread to read from the client:
+						ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpServer, singlePlayer);
+						reciever.start();
+
+						// For debugging
+						text = "UserID is:" + clientID;
+						if(testing == 0) gui.addMessage(text);
+
+						if (singlePlayer)
+							singlePlayerIntegration();
+
+						// Sends a message to the client detailing their unique user id.
+						Message msg = new Message(text);
+						MessageQueue recipientsQueue = clientTable.getQueue(clientID);
+						recipientsQueue.offer(msg);
+					}
+					udpServer.interrupt();
+				// Catch some possible errors - IO.
+				} catch (IOException e) {
+					if(testing == 0) 
+					{
+						AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
+						System.exit(1);
+					}
+					else
+					{
+						System.out.println("3 Couldn't listen on port "+portNumber);
+						exceptionCheck = 3;
+					}
 				}
 			}
+			udpServer.interrupt();
+			
+		} catch (IOException e) {
+			if(testing == 0) 
+			{
+				AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
+				System.exit(1);
+			}
+			else
+			{
+				System.out.println("2 Couldn't listen on port "+portNumber);
+				exceptionCheck = 2;
+			}
 		}
-		udpReceiver.interrupt();
 	}
 	
 	/**
@@ -145,8 +169,6 @@ public class Server extends Thread {
 	 */
 	private static void singlePlayerIntegration() {
 		System.out.println("Local server starts game ... ");
-		
-		
 	}
 	
 	public  void setSinglePlayer(boolean b){

@@ -25,7 +25,7 @@ public class GameServer extends Application {
 		int portNo = 25566;
 		Thread discovery = new Thread(new DiscoveryServerAnnouncer(portNo));
 		discovery.start();
-		Server server = new Server(portNo, IPAddress.getLAN(), gui);
+		Server server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 		server.start();
 
 	}
