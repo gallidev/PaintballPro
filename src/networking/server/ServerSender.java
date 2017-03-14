@@ -9,11 +9,10 @@ import networking.shared.MessageQueue;
 
 // Continuously reads from message queue for a particular client,
 // forwarding to the client.
-
 /**
  * Class to send messages to a client.
  * 
- * @author MattW
+ * @author Matthew Walters
  */
 public class ServerSender extends Thread {
 
