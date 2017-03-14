@@ -44,6 +44,7 @@ public class ClientGameStateReceiver {
 		playerToBeUpdated.setSyncY(y);
 		playerToBeUpdated.setRotationAngle(angle);
 		playerToBeUpdated.setSyncVisible(visible);
+		System.out.println("updated player with id : " + id);
 	}
 
 	/**

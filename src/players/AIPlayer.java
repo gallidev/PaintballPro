@@ -122,10 +122,12 @@ public class AIPlayer extends EssentialPlayer{
 
 	public void setOppTeam(Team oppTeam){
 		this.oppTeam = oppTeam;
+		enemies = oppTeam.getMembers();
 	}
 
 	public void setMyTeam(Team t){
 		myTeam = t;
+		teamPlayers = t.getMembers();
 	}
 
 	public void setMoving(boolean b) { this.moving = b;}
