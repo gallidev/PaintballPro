@@ -77,12 +77,15 @@ public class Pathfinding {
         path.clearPath();
         closed.clear();
         open.clear();
-        open.add(nodes[x][y]); //find nearest non null node
 
         Node start = nodes[x][y];
-        start.heuristicCost = euclideanCost(x, y, tx, ty);
-        start.finalCost = 0;
         Node goal = nodes[tx][ty];
+
+        if(start != null && goal != null) {
+            open.add(nodes[x][y]);
+            start.heuristicCost = euclideanCost(x, y, tx, ty);
+            start.finalCost = 0;
+        }
 
         while(true){
             Node current = open.poll();
@@ -208,15 +211,11 @@ public class Pathfinding {
         return result;
     }
 
-    //Cheaper, but not efficient for diagonal movements
-    private float manhattanCost(int x, int y, int tx, int ty) {
-        float dx = Math.abs(tx - x);
-        float dy = Math.abs(ty - y);
-
-        return dx + dy;
-    }
-
     private void createPath(Node start, Node goal){
+        if(goal == null){
+            path = new Path();
+            return;
+        }
         Node n = goal;
         while (n.parent != null){
             path.prependNode(n.parent);
