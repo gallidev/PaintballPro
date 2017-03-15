@@ -43,13 +43,13 @@ public class ClientGameStateReceiver {
 
 		playerToBeUpdated.setSyncX(x);
 		playerToBeUpdated.setSyncY(y);
-		playerToBeUpdated.setRotationAngle(angle);
+		playerToBeUpdated.setSyncRotationAngle(angle);
 		playerToBeUpdated.setSyncVisible(visible);
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
 	/**
-	 * Update a player's active bullets. 
+	 * Update a player's active bullets.
 	 * @param id The id of the player.
 	 * @param bullets String which contains the coordinates and the angle of the bullets fired by this player,
 	 * 				  according to the protocol.
@@ -74,7 +74,7 @@ public class ClientGameStateReceiver {
 //			p.setFiredBullets(firedBullets);
 		}
 	}
-	
+
 	/**
 	 * Helper method to find the player with a specific id from the entire list of players in the game.
 	 * @param id The player's id.
@@ -86,7 +86,7 @@ public class ClientGameStateReceiver {
 		}
 		return null;
 	}
-	
+
 
 
 }

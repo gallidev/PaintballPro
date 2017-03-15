@@ -76,7 +76,7 @@ public class GhostPlayer extends ImageView {
 		return rotation;
 	}
 
-	public synchronized void setRotationAngle(double angleDegress) {
+	public synchronized void setSyncRotationAngle(double angleDegress) {
 		this.rotation.setAngle(angleDegress);
 	}
 

@@ -51,7 +51,7 @@ public class GhostBullet extends Circle{
 		return this.x;
 	}
 
-	public void setX(double x){
+	public synchronized void setX(double x){
 		this.x = x;
 		setCenterX(x);
 	}
@@ -60,7 +60,7 @@ public class GhostBullet extends Circle{
 		return this.y;
 	}
 
-	public void setY(double y){
+	public synchronized void setY(double y){
 		this.y = y;
 		setCenterY(y);
 	}

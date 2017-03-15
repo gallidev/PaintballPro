@@ -33,8 +33,8 @@ public class GameServer extends Application {
 		int portNo = 25566;
 		DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(portNo);
 		discovery.start();
-		server = new Server(portNo, IPAddress.getLAN(), gui, 0);
-		//server = new Server(portNo, "10.20.202.182", gui, 0);
+		//server = new Server(portNo, IPAddress.getLAN(), gui, 0);
+		server = new Server(portNo, "10.20.202.182", gui, 0);
 		server.start();
 		gui.setServer(server, discovery);
 	}
