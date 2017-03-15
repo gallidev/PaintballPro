@@ -1,5 +1,11 @@
 package rendering;
 
+import static players.GhostPlayer.playerHeadX;
+import static players.GhostPlayer.playerHeadY;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 import enums.TeamEnum;
 import gui.GUIManager;
 import integrationClient.ClientInputSender;
@@ -14,17 +20,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import logic.GameMode;
 import networking.client.ClientReceiver;
-import physics.*;
+import physics.Bullet;
+import physics.CollisionsHandler;
+import physics.GhostBullet;
+import physics.InputHandler;
+import physics.KeyPressListener;
+import physics.KeyReleaseListener;
+import physics.MouseListener;
 import players.EssentialPlayer;
 import players.GhostPlayer;
 import players.OfflinePlayer;
-
-import java.util.ArrayList;
-import java.util.Random;
-
-import static players.GhostPlayer.playerHeadX;
-import static players.GhostPlayer.playerHeadY;
+import serverLogic.CaptureTheFlagMode;
+import serverLogic.Team;
+import serverLogic.TeamMatchMode;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.
@@ -72,6 +82,8 @@ public class Renderer extends Scene
 
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
+		
+		//GameMode gameSim = initGame(player);
 
 		players.addAll(player.getMyTeam().getMembers());
 		players.addAll(player.getOppTeam().getMembers());
@@ -119,6 +131,7 @@ public class Renderer extends Scene
 		};
 		timer.start();
 	}
+
 
 	/**
 	 * Renders an online game instance by loading the selected map, receiving data from the client receiver and responding to changes in game logic.
@@ -180,6 +193,22 @@ public class Renderer extends Scene
 		timer.start();
 	}
 
+	private GameMode initGame(OfflinePlayer player) {
+		Team red = player.getMyTeam();
+		red.addMember(player);
+		
+		Team blue = player.getOppTeam();
+		
+		switch (map.getGameMode()){
+
+//			case enums.GameMode.ELIMINATION : return new TeamMatchMode(red, blue);
+//			case enums.GameMode.CAPTURETHEFLAG : return new CaptureTheFlagMode(red, blue);
+		}
+		return null;
+		
+		
+	}
+	
 	/**
 	 * Toggles the pause menu whilst in-game
 	 */
@@ -310,7 +339,7 @@ public class Renderer extends Scene
 		}
 		else
 		{
-			System.out.println("cPlayer x and y :" + cPlayer.getLayoutX() + "  " + cPlayer.getLayoutY() );
+			//System.out.println("cPlayer x and y :" + cPlayer.getLayoutX() + "  " + cPlayer.getLayoutY() );
 			view.relocate(((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY()) * view.getScaleY());
 			hud.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
 			if(view.getChildren().contains(pauseMenu))

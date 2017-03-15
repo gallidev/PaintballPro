@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import ai.AIManager;
+import ai.HashMapGen;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
@@ -325,8 +326,9 @@ public class Lobby {
 			}
 
 			//provisionally hard-coded
-			if (teamNum == 1)
+			if (teamNum == 1){
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
+			}
 			else
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer);
 
@@ -434,19 +436,20 @@ public class Lobby {
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		System.out.println("Red user players: " + red.getMembersNo());
 
+		HashMapGen hashMaps = new HashMapGen(map);
 		//filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
+		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
 		redAIM.createPlayers();
 
-		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
+		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
 		blueAIM.createPlayers();
-
+		
 		//setting team players and enemies
 		for(EssentialPlayer p : red.getMembers()){
 			p.setOppTeam(blue);
 			p.setMyTeam(red);
 		}
-
+		
 		for(EssentialPlayer p : blue.getMembers()){
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
@@ -475,15 +478,16 @@ public class Lobby {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
-			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":" ;
+			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 
 			// adding to the string the information about all the other players
 			for (EssentialPlayer aux : players)
 				if (aux.getPlayerId() != p.getPlayerId())
 					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"  + aux.getNickname() + ":";
 
-			if (p instanceof UserPlayer)
+			if (p instanceof UserPlayer){
 				receiver.sendToSpec(p.getPlayerId(), toBeSent);
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.EssentialPlayer;
 import rendering.Map;
+import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 
 public class CollisionsHandler
@@ -164,6 +165,11 @@ public class CollisionsHandler
 				flag.setCaptured(true);
 				flag.setVisible(false);
 				p.setHasFlag(true);
+				
+				if (red.containsPlayer(p))
+					red.incrementScore(CaptureTheFlagMode.flagScore);
+				else
+					blue.incrementScore(CaptureTheFlagMode.flagScore);
 			}
 			if(p.isEliminated() && p.hasFlag()){
 				if(debug) System.out.println("lost the flag");
@@ -172,6 +178,11 @@ public class CollisionsHandler
 				flag.setCaptured(false);
 				flag.setVisible(true);
 				p.setHasFlag(false);
+				
+				if (red.containsPlayer(p))
+					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
+				else
+					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
 			}
 
 			if(p.hasFlag()){

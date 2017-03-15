@@ -164,6 +164,7 @@ public class GUIManager {
         if (localServerCode) {
             ipAddress = "127.0.0.1";
             Server local = new Server(25566,ipAddress,new ServerConsole(), 0);
+
             local.setSinglePlayer(true);
            // s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 

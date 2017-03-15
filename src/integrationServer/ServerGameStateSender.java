@@ -10,6 +10,9 @@ import enums.TeamEnum;
 import networking.game.UDPServer;
 import physics.Bullet;
 import players.EssentialPlayer;
+import serverLogic.CaptureTheFlagMode;
+import serverLogic.Team;
+import serverLogic.TeamMatchMode;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -147,8 +150,12 @@ public class ServerGameStateSender {
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 			
-//			if (p.getFlag() != null && p.getFlag().isCaptured())
-//				udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+				if (p.hasFlag()){
+					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+				}
+			}
+			
 		}
 	}
 

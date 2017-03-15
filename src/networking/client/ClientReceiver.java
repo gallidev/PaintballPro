@@ -159,6 +159,7 @@ public class ClientReceiver extends Thread {
 	 * @author Filippo Galli
 	 */
 	public void startGameAction(String text) {
+		System.out.println("called start game");
 		// get all the relevant data from the message : 2:<gameMode>:2:Red:1:Red:
 		String[] data = text.split(":");
 
@@ -235,10 +236,12 @@ public class ClientReceiver extends Thread {
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
+		System.out.println("game mode is " + gameMode);
 		//changing the scene
 		System.out.println("single player = " + singlePlayer);
 		if (!singlePlayer){
 			if (gameMode == 1){
+				System.out.println("trying to load gui for elim..");
 				Renderer r = new Renderer("elimination", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
@@ -247,8 +250,10 @@ public class ClientReceiver extends Thread {
 						m.transitionTo(Menu.EliminationMulti, null);
 					}
 				});
+				System.out.println("loaded gui for elim");
 			}
 			else{
+				System.out.println("trying to load the gui...");
 				Renderer r = new Renderer("ctf", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
@@ -257,6 +262,7 @@ public class ClientReceiver extends Thread {
 						m.transitionTo(Menu.CTFMulti, null);
 					}
 				});
+				System.out.println("all loaded");
 			}
 		}
 		else{

@@ -16,18 +16,20 @@ public class AIManager{
 	private Map map;
 	private CollisionsHandler collissionsHandler;
 	int nextId;
+	private HashMapGen hashMaps;
 
-	public AIManager(Team t, Map m, CollisionsHandler ch, int maxId){
+	public AIManager(Team t, Map m, CollisionsHandler ch, int maxId, HashMapGen hm){
 		super();
 		this.team = t;
 		this.map = m;
 		this.collissionsHandler = ch;
 		nextId = maxId + 1;
+		hashMaps = hm;
 	}
 
 	public void createPlayers(){
 		int currentPlayersNo = team.getMembersNo();
-		HashMapGen hashMaps = new HashMapGen(map);
+		
 		
 		while (currentPlayersNo < 4){
 			int spawnLoc = 0;

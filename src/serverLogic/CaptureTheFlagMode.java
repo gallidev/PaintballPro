@@ -12,7 +12,9 @@ public class CaptureTheFlagMode extends GameMode {
 	
 	private RoundTimer timer;
 	private static final long roundTime = 300; 
-	private static final int flagScore = 5;
+	public static final int flagScore = 5;
+	public static final int lostFlagScore = 2;
+
 	
 	/**
 	 * Initialises the Capture the Flag game mode with two given teams that are playing in the game.
