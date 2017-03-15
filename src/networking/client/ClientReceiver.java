@@ -11,6 +11,7 @@ import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
+import players.AIPlayer;
 import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
@@ -181,22 +182,46 @@ public class ClientReceiver extends Thread {
 		else
 			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
 		// extract the other members
-		for (int i = 4; i < data.length - 1; i = i + 2) {
+		for (int i = 4; i < data.length - 2; i = i + 3) {
 			int id = Integer.parseInt(data[i]);
+			String nickname = data[i+2];
 			if (data[i + 1].equals(clientTeam)) {
-				if (clientTeam.equals("Red"))
-					myTeam.add(new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED));
-				else
-					myTeam.add(new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE),null,  TeamEnum.BLUE));
+				if (clientTeam.equals("Red")){
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED);
+					p.setNickname(nickname);
+					myTeam.add(p);
+					System.out.println("Created player with nickname " + p.getNickname());
+				}
+					
+				else{
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.BLUE),null,  TeamEnum.BLUE);
+					p.setNickname(nickname);
+					myTeam.add(p);
+					System.out.println("Created player with nickname " + p.getNickname());
+
+				}
+					
 			} else {
-				if (clientTeam.equals("Red"))
-					enemies.add(new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE), null, TeamEnum.BLUE));
-				else
-					enemies.add(new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED));
+				if (clientTeam.equals("Red")){
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.BLUE), null, TeamEnum.BLUE);
+					p.setNickname(nickname);
+					enemies.add(p);
+					System.out.println("Created player with nickname " + p.getNickname());
+
+				}
+					
+				else{
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
+							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED);
+					p.setNickname(nickname);
+					enemies.add(p);
+					System.out.println("Created player with nickname " + p.getNickname());
+
+				}
+					
 			}
 		}
 

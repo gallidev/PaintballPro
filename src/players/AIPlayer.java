@@ -23,6 +23,7 @@ public class AIPlayer extends EssentialPlayer{
 	//private AudioManager audio;
 	private ArrayList<EssentialPlayer> enemies;
 	private ArrayList<EssentialPlayer> teamPlayers;
+	private String nickname;
 
 
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
@@ -98,7 +99,7 @@ public class AIPlayer extends EssentialPlayer{
 
 
 	}
-
+	
 	@Override
 	protected void updateAngle(){
 		rotation.setAngle(Math.toDegrees(angle));
@@ -159,5 +160,5 @@ public class AIPlayer extends EssentialPlayer{
 //	public CollisionsHandler getCollisionHandler(){
 //		return this.collisionsHandler;
 //	}
-
+	
 }

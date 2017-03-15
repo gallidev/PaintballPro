@@ -1,5 +1,10 @@
 package players;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Random;
+import java.util.Scanner;
+
 import ai.HashMapGen;
 import audio.AudioManager;
 import enums.TeamEnum;
@@ -12,10 +17,7 @@ import physics.CollisionsHandler;
 import physics.InputHandler;
 import rendering.ImageFactory;
 import rendering.Map;
-import rendering.Renderer;
 import serverLogic.Team;
-
-import java.util.Random;
 
 /**
  * The player, represented by an ImageView that should be running
@@ -73,6 +75,8 @@ public class OfflinePlayer extends EssentialPlayer
 				oppTeam.addMember(p);
 		}
 
+		setPlayerNames();
+		
 		for(EssentialPlayer p : myTeam.getMembers()){
 			p.setOppTeam(oppTeam);
 			p.setMyTeam(myTeam);
@@ -215,6 +219,28 @@ public class OfflinePlayer extends EssentialPlayer
 		Bullet bullet = new Bullet(bulletCounter++, bulletX, bulletY, bulletAngle, team);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
+	}
+	
+	private void setPlayerNames(){
+		File names = new File("res/names.txt");
+		Scanner readNames;
+		try {
+			readNames = new Scanner(names);
+			for (EssentialPlayer p : myTeam.getMembers()){
+				if (p != this)
+					p.setNickname(readNames.nextLine());
+			}
+			
+			for (EssentialPlayer p : oppTeam.getMembers()){
+				if (p != this)
+					p.setNickname(readNames.nextLine());
+			}
+			
+			readNames.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 
