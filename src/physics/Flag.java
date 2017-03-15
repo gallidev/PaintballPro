@@ -13,12 +13,14 @@ import java.util.Random;
 public class Flag extends ImageView implements GameObject
 {
 	private boolean captured = false;
+	private Objective[] locations;
 
 	public Flag(Objective[] locations)
 	{
 		super(ImageFactory.getObjectiveImage(ObjectiveType.FLAG));
-		int randomLocation = (new Random()).nextInt(locations.length);
-		relocate(locations[randomLocation].getX() * 64, locations[randomLocation].getY() * 64);
+		this.locations = locations;
+		int randomLocation = (new Random()).nextInt(this.locations.length);
+		relocate(locations[randomLocation].getX() * 64, this.locations[randomLocation].getY() * 64);
 		setEffect(new DropShadow(16, Color.BLACK));
 	}
 
@@ -30,6 +32,12 @@ public class Flag extends ImageView implements GameObject
 	public void setCaptured(boolean b)
 	{
 		captured = b;
+	}
+
+	public void resetPosition(){
+		int randomLocation = (new Random()).nextInt(locations.length);
+		relocate(locations[randomLocation].getX() * 64, locations[randomLocation].getY() * 64);
+		setEffect(new DropShadow(16, Color.BLACK));
 	}
 
 	@Override

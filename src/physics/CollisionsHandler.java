@@ -152,37 +152,41 @@ public class CollisionsHandler
 	}
 
 	public void handleFlagCollision(EssentialPlayer p){
-		if(!flag.isCaptured() && p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) && !p.isEliminated()){
-			flag.setCaptured(true);
-			flag.setVisible(false);
-			p.setHasFlag(true);
-		}
-		if(p.isEliminated() && p.hasFlag()){
-			flag.setLayoutX(p.getLayoutX());
-			flag.setLayoutY(p.getLayoutY());
-			flag.setCaptured(false);
-			flag.setVisible(true);
-			p.setHasFlag(false);
-		}
+		if(flag != null){
 
-		if(p.hasFlag()){
-			boolean baseTouched = true;
-			switch(p.getTeam())
-			{
-				case RED: baseTouched = spawnAreaRed.intersects(flag.getBoundsInParent());
-					break;
-				case BLUE: baseTouched = spawnAreaBlue.intersects(flag.getBoundsInParent());
-					break;
-				default: break;
+			if(!flag.isCaptured() &&
+					p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) &&
+					!p.isEliminated()){
+				flag.setCaptured(true);
+				flag.setVisible(false);
+				p.setHasFlag(true);
 			}
-			if(baseTouched && !p.isEliminated()){
-
+			if(p.isEliminated() && p.hasFlag()){
+				flag.setLayoutX(p.getLayoutX());
+				flag.setLayoutY(p.getLayoutY());
 				flag.setCaptured(false);
 				flag.setVisible(true);
 				p.setHasFlag(false);
 			}
-		}
 
+			if(p.hasFlag()){
+				boolean baseTouched = true;
+				switch(p.getTeam())
+				{
+					case RED: baseTouched = spawnAreaRed.intersects(flag.getBoundsInParent());
+						break;
+					case BLUE: baseTouched = spawnAreaBlue.intersects(flag.getBoundsInParent());
+						break;
+					default: break;
+				}
+				if(baseTouched && !p.isEliminated()){
+					flag.resetPosition();
+					flag.setCaptured(false);
+					flag.setVisible(true);
+					p.setHasFlag(false);
+				}
+			}
+		}
 	}
 
 	private void checkBulletsAgainstATeam(EssentialPlayer p, ArrayList<EssentialPlayer> opponents){

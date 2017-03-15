@@ -100,6 +100,7 @@ public class OfflinePlayer extends EssentialPlayer
 		//System.out.println("Collisionssss up : " + collUp);
 		if(!eliminated)
 		{
+			collisionsHandler.handleFlagCollision(this);
 			updatePosition();
 			updateShooting();
 			updateAngle();
