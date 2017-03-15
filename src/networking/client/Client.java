@@ -58,6 +58,7 @@ public class Client {
 			String hostname = serverIP;
 
 			try {
+				System.out.println("Attempting to connect to server with hostname:"+hostname+" on port:"+portNumber);
 				// Connect to server
 				server = new Socket(hostname, portNumber);
 				// Get output and input streams from the server.
@@ -115,12 +116,18 @@ public class Client {
 								receiver.join(); // Wait for receiver to stop
 								fromServer.close(); // Close connection from server
 								server.close(); // Close server socket
-								udpReceiver.join(1000);
+								udpReceiver.stopThread();
+								udpReceiver.join(3000);
 								// Acknowledge to the client that everything has
 								// stopped.
 								if(debug) System.out.println("Client has been stopped.");
 								// Catch possible errors.
 							} catch (InterruptedException | IOException e) {
+								// Close threads smoothly.
+								receiver.interrupt();
+								toServer.close();
+								udpReceiver.stopThread();
+								
 								if (!testing)
 									AlertBox.showAlert("Connection Failed",
 											"Something went wrong, please try again.");
@@ -133,6 +140,12 @@ public class Client {
 					t.start();
 
 				} catch (IOException e) {
+					// Close threads smoothly.
+					sender.stopThread();
+					toServer.close();
+					fromServer.close();
+					server.close();
+					
 					if (!testing)
 						AlertBox.showAlert("Connection Failed",
 								"Cannot read from the server, please try again.");

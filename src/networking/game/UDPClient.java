@@ -65,21 +65,34 @@ public class UDPClient extends Thread {
 			error = false;
 			try {
 				if (debug) System.out.println("Attempting to make client socket");
+				
 				clientSocket = new DatagramSocket(port);
+				
 				if (debug) System.out.println("Attempting to get ip address");
+				
 				IPAddress = InetAddress.getByName(udpServIP);
+				
 				if (debug) System.out.println("IPAddress is:" + IPAddress.getHostAddress());
+				
 				String sentence = "Connect:" + clientID;
+				
 				if (debug) System.out.println("sending data:" + sentence);
+				
 				sendMessage(sentence);
+				
 				if (debug) System.out.println("sent");
+				
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				clientSocket.receive(receivePacket);
+				
 				String sentSentence = new String(receivePacket.getData());
+				
 				if(sentSentence.contains("Successfully Connected"))
 					connected = true;
+				
 				if (debug) System.out.println(sentSentence.trim());
+			
 			} catch (Exception e) {
 				error = true;
 				if (debug) System.err.println(e.getMessage());
@@ -109,6 +122,17 @@ public class UDPClient extends Thread {
 				// -------------------------------------
 				// -----------Game Messages-------------
 				// -------------------------------------
+			    
+			    if (receivedPacket.contains("Exit"))
+			    {
+			    	clientSocket.close();
+			    	return;
+			    }
+				else if (receivedPacket.contains("TestSendToAll"))
+				{
+					testSendToAll = true;
+				}
+			    
 				switch(receivedPacket.charAt(0)){
 
 					case '1' : updatePlayerAction(receivedPacket) ;
@@ -125,12 +149,7 @@ public class UDPClient extends Thread {
 							   break;
 						
 				}
-				if (receivedPacket.contains("Exit"))
-					break;
-				else if (receivedPacket.contains("TestSendToAll"))
-				{
-					testSendToAll = true;
-				}
+
 			}
 		}
 		catch (Exception e)
@@ -144,8 +163,6 @@ public class UDPClient extends Thread {
 					
 				}
 			});
-		}
-		finally{
 			if(debug) System.out.println("Closing Client.");
 			clientSocket.close();
 		}
@@ -171,7 +188,11 @@ public class UDPClient extends Thread {
 			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
 		}
 	}
-
+	
+	public void stopThread()
+	{
+		sendMessage("Exit");
+	}
 
 	// -------------------------------------
 	// -----------Game Methods--------------

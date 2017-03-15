@@ -60,8 +60,8 @@ public class ClientSender extends Thread {
 			// Print to the client stream.
 			server.println(text);
 		}
-		// If stopped, close the server stream.
-		server.close();
+		// If stopped, return.
+		//server.close();
 		return;
 	}
 
