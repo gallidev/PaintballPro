@@ -8,6 +8,11 @@ import java.util.Enumeration;
 public class testIP {
 
 	public static void main(String[] args) {
+		System.out.println(getIP());
+	}
+	
+	public static String getIP()
+	{
 		try {
 		    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 		    while (interfaces.hasMoreElements()) {
@@ -16,19 +21,20 @@ public class testIP {
 		            continue;
 
 		        Enumeration<InetAddress> addresses = iface.getInetAddresses();
+		        //int skip = 0;
 		        while(addresses.hasMoreElements()) {
 		            InetAddress addr = addresses.nextElement();
 
-		            final String ip = addr.getHostAddress();
+		            String ip = addr.getHostAddress();
+		            
 		            if(Inet4Address.class == addr.getClass()) 
-		            	System.out.println(ip);;
+		            	return ip;
 		        }
 		    }
 		} catch (SocketException e) {
 		    throw new RuntimeException(e);
 		}
-		System.out.println("cannot find");
-		
+		return "";
 	}
 
 }
