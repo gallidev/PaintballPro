@@ -18,7 +18,6 @@ import physics.Flag;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static rendering.Renderer.view;
 
@@ -36,6 +35,7 @@ public class Map
 	private Spawn[] spawns;
 	private Objective[] objectives;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
+	private transient Flag flag;
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -98,10 +98,8 @@ public class Map
 
 			if(map.gameMode == GameMode.CAPTURETHEFLAG)
 			{
-				int randomFlag = (new Random()).nextInt(map.objectives.length);
-				Flag flag = new Flag(map.objectives[randomFlag].x, map.objectives[randomFlag].y);
-				flag.setEffect(new DropShadow(16, Color.BLACK));
-				view.getChildren().add(flag);
+				map.flag = new Flag(map.objectives);
+				view.getChildren().add(map.flag);
 			}
 
 			//turn on shading if the user has it enabled
@@ -148,6 +146,8 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
+			if(map.gameMode == GameMode.CAPTURETHEFLAG)
+				map.flag = new Flag(map.objectives);
 		}
 		catch(FileNotFoundException e)
 		{
@@ -230,5 +230,10 @@ public class Map
 	public GameMode getGameMode()
 	{
 		return gameMode;
+	}
+
+	public Flag getFlag()
+	{
+		return flag;
 	}
 }
