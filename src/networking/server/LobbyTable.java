@@ -46,6 +46,8 @@ public class LobbyTable {
 			Lobby allocatedLobby = lobbyList.get(playerToRemove.getAllocatedLobby());
 			allocatedLobby.removePlayer(playerToRemove);
 			playerToRemove.setAllocatedLobby(-1);
+			if(allocatedLobby.getCurrPlayerTotal() == 0)
+				lobbyList.remove(allocatedLobby.getID());
 		}
 		catch(Exception e)
 		{
