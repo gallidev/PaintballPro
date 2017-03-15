@@ -6,6 +6,8 @@ import static players.GhostPlayer.playerHeadY;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.sun.org.apache.regexp.internal.REDebugCompiler;
+
 import enums.TeamEnum;
 import gui.GUIManager;
 import integrationClient.ClientInputSender;
@@ -83,8 +85,6 @@ public class Renderer extends Scene
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		
-		//GameMode gameSim = initGame(player);
-
 		players.addAll(player.getMyTeam().getMembers());
 		players.addAll(player.getOppTeam().getMembers());
 
@@ -94,6 +94,10 @@ public class Renderer extends Scene
 		hud = new HeadUpDisplay(guiManager, player.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
+		
+		GameMode gameLoop = initGame(player);
+		
+		gameLoop.start();
 
 		timer = new AnimationTimer()
 		{
@@ -127,6 +131,13 @@ public class Renderer extends Scene
 					hud.tick(timeLeft--);
 					lastSecond = now;
 				}
+				
+				//update the scores
+				if (hud != null){
+					incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
+					incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
+				}
+
 			}
 		};
 		timer.start();
@@ -201,8 +212,8 @@ public class Renderer extends Scene
 		
 		switch (map.getGameMode()){
 
-//			case enums.GameMode.ELIMINATION : return new TeamMatchMode(red, blue);
-//			case enums.GameMode.CAPTURETHEFLAG : return new CaptureTheFlagMode(red, blue);
+			case ELIMINATION : return new TeamMatchMode(red, blue);
+			case CAPTURETHEFLAG : return new CaptureTheFlagMode(red, blue);
 		}
 		return null;
 		

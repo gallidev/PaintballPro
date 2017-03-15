@@ -241,7 +241,6 @@ public class ClientReceiver extends Thread {
 		System.out.println("single player = " + singlePlayer);
 		if (!singlePlayer){
 			if (gameMode == 1){
-				System.out.println("trying to load gui for elim..");
 				Renderer r = new Renderer("elimination", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
@@ -250,10 +249,8 @@ public class ClientReceiver extends Thread {
 						m.transitionTo(Menu.EliminationMulti, null);
 					}
 				});
-				System.out.println("loaded gui for elim");
 			}
 			else{
-				System.out.println("trying to load the gui...");
 				Renderer r = new Renderer("ctf", this, m);
 				Platform.runLater(new Runnable() {
 					@Override
@@ -262,7 +259,6 @@ public class ClientReceiver extends Thread {
 						m.transitionTo(Menu.CTFMulti, null);
 					}
 				});
-				System.out.println("all loaded");
 			}
 		}
 		else{
