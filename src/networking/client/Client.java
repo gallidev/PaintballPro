@@ -61,6 +61,7 @@ public class Client {
 				System.out.println("Attempting to connect to server with hostname:"+hostname+" on port:"+portNumber);
 				// Connect to server
 				server = new Socket(hostname, portNumber);
+				System.out.println("Connected Successfully.");
 				// Get output and input streams from the server.
 				toServer = new PrintStream(server.getOutputStream());
 				fromServer = new BufferedReader(new InputStreamReader(server.getInputStream()));
