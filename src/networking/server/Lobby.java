@@ -439,10 +439,10 @@ public class Lobby {
 		HashMapGen hashMaps = new HashMapGen(map);
 		//filling the game with AI players
 		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
-		redAIM.createPlayers();
+		//redAIM.createPlayers();
 
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
-		blueAIM.createPlayers();
+		//blueAIM.createPlayers();
 		
 		//setting team players and enemies
 		for(EssentialPlayer p : red.getMembers()){

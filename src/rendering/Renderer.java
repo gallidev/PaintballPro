@@ -126,11 +126,13 @@ public class Renderer extends Scene
 					}
 					player.tick();
 				}
-				if(now - lastSecond >= 1000000000)
-				{
-					hud.tick(timeLeft--);
-					lastSecond = now;
-				}
+//				if(now - lastSecond >= 1000000000)
+//				{
+//					hud.tick(timeLeft--);
+//					lastSecond = now;
+//				}
+				hud.tick((int) gameLoop.getRemainingTime());
+
 				
 				//update the scores
 				if (hud != null){

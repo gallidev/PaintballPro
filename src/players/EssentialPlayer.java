@@ -339,6 +339,10 @@ public abstract class EssentialPlayer extends ImageView {
 	public String getNickname(){
 		return nickname;
 	}
+	
+	public CollisionsHandler getCollisionsHandler(){
+		return collisionsHandler;
+	}
 
 }
 

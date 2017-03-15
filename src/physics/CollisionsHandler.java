@@ -289,5 +289,9 @@ public class CollisionsHandler
 
 		}
 	}
+	
+	public Flag getFlag(){
+		return flag;
+	}
 
 }

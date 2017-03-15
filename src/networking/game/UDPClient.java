@@ -145,7 +145,9 @@ public class UDPClient extends Thread {
 							   break;
 					case '6' : getRemainingTime(receivedPacket);
 							   break;
-					case '7' : capturedFlagAction();
+					case '7' : capturedFlagAction(receivedPacket);
+							   break;
+					case '8' : updateFlagAction(receivedPacket);
 							   break;
 						
 				}
@@ -308,7 +310,16 @@ public class UDPClient extends Thread {
 		}
 	}
 	
-	private void capturedFlagAction() {
+	private void updateFlagAction(String text){
+		//Protocol : 8:<x>:<y>:<isCaptured>
+		
+		String[] data = text.split(":");
+		double x  = Double.parseDouble(data[1]);
+		double y = Double.parseDouble(data[2]);
+		boolean visible = (data[3].equals("true") ? true : false);
+	}
+	
+	private void capturedFlagAction(String text) {
 		System.out.println("flag captured" + clientID);
 		// TODO Auto-generated method stub
 		//do stuff here to render

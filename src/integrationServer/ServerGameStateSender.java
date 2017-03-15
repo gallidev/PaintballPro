@@ -58,6 +58,7 @@ public class ServerGameStateSender {
 		    	   sendClient();
 		    	   sendBullets();
 		    	   updateScore();
+		    	   sendFlag();
 
 		    	   sendRemainingTime();
 
@@ -177,6 +178,20 @@ public class ServerGameStateSender {
 		String toBeSent = "2:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
 
 		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+	
+	public void sendFlag(){
+		if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+			String toBeSent = "8:";
+			
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY() + ":";
+			
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isCaptured();
+
+			udpServer.sendToAll(toBeSent, lobbyId);
+			
+		}
 	}
 
 	
