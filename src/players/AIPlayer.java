@@ -47,8 +47,8 @@ public class AIPlayer extends EssentialPlayer{
 		bManager.tick();
 		cleanBullets();
 		collisionsHandler.handlePropWallCollision(this);
+		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated){
-			collisionsHandler.handleFlagCollision(this);
 			lastX = getLayoutX();
 			lastY = getLayoutY();
 			lastAngle = angle;
@@ -100,7 +100,7 @@ public class AIPlayer extends EssentialPlayer{
 
 
 	}
-	
+
 	@Override
 	protected void updateAngle(){
 		rotation.setAngle(Math.toDegrees(angle));
@@ -161,5 +161,5 @@ public class AIPlayer extends EssentialPlayer{
 //	public CollisionsHandler getCollisionHandler(){
 //		return this.collisionsHandler;
 //	}
-	
+
 }

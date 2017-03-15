@@ -40,7 +40,7 @@ public abstract class EssentialPlayer extends ImageView {
 	private Spawn[] spawn;
 	private Polygon bounds = new Polygon();
 	private boolean hasFlag;
-	
+
 	private String nickname;
 
 	/**
@@ -331,14 +331,14 @@ public abstract class EssentialPlayer extends ImageView {
 	public abstract void setMyTeam(Team team);
 	public abstract void setOppTeam(Team team);
 	public abstract void tick();
-	
+
 	public void setNickname(String n){
 		nickname = n;
 	}
-	
+
 	public String getNickname(){
 		return nickname;
 	}
-	
+
 }
 

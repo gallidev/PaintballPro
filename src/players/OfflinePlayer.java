@@ -76,7 +76,7 @@ public class OfflinePlayer extends EssentialPlayer
 		}
 
 		setPlayerNames();
-		
+
 		for(EssentialPlayer p : myTeam.getMembers()){
 			p.setOppTeam(oppTeam);
 			p.setMyTeam(myTeam);
@@ -102,9 +102,9 @@ public class OfflinePlayer extends EssentialPlayer
 		// of the player so to understand if he can move or not in a specific direction
 		collisionsHandler.handlePropWallCollision(this);
 		//System.out.println("Collisionssss up : " + collUp);
+		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated)
 		{
-			collisionsHandler.handleFlagCollision(this);
 			updatePosition();
 			updateShooting();
 			updateAngle();
@@ -221,7 +221,7 @@ public class OfflinePlayer extends EssentialPlayer
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
 	}
-	
+
 	private void setPlayerNames(){
 		File names = new File("res/names.txt");
 		Scanner readNames;
@@ -231,17 +231,17 @@ public class OfflinePlayer extends EssentialPlayer
 				if (p != this)
 					p.setNickname(readNames.nextLine());
 			}
-			
+
 			for (EssentialPlayer p : oppTeam.getMembers()){
 				if (p != this)
 					p.setNickname(readNames.nextLine());
 			}
-			
+
 			readNames.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 

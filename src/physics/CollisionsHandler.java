@@ -14,6 +14,8 @@ import serverLogic.Team;
 public class CollisionsHandler
 {
 
+	private boolean debug = false;
+
 	private ArrayList<Rectangle> propsWalls;
 	private Rectangle spawnAreaRed;
 	private Rectangle spawnAreaBlue;
@@ -34,6 +36,7 @@ public class CollisionsHandler
 		blue = new Team(TeamEnum.BLUE);
 		this.spawnAreaBlue = map.getRecSpawn(TeamEnum.BLUE);
 		this.spawnAreaRed = map.getRecSpawn(TeamEnum.RED);
+		this.flag = map.getFlag();
 	}
 
 	public void handlePropWallCollision(EssentialPlayer p){
@@ -157,11 +160,13 @@ public class CollisionsHandler
 			if(!flag.isCaptured() &&
 					p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) &&
 					!p.isEliminated()){
+				if(debug) System.out.println("Catched the flag");
 				flag.setCaptured(true);
 				flag.setVisible(false);
 				p.setHasFlag(true);
 			}
 			if(p.isEliminated() && p.hasFlag()){
+				if(debug) System.out.println("lost the flag");
 				flag.setLayoutX(p.getLayoutX());
 				flag.setLayoutY(p.getLayoutY());
 				flag.setCaptured(false);
@@ -170,16 +175,17 @@ public class CollisionsHandler
 			}
 
 			if(p.hasFlag()){
-				boolean baseTouched = true;
+				boolean baseTouched = false;
 				switch(p.getTeam())
 				{
-					case RED: baseTouched = spawnAreaRed.intersects(flag.getBoundsInParent());
+					case RED: baseTouched = p.getPolygonBounds().getBoundsInParent().intersects(spawnAreaRed.getBoundsInParent());
 						break;
-					case BLUE: baseTouched = spawnAreaBlue.intersects(flag.getBoundsInParent());
+					case BLUE: baseTouched = p.getPolygonBounds().getBoundsInParent().intersects(spawnAreaBlue.getBoundsInParent());
 						break;
 					default: break;
 				}
 				if(baseTouched && !p.isEliminated()){
+					if(debug) System.out.println("Brought the flag back");
 					flag.resetPosition();
 					flag.setCaptured(false);
 					flag.setVisible(true);

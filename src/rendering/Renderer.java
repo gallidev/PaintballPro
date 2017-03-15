@@ -310,6 +310,7 @@ public class Renderer extends Scene
 		}
 		else
 		{
+			System.out.println("cPlayer x and y :" + cPlayer.getLayoutX() + "  " + cPlayer.getLayoutY() );
 			view.relocate(((getWidth() / 2) - playerHeadX - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - playerHeadY - cPlayer.getLayoutY()) * view.getScaleY());
 			hud.relocate(cPlayer.getLayoutX() + playerHeadX - getWidth() / 2, cPlayer.getLayoutY() + playerHeadY - getHeight() / 2);
 			if(view.getChildren().contains(pauseMenu))
