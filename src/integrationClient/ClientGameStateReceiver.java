@@ -17,6 +17,7 @@ import players.GhostPlayer;
 public class ClientGameStateReceiver {
 
 	private ArrayList<GhostPlayer> players;
+	private boolean debug = false;
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
@@ -44,7 +45,7 @@ public class ClientGameStateReceiver {
 		playerToBeUpdated.setSyncY(y);
 		playerToBeUpdated.setRotationAngle(angle);
 		playerToBeUpdated.setSyncVisible(visible);
-		System.out.println("updated player with id : " + id);
+		if (debug) System.out.println("updated player with id : " + id);
 	}
 
 	/**

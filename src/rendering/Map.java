@@ -35,6 +35,7 @@ public class Map
 	private Spawn[] spawns;
 	private Objective[] objectives;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
+	private transient Flag flag;
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -97,8 +98,8 @@ public class Map
 
 			if(map.gameMode == GameMode.CAPTURETHEFLAG)
 			{
-				Flag flag = new Flag(map.objectives);
-				view.getChildren().add(flag);
+				map.flag = new Flag(map.objectives);
+				view.getChildren().add(map.flag);
 			}
 
 			//turn on shading if the user has it enabled
@@ -145,6 +146,8 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
+			if(map.gameMode == GameMode.CAPTURETHEFLAG)
+				map.flag = new Flag(map.objectives);
 		}
 		catch(FileNotFoundException e)
 		{
@@ -227,5 +230,10 @@ public class Map
 	public GameMode getGameMode()
 	{
 		return gameMode;
+	}
+
+	public Flag getFlag()
+	{
+		return flag;
 	}
 }

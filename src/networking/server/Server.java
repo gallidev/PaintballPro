@@ -66,12 +66,15 @@ public class Server extends Thread {
 
 		// We must try because it may fail with a checked exception:
 		try {
+			
+			System.out.println("Running server on:"+listenAddress.getHostAddress()+" on port:"+portNumber);
+			
 			// Open server socket
 			serverSocket = new ServerSocket(portNumber, 1, listenAddress);
 			
 			// We start a new UDP server receiver to receive all UDP messages.
 			UDPServer udpServer = null;
-			udpServer = new UDPServer(clientTable, gameLobbies,19876);
+			udpServer = new UDPServer(clientTable, gameLobbies,19857);
 			udpServer.start();
 
 			while (isRunning) {

@@ -2,6 +2,7 @@ package players;
 
 
 import enums.TeamEnum;
+import gui.GUIManager;
 import javafx.scene.image.Image;
 import physics.CollisionsHandler;
 import rendering.Spawn;
@@ -10,9 +11,6 @@ import serverLogic.Team;
  *  The player, represented by an ImageView
  */
 public class UserPlayer extends EssentialPlayer{
-
-    public final int widthScreen = 1024;
-    public final int heightScreen = 576;
 
 	private Team oppTeam;
 	private Team myTeam;
@@ -84,8 +82,12 @@ public class UserPlayer extends EssentialPlayer{
 	@Override
 	protected void updateAngle()
 	{
-		double deltax = mouseX  - widthScreen/2;
-		double deltay = heightScreen/2 + PLAYER_HEAD_Y /6 -  mouseY ;
+		String[] resolution = GUIManager.getUserSettings().getResolution().split("x");
+		double screenWidth = Double.parseDouble(resolution[0]);
+		double screenHeight = Double.parseDouble(resolution[1]);
+
+		double deltax = mouseX  - screenWidth/2;
+		double deltay = screenHeight/2 + PLAYER_HEAD_Y /6 -  mouseY ;
 		angle = Math.atan2(deltax, deltay);
 		double degrees = Math.toDegrees(angle);
 		rotation.setAngle(degrees);

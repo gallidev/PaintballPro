@@ -39,11 +39,11 @@ public class GhostPlayer extends ImageView {
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 
-		nameTag = new Label(nickname);
-		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
-				"-fx-font-size: 10pt; -fx-text-fill: white");
-		nameTag.setPadding(new Insets(5));
-		nameTag.relocate(x - 15, y - 32);
+//		nameTag = new Label(nickname);
+//		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
+//				"-fx-font-size: 10pt; -fx-text-fill: white");
+//		nameTag.setPadding(new Insets(5));
+//		nameTag.relocate(x - 15, y - 32);
 		this.team = team;
 	}
 
@@ -116,6 +116,11 @@ public class GhostPlayer extends ImageView {
 
 	public void  setNickname(String name){
 		nickname = name;
+		nameTag = new Label(nickname);
+		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
+				"-fx-font-size: 10pt; -fx-text-fill: white");
+		nameTag.setPadding(new Insets(5));
+		nameTag.relocate(getLayoutX() - 15, getLayoutX() - 32);
 	}
 
 	public Label getNameTag()

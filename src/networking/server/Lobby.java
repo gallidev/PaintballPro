@@ -1,6 +1,9 @@
 package networking.server;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -14,6 +17,7 @@ import logic.RoundTimer;
 import networking.game.UDPServer;
 import networking.interfaces.ServerGame;
 import physics.CollisionsHandler;
+import players.AIPlayer;
 import players.EssentialPlayer;
 import players.ServerBasicPlayer;
 import players.UserPlayer;
@@ -32,7 +36,7 @@ public class Lobby {
 	// Structures storing relevant data.
 
 	// Lobby information
-	private static final int lobbyTime = 30;
+	private static final int lobbyTime = 10;
 	private int id;
 	private boolean inGameStatus;
 
@@ -311,10 +315,14 @@ public class Lobby {
 
 			int spawnLoc = 0;
 
-			if (newTeam.getColour() == TeamEnum.RED)
+			if (newTeam.getColour() == TeamEnum.RED){
 				spawnLoc = newTeam.getMembersNo();
-			else
+				newTeam.setColour(TeamEnum.RED);
+			}
+			else{
 				spawnLoc = newTeam.getMembersNo() + 4;
+				newTeam.setColour(TeamEnum.BLUE);
+			}
 
 			//provisionally hard-coded
 			if (teamNum == 1)
@@ -325,6 +333,28 @@ public class Lobby {
 			newTeam.addMember(player);
 		}
 		return newTeam;
+	}
+	
+	private void setPlayerNames(){
+		File names = new File("res/names.txt");
+		Scanner readNames;
+		try {
+			readNames = new Scanner(names);
+			for (EssentialPlayer p : red.getMembers()){
+				if (p instanceof AIPlayer)
+					p.setNickname(readNames.nextLine());
+			}
+			
+			for (EssentialPlayer p : blue.getMembers()){
+				if (p instanceof AIPlayer)
+					p.setNickname(readNames.nextLine());
+			}
+			
+			readNames.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -421,6 +451,8 @@ public class Lobby {
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
 		}
+		
+		setPlayerNames();
 
 		collissionsHandler.setRedTeam(red);
 		collissionsHandler.setBlueTeam(blue);
@@ -443,12 +475,12 @@ public class Lobby {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
-			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
+			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":" ;
 
 			// adding to the string the information about all the other players
 			for (EssentialPlayer aux : players)
 				if (aux.getPlayerId() != p.getPlayerId())
-					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
+					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"  + aux.getNickname() + ":";
 
 			if (p instanceof UserPlayer)
 				receiver.sendToSpec(p.getPlayerId(), toBeSent);

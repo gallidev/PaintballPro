@@ -1,6 +1,7 @@
 package networking.game;
 
 import enums.Menu;
+import enums.TeamEnum;
 import gui.AlertBox;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
@@ -64,21 +65,34 @@ public class UDPClient extends Thread {
 			error = false;
 			try {
 				if (debug) System.out.println("Attempting to make client socket");
+				
 				clientSocket = new DatagramSocket(port);
+				
 				if (debug) System.out.println("Attempting to get ip address");
+				
 				IPAddress = InetAddress.getByName(udpServIP);
+				
 				if (debug) System.out.println("IPAddress is:" + IPAddress.getHostAddress());
+				
 				String sentence = "Connect:" + clientID;
+				
 				if (debug) System.out.println("sending data:" + sentence);
+				
 				sendMessage(sentence);
+				
 				if (debug) System.out.println("sent");
+				
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				clientSocket.receive(receivePacket);
+				
 				String sentSentence = new String(receivePacket.getData());
+				
 				if(sentSentence.contains("Successfully Connected"))
 					connected = true;
+				
 				if (debug) System.out.println(sentSentence.trim());
+			
 			} catch (Exception e) {
 				error = true;
 				if (debug) System.err.println(e.getMessage());
@@ -108,6 +122,17 @@ public class UDPClient extends Thread {
 				// -------------------------------------
 				// -----------Game Messages-------------
 				// -------------------------------------
+			    
+			    if (receivedPacket.contains("Exit"))
+			    {
+			    	clientSocket.close();
+			    	return;
+			    }
+				else if (receivedPacket.contains("TestSendToAll"))
+				{
+					testSendToAll = true;
+				}
+			    
 				switch(receivedPacket.charAt(0)){
 
 					case '1' : updatePlayerAction(receivedPacket) ;
@@ -124,19 +149,20 @@ public class UDPClient extends Thread {
 							   break;
 						
 				}
-				if (receivedPacket.contains("Exit"))
-					break;
-				else if (receivedPacket.contains("TestSendToAll"))
-				{
-					testSendToAll = true;
-				}
+
 			}
 		}
 		catch (Exception e)
 		{
-			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
-		}
-		finally{
+			e.printStackTrace();
+			Platform.runLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
+					
+				}
+			});
 			if(debug) System.out.println("Closing Client.");
 			clientSocket.close();
 		}
@@ -162,7 +188,11 @@ public class UDPClient extends Thread {
 			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
 		}
 	}
-
+	
+	public void stopThread()
+	{
+		sendMessage("Exit");
+	}
 
 	// -------------------------------------
 	// -----------Game Methods--------------
@@ -210,11 +240,20 @@ public class UDPClient extends Thread {
 	public void updateScoreAction(String text){
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
+		
+		if (Renderer.getHud() != null){
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Renderer.incrementScore(TeamEnum.RED, redScore);
+					Renderer.incrementScore(TeamEnum.BLUE, blueScore);
+				}
+			});
+		}
 
-//		System.out.println("Red score: " + redScore);
-//		System.out.println("Blue score: " + blueScore);
+		if (debug) System.out.println("Red score: " + redScore);
+		if (debug) System.out.println("Blue score: " + blueScore);
 
-		//do stuff here to update the GUI
 	}
 
 	/**
@@ -258,11 +297,15 @@ public class UDPClient extends Thread {
 
 		String time = sentence.split(":")[1];
 
-		//do stuff here to update the UI
-
 		if (debug) System.out.println("remaining time on client: " + time);
-		if(Renderer.getHud() != null)
-			Renderer.getHud().tick(Integer.parseInt(time));
+		if(Renderer.getHud() != null){
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Renderer.getHud().tick(Integer.parseInt(time));
+				}
+			});
+		}
 	}
 	
 	private void capturedFlagAction() {

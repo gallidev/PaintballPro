@@ -55,7 +55,9 @@ public class HeadUpDisplay extends SubScene
 
 	void incrementScore(TeamEnum team, int amount)
 	{
-		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == TeamEnum.RED ? redScore : blueScore).getText()) + amount));
+		//(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == TeamEnum.RED ? redScore : blueScore).getText()) + amount));
+		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(amount));
+
 	}
 
 	public void tick(int time)
