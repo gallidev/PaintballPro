@@ -1,10 +1,5 @@
 package networking.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -16,7 +11,11 @@ import players.ClientPlayer;
 import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-import rendering.Renderer;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
@@ -246,52 +245,28 @@ public class ClientReceiver extends Thread {
 		System.out.println("game mode is " + gameMode);
 		//changing the scene
 		System.out.println("single player = " + singlePlayer);
-		if (!singlePlayer){
-			if (gameMode == 1){
-				Renderer r = new Renderer("elimination", this, m, null);
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						m.setRenderer(r);
-						m.transitionTo(Menu.EliminationMulti, null);
-					}
-				});
+		Platform.runLater(() ->
+		{
+			if (!singlePlayer){
+				if (gameMode == 1){
+					m.transitionTo(Menu.EliminationMulti);
+				}
+				else{
+					m.transitionTo(Menu.CTFMulti);
+				}
 			}
-			else{
-				Renderer r = new Renderer("ctf", this, m, flag);
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						m.setRenderer(r);
-						m.transitionTo(Menu.CTFMulti, null);
-					}
-				});
+			else
+			{
+				if(gameMode == 1)
+				{
+					m.transitionTo(Menu.EliminationSingle);
+				}
+				else
+				{
+					m.transitionTo(Menu.CTFSingle);
+				}
 			}
-		}
-		else{
-			if (gameMode == 1){
-				Renderer r = new Renderer("elimination", this, m, null);
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						m.setRenderer(r);
-						m.transitionTo(Menu.EliminationSingle, null);
-					}
-				});
-
-			}
-			else{
-				Renderer r = new Renderer("ctf", this, m, null);
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						m.setRenderer(r);
-						m.transitionTo(Menu.CTFSingle, null);
-					}
-				});
-			}
-		}
-
+		});
 
 	}
 

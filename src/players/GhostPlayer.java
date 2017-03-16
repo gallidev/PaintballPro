@@ -86,16 +86,16 @@ public class GhostPlayer extends ImageView {
 		return this.playerId;
 	}
 
-	public synchronized void setSyncVisible(boolean visible){
+	public void setSyncVisible(boolean visible){
 		setVisible(visible);
 	}
 
-	public synchronized void setSyncX(double x){
+	public void setSyncX(double x){
 		setLayoutX(x);
 		nameTag.setLayoutX(x - 15);
 	}
 
-	public synchronized void setSyncY(double y){
+	public void setSyncY(double y){
 		setLayoutY(y);
 		nameTag.setLayoutY(y - 32);
 	}
