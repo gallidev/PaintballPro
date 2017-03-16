@@ -11,7 +11,7 @@
 		{"x": 26, "y": 5, "team": "BLUE"},
 		{"x": 26, "y": 6, "team": "BLUE"}
 	],
-	"objectives": [
+	"gameObjects": [
 		{"type": "flag", "x": 8, "y": 7},
 		{"type": "flag", "x": 27, "y": 22},
 		{"type": "powerup", "x": 4, "y": 6},
