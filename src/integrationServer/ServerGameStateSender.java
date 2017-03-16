@@ -57,7 +57,7 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
-		    	   //sendFlag();
+		    	   sendHitWall();
 
 		    	   sendRemainingTime();
 
@@ -239,6 +239,22 @@ public class ServerGameStateSender {
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+	
+	}
+	
+	public void sendHitWall(){
+		String toBeSent = "@:";
+		
+		toBeSent += players.get(0).getCollisionsHandler().getHitWallX() + ":";
+		toBeSent += players.get(0).getCollisionsHandler().getHitWallY() + ":";
+		toBeSent += (players.get(0).getCollisionsHandler().getSplashColour() == TeamEnum.RED ? "Red" : "Blue" ) + ":";
+		
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+
 	}
 
 

@@ -24,7 +24,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -152,6 +152,8 @@ public class UDPClient extends Thread {
 					case '9' : lostFlagAction(receivedPacket);
 							   break;
 					case '!' : baseFlagAction(receivedPacket);
+							   break;
+					case '@' : hitWallAction(receivedPacket);
 							   break;
 
 				}
@@ -364,6 +366,16 @@ public class UDPClient extends Thread {
 		if(gameStateReceiver != null){
 			gameStateReceiver.respawnFlag(x, y);
 		}
+	}
+	
+	private void hitWallAction(String text){
+		//Protocol: "@:<x>:<y>"
+		
+		double x = Double.parseDouble(text.split(":")[1]);
+		double y = Double.parseDouble(text.split(":")[2]);
+		String colour = text.split(":")[3];
+		
+		System.out.println("Hit wall in coord " + x + ": " + y + " with colour " + colour );
 	}
 
 	/**

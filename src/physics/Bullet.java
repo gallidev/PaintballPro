@@ -18,6 +18,8 @@ public class Bullet extends Circle
 	private boolean active;
 	private int id;
 	private Rectangle collision;
+	
+	private TeamEnum colour;
 
 	/**
 	 * Create a bullet at the given global coordinates with the given global angle
@@ -39,6 +41,8 @@ public class Bullet extends Circle
 		setCenterY(y);
 		setRadius(3);
 		setFill(team == TeamEnum.RED ? Color.RED : Color.BLUE);
+		
+		this.colour = team;
 	}
 
 	/**
@@ -107,5 +111,9 @@ public class Bullet extends Circle
 	public Rectangle getCollision()
 	{
 		return collision;
+	}
+	
+	public TeamEnum getColour(){
+		return colour;
 	}
 }
