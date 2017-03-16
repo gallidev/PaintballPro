@@ -158,6 +158,7 @@ public class CollisionsHandler
 	public void handleFlagCollision(EssentialPlayer p){
 		if(flag != null){
 
+			//check if the player touches the flag
 			if(!flag.isCaptured() &&
 					p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) &&
 					!p.isEliminated()){
@@ -170,7 +171,9 @@ public class CollisionsHandler
 //					red.incrementScore(CaptureTheFlagMode.flagScore);
 //				else
 //					blue.incrementScore(CaptureTheFlagMode.flagScore);
+
 			}
+			//check if the player got shot so leave the flag in the player position
 			if(p.isEliminated() && p.hasFlag()){
 				if(debug) System.out.println("lost the flag");
 				flag.setLayoutX(p.getLayoutX());
@@ -183,9 +186,9 @@ public class CollisionsHandler
 //					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
 //				else
 //					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
-			}
 
-			if(p.hasFlag()){
+			//check if the player has brought the flag back to his base
+			}if(p.hasFlag()){
 				boolean baseTouched = false;
 				switch(p.getTeam())
 				{
@@ -289,7 +292,7 @@ public class CollisionsHandler
 
 		}
 	}
-	
+
 	public Flag getFlag(){
 		return flag;
 	}

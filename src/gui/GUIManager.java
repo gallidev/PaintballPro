@@ -118,7 +118,7 @@ public class GUIManager {
 
                         c.getSender().sendMessage("Play:Mode:1");
                         audio.startMusic(audio.music.getRandomTrack());
-                        r = new Renderer("elimination", c.getReceiver(), this);
+                        r = new Renderer("elimination", c.getReceiver(), this, null);
                         s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.getRandomTrack());
@@ -136,7 +136,7 @@ public class GUIManager {
                     	establishLocalServerConnection();
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.getRandomTrack());
-                        r = new Renderer("ctf", c.getReceiver(), this);
+                        r = new Renderer("ctf", c.getReceiver(), this, null);
                         s.setScene(r);
                     } else {
                         audio.startMusic(audio.music.getRandomTrack());

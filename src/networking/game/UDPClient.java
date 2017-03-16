@@ -39,7 +39,7 @@ public class UDPClient extends Thread {
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
 	 * it stores our information server-side.
-	 * 
+	 *
 	 * @param clientID ID allocated to the client.
 	 * @param udpServIP IP for the server-side UDP socket.
 	 * @param guiManager Manager of GUI.
@@ -56,7 +56,7 @@ public class UDPClient extends Thread {
 		this.nickname = nickname;
 
 		sIP = udpServPort;
-		
+
 		if(debug) System.out.println("Making new UDP Client");
 
 		// Let's establish a connection to the running UDP server and send our client id.
@@ -65,34 +65,34 @@ public class UDPClient extends Thread {
 			error = false;
 			try {
 				if (debug) System.out.println("Attempting to make client socket");
-				
+
 				clientSocket = new DatagramSocket(port);
-				
+
 				if (debug) System.out.println("Attempting to get ip address");
-				
+
 				IPAddress = InetAddress.getByName(udpServIP);
-				
+
 				if (debug) System.out.println("IPAddress is:" + IPAddress.getHostAddress());
-				
+
 				String sentence = "Connect:" + clientID;
-				
+
 				if (debug) System.out.println("sending data:" + sentence);
-				
+
 				sendMessage(sentence);
-				
+
 				if (debug) System.out.println("sent");
-				
+
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				clientSocket.receive(receivePacket);
-				
+
 				String sentSentence = new String(receivePacket.getData());
-				
+
 				if(sentSentence.contains("Successfully Connected"))
 					connected = true;
-				
+
 				if (debug) System.out.println(sentSentence.trim());
-			
+
 			} catch (Exception e) {
 				error = true;
 				if (debug) System.err.println(e.getMessage());
@@ -111,18 +111,18 @@ public class UDPClient extends Thread {
 		try{
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			
+
 			while(true)
 			{
 				clientSocket.receive(receivePacket);
 			    String receivedPacket = new String(receivePacket.getData(), 0, receivePacket.getLength());
-	
+
 			    if(debug) System.out.println("Received from server:"+receivedPacket);
 
 				// -------------------------------------
 				// -----------Game Messages-------------
 				// -------------------------------------
-			    
+
 			    if (receivedPacket.contains("Exit"))
 			    {
 			    	clientSocket.close();
@@ -132,7 +132,7 @@ public class UDPClient extends Thread {
 				{
 					testSendToAll = true;
 				}
-			    
+
 				switch(receivedPacket.charAt(0)){
 
 					case '1' : updatePlayerAction(receivedPacket) ;
@@ -149,7 +149,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '8' : updateFlagAction(receivedPacket);
 							   break;
-						
+
 				}
 
 			}
@@ -158,11 +158,11 @@ public class UDPClient extends Thread {
 		{
 			e.printStackTrace();
 			Platform.runLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
-					
+
 				}
 			});
 			if(debug) System.out.println("Closing Client.");
@@ -208,7 +208,7 @@ public class UDPClient extends Thread {
 			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
 		}
 	}
-	
+
 	public void stopThread()
 	{
 		sendMessage("Exit");
@@ -222,7 +222,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Update the player's location, based on the coordinates received from the server.
 	 * @param text The protocol message containing the new coordinates of the player.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
@@ -254,13 +254,13 @@ public class UDPClient extends Thread {
 	/**
 	 * Method which enables the client to receive the game score, in order to be shown in the client's GUI.
 	 * @param text The protocol message containing the score.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
 	public void updateScoreAction(String text){
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
-		
+
 		if (Renderer.getHud() != null){
 			Platform.runLater(new Runnable() {
 				@Override
@@ -280,7 +280,7 @@ public class UDPClient extends Thread {
 	 * Receives all the player's active bullets and updates them accordingly on the client side,
 	 * using the client game state receiver.
 	 * @param text The protocol message containg the active bullets and the id of the player.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
@@ -327,16 +327,21 @@ public class UDPClient extends Thread {
 			});
 		}
 	}
-	
+
 	private void updateFlagAction(String text){
 		//Protocol : 8:<x>:<y>:<isCaptured>
-		
+		System.out.println("flagDataReceived: " + text);
 		String[] data = text.split(":");
 		double x  = Double.parseDouble(data[1]);
 		double y = Double.parseDouble(data[2]);
 		boolean visible = (data[3].equals("true") ? true : false);
+
+		if(gameStateReceiver != null){
+			gameStateReceiver.updateFlag(x, y, visible);
+		}
+
 	}
-	
+
 	private void capturedFlagAction(String text) {
 		System.out.println("flag captured" + clientID);
 		// TODO Auto-generated method stub
@@ -366,11 +371,11 @@ public class UDPClient extends Thread {
 
 		return null;
 	}
-	
+
 	/**
 	 * Sets the client game state receiver, which deals with all the in-game information from the server.
 	 * @param gameStateReceiver The new client game state receiver.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
 	public void setGameStateReceiver(ClientGameStateReceiver gameStateReceiver){

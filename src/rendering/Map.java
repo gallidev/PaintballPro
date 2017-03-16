@@ -28,14 +28,14 @@ import static rendering.Renderer.view;
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Map
 {
-	private GameMode gameMode;
+	GameMode gameMode;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
-	private Objective[] objectives;
+	Objective[] objectives;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
-	private transient Flag flag;
+	transient Flag flag;
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -96,11 +96,11 @@ public class Map
 
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
-			if(map.gameMode == GameMode.CAPTURETHEFLAG)
-			{
-				map.flag = new Flag(map.objectives);
-				view.getChildren().add(map.flag);
-			}
+//			if(map.gameMode == GameMode.CAPTURETHEFLAG)
+//			{
+//				map.flag = new Flag(map.objectives);
+//				view.getChildren().add(map.flag);
+//			}
 
 			//turn on shading if the user has it enabled
 			if(GUIManager.getUserSettings().getShading())
