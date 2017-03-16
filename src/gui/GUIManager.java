@@ -26,31 +26,41 @@ import java.util.ArrayList;
  */
 public class GUIManager {
 
-    public static boolean localServerCode = false;
+    // Local server code toggle
+    private static boolean localServerCode = false;
+
+    // Renderer
     public static Renderer renderer;
-    // Load the user's settings
-    // When set methods are called for this class/object, the class will
-    // automatically save the changed preferences
+    private ArrayList<GameObserver> gameObservers = new ArrayList<>();
+
+    // Settings
     private static UserSettings user = UserSettingsManager.loadSettings();
-    // Set the width and height of the stage
+    private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
+
+    // Scene
     public final double width;
     public final double height;
-    public int udpPortNumber = 0;
     private Stage s;
+
+    // Networking
+    public int udpPortNumber = 0;
+    private int tcpPortNumber = 25566;
+    private String ipAddress = "";
     private Client c;
     private Thread localServer;
+
+    // GUI
     private Menu currentScene = Menu.MainMenu;
-    private String ipAddress = "";
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean lobbyTimerStarted = false;
     private int lobbyTimeLeft = 10;
-    private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
-    private ArrayList<GameObserver> gameObservers = new ArrayList<>();
-//    private int gameTimeLeft = 0;
-//    private int redScore = 0;
-//    private int blueScore = 0;
+
+    // Audio
     private AudioManager audio;
 
+    /**
+     * Constructor for GUIManager
+     */
     public GUIManager() {
         audio = new AudioManager(user, this);
         String[] resolution = GUIManager.getUserSettings().getResolution().split("x");
@@ -61,7 +71,7 @@ public class GUIManager {
     /**
      * Get the user settings object
      *
-     * @return user settings object
+     * @return user settings
      */
     public static UserSettings getUserSettings() {
         return user;
@@ -71,7 +81,7 @@ public class GUIManager {
      * Method for changing the current scene two switch between views
      *
      * @param menu the string representation of the menu to switch to
-     * @param o    an object to be passed to the target scene (usually null)
+     * @param o    objects to be passed to the target scene
      */
     public void transitionTo(Menu menu, Object... o) {
         audio.stopMusic();
@@ -79,7 +89,8 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
-                    renderer.destroy();
+                    if(renderer != null)
+                    	renderer.destroy();
                     renderer = null;
                     if (localServer != null) {
                         localServer.interrupt();
@@ -161,13 +172,16 @@ public class GUIManager {
         }
     }
 
+    /**
+     * Start a local server and connect to it (for single player)
+     * @return true if the connection was established
+     */
     private boolean establishLocalServerConnection() {
         if (localServerCode) {
             ipAddress = "127.0.0.1";
-            Server local = new Server(25566,ipAddress,new ServerConsole(), 0);
+            Server local = new Server(tcpPortNumber,ipAddress,new ServerConsole(), 0);
 
             local.setSinglePlayer(true);
-           // s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
 
             localServer = new Thread(new Runnable() {
                 @Override
@@ -188,69 +202,80 @@ public class GUIManager {
         return false;
     }
 
+    /**
+     * Connect to a remote server
+     * @return true if the connection was established
+     */
     public boolean establishConnection() {
-            String nickname = user.getUsername(); // We ask the user what their nickname is.
-
-		    String serverLocation = ipAddress + ":25566";
-
-            System.out.println("Connecting to: " + serverLocation);
-
-            int portNumber = Integer.parseInt(serverLocation.split(":")[1]); // The server is on a particular port.
-            String machName = serverLocation.split(":")[0]; // The machine has a particular name.
-
-            System.out.println("machName: " + machName);
-            // This loads up the client code.
+            String nickname = user.getUsername();
+            System.out.println("Connecting to: " + ipAddress + ":" + tcpPortNumber);
             try {
-                c = new Client(nickname, portNumber, machName, this, udpPortNumber, false);
-
-                // We can then get the client sender and receiver threads.
-                ClientSender sender = c.getSender();
-                ClientReceiver receiver = c.getReceiver();
+                c = new Client(nickname, tcpPortNumber, ipAddress, this, udpPortNumber, false);
                 return true;
             } catch (Exception e) {
                 return false;
             }
     }
 
+    /**
+     * Get the stage for the GUI
+     * @return stage for the GUI
+     */
     public Stage getStage()
     {
         return s;
     }
 
-    public void setStage(Stage primaryStage) throws Exception {
-        // TODO: Remove this method once integrated with Game.java
+    /**
+     * Set the stage for the GUI
+     * @param primaryStage stage to use for displaying the GUI
+     */
+    public void setStage(Stage primaryStage) {
         s = primaryStage;
         s.setTitle("Paintball Pro");
         s.setScene(MainMenu.getScene(this));
         s.show();
     }
 
+    /**
+     * Add an observer for the settings, to be notified when the settings change
+     * @param obs observer
+     */
     public void addSettingsObserver(UserSettingsObserver obs) {
         settingsObservers.add(obs);
     }
 
+    /**
+     * Notify observers that the settings have changed
+     */
     public void notifySettingsObservers() {
-        // TODO: notify server that username has changed
         for (UserSettingsObserver obs : settingsObservers) {
             obs.settingsChanged();
         }
     }
 
+    /**
+     * Get the audio manager
+     * @return audio manager
+     */
     public AudioManager getAudioManager() {
         return audio;
     }
 
-    public ObservableList<GameLobbyRow> getLobbyData() {
-        return lobbyData;
-    }
-
-    public void fetchLobbyUpdates() {
+    /**
+     * Request an updated lobby from the server
+     */
+    void fetchLobbyUpdates() {
         if (c != null) {
             c.getSender().sendMessage("Get:Red");
             c.getSender().sendMessage("Get:Blue");
         }
     }
 
+    /**
+     * Update the display of red players in the lobby
+     * @param redPlayers array of player names (strings)
+     */
     public void updateRedLobby(String[] redPlayers) {
         // Update all rows
         for (int i = 0; i < lobbyData.size(); i++) {
@@ -269,6 +294,10 @@ public class GUIManager {
         }
     }
 
+    /**
+     * Update the display of blue players in the lobby
+     * @param bluePlayers array of player names (strings)
+     */
     public void updateBlueLobby(String[] bluePlayers) {
         // Update all rows
         for (int i = 0; i < lobbyData.size(); i++) {
@@ -287,34 +316,57 @@ public class GUIManager {
         }
     }
 
+    /**
+     * Get the client
+     * @return client
+     */
     public Client getClient() {
         return c;
     }
 
+    /**
+     * Start the timer for the lobby
+     */
     public void setTimerStarted() {
         lobbyTimerStarted = true;
     }
 
+    /**
+     * Is the lobby timer running
+     * @return lobby timer started
+     */
     public boolean isTimerStarted() {
         return lobbyTimerStarted;
     }
 
-    public Menu getCurrentScene() {
-        return currentScene;
-    }
-
+    /**
+     * Get the time left for the lobby
+     * @return lobby
+     */
     public int getTimeLeft() {
         return lobbyTimeLeft;
     }
 
+    /**
+     * Set the time left for the lobby
+     * @param timeLeft time left in seconds
+     */
     public void setTimeLeft(int timeLeft) {
         this.lobbyTimeLeft = timeLeft;
     }
 
+    /**
+     * Set the IP address to use for connections
+     * @param ipAddress IP address for connections
+     */
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * Add hover and click buttons to all buttons in a node
+     * @param n parent node to start from
+     */
     public void addButtonHoverSounds(Node n) {
         if (n instanceof Pane) {
             for (Node p : ((Pane) n).getChildren()) {
@@ -337,43 +389,21 @@ public class GUIManager {
         }
     }
 
-    public void addGameObserver(GameObserver obs) {
-        this.gameObservers.add(obs);
-    }
-
-    private void notifyGameChanged() {
-        this.gameObservers.forEach(GameObserver::gameUpdated);
-    }
-
+    /**
+     * Set the renderer to use for the games
+     * @param r renderer for the game
+     */
     public void setRenderer(Renderer r){
     	renderer = r;
     }
 
-    public void exitGame() {
-        if (this.getClient() != null && this.getClient().getSender() != null) {
-            this.getClient().getSender().sendMessage("Exit:Game");
-        }
-    }
-
+    /**
+     * Send a message to the server about the client disconnecting
+     */
     public void exitClient() {
         if (this.getClient() != null && this.getClient().getSender() != null) {
             this.getClient().getSender().sendMessage("Exit:Client");
         }
     }
-
-//    public void setGameTimeLeft(int gameTimeLeft) {
-//        this.gameTimeLeft = gameTimeLeft;
-//        notifyGameChanged();
-//    }
-//
-//    public void setRedScore(int redScore) {
-//        this.redScore = redScore;
-//        notifyGameChanged();
-//    }
-//
-//    public void setBlueScore(int blueScore) {
-//        this.blueScore = blueScore;
-//        notifyGameChanged();
-//    }
 
 }

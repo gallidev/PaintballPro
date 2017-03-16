@@ -162,7 +162,8 @@ public class CollisionsHandler
 			if(!flag.isCaptured() &&
 					p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) &&
 					!p.isEliminated()){
-				if(debug) System.out.println("Catched the flag");
+				if(debug) System.out.println("Caught the flag");
+				flag.setFlagCarrier(p);
 				flag.setCaptured(true);
 				flag.setVisible(false);
 				p.setHasFlag(true);
@@ -170,7 +171,7 @@ public class CollisionsHandler
 			}
 			//check if the player got shot so leave the flag in the player position
 			if(p.isEliminated() && p.hasFlag()){
-				if(debug) System.out.println("lost the flag");
+				if(debug) System.out.println("Dropped the flag");
 				flag.setLayoutX(p.getLayoutX());
 				flag.setLayoutY(p.getLayoutY());
 				flag.setCaptured(false);

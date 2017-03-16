@@ -32,14 +32,6 @@ public class ClientSender extends Thread {
 	}
 
 	/**
-	 * Sets the global variable is_running to false. Will stop the thread from
-	 * running its loop in run().
-	 */
-	public void stopThread() {
-		m_running = false;
-	}
-
-	/**
 	 * Places a message to send to the server.
 	 * @param text Message to send to the server.
 	 */
@@ -59,9 +51,14 @@ public class ClientSender extends Thread {
 			String text = msg.getText();
 			// Print to the client stream.
 			server.println(text);
+			if(text.contains("Exit:Client"))
+			{
+				break;
+			}
 		}
 		// If stopped, return.
 		//server.close();
+		System.out.println("Stopping ClientSender");
 		return;
 	}
 

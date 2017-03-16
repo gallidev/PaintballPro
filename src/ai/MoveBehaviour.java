@@ -10,45 +10,21 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 public class MoveBehaviour extends Behaviour {
 
-    private Mover mover;
     private long startTimer;
     private long startDelay;
     private boolean started = true;
     private boolean timerStarted = false;
-    private Random rand = new Random();
 
     public MoveBehaviour(AIPlayer ai, BehaviourManager manager) {
         super(ai, manager);
-        mover = manager.getMover();
-        if(ai.getMap().getGameMode() == GameMode.ELIMINATION){
-            startDelay = 6000;
-        } else {
-            startDelay = 12000;
-        }
+        startDelay = 6000;
     }
 
     @Override
     public void tick() {
         if(started){
             if(!timerStarted){
-                boolean b = rand.nextBoolean();
-                if(b){
-                    if(ai.getMap().getGameMode() == GameMode.ELIMINATION) {
-                        PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 14, 2);
-                        mover.setPath(ai.getHashMaps().getPathMap().get(p));
-                    } else {
-                        PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 8, 7);
-                        mover.setPath(ai.getHashMaps().getPathMap().get(p));
-                    }
-                } else {
-                    if(ai.getMap().getGameMode() == GameMode.ELIMINATION) {
-                        PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 14, 10);
-                        mover.setPath(ai.getHashMaps().getPathMap().get(p));
-                    } else {
-                        PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 27, 22);
-                        mover.setPath(ai.getHashMaps().getPathMap().get(p));
-                    }
-                }
+                startAction();
                 startTimer = System.currentTimeMillis();
                 timerStarted = true;
             }
