@@ -9,7 +9,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import physics.Bullet;
 import physics.CollisionsHandler;
-import physics.Flag;
+import rendering.ImageFactory;
 import rendering.Spawn;
 import serverLogic.Team;
 
@@ -301,6 +301,10 @@ public abstract class EssentialPlayer extends ImageView {
 	public void setHasFlag(boolean hasFlag)
 	{
 		this.hasFlag = hasFlag;
+		if(hasFlag)
+			setImage(ImageFactory.getPlayerFlagImage(team));
+		else
+			setImage(ImageFactory.getPlayerImage(team));
 	}
 
 	public boolean isEliminated(){
@@ -332,12 +336,12 @@ public abstract class EssentialPlayer extends ImageView {
 	public abstract void setOppTeam(Team team);
 	public abstract void tick();
 
-	public void setNickname(String n){
-		nickname = n;
-	}
-
 	public String getNickname(){
 		return nickname;
+	}
+
+	public void setNickname(String n){
+		nickname = n;
 	}
 
 	public CollisionsHandler getCollisionsHandler(){

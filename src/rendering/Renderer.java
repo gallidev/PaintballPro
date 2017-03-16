@@ -10,14 +10,16 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import logic.GameMode;
 import networking.client.ClientReceiver;
 import physics.*;
+import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
-import players.ClientPlayer;
 import players.OfflinePlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
@@ -126,7 +128,7 @@ public class Renderer extends Scene
 //					hud.tick(timeLeft--);
 //					lastSecond = now;
 //				}
-				hud.tick((int) gameLoop.getRemainingTime());
+				hud.tick(gameLoop.getRemainingTime());
 
 				//update the scores
 				if (hud != null){
@@ -299,6 +301,9 @@ public class Renderer extends Scene
 	{
 		timer.stop();
 		view = new Pane();
+		PauseMenu.p = new GridPane();
+		PauseSettingsMenu.p = new GridPane();
+		HeadUpDisplay.view = new BorderPane();
 	}
 
 	private void generateSpray(Bullet pellet, TeamEnum team)
