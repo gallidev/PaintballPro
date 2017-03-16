@@ -139,6 +139,8 @@ public class OfflinePlayer extends EssentialPlayer
 	public void updateScore() {
 		if (gameMode == GameMode.ELIMINATION)
 			oppTeam.incrementScore();
+		
+		scoreChanged = true;
 	}
 
 	@Override

@@ -57,7 +57,7 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
-		    	   updateScore();
+		    	   //updateScore();
 		    	   sendFlag();
 
 		    	   sendRemainingTime();
@@ -159,7 +159,11 @@ public class ServerGameStateSender {
 					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
 				}
 			}
-
+			
+			if (p.getScoreChanged()){
+				updateScore();
+				p.setScoreChanged(false);
+			}
 		}
 	}
 
@@ -171,6 +175,7 @@ public class ServerGameStateSender {
 		String toBeSent = "3:" +  gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
 
 		udpServer.sendToAll(toBeSent, lobbyId);
+		System.out.println("send updated score");
 	}
 
 	/**

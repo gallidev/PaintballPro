@@ -89,6 +89,8 @@ public class AIPlayer extends EssentialPlayer{
 
 		if (gameMode == GameMode.ELIMINATION)
 			oppTeam.incrementScore();
+		
+		scoreChanged = true;
 	}
 
 	@Override

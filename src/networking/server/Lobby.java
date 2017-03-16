@@ -321,12 +321,14 @@ public class Lobby {
 				newTeam.setColour(TeamEnum.BLUE);
 			}
 
-			//provisionally hard-coded
 			if (teamNum == 1){
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer, map.getGameMode());
+				player.setNickname(origPlayer.getUsername());
 			}
-			else
+			else{
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer, map.getGameMode());
+				player.setNickname(origPlayer.getUsername());
+			}
 
 			newTeam.addMember(player);
 		}
@@ -474,7 +476,7 @@ public class Lobby {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
-			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
+			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"+ p.getNickname() + ":";
 
 			// adding to the string the information about all the other players
 			for (EssentialPlayer aux : players)
