@@ -14,8 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.client.Client;
-import networking.client.ClientReceiver;
-import networking.client.ClientSender;
 import networking.server.Server;
 import rendering.Renderer;
 
@@ -26,24 +24,20 @@ import java.util.ArrayList;
  */
 public class GUIManager {
 
-    // Local server code toggle
-    private static boolean localServerCode = false;
-
     // Renderer
     public static Renderer renderer;
-    private ArrayList<GameObserver> gameObservers = new ArrayList<>();
-
+    // Local server code toggle
+    private static boolean localServerCode = false;
     // Settings
     private static UserSettings user = UserSettingsManager.loadSettings();
-    private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
-
     // Scene
     public final double width;
     public final double height;
-    private Stage s;
-
     // Networking
     public int udpPortNumber = 0;
+    private ArrayList<GameObserver> gameObservers = new ArrayList<>();
+    private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
+    private Stage s;
     private int tcpPortNumber = 25566;
     private String ipAddress = "";
     private Client c;
@@ -140,7 +134,7 @@ public class GUIManager {
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    //renderer = new Renderer("elimination", c.getReceiver(), this);
+                    renderer = new Renderer("elimination", c.getReceiver(), this, null);
                     s.setScene(renderer);
                     break;
                 case CTFSingle:
@@ -387,14 +381,6 @@ public class GUIManager {
                 }
             });
         }
-    }
-
-    /**
-     * Set the renderer to use for the games
-     * @param r renderer for the game
-     */
-    public void setRenderer(Renderer r){
-    	renderer = r;
     }
 
     /**

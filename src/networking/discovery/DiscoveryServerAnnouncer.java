@@ -33,7 +33,7 @@ public class DiscoveryServerAnnouncer extends Thread {
 		try {
 
 			int serverGamePort = portNo;
-			String messageToClients = networking.discovery.IPAddress.getLAN() + ":" + serverGamePort;
+			String messageToClients = IPAddress.getLAN() + ":" + serverGamePort;
 
 			InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 			System.setProperty("java.net.preferIPv4Stack", "true");

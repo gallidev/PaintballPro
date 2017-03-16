@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import networking.discovery.IPAddress;
 import networking.server.Server;
 
 /**
@@ -44,10 +45,12 @@ public class ServerGUI extends Scene implements ServerView {
         iv.setFitWidth(200);
         view.add(iv, 0, 0);
 
+        view.add(new Label("Running on " + IPAddress.getLAN()), 0, 1);
+
         textArea = new TextArea();
         textArea.setPrefWidth(400);
         textArea.setPrefHeight(300);
-        view.add(textArea, 0, 1);
+        view.add(textArea, 0, 2);
 
         Button exitButton = new Button("Exit");
         exitButton.setOnAction((event) -> {
@@ -58,7 +61,7 @@ public class ServerGUI extends Scene implements ServerView {
                 discovery.interrupt();
             }
         });
-        view.add(exitButton, 0, 2);
+        view.add(exitButton, 0, 3);
 
 
         getStylesheets().add("styles/menu.css");
