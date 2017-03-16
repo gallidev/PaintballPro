@@ -24,7 +24,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = true;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -263,7 +263,7 @@ public class UDPClient extends Thread {
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
-		if (GUIManager.renderer.getHud() != null){
+		if (GUIManager.renderer!= null && GUIManager.renderer.getHud() != null){
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
@@ -320,7 +320,7 @@ public class UDPClient extends Thread {
 		String time = sentence.split(":")[1];
 
 		if (debug) System.out.println("remaining time on client: " + time);
-		if(GUIManager.renderer.getHud() != null){
+		if (GUIManager.renderer!= null && GUIManager.renderer.getHud() != null){
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {

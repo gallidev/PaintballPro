@@ -19,7 +19,7 @@ import java.net.InetAddress;
 public class UDPServer extends Thread{
 
 	public boolean m_running = true;
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
