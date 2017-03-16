@@ -42,6 +42,7 @@ public abstract class EssentialPlayer extends ImageView {
 	private Polygon bounds = new Polygon();
 	private boolean hasFlag;
 	protected GameMode gameMode;
+	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 
 	private String nickname;
 
@@ -59,7 +60,7 @@ public abstract class EssentialPlayer extends ImageView {
 		this.angle = 0;
 		setLayoutX(x);
 		setLayoutY(y);
-		setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+		setEffect(shadow);
 		this.lastX = x;
 		this.lastY = y;
 		this.lastAngle = angle;
@@ -306,9 +307,15 @@ public abstract class EssentialPlayer extends ImageView {
 	{
 		this.hasFlag = hasFlag;
 		if(hasFlag)
+		{
+			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
 			setImage(ImageFactory.getPlayerFlagImage(team));
+		}
 		else
+		{
+			shadow.setColor(Color.BLACK);
 			setImage(ImageFactory.getPlayerImage(team));
+		}
 	}
 
 	public boolean isEliminated(){

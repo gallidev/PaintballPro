@@ -4,6 +4,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+
+import networking.discovery.IPAddress;
 // helper from http://stackoverflow.com/questions/8083479/java-getting-my-ip-address
 public class testIP {
 
@@ -27,8 +29,8 @@ public class testIP {
 
 		            String ip = addr.getHostAddress();
 		            
-		            if(Inet4Address.class == addr.getClass()) 
-		            	return ip;
+		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.")) 
+		            	System.out.println(ip);
 		        }
 		    }
 		} catch (SocketException e) {

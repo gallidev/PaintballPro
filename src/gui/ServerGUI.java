@@ -19,9 +19,8 @@ import networking.server.Server;
  */
 public class ServerGUI extends Scene implements ServerView {
 
-    static StackPane sp = new StackPane();
-    private GridPane loadingGrid = new GridPane();
-    private GridPane view = new GridPane();
+    static GridPane view = new GridPane();
+    static LoadingPane sp = new LoadingPane(ServerGUI.view);
 
     private String messages = "";
     private TextArea textArea;
@@ -31,15 +30,7 @@ public class ServerGUI extends Scene implements ServerView {
     public ServerGUI() {
         super(sp, new GUIManager().width, new GUIManager().height);
 
-        loadingGrid.setAlignment(Pos.CENTER);
-        loadingGrid.setHgap(10);
-        loadingGrid.setVgap(10);
-        loadingGrid.setPadding(new Insets(25, 25, 25, 25));
-        ProgressIndicator spinner = new ProgressIndicator();
-        spinner.setProgress(-1);
-        loadingGrid.add(MenuControls.centreInPane(spinner), 0, 1);
-        loadingGrid.add(MenuControls.centreInPane(new Label("Starting Server...")), 0, 0);
-        sp.getChildren().addAll(loadingGrid);
+        sp.startLoading();
 
         view.setAlignment(Pos.CENTER);
         view.setHgap(10);
@@ -84,8 +75,7 @@ public class ServerGUI extends Scene implements ServerView {
         this.server = server;
         this.discovery = discovery;
         Platform.runLater(() -> {
-            sp.getChildren().remove(loadingGrid);
-            sp.getChildren().add(view);
+            sp.stopLoading();
         });
     }
 
