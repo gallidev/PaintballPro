@@ -364,12 +364,7 @@ public class UDPClient extends Thread {
 		if(gameStateReceiver != null){
 			gameStateReceiver.respawnFlag(x, y);
 		}
-
 	}
-	
-	
-
-
 
 	/**
 	 * Retrieves a player with a specific id from the current game.

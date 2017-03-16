@@ -101,7 +101,6 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				updateView();
 				for(EssentialPlayer player : players)
 				{
 					for(Bullet pellet : player.getBullets())
@@ -126,6 +125,7 @@ public class Renderer extends Scene
 
 				hud.setScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
 				hud.setScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
+				updateView();
 			}
 		};
 		timer.start();
@@ -185,7 +185,7 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				cPlayer.tick();
-				updateView();
+
 				for(GhostPlayer player : players)
 				{
 					for(GhostBullet pellet : player.getFiredBullets())
@@ -194,6 +194,7 @@ public class Renderer extends Scene
 							displayBullets.getChildren().add(pellet);
 					}
 				}
+				updateView();
 			}
 		};
 		timer.start();
@@ -267,8 +268,7 @@ public class Renderer extends Scene
 	{
 		return map;
 	}
-
-
+	
 	public HeadUpDisplay getHud()
 	{
 		return hud;
@@ -320,8 +320,8 @@ public class Renderer extends Scene
 	{
 		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
 
-		view.relocate(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX(), ((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
 		hud.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+		view.relocate(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX(), ((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
