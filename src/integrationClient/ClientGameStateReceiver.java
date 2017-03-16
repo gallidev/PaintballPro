@@ -1,12 +1,9 @@
 package integrationClient;
 
-import java.util.ArrayList;
-
-import enums.TeamEnum;
-import physics.Bullet;
 import physics.Flag;
-import physics.GhostBullet;
 import players.GhostPlayer;
+
+import java.util.ArrayList;
 
 /**
  * Client-sided class which receives an action imposed by the server on the
@@ -57,10 +54,9 @@ public class ClientGameStateReceiver {
 
 		GhostPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
-		playerToBeUpdated.setSyncX(x);
-		playerToBeUpdated.setSyncY(y);
-		playerToBeUpdated.setSyncRotationAngle(angle);
-		playerToBeUpdated.setSyncVisible(visible);
+		playerToBeUpdated.relocatePlayer(x, y);
+		playerToBeUpdated.setRotationAngle(angle);
+		playerToBeUpdated.setVisible(visible);
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
@@ -94,6 +90,7 @@ public class ClientGameStateReceiver {
 	public void updateFlag(int id){
 
 		GhostPlayer player = getPlayerWithId(id);
+		player.setFlagStatus(true);
 		
 		System.out.println("Player " + id + " captured the flag");
 	}
@@ -101,12 +98,17 @@ public class ClientGameStateReceiver {
 	public void lostFlag(int id){
 
 		GhostPlayer player = getPlayerWithId(id);
+		player.setFlagStatus(false);
+		flag.setVisible(true);
+		flag.relocate(player.getLayoutX(), player.getLayoutY());
 		
 		System.out.println("Player " + id + " lost the flag");
 
 	}
 	
 	public void respawnFlag(double x, double y){
+		flag.setVisible(true);
+		flag.relocate(x, y);
 		System.out.println("Flag has been respawned");
 	}
 

@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import physics.GhostBullet;
+import rendering.ImageFactory;
 
 import java.util.ArrayList;
 /**
@@ -25,6 +26,7 @@ public class GhostPlayer extends ImageView {
 	private AudioManager audio;
 	private String nickname;
 	private Label nameTag;
+	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 
 	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio, TeamEnum team) {
 		super(image);
@@ -50,15 +52,13 @@ public class GhostPlayer extends ImageView {
 		return firedBullets;
 	}
 
-	public synchronized void setFiredBullets(ArrayList<GhostBullet> firedBullets) {
-		this.firedBullets = firedBullets;
-	}
-
 	public synchronized void updateSingleBullet(int bulletId, double x, double y){
-		for (int i = 0; i < this.firedBullets.size(); i ++){
-			if(this.firedBullets.get(i).getBulletId() == bulletId){
-				this.firedBullets.get(i).setX(x);
-				this.firedBullets.get(i).setY(y);
+		for(GhostBullet firedBullet : this.firedBullets)
+		{
+			if(firedBullet.getBulletId() == bulletId)
+			{
+				firedBullet.setX(x);
+				firedBullet.setY(y);
 				return;
 			}
 		}
@@ -66,12 +66,8 @@ public class GhostPlayer extends ImageView {
 		this.firedBullets.add(bullet);
 	}
 
-	public synchronized Rotate getRotation() {
-		return rotation;
-	}
-
-	public synchronized void setSyncRotationAngle(double angleDegress) {
-		this.rotation.setAngle(angleDegress);
+	public void setRotationAngle(double angle) {
+		this.rotation.setAngle(angle);
 	}
 
 	public AudioManager getAudio() {
@@ -86,18 +82,24 @@ public class GhostPlayer extends ImageView {
 		return this.playerId;
 	}
 
-	public void setSyncVisible(boolean visible){
-		setVisible(visible);
+	public void relocatePlayer(double x, double y)
+	{
+		relocate(x, y);
+		nameTag.relocate(x - 15, y - 32);
 	}
 
-	public void setSyncX(double x){
-		setLayoutX(x);
-		nameTag.setLayoutX(x - 15);
-	}
-
-	public void setSyncY(double y){
-		setLayoutY(y);
-		nameTag.setLayoutY(y - 32);
+	public void setFlagStatus(boolean status)
+	{
+		if(status)
+		{
+			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
+			setImage(ImageFactory.getPlayerFlagImage(team));
+		}
+		else
+		{
+			shadow.setColor(Color.BLACK);
+			setImage(ImageFactory.getPlayerImage(team));
+		}
 	}
 
 	public TeamEnum getTeam(){

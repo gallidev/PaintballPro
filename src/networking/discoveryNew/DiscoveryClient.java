@@ -79,7 +79,7 @@ public class DiscoveryClient extends Thread{
 			  //We have a response
 			  System.out.println(getClass().getName() + ">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
 			  
-			  if(!receivePacket.getAddress().getHostAddress().contains("192."))
+			  if(!receivePacket.getAddress().getHostAddress().contains("192.168.56"))
 				  break;
 		  }
 		  
