@@ -9,11 +9,9 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 public class CTFRetreatBehaviour extends Behaviour {
 
-    private Mover mover;
 
     public CTFRetreatBehaviour(AIPlayer ai, BehaviourManager manager){
         super(ai, manager);
-        mover = manager.getMover();
     }
 
     @Override
@@ -25,6 +23,7 @@ public class CTFRetreatBehaviour extends Behaviour {
             PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 26, 5);
             mover.setPath(ai.getHashMaps().getPathMap().get(p));
         }
+        mover.tick();
     }
 
 }

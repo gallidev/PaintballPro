@@ -1,9 +1,11 @@
 package physics;
 
+import enums.TeamEnum;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import logic.GameObject;
+import players.EssentialPlayer;
 import rendering.ImageFactory;
 import rendering.Objective;
 import rendering.ObjectiveType;
@@ -14,6 +16,7 @@ public class Flag extends ImageView implements GameObject
 {
 	private boolean captured = false;
 	private Objective[] locations;
+	private EssentialPlayer flagCarrier;
 
 
 	public Flag(){
@@ -44,6 +47,14 @@ public class Flag extends ImageView implements GameObject
 		int randomLocation = (new Random()).nextInt(locations.length);
 		relocate(locations[randomLocation].getX() * 64, locations[randomLocation].getY() * 64);
 		setEffect(new DropShadow(16, Color.BLACK));
+	}
+
+	public EssentialPlayer getFlagCarrier(){
+		return flagCarrier;
+	}
+
+	public void setFlagCarrier(EssentialPlayer p){
+		this.flagCarrier = p;
 	}
 
 
