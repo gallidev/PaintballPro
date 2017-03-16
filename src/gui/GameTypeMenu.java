@@ -24,19 +24,10 @@ public class GameTypeMenu {
 	 */
 	public static Scene getScene(GUIManager m, GameLocation loc) {
 
-		StackPane sp = new StackPane();
-		GridPane loadingGrid = new GridPane();
-		loadingGrid.setAlignment(Pos.CENTER);
-		loadingGrid.setHgap(10);
-		loadingGrid.setVgap(10);
-		loadingGrid.setPadding(new Insets(25, 25, 25, 25));
-		ProgressIndicator spinner = new ProgressIndicator();
-		spinner.setProgress(-1);
-		loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);
-
 		MenuOption[] empty = {};
 		GridPane mainGrid = MenuOptionSet.optionSetToGridPane(empty);
 
+		LoadingPane sp = new LoadingPane(mainGrid);
 
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Elimination", true, new EventHandler<ActionEvent>() {
@@ -53,9 +44,7 @@ public class GameTypeMenu {
 					m.transitionTo(Menu.Lobby, "CTF");
 				} else {
 
-					sp.getChildren().remove(mainGrid);
-					sp.getChildren().add(loadingGrid);
-					System.out.println(sp.getChildren().toString());
+					sp.startLoading();
 
 					Thread t = new Thread(new Runnable() {
 						@Override
@@ -84,7 +73,6 @@ public class GameTypeMenu {
 
 		// Create the scene and return it
 		m.addButtonHoverSounds(grid);
-		sp.getChildren().add(mainGrid);
 
 		Scene s = new Scene(sp, m.width, m.height);
 		s.getStylesheets().add("styles/menu.css");

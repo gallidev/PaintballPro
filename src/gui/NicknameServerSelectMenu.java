@@ -21,29 +21,21 @@ import networking.discovery.IPAddress;
  */
 public class NicknameServerSelectMenu {
     public static Scene getScene(GUIManager m) {
-        // Obtain the user's settings
         UserSettings s = GUIManager.getUserSettings();
-        // Create the main grid (to contain the options grid, and the apply/cancel buttons)
-        StackPane sp = new StackPane();
+
         GridPane mainGrid = new GridPane();
         mainGrid.setAlignment(Pos.CENTER);
         mainGrid.setHgap(10);
         mainGrid.setVgap(10);
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
-        GridPane loadingGrid = new GridPane();
-        loadingGrid.setAlignment(Pos.CENTER);
-        loadingGrid.setHgap(10);
-        loadingGrid.setVgap(10);
-        loadingGrid.setPadding(new Insets(25, 25, 25, 25));
-        ProgressIndicator spinner = new ProgressIndicator();
-        spinner.setProgress(-1);
-        loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);
-        // Create the top grid (grid to contain all possible options)
+        LoadingPane sp = new LoadingPane(mainGrid);
+
         GridPane topGrid = new GridPane();
         topGrid.setAlignment(Pos.CENTER);
         topGrid.setHgap(10);
         topGrid.setVgap(10);
         topGrid.setPadding(new Insets(25, 25, 25, 25));
+
         // Create the username label and text field
         Label usernameLabel = new Label("Username");
         TextField usernameText = new TextField();
@@ -99,8 +91,7 @@ public class NicknameServerSelectMenu {
             @Override public void handle(ActionEvent event) {
                 // Update the preferences (these will automatically be saved
                 // when set is called)
-                sp.getChildren().removeAll(mainGrid);
-                sp.getChildren().addAll(loadingGrid);
+                sp.startLoading();
                 s.setUsername(usernameText.getText());
                 m.notifySettingsObservers();
 
@@ -115,8 +106,7 @@ public class NicknameServerSelectMenu {
                                     @Override
                                     public void run() {
                                         AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
-                                        sp.getChildren().addAll(mainGrid);
-                                        sp.getChildren().removeAll(loadingGrid);
+                                        sp.stopLoading();
                                     }
                                 });
 
@@ -129,6 +119,10 @@ public class NicknameServerSelectMenu {
                                         // Transition back to the main menu
                                         if (m.establishConnection())
                                             m.transitionTo(Menu.MultiplayerGameType);
+                                        else {
+                                            AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+                                            sp.stopLoading();
+                                        }
                                     }
                                 });
                             }
@@ -150,6 +144,10 @@ public class NicknameServerSelectMenu {
                                         // Transition back to the main menu
                                         if (m.establishConnection())
                                             m.transitionTo(Menu.MultiplayerGameType);
+                                        else {
+                                            AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+                                            sp.stopLoading();
+                                        }
                                     }
                                 });
                             })).start();
@@ -165,14 +163,13 @@ public class NicknameServerSelectMenu {
                 m.transitionTo(Menu.MainMenu);
             }
         })};
+
         // Turn the array into a grid pane
         GridPane connectGrid = MenuOptionSet.optionSetToGridPane(connect);
         // Add the options grid and the button grid to the main grid
         mainGrid.add(topGrid, 0, 0);
         mainGrid.add(connectGrid, 0, 1);
         m.addButtonHoverSounds(mainGrid);
-
-        sp.getChildren().addAll(mainGrid);
 
         // Create a new scene using the main grid
         Scene scene = new Scene(sp, m.width, m.height);
