@@ -58,7 +58,7 @@ public class ServerGameStateSender {
 		    	   sendClient();
 		    	   sendBullets();
 		    	   updateScore();
-		    	   sendFlag();
+		    	   //sendFlag();
 
 		    	   sendRemainingTime();
 
@@ -66,7 +66,7 @@ public class ServerGameStateSender {
 
 		    		   udpServer.sendToAll("5", lobbyId);
 		    		   sendWinner();
-		    		   scheduler.shutdown();
+		    		   //scheduler.shutdown();
 		    	   }
 		       }
 		     };
@@ -89,12 +89,6 @@ public class ServerGameStateSender {
 
 	}
 	
-	/**
-	 * Stops the server from sending information when the game finishes.
-	 */
-	public void stopSending(){
-		scheduler.shutdown();
-	}
 	
 
 	/**
@@ -102,9 +96,12 @@ public class ServerGameStateSender {
 	 */
 	private void sendRemainingTime() {
 		//Protocol: 6:<remaining seconds>
-		String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
+		if (gameLoop.getGame().getRemainingTime() != 0 ){
+			String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
 
-		udpServer.sendToAll(toBeSent, lobbyId);
+			udpServer.sendToAll(toBeSent, lobbyId);
+		}
+	
 	}
 
 	/**
@@ -174,10 +171,13 @@ public class ServerGameStateSender {
 	 * Sends the clients the game winner when the game finishes.
 	 */
 	public void sendWinner(){
-		//Protocol: "2:<winner>"
-		String toBeSent = "2:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
-
-		udpServer.sendToAll(toBeSent, lobbyId);
+		//Protocol: "2:<winner>:RedScore:BlueScore"
+		Team winner = gameLoop.getGame().whoWon();
+		if (winner != null){
+			String toBeSent = "2:" + (winner.getColour() == TeamEnum.RED ? "Red" : "Blue")  + ":"  + gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
+			udpServer.sendToAll(toBeSent, lobbyId);
+		}
+		
 	}
 	
 	public void sendFlag(){

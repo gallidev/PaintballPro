@@ -285,7 +285,8 @@ public class Renderer extends Scene
 	 */
 	public static void incrementScore(TeamEnum team, int amount)
 	{
-		hud.incrementScore(team, amount);
+		if (hud != null)
+			hud.incrementScore(team, amount);
 	}
 
 	public static void destroy(Renderer renderer)

@@ -14,7 +14,7 @@ import logic.RoundTimer;
 public class TeamMatchMode extends GameMode {
 
 	private RoundTimer timer;
-	private static final long gameTime = 180; // in seconds
+	private static final long gameTime = 15; // in seconds
 	
 	//debugging
 	private boolean debug = false;
@@ -37,7 +37,7 @@ public class TeamMatchMode extends GameMode {
 	 */
 	@Override
 	public boolean isGameFinished() {
-		return timer.isTimeElapsed();
+		return getRemainingTime() == 0;
 	}
 
 		/**
@@ -57,10 +57,7 @@ public class TeamMatchMode extends GameMode {
 			//allocate 30 more seconds to the game.
 			timer = new RoundTimer(10);
 			timer.startTimer();
-			while (!timer.isTimeElapsed()){
-				if (debug) System.out.println("Timer running for more " + timer.getTimeLeft() + " seconds ...");
-			}
-			return whoWon();
+			return null;
 		}
 	}
 

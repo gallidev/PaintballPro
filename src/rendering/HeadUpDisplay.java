@@ -73,4 +73,9 @@ public class HeadUpDisplay extends SubScene
 		timer.setText(String.format("%02d:%02d", minutes, seconds));
 
 	}
+	
+	public void setWinner(String red, String blue){
+		guiManager.transitionTo(Menu.EndGame, red + "," + blue, (Renderer.cPlayer == null ? Renderer.player.getTeam() : Renderer.cPlayer.getTeam()));
+
+	}
 }

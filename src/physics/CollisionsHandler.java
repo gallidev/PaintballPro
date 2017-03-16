@@ -166,10 +166,10 @@ public class CollisionsHandler
 				flag.setVisible(false);
 				p.setHasFlag(true);
 				
-				if (red.containsPlayer(p))
-					red.incrementScore(CaptureTheFlagMode.flagScore);
-				else
-					blue.incrementScore(CaptureTheFlagMode.flagScore);
+//				if (red.containsPlayer(p))
+//					red.incrementScore(CaptureTheFlagMode.flagScore);
+//				else
+//					blue.incrementScore(CaptureTheFlagMode.flagScore);
 			}
 			if(p.isEliminated() && p.hasFlag()){
 				if(debug) System.out.println("lost the flag");
@@ -179,10 +179,10 @@ public class CollisionsHandler
 				flag.setVisible(true);
 				p.setHasFlag(false);
 				
-				if (red.containsPlayer(p))
-					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
-				else
-					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
+//				if (red.containsPlayer(p))
+//					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
+//				else
+//					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
 			}
 
 			if(p.hasFlag()){

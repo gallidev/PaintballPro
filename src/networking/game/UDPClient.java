@@ -137,11 +137,11 @@ public class UDPClient extends Thread {
 
 					case '1' : updatePlayerAction(receivedPacket) ;
 							   break;
+					case '2' : getWinnerAction(receivedPacket);
+							   break;
 					case '3' : updateScoreAction(receivedPacket);
 							   break;
 					case '4' : updateBulletAction(receivedPacket);
-							   break;
-					case '5' : endGameAction();
 							   break;
 					case '6' : getRemainingTime(receivedPacket);
 							   break;
@@ -168,6 +168,24 @@ public class UDPClient extends Thread {
 			if(debug) System.out.println("Closing Client.");
 			clientSocket.close();
 		}
+	}
+
+	private void getWinnerAction(String text) {
+		// Protocol: 2:Red/Blue:RedScore:BlueScore
+		
+		String winner = text.split(":")[1];
+		String redScore = text.split(":")[2];
+		String blueScore = text.split(":")[3];
+		
+		Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						if(Renderer.getHud() != null)
+							Renderer.getHud().setWinner(redScore, blueScore);
+					}
+				});
+		
+
 	}
 
 	/**
@@ -325,15 +343,6 @@ public class UDPClient extends Thread {
 		//do stuff here to render
 	}
 
-	private void endGameAction() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				m.transitionTo(Menu.EndGame, 0);
-			}
-		});
-
-	}
 
 	/**
 	 * Retrieves a player with a specific id from the current game.
