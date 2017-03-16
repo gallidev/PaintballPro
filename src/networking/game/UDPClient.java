@@ -166,6 +166,7 @@ public class UDPClient extends Thread {
 			if(debug) System.out.println("Closing Client.");
 			clientSocket.close();
 		}
+		System.out.println("Closing UDP Client");
 	}
 
 	/**
@@ -191,7 +192,8 @@ public class UDPClient extends Thread {
 	
 	public void stopThread()
 	{
-		sendMessage("Exit");
+		super.interrupt();
+		clientSocket.close();
 	}
 
 	// -------------------------------------

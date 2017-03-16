@@ -117,8 +117,10 @@ public class Client {
 								receiver.join(); // Wait for receiver to stop
 								fromServer.close(); // Close connection from server
 								server.close(); // Close server socket
+								System.out.println("Trying to close UDP Client");
 								udpReceiver.stopThread();
-								udpReceiver.join(3000);
+								udpReceiver.join(500);
+								System.out.println("Closed UDP Client");
 								// Acknowledge to the client that everything has
 								// stopped.
 								if(debug) System.out.println("Client has been stopped.");
