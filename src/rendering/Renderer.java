@@ -17,6 +17,7 @@ import networking.client.ClientReceiver;
 import physics.*;
 import players.EssentialPlayer;
 import players.GhostPlayer;
+import players.ClientPlayer;
 import players.OfflinePlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
@@ -37,7 +38,8 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	GhostPlayer cPlayer;
+
+	ClientPlayer cPlayer;
 	OfflinePlayer player;
 	private PauseMenu pauseMenu;
 	private PauseSettingsMenu settingsMenu;
@@ -175,6 +177,8 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		cPlayer.setInputHandler(inputHandler);
+
 		if(flag != null)
 			view.getChildren().add(flag);
 
@@ -182,7 +186,7 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
-		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer.getPlayerId());
+		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer);
 		inputSender.startSending();
 		Group displayBullets = new Group();
 		view.getChildren().add(displayBullets);
@@ -192,6 +196,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
+				cPlayer.tick();
 				updateView();
 				for(GhostPlayer player : players)
 				{

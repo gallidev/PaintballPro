@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class UDPClient extends Thread {
 
-	public boolean bulletDebug = true;
+	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
 	private boolean debug = false;
@@ -34,7 +34,7 @@ public class UDPClient extends Thread {
 	private TeamTable teams;
 	private int sIP;
 	private boolean active = true;
-	
+
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -173,11 +173,11 @@ public class UDPClient extends Thread {
 
 	private void getWinnerAction(String text) {
 		// Protocol: 2:Red/Blue:RedScore:BlueScore
-		
+
 		String winner = text.split(":")[1];
 		String redScore = text.split(":")[2];
 		String blueScore = text.split(":")[3];
-		
+
 		Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
@@ -185,7 +185,6 @@ public class UDPClient extends Thread {
 							GUIManager.renderer.getHud().setWinner(redScore, blueScore);
 					}
 				});
-		
 		active = false;
 	}
 
@@ -387,7 +386,7 @@ public class UDPClient extends Thread {
 		//set the corresponding GhostPlayer's nickname
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
-	
+
 	public boolean isActive(){
 		return active;
 	}
