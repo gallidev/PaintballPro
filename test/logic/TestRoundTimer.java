@@ -1,9 +1,9 @@
 package logic;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tester class for the timer used as a countdown in all game modes.
@@ -23,9 +23,9 @@ public class TestRoundTimer {
 	 */
 	@Test
 	public void test() throws InterruptedException{
-		long noInterval = 0;
-		long smallInterval = 2;
-		long gameInterval = 4;
+		int noInterval = 0;
+		int smallInterval = 2;
+		int gameInterval = 4;
 
 		RoundTimer noTimer = new RoundTimer(noInterval);
 		RoundTimer smallTimer = new RoundTimer(smallInterval);

@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
+import static java.lang.Thread.interrupted;
 import static java.lang.Thread.sleep;
 
 /**
@@ -55,6 +56,16 @@ public class GameLobbyMenu {
 
 		// Setup options area
 		Label timeLabel = new Label("Waiting for more players to join...");
+
+
+
+		// Lobby update checking
+		GameLobbyChecker checker = new GameLobbyChecker(m, timeLabel, sp, mainGrid, loadingGrid);
+		Thread checkLobby = new Thread(checker);
+		checkLobby.start();
+
+
+
 		GridPane optionsSection = new GridPane();
 		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
@@ -63,49 +74,24 @@ public class GameLobbyMenu {
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
+				checker.threadRunning = false;
+				try {
+					checkLobby.join();
+				} catch (InterruptedException e) {
+					//
+				}
+				System.out.println(checkLobby.isAlive());
 				m.getClient().getSender().sendMessage("Exit:Game");
 				m.transitionTo(Menu.MainMenu);
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);
 
-		// Lobby update checking
-		Thread checkLobby = new Thread(() -> {
-			boolean threadRunning = true;
-			while (threadRunning) {
-				try {
-					if (m.isTimerStarted()) {
-						Platform.runLater(() -> {
-							timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
-						});
-						if (m.getTimeLeft() <= 1) {
-							Platform.runLater(() -> {
-								sp.getChildren().remove(mainGrid);
-								sp.getChildren().addAll(loadingGrid);
-							});
-							threadRunning = false;
-						} else {
-							m.fetchLobbyUpdates();
-						}
-						sleep(100);
-					} else {
-						m.fetchLobbyUpdates();
-						sleep(1000);
-					}
-				} catch (InterruptedException e) {
-					// Should never happen
-					System.err.println("Could not sleep!");
-				}
-			}
-		});
-		checkLobby.start();
-
 		// Setup options section at bottom of screen
 		optionsSection.add(timeLabel, 0, 0);
 		optionsSection.add(options, 1, 0);
 
 		// Setup the main grid to be displayed, and add sounds to buttons
-
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);

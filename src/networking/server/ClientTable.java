@@ -112,6 +112,10 @@ public class ClientTable {
 	{
 		queueTable.remove(clientID);
 		playerInstances.remove(clientID);
+		String ip = clientIPTableIDKEY.get(clientID);
+		clientIPTableIDKEY.remove(clientID,ip);
+		clientIPTable.remove(ip,clientID);
+		UDPqueueTable.remove(ip);
 	}
 	
 	/**

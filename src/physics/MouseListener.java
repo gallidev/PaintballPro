@@ -1,8 +1,8 @@
 package physics;
 
+import gui.GUIManager;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import rendering.Renderer;
 
 public class MouseListener implements EventHandler<MouseEvent>{
 
@@ -15,7 +15,7 @@ public class MouseListener implements EventHandler<MouseEvent>{
 	@Override
     public void handle(MouseEvent event) {
 
-		if(!Renderer.getPauseMenuState()&& !Renderer.getSettingsMenuState())
+		if(!GUIManager.renderer.getPauseMenuState()&& !GUIManager.renderer.getSettingsMenuState())
 		{
 				int newX = (int) event.getX();
 				int newY = (int) event.getY();

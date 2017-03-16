@@ -1,6 +1,5 @@
 package serverLogic;
 
-import enums.TeamEnum;
 import logic.GameMode;
 import logic.RoundTimer;
 
@@ -13,9 +12,8 @@ import logic.RoundTimer;
  */
 public class TeamMatchMode extends GameMode {
 
+	private static final int gameTime = 15; // in seconds
 	private RoundTimer timer;
-	private static final long gameTime = 15; // in seconds
-	
 	//debugging
 	private boolean debug = false;
 
@@ -71,7 +69,7 @@ public class TeamMatchMode extends GameMode {
 	}
 
 	@Override
-	public long getRemainingTime() {
+	public int getRemainingTime() {
 		return timer.getTimeLeft();
 	}
 	

@@ -1,8 +1,8 @@
 package physics;
 
+import gui.GUIManager;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import rendering.Renderer;
 
 public class KeyPressListener implements EventHandler<KeyEvent>
 {
@@ -15,23 +15,23 @@ public class KeyPressListener implements EventHandler<KeyEvent>
 	@Override
 	public void handle(KeyEvent event)
 	{
-		if(Renderer.getSettingsMenuState())
+		if(GUIManager.renderer.getSettingsMenuState())
 		{
 			switch(event.getCode())
 			{
 				case ESCAPE:
-					Renderer.toggleSettingsMenu();
+					GUIManager.renderer.toggleSettingsMenu();
 					break;
 				default:
 					break;
 			}
 		}
-		else if(Renderer.getPauseMenuState())
+		else if(GUIManager.renderer.getPauseMenuState())
 		{
 			switch(event.getCode())
 			{
 				case ESCAPE:
-					Renderer.togglePauseMenu();
+					GUIManager.renderer.togglePauseMenu();
 					break;
 				default:
 					break;
@@ -65,11 +65,8 @@ public class KeyPressListener implements EventHandler<KeyEvent>
 				case D:
 					inputHandler.setRight(true);
 					break;
-//				case P:
-//					System.out.println(Math.round(player.getLayoutX() / 64) + ", " + Math.round(player.getLayoutY() / 64));
-//					break;
 				case ESCAPE:
-					Renderer.togglePauseMenu();
+					GUIManager.renderer.togglePauseMenu();
 					break;
 				default:
 					break;

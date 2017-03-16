@@ -1,13 +1,17 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import networking.server.Server;
 
 /**
@@ -15,7 +19,9 @@ import networking.server.Server;
  */
 public class ServerGUI extends Scene implements ServerView {
 
-    static GridPane view = new GridPane();
+    static StackPane sp = new StackPane();
+    private GridPane loadingGrid = new GridPane();
+    private GridPane view = new GridPane();
 
     private String messages = "";
     private TextArea textArea;
@@ -23,7 +29,17 @@ public class ServerGUI extends Scene implements ServerView {
     private Thread discovery;
 
     public ServerGUI() {
-        super(view, new GUIManager().width, new GUIManager().height);
+        super(sp, new GUIManager().width, new GUIManager().height);
+
+        loadingGrid.setAlignment(Pos.CENTER);
+        loadingGrid.setHgap(10);
+        loadingGrid.setVgap(10);
+        loadingGrid.setPadding(new Insets(25, 25, 25, 25));
+        ProgressIndicator spinner = new ProgressIndicator();
+        spinner.setProgress(-1);
+        loadingGrid.add(MenuControls.centreInPane(spinner), 0, 1);
+        loadingGrid.add(MenuControls.centreInPane(new Label("Starting Server...")), 0, 0);
+        sp.getChildren().addAll(loadingGrid);
 
         view.setAlignment(Pos.CENTER);
         view.setHgap(10);
@@ -67,6 +83,10 @@ public class ServerGUI extends Scene implements ServerView {
     public void setServer(Server server, Thread discovery) {
         this.server = server;
         this.discovery = discovery;
+        Platform.runLater(() -> {
+            sp.getChildren().remove(loadingGrid);
+            sp.getChildren().add(view);
+        });
     }
 
 }
