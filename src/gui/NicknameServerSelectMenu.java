@@ -162,6 +162,7 @@ public class NicknameServerSelectMenu {
         // Add the options grid and the button grid to the main grid
         mainGrid.add(topGrid, 0, 0);
         mainGrid.add(connectGrid, 0, 1);
+        m.addButtonHoverSounds(mainGrid);
 
         sp.getChildren().addAll(mainGrid);
 
