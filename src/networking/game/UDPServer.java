@@ -107,6 +107,13 @@ public class UDPServer extends Thread{
 
 					case '2' : getWinner(sentence);
 					break;
+
+					case '3' : sendBackTime(sentence);
+					break;
+
+					default:
+					break;
+
 					}
 				}
 			}
@@ -239,6 +246,12 @@ public class UDPServer extends Thread{
 		//dp stuff here tp update gui
 	}
 
+
+	private void sendBackTime(String text) {
+		if(debug) System.out.println("Input Received: "+text);
+		sendToAll(text, );
+
+	}
 
 
 	/**

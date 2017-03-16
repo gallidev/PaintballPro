@@ -21,10 +21,11 @@ public class ClientInputSender {
 	private ClientPlayer player;
 	private UDPClient udpClient;
 	private InputHandler handler;
+	private boolean debug = true;
 
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
-	private int frames = 0;
+	private int times = 0;
 
 	/**
 	 * Initialises a new input sender.
@@ -47,9 +48,9 @@ public class ClientInputSender {
 			     Executors.newScheduledThreadPool(1);
 		Runnable sender = new Runnable() {
 		       public void run() {
-		    	   frames ++;
+		    	   times ++;
 		    	   sendServer();
-		    	   
+
 		    	   if (!udpClient.isActive())
 		    		   scheduler.shutdown();
 
@@ -59,12 +60,25 @@ public class ClientInputSender {
 		ScheduledFuture<?> senderHandler =
 				scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
 
+		Runnable frameCounter = new Runnable() {
+	       public void run() {
+
+	    	   sendCurrentTime();
+
+	       }
+	     };
+
+	ScheduledFuture<?> frameCounterHandle =
+			scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
+
+
+
 		//for testing purposes:
 
 //		Runnable frameCounter = new Runnable() {
 //		       public void run() {
-//		    	   System.out.println("server frames " + frames);
-//		    	   frames = 0;
+//		    	   System.out.println("cliend Sending times " + times);
+//		    	   times = 0;
 //
 //		       }
 //		     };
@@ -106,6 +120,16 @@ public class ClientInputSender {
 		toBeSent += ":Angle:" + player.getAngleRadians();
 
 		udpClient.sendMessage(toBeSent);
+	}
+
+
+	private void sendCurrentTime(){
+		String toSend = "3:"  + player.getPlayerId() + ":";
+		if(debug) System.out.println("cliend Sending times: " + System.currentTimeMillis());
+		toSend +=  System.currentTimeMillis();
+		udpClient.sendMessage(toSend);
+
+
 	}
 
 
