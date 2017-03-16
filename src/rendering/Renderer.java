@@ -135,6 +135,11 @@ public class Renderer extends Scene
 				}
 				
 				hud.tick(gameLoop.getRemainingTime());
+				
+				if (gameLoop.getRemainingTime() == 0)
+					if (gameLoop.whoWon() != null)
+						hud.setWinner(gameLoop.getRedTeam().getScore() + "", gameLoop.getBlueTeam().getScore() + "");
+				
 
 				incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
 				incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());

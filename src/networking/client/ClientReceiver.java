@@ -12,7 +12,6 @@ import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.Flag;
-import players.AIPlayer;
 import players.ClientPlayer;
 import players.GhostPlayer;
 import rendering.ImageFactory;

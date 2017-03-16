@@ -59,10 +59,10 @@ public class OfflinePlayer extends EssentialPlayer
 		myTeam = new Team(team);
 
 		myTeam.addMember(this);
-		for(int i = 1; i < 4; i++){
-			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, collisionsHandler, hashMaps);
-			myTeam.addMember(p);
-		}
+//		for(int i = 1; i < 4; i++){
+//			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, collisionsHandler, hashMaps);
+//			myTeam.addMember(p);
+//		}
 
 		//populating the opponent team and creating a corresponding OfflineTeam for the members
 		//ArrayList<AIPlayer> oppTeamMembers = new ArrayList<>();
@@ -70,7 +70,7 @@ public class OfflinePlayer extends EssentialPlayer
 		oppTeam = new Team(team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED);
 
 
-		for (int i = 0; i < 4; i++){
+		for (int i = 0; i < 1; i++){
 				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps);
 				oppTeam.addMember(p);
 		}
