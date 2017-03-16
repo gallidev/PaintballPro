@@ -29,7 +29,6 @@ public class GameLobbyChecker implements Runnable {
     @Override
     public void run() {
         while (threadRunning) {
-            System.out.println("Loop");
             try {
                 if (m.isTimerStarted()) {
                     Platform.runLater(() -> {
@@ -54,6 +53,5 @@ public class GameLobbyChecker implements Runnable {
                 System.err.println("Could not sleep!");
             }
         }
-        System.out.println("ELoop");
     }
 }
