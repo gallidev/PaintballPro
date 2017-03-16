@@ -91,7 +91,7 @@ class PauseSettingsMenu extends SubScene
 
         CheckBox shadingCheckbox = new CheckBox();
         shadingCheckbox.setSelected(s.getShading());
-        shadingCheckbox.addEventHandler(InputEvent.ANY, event ->
+        shadingCheckbox.setOnAction(event ->
         {
             s.setShading(shadingCheckbox.isSelected());
             GUIManager.renderer.getMap().toggleShading();
