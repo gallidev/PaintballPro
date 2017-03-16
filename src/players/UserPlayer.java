@@ -15,7 +15,7 @@ public class UserPlayer extends EssentialPlayer{
 
 	private Team oppTeam;
 	private Team myTeam;
-
+	
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image, GameMode game) {
 		super(x, y, id, spawn, team, collisionsHandler, image, game);
@@ -93,8 +93,6 @@ public class UserPlayer extends EssentialPlayer{
 		angle = Math.atan2(deltax, deltay);
 		double degrees = Math.toDegrees(angle);
 		rotation.setAngle(degrees);
-
-
 	}
 
 	protected void updateShooting(){
@@ -110,6 +108,7 @@ public class UserPlayer extends EssentialPlayer{
 		if (gameMode == GameMode.ELIMINATION)
 			oppTeam.incrementScore();
 
+		scoreChanged = true;
 	}
 
 	@Override
@@ -127,6 +126,7 @@ public class UserPlayer extends EssentialPlayer{
 		this.angle = angle;
 		rotation.setAngle(Math.toDegrees(angle));
 	}
+	
 
 }
 

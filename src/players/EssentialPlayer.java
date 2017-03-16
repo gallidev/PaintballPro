@@ -45,6 +45,8 @@ public abstract class EssentialPlayer extends ImageView {
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 
 	private String nickname;
+	
+	protected boolean scoreChanged = false;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -357,6 +359,14 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public CollisionsHandler getCollisionsHandler(){
 		return collisionsHandler;
+	}
+	
+	public void setScoreChanged(boolean b){
+		scoreChanged  = b;
+	}
+	
+	public boolean getScoreChanged(){
+		return scoreChanged;
 	}
 
 }
