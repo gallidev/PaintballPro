@@ -10,10 +10,10 @@ import logic.RoundTimer;
  */
 public class CaptureTheFlagMode extends GameMode {
 	
-	private RoundTimer timer;
-	private static final long roundTime = 300; 
 	public static final int flagScore = 5;
 	public static final int lostFlagScore = 1;
+	private static final int roundTime = 300;
+	private RoundTimer timer;
 
 	
 	/**
@@ -55,7 +55,7 @@ public class CaptureTheFlagMode extends GameMode {
 		else if (getRedTeam().getScore() < getBlueTeam().getScore())
 			return getBlueTeam();
 		else{
-			long delayTime = 30;
+			int delayTime = 30;
 			RoundTimer newTimer = new RoundTimer(delayTime);
 			newTimer.startTimer();
 			while(!newTimer.isTimeElapsed()){}
@@ -73,7 +73,7 @@ public class CaptureTheFlagMode extends GameMode {
 	}
 
 	@Override
-	public long getRemainingTime() {
+	public int getRemainingTime() {
 		return timer.getTimeLeft();
 	}
 

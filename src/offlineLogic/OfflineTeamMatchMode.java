@@ -11,8 +11,8 @@ import players.OfflinePlayer;
  */
 public class OfflineTeamMatchMode extends OfflineGameMode {
 
+	private static final int gameTime = 180; // in seconds
 	private RoundTimer timer;
-	private static final long gameTime = 180; // in seconds
 	
 	/**
 	 * Initialises the game mode with the user player. This will also create 

@@ -10,7 +10,7 @@ import logic.RoundTimer;
  */
 public class OfflineTeamMatchMode extends OfflineGameMode {
 
-	private static final long gameTime = 180; // in seconds
+	private static final int gameTime = 180; // in seconds
 	private RoundTimer timer;
 
 	/**

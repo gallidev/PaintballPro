@@ -1,6 +1,5 @@
 package logic;
 
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,13 +12,13 @@ public class RoundTimer {
 	
 	private static int interval = 1;
 	private Timer timer;
-	private long timeLeft;
+	private int timeLeft;
 	
 	/**
 	 * Create a timer with a given running time.
 	 * @param roundTime How long should the game last.
 	 */
-	public RoundTimer(long roundTime){
+	public RoundTimer(int roundTime){
 		timer = new Timer();
 		this.timeLeft = roundTime;
 	}
@@ -55,7 +54,7 @@ public class RoundTimer {
 	    }, delay, period);
 	}
 	
-	public long getTimeLeft(){
+	public int getTimeLeft(){
 		return timeLeft;
 	}
 	
@@ -72,7 +71,7 @@ public class RoundTimer {
 	}
 */
 	
-	public void setTimeLeft(long time){
+	public void setTimeLeft(int time){
 		timeLeft = time;
 	}
 	

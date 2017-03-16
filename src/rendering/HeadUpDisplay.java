@@ -14,7 +14,7 @@ import javafx.scene.shape.Circle;
 
 public class HeadUpDisplay extends SubScene
 {
-	static BorderPane view = new BorderPane();
+	private static BorderPane view = new BorderPane();
 	private final Label timer = new Label("3:00"),
 			redScore = new Label("0"),
 			blueScore = new Label("0");
@@ -53,11 +53,9 @@ public class HeadUpDisplay extends SubScene
 		view.setBottom(statusBar);
 	}
 
-	void incrementScore(TeamEnum team, int amount)
+	void incrementScore(TeamEnum team, int score)
 	{
-		//(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(Integer.parseInt((team == TeamEnum.RED ? redScore : blueScore).getText()) + amount));
-		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(amount));
-
+		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(score));
 	}
 
 	public void tick(int time)
@@ -66,7 +64,7 @@ public class HeadUpDisplay extends SubScene
 			return;
 		else if(time == 0)
 		{
-			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), (Renderer.cPlayer == null ? Renderer.player.getTeam() : Renderer.cPlayer.getTeam()));
+			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), (GUIManager.renderer.cPlayer == null ? GUIManager.renderer.player.getTeam() : GUIManager.renderer.cPlayer.getTeam()));
 			return;
 		}
 		int minutes = (time % 3600) / 60, seconds = time % 60;
@@ -75,7 +73,7 @@ public class HeadUpDisplay extends SubScene
 	}
 	
 	public void setWinner(String red, String blue){
-		guiManager.transitionTo(Menu.EndGame, red + "," + blue, (Renderer.cPlayer == null ? Renderer.player.getTeam() : Renderer.cPlayer.getTeam()));
+		guiManager.transitionTo(Menu.EndGame, red + "," + blue, (GUIManager.renderer.cPlayer == null ? GUIManager.renderer.player.getTeam() : GUIManager.renderer.cPlayer.getTeam()));
 
 	}
 }

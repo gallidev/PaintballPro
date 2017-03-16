@@ -1,12 +1,5 @@
 package networking.server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import ai.AIManager;
 import ai.HashMapGen;
 import enums.TeamEnum;
@@ -28,6 +21,13 @@ import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Class to represent a lobby.
  *
@@ -38,15 +38,16 @@ public class Lobby {
 
 	// Lobby information
 	private static final int lobbyTime = 10;
+	private static int maxId;
+	//required for all players
+	Map map;
 	private int id;
 	private boolean inGameStatus;
-
 	// Game information
 	private int GameType;
 	private int MaxPlayers;
 	private ServerGame currentSessionGame;
 	private Thread timer;
-
 	// Team information
 	private int currPlayerBlueNum;
 	private int currPlayerRedNum;
@@ -55,11 +56,6 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 	private ArrayList<EssentialPlayer> players;
-	private static int maxId;
-
-	//required for all players
-	Map map;
-
 	private boolean debug = false;
 	private CollisionsHandler collissionsHandler;
 
@@ -346,7 +342,7 @@ public class Lobby {
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());
 			}
-			
+
 			for (EssentialPlayer p : blue.getMembers()){
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());

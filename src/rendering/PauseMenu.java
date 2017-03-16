@@ -44,12 +44,12 @@ class PauseMenu extends SubScene
 		MenuOption[] set = {new MenuOption("Resume", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				System.out.println("ActionEvent: " + event);
-				Renderer.togglePauseMenu();
+				GUIManager.renderer.togglePauseMenu();
 			}
 		}), new MenuOption("Settings", true, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
 				System.out.println("ActionEvent: " + event);
-				Renderer.toggleSettingsMenu();
+				GUIManager.renderer.toggleSettingsMenu();
 			}
 		}), new MenuOption("Back to Main Menu", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {

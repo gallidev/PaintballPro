@@ -29,7 +29,7 @@ public class EscortMode extends GameMode {
 	}
 
 	@Override
-	public long getRemainingTime() {
+	public int getRemainingTime() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
