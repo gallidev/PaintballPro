@@ -1,15 +1,15 @@
 package players;
 
+import java.util.ArrayList;
+
 import ai.BehaviourManager;
 import ai.HashMapGen;
+import enums.GameMode;
 import enums.TeamEnum;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
-import rendering.Renderer;
 import serverLogic.Team;
-
-import java.util.ArrayList;
 
 public class AIPlayer extends EssentialPlayer{
 
@@ -26,8 +26,8 @@ public class AIPlayer extends EssentialPlayer{
 	private String nickname;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps){
-		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps, GameMode mode){
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode);
 		this.hashMaps = hashMaps;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -86,19 +86,9 @@ public class AIPlayer extends EssentialPlayer{
 	 * @author atp575
 	 */
 	public void updateScore(){
-		oppTeam.incrementScore();
 
-
-//		if (myTeam.getColour() == TeamEnum.RED){
-//			System.out.println( "Red team score: " + myTeam.getScore());
-//			System.out.println( "Blue team score: " + oppTeam.getScore());
-//		}
-//		else{
-//			System.out.println( "Blue team score: " + myTeam.getScore());
-//			System.out.println( "Red team score: " + oppTeam.getScore());
-//		}
-
-
+		if (gameMode == GameMode.ELIMINATION)
+			oppTeam.incrementScore();
 	}
 
 	@Override

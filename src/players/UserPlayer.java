@@ -1,6 +1,7 @@
 package players;
 
 
+import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.scene.image.Image;
@@ -16,8 +17,8 @@ public class UserPlayer extends EssentialPlayer{
 	private Team myTeam;
 
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
-			CollisionsHandler collisionsHandler, Image image) {
-		super(x, y, id, spawn, team, collisionsHandler, image);
+			CollisionsHandler collisionsHandler, Image image, GameMode game) {
+		super(x, y, id, spawn, team, collisionsHandler, image, game);
 	}
 
 	public void tick()
@@ -106,7 +107,8 @@ public class UserPlayer extends EssentialPlayer{
 
 	@Override
 	public void updateScore() {
-		oppTeam.incrementScore();
+		if (gameMode == GameMode.ELIMINATION)
+			oppTeam.incrementScore();
 
 	}
 

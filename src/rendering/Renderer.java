@@ -83,7 +83,7 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler, map.getGameMode());
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 
 		players.addAll(player.getMyTeam().getMembers());

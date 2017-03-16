@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import ai.HashMapGen;
 import audio.AudioManager;
+import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.geometry.Insets;
@@ -38,13 +39,14 @@ public class OfflinePlayer extends EssentialPlayer
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
 	 */
-	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler)
+	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode)
 	{
-		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team));
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode);
 		this.audio = guiManager.getAudioManager();
 		this.inputHandler = inputHandler;
 		angle = 0.0;
 		this.team = team;
+			
 		rand = new Random();
 
 		nameTag = new Label("Player");
@@ -71,7 +73,7 @@ public class OfflinePlayer extends EssentialPlayer
 
 
 		for (int i = 0; i < 1; i++){
-				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps);
+				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps, gameMode);
 				oppTeam.addMember(p);
 		}
 
@@ -89,7 +91,7 @@ public class OfflinePlayer extends EssentialPlayer
 		
 		collisionsHandler.setRedTeam(myTeam);
 		collisionsHandler.setBlueTeam(oppTeam);
-
+		
 	}
 
 
@@ -135,19 +137,8 @@ public class OfflinePlayer extends EssentialPlayer
 	 */
 	@Override
 	public void updateScore() {
-
-		oppTeam.incrementScore();
-		//Renderer.incrementScore(oppTeam.getColour(), 1);
-
-//		if (myTeam.getColour() == Team.RED){
-//			System.out.println( "Red team score: " + myTeam.getScore());
-//			System.out.println( "Blue team score: " + oppTeam.getScore());
-//		}
-//		else{
-//			System.out.println( "Blue team score: " + myTeam.getScore());
-//			System.out.println( "Red team score: " + oppTeam.getScore());
-//		}
-
+		if (gameMode == GameMode.ELIMINATION)
+			oppTeam.incrementScore();
 	}
 
 	@Override

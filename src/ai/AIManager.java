@@ -39,7 +39,7 @@ public class AIManager{
 			else
 				spawnLoc = currentPlayersNo + 4;
 
-			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, nextId, map, team.getColour(), collissionsHandler, hashMaps);
+			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, nextId, map, team.getColour(), collissionsHandler, hashMaps, map.getGameMode());
 		
 			System.out.println("Created AI with id " + newPlayer.getPlayerId());
 			team.addMember(newPlayer);

@@ -323,10 +323,10 @@ public class Lobby {
 
 			//provisionally hard-coded
 			if (teamNum == 1){
-				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer, map.getGameMode());
 			}
 			else
-				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer);
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer, map.getGameMode());
 
 			newTeam.addMember(player);
 		}

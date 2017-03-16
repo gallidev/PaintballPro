@@ -1,5 +1,9 @@
 package players;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import enums.GameMode;
 import enums.TeamEnum;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -12,9 +16,6 @@ import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Spawn;
 import serverLogic.Team;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *  The player, represented by an ImageView
@@ -40,6 +41,7 @@ public abstract class EssentialPlayer extends ImageView {
 	private Spawn[] spawn;
 	private Polygon bounds = new Polygon();
 	private boolean hasFlag;
+	protected GameMode gameMode;
 
 	private String nickname;
 
@@ -52,7 +54,7 @@ public abstract class EssentialPlayer extends ImageView {
 	 * @param image
 	 *
 	 */
-	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image){
+	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image, GameMode game){
 		super(image);
 		this.angle = 0;
 		setLayoutX(x);
@@ -78,6 +80,8 @@ public abstract class EssentialPlayer extends ImageView {
 		boundRotation.setPivotY(PLAYER_HEAD_Y);
 		updatePlayerBounds();
 		bulletCounter = 1;
+		
+		gameMode = game;
 	}
 
 	protected abstract void updatePosition();
