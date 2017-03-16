@@ -164,20 +164,20 @@ public class ServerGameStateSender {
 				p.setScoreChanged(false);
 			}
 			
-			if (p.getCollisionsHandler().isFlagCaptured()){
-				sendFlagCaptured(p);
-				p.getCollisionsHandler().setFlagCaptured(false);
-			}
-			
-			if (p.getCollisionsHandler().isFlagDropped()){
-				sendFlagLost(p);
-				p.getCollisionsHandler().setFlagDropped(false);
-			}
-			
-			if (p.getCollisionsHandler().isFlagRespawned()){
-				sendBaseFlag();
-				p.getCollisionsHandler().setRespawned(false);
-			}
+//			if (p.getCollisionsHandler().isFlagCaptured()){
+//				sendFlagCaptured(p);
+//				p.getCollisionsHandler().setFlagCaptured(false);
+//			}
+//			
+//			if (p.getCollisionsHandler().isFlagDropped()){
+//				sendFlagLost(p);
+//				p.getCollisionsHandler().setFlagDropped(false);
+//			}
+//			
+//			if (p.getCollisionsHandler().isFlagRespawned()){
+//				sendBaseFlag();
+//				p.getCollisionsHandler().setRespawned(false);
+//			}
 		}
 	}
 
