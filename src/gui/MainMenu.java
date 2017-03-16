@@ -38,7 +38,6 @@ public class MainMenu {
 		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(Menu.NicknameServerConnection);
-//		    	m.transitionTo("Multiplayer", null);
 		    }
 		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
