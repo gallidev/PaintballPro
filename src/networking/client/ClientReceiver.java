@@ -168,6 +168,8 @@ public class ClientReceiver extends Thread {
 
 		int gameMode = Integer.parseInt(data[1]);
 		clientID = Integer.parseInt(data[2]);
+		String myNickname = data[3];
+		
 		String clientTeam = data[3];
 		Map map = null;
 		if (gameMode == 1)
@@ -182,8 +184,11 @@ public class ClientReceiver extends Thread {
 			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
 		else
 			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
+		
+		cPlayer.setNickname(myNickname);
+
 		// extract the other members
-		for (int i = 4; i < data.length - 2; i = i + 3) {
+		for (int i = 5; i < data.length - 2; i = i + 3) {
 			int id = Integer.parseInt(data[i]);
 			String nickname = data[i+2];
 			if (data[i + 1].equals(clientTeam)) {
