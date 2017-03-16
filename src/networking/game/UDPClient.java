@@ -156,7 +156,7 @@ public class UDPClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			Platform.runLater(new Runnable() {
 
 				@Override
@@ -166,7 +166,8 @@ public class UDPClient extends Thread {
 				}
 			});
 			if(debug) System.out.println("Closing Client.");
-			clientSocket.close();
+			if(clientSocket.isConnected())
+				clientSocket.close();
 		}
 		System.out.println("Closing UDP Client");
 	}
@@ -213,7 +214,8 @@ public class UDPClient extends Thread {
 	public void stopThread()
 	{
 		super.interrupt();
-		clientSocket.close();
+		if(clientSocket.isConnected())
+			clientSocket.close();
 	}
 
 	// -------------------------------------

@@ -139,14 +139,13 @@ public class Client {
 								else
 									exceptionCheck = 5;
 							}
+							System.out.println("All closed.");
 						}
 					});
 					// Run the thread.
 					t.start();
-
 				} catch (IOException e) {
 					// Close threads smoothly.
-					sender.stopThread();
 					toServer.close();
 					fromServer.close();
 					server.close();

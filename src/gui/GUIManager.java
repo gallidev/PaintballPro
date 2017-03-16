@@ -79,7 +79,8 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
-                    renderer.destroy();
+                    if(renderer != null)
+                    	renderer.destroy();
                     renderer = null;
                     if (localServer != null) {
                         localServer.interrupt();
