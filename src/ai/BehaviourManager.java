@@ -1,5 +1,6 @@
 package ai;
 
+import enums.GameMode;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -7,6 +8,7 @@ import players.AIPlayer;
 import players.EssentialPlayer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
@@ -24,6 +26,9 @@ public class BehaviourManager{
     private double closestDistance = 0;
     private double angle;
     private double closestX, closestY;
+    private Random random;
+
+    private GameMode gameMode;
 
     //Behaviours
     //    Move - Move towards nearest enemy
@@ -37,25 +42,29 @@ public class BehaviourManager{
         this.enemies = new ArrayList<>();
         mover = new Mover(ai);
         move = new MoveBehaviour(ai, this);
-        combat = new CombatBehaviour(ai, this);
         capture = new CTFCaptureBehaviour(ai, this);
         retreat = new CTFRetreatBehaviour(ai, this);
-
+        random = new Random();
+        gameMode = ai.getMap().getGameMode();
     }
 
     public void tick(){
+        defaultTick();
+        if(ai.hasFlag()){
+            retreat.tick();
+        } else if(gameMode == GameMode.CAPTURETHEFLAG){
+            capture.tick();
+        } else {
+            move.tick();
+        }
+
+    }
+
+    private void defaultTick(){
         enemies = ai.getEnemies();
         updateAngle();
         ai.setAngle(angle);
         ai.setShoot(updateShooting(closestX, closestY));
-        if(closestDistance < 400){
-            combat.tick();
-        } else {
-            //move.tick();
-        }
-        //temp until combat behaviour has been implemented
-        move.tick();
-
     }
 
     private boolean updateShooting(double x, double y){
