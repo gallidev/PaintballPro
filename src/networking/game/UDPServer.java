@@ -179,7 +179,7 @@ public class UDPServer extends Thread{
 		// we can now send to all clients in the same lobby as the origin client.
 		sendToAll(toBeSent,lobbyID);
 	}
-	
+
 	/**
 	 * Method to send to specific client.
 	 * @param clientID ID of client to send to.
@@ -189,7 +189,7 @@ public class UDPServer extends Thread{
 	{
 		byte[] sendData = new byte[1024];
 		sendData = toBeSent.getBytes();
-		
+
 		String playerIP = clients.getIP(clientID);
 		String ipAddr = playerIP.split(":")[0];
 		int port = Integer.parseInt(playerIP.split(":")[1]);
@@ -274,8 +274,12 @@ public class UDPServer extends Thread{
 
 	private void sendBackTime(String text) {
 		if(debug) System.out.println("Input Received: "+text);
-		sendToAll(text, );
-
+		String[] actions = text.split(":");
+		int id = Integer.parseInt(actions[1]);
+		String toBeSent = "9:" + id;
+		toBeSent += ":" + actions[2];
+		//sendToAll(text, );
+		sendToSpec(id, toBeSent);
 	}
 
 
