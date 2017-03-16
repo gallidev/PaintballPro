@@ -14,6 +14,8 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import physics.Flag;
+import physics.Powerup;
+import physics.PowerupType;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -30,6 +32,7 @@ public class Map
 {
 	GameMode gameMode;
 	transient Flag flag;
+	transient Powerup[] powerups = new Powerup[2];
 	transient DropShadow propShadow, wallShadow;
 	transient Lighting propLighting, wallLighting;
 	private Wall[] walls;
@@ -141,6 +144,7 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
+
 			if(map.gameMode == GameMode.CAPTURETHEFLAG)
 			{
 				ArrayList<GameObject> flagLocations = new ArrayList<>();
@@ -151,6 +155,9 @@ public class Map
 						break;
 				map.flag = new Flag(flagLocations);
 			}
+			map.powerups[0] = new Powerup(PowerupType.SHIELD, map.gameObjects);
+			map.powerups[1] = new Powerup(PowerupType.SPEED, map.gameObjects);
+
 		}
 		catch(FileNotFoundException e)
 		{

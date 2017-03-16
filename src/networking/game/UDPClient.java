@@ -24,7 +24,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -147,7 +147,11 @@ public class UDPClient extends Thread {
 							   break;
 					case '7' : capturedFlagAction(receivedPacket);
 							   break;
-					case '8' : updateFlagAction(receivedPacket);
+					case '8' : capturedFlagAction(receivedPacket);
+							   break;
+					case '9' : lostFlagAction(receivedPacket);
+							   break;
+					case '!' : baseFlagAction(receivedPacket);
 							   break;
 
 				}
@@ -332,26 +336,35 @@ public class UDPClient extends Thread {
 		}
 	}
 
-	private void updateFlagAction(String text){
-		//Protocol : 8:<x>:<y>:<isCaptured>
-		//System.out.println("flagDataReceived: " + text);
-		String[] data = text.split(":");
-		double x  = Double.parseDouble(data[1]);
-		double y = Double.parseDouble(data[2]);
-		boolean visible = (data[3].equals("true"));
+	private void capturedFlagAction(String text){
+		//Protocol : 8:<id>
+		int id = Integer.parseInt(text.split(":")[1]);
 
 		if(gameStateReceiver != null){
-			gameStateReceiver.updateFlag(x, y, visible);
+			gameStateReceiver.updateFlag(id);
 		}
 
 	}
+	
+	private void lostFlagAction(String text){
+		//Protocol : 8:<id>
+		int id = Integer.parseInt(text.split(":")[1]);
 
-	private void capturedFlagAction(String text) {
-		System.out.println("flag captured" + clientID);
-		// TODO Auto-generated method stub
-		//do stuff here to render
+		if(gameStateReceiver != null){
+			gameStateReceiver.lostFlag(id);
+		}
+
 	}
+	
+	private void baseFlagAction(String text){
+		//Protocol : 8:<id>
+		double x = Double.parseDouble(text.split(":")[1]);
+		double y = Double.parseDouble(text.split(":")[2]);
 
+		if(gameStateReceiver != null){
+			gameStateReceiver.respawnFlag(x, y);
+		}
+	}
 
 	/**
 	 * Retrieves a player with a specific id from the current game.

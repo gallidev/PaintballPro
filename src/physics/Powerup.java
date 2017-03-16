@@ -1,33 +1,56 @@
 package physics;
 
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
-import logic.GameObject;
+import javafx.scene.paint.Color;
+import rendering.GameObject;
+import rendering.ImageFactory;
 
-public class Powerup extends ImageView implements GameObject {
+import java.util.Random;
 
-    private boolean taken = false;
-    private int duration;
+public class Powerup extends ImageView
+{
+	private boolean taken = false;
+	private PowerupType type;
+	private int duration;
+	private GameObject[] locations;
 
-    public Powerup(){
-        //setImage
-    }
+	public Powerup()
+	{
+	}
 
-    public boolean isTaken(){
-        return taken;
-    }
+	public Powerup(PowerupType type, GameObject[] locations)
+	{
+		super(ImageFactory.getPowerupImage(type));
+		setEffect(new DropShadow(8, Color.GREEN));
+		this.type = type;
+		this.locations = locations;
+		resetPosition();
+	}
 
-    public void setTaken(boolean b){
-        taken = b;
-    }
+	public boolean isTaken()
+	{
+		return taken;
+	}
 
-    @Override
-    public void tick(){
+	public void setTaken(boolean b)
+	{
+		taken = b;
+	}
 
-    }
+	public PowerupType getType()
+	{
+		return type;
+	}
 
-    @Override
-    public void interact()
-    {
+	public void setType(PowerupType type)
+	{
+		this.type = type;
+	}
 
-    }
+	void resetPosition()
+	{
+		int randomLocation = (new Random()).nextInt(locations.length);
+		relocate(locations[randomLocation].getX() * 64 + 32, locations[randomLocation].getY() * 64 + 32);
+	}
 }
