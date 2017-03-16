@@ -26,7 +26,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -35,6 +35,8 @@ public class UDPClient extends Thread {
 	private GUIManager m;
 	private TeamTable teams;
 	private int sIP;
+	private boolean active = true;
+	
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -185,7 +187,7 @@ public class UDPClient extends Thread {
 					}
 				});
 		
-
+		active = false;
 	}
 
 	/**
@@ -384,5 +386,9 @@ public class UDPClient extends Thread {
 
 		//set the corresponding GhostPlayer's nickname
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
+	}
+	
+	public boolean isActive(){
+		return active;
 	}
 }

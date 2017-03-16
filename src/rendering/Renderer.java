@@ -233,8 +233,6 @@ public class Renderer extends Scene
 			case CAPTURETHEFLAG : return new CaptureTheFlagMode(red, blue);
 		}
 		return null;
-
-
 	}
 
 	/**
