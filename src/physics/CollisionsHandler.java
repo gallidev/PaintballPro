@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import players.EssentialPlayer;
 import rendering.Map;
+import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 
 public class CollisionsHandler
@@ -157,6 +158,7 @@ public class CollisionsHandler
 	public void handleFlagCollision(EssentialPlayer p){
 		if(flag != null){
 
+			//check if the player touches the flag
 			if(!flag.isCaptured() &&
 					p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) &&
 					!p.isEliminated()){
@@ -164,7 +166,9 @@ public class CollisionsHandler
 				flag.setCaptured(true);
 				flag.setVisible(false);
 				p.setHasFlag(true);
+				
 			}
+			//check if the player got shot so leave the flag in the player position
 			if(p.isEliminated() && p.hasFlag()){
 				if(debug) System.out.println("lost the flag");
 				flag.setLayoutX(p.getLayoutX());
@@ -172,9 +176,14 @@ public class CollisionsHandler
 				flag.setCaptured(false);
 				flag.setVisible(true);
 				p.setHasFlag(false);
-			}
-
-			if(p.hasFlag()){
+				
+				if (red.containsPlayer(p))
+					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
+				else
+					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
+				
+			//check if the player has brought the flag back to his base
+			}if(p.hasFlag()){
 				boolean baseTouched = false;
 				switch(p.getTeam())
 				{
@@ -190,6 +199,11 @@ public class CollisionsHandler
 					flag.setCaptured(false);
 					flag.setVisible(true);
 					p.setHasFlag(false);
+					
+					if (red.containsPlayer(p))
+						red.incrementScore(CaptureTheFlagMode.flagScore);
+					else
+						blue.incrementScore(CaptureTheFlagMode.flagScore);
 				}
 			}
 		}
@@ -204,12 +218,6 @@ public class CollisionsHandler
 				{
 					bullet.disable();
 					p.beenShot();
-
-					//update score
-					if (red.containsPlayer(p))
-						blue.incrementScore(1);
-					else
-						red.incrementScore(1);
 
 					return;
 				}
@@ -277,6 +285,10 @@ public class CollisionsHandler
 			}
 
 		}
+	}
+
+	public Flag getFlag(){
+		return flag;
 	}
 
 }

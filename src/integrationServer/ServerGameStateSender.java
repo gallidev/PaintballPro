@@ -10,10 +10,13 @@ import enums.TeamEnum;
 import networking.game.UDPServer;
 import physics.Bullet;
 import players.EssentialPlayer;
+import serverLogic.CaptureTheFlagMode;
+import serverLogic.Team;
+import serverLogic.TeamMatchMode;
 
 /**
  * Sends user inputs(client-sided) to the server.
- * 
+ *
  * @author Alexandra Paduraru
  * @author Filippo Galli
  *
@@ -26,12 +29,12 @@ public class ServerGameStateSender {
 	private int frames = 0;
 	private ServerGameSimulation gameLoop;
 	private ScheduledExecutorService scheduler;
-	
+
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
 
 	/**
-	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby 
+	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby
 	 * corresponding to that game.
 	 * @param udpServer The server used to send information to all clients involved in a game.
 	 * @param players A list of players currently involved in a game.
@@ -55,6 +58,7 @@ public class ServerGameStateSender {
 		    	   sendClient();
 		    	   sendBullets();
 		    	   updateScore();
+		    	   sendFlag();
 
 		    	   sendRemainingTime();
 
@@ -62,7 +66,7 @@ public class ServerGameStateSender {
 
 		    		   udpServer.sendToAll("5", lobbyId);
 		    		   sendWinner();
-		    		   scheduler.shutdown();
+		    		   //scheduler.shutdown();
 		    	   }
 		       }
 		     };
@@ -84,23 +88,26 @@ public class ServerGameStateSender {
 //				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 
 	}
-	
+
 	/**
 	 * Stops the server from sending information when the game finishes.
 	 */
 	public void stopSending(){
 		scheduler.shutdown();
 	}
-	
+
 
 	/**
 	 * Sends the remaining game time to clients.
 	 */
 	private void sendRemainingTime() {
 		//Protocol: 6:<remaining seconds>
-		String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
+		if (gameLoop.getGame().getRemainingTime() != 0 ){
+			String toBeSent = "6:" + gameLoop.getGame().getRemainingTime();
 
-		udpServer.sendToAll(toBeSent, lobbyId);
+			udpServer.sendToAll(toBeSent, lobbyId);
+		}
+
 	}
 
 	/**
@@ -146,9 +153,13 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-			
-//			if (p.getFlag() != null && p.getFlag().isCaptured())
-//				udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+
+			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+				if (p.hasFlag()){
+					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+				}
+			}
+
 		}
 	}
 
@@ -166,13 +177,31 @@ public class ServerGameStateSender {
 	 * Sends the clients the game winner when the game finishes.
 	 */
 	public void sendWinner(){
-		//Protocol: "2:<winner>"
-		String toBeSent = "2:" + (gameLoop.getGame().whoWon().getColour() == TeamEnum.RED ? "Red" : "Blue") ;
+		//Protocol: "2:<winner>:RedScore:BlueScore"
+		Team winner = gameLoop.getGame().whoWon();
+		if (winner != null){
+			String toBeSent = "2:" + (winner.getColour() == TeamEnum.RED ? "Red" : "Blue")  + ":"  + gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
+			udpServer.sendToAll(toBeSent, lobbyId);
+			
+			stopSending();
+		}
 
-		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
-	
+	public void sendFlag(){
+		if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+			String toBeSent = "8:";
+
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY() + ":";
+
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isVisible();
+
+			udpServer.sendToAll(toBeSent, lobbyId);
+		}
+	}
+
+
 	/*
 	 * Sets the game simulation.
 	 * @param sim The simulation of the game, which runs on the server.

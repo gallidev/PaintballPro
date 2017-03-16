@@ -63,7 +63,7 @@ public class GameLobbyMenu {
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
-				m.getClient().getSender().sendMessage("QuitLobby");
+				m.getClient().getSender().sendMessage("Exit:Game");
 				m.transitionTo(Menu.MainMenu);
 			}
 		})};

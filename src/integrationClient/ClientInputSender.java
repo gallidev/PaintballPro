@@ -48,6 +48,9 @@ public class ClientInputSender {
 		       public void run() {
 		    	   frames ++;
 		    	   sendServer();
+		    	   
+		    	   if (!udpClient.isActive())
+		    		   scheduler.shutdown();
 
 		       }
 		     };

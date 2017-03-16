@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 
 import gui.AlertBox;
 import gui.ServerView;
+import javafx.application.Platform;
 import networking.game.UDPServer;
 import networking.shared.Message;
 import networking.shared.MessageQueue;
@@ -150,10 +151,16 @@ public class Server extends Thread {
 			udpServer.interrupt();
 			
 		} catch (IOException e) {
+			e.printStackTrace();
 			if(testing == 0) 
 			{
-				AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
-				System.exit(1);
+				Platform.runLater(new Runnable() {
+		            @Override
+		            public void run() {
+		        		AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
+						System.exit(1);		            }
+		        });
+		
 			}
 			else
 			{

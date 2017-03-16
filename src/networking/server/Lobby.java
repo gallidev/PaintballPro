@@ -1,13 +1,7 @@
 package networking.server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import ai.AIManager;
+import ai.HashMapGen;
 import enums.TeamEnum;
 import integrationServer.ServerGameSimulation;
 import integrationServer.ServerGameStateSender;
@@ -27,6 +21,13 @@ import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Class to represent a lobby.
  *
@@ -37,15 +38,16 @@ public class Lobby {
 
 	// Lobby information
 	private static final int lobbyTime = 10;
+	private static int maxId;
+	//required for all players
+	Map map;
 	private int id;
 	private boolean inGameStatus;
-
 	// Game information
 	private int GameType;
 	private int MaxPlayers;
 	private ServerGame currentSessionGame;
 	private Thread timer;
-
 	// Team information
 	private int currPlayerBlueNum;
 	private int currPlayerRedNum;
@@ -54,11 +56,6 @@ public class Lobby {
 	private Team red;
 	private Team blue;
 	private ArrayList<EssentialPlayer> players;
-	private static int maxId;
-
-	//required for all players
-	Map map;
-
 	private boolean debug = false;
 	private CollisionsHandler collissionsHandler;
 
@@ -325,8 +322,9 @@ public class Lobby {
 			}
 
 			//provisionally hard-coded
-			if (teamNum == 1)
+			if (teamNum == 1){
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer);
+			}
 			else
 				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer);
 
@@ -344,7 +342,7 @@ public class Lobby {
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());
 			}
-			
+
 			for (EssentialPlayer p : blue.getMembers()){
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());
@@ -434,19 +432,20 @@ public class Lobby {
 		if (debug) System.out.println("Lobby game mode: " + gameMode);
 		System.out.println("Red user players: " + red.getMembersNo());
 
+		HashMapGen hashMaps = new HashMapGen(map);
 		//filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId());
-		redAIM.createPlayers();
+		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
+		//redAIM.createPlayers();
 
-		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId());
-		blueAIM.createPlayers();
-
+		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
+		//blueAIM.createPlayers();
+		
 		//setting team players and enemies
 		for(EssentialPlayer p : red.getMembers()){
 			p.setOppTeam(blue);
 			p.setMyTeam(red);
 		}
-
+		
 		for(EssentialPlayer p : blue.getMembers()){
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
@@ -475,15 +474,16 @@ public class Lobby {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
-			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":" ;
+			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":";
 
 			// adding to the string the information about all the other players
 			for (EssentialPlayer aux : players)
 				if (aux.getPlayerId() != p.getPlayerId())
 					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"  + aux.getNickname() + ":";
 
-			if (p instanceof UserPlayer)
+			if (p instanceof UserPlayer){
 				receiver.sendToSpec(p.getPlayerId(), toBeSent);
+			}
 		}
 	}
 

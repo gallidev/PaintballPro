@@ -19,7 +19,7 @@ import java.net.InetAddress;
 public class UDPServer extends Thread{
 
 	public boolean m_running = true;
-	private boolean debug = false;
+	private boolean debug = true;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -252,20 +252,20 @@ public class UDPServer extends Thread{
 	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-	public void newScoreAction(String text, String ip)
-	{
-		// Protocol : "Scored:<Team>"
-		String teamColour = text.split(":")[1];
-		Lobby lobby = lobbyTab.getLobby(clients.getPlayer(clients.getID(ip)).getAllocatedLobby());
-		if (teamColour.equals("Red"))
-			lobby.getRedTeam().incrementScore(1);
-		else
-			lobby.getBlueTeam().incrementScore(1);
-
-		// debugging code
-		if(debug) System.out.println("Red team score: " + lobby.getRedTeam().getScore());
-		if(debug) System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
-	}
+//	public void newScoreAction(String text, String ip)
+//	{
+//		// Protocol : "Scored:<Team>"
+//		String teamColour = text.split(":")[1];
+//		Lobby lobby = lobbyTab.getLobby(clients.getPlayer(clients.getID(ip)).getAllocatedLobby());
+//		if (teamColour.equals("Red"))
+//			lobby.getRedTeam().incrementScore(1);
+//		else
+//			lobby.getBlueTeam().incrementScore(1);
+//
+//		// debugging code
+//		if(debug) System.out.println("Red team score: " + lobby.getRedTeam().getScore());
+//		if(debug) System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
+//	}
 
 	/**
 	 * We reset status of some objects storing game-specific information.

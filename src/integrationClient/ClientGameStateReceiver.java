@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import physics.Bullet;
+import physics.Flag;
 import physics.GhostBullet;
 import players.GhostPlayer;
 
@@ -17,16 +18,31 @@ import players.GhostPlayer;
 public class ClientGameStateReceiver {
 
 	private ArrayList<GhostPlayer> players;
+	private Flag flag;
 	private boolean debug = false;
+
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
 	 * by the actions received from the server.
 	 *
 	 * @param players The list of all players in the game.
+	 *
 	 */
 	public ClientGameStateReceiver(ArrayList<GhostPlayer> players) {
 		this.players = players;
+	}
+
+	/**
+	 * Initialises a new action receiver with a player which will be controlled
+	 * by the actions received from the server.
+	 *
+	 * @param players The list of all players in the game.
+	 * @param flag The flag of the capture the flag mode
+	 */
+	public ClientGameStateReceiver(ArrayList<GhostPlayer> players, Flag flag) {
+		this.players = players;
+		this.flag = flag;
 	}
 
 	/**
@@ -73,6 +89,14 @@ public class ClientGameStateReceiver {
 //			p.getFiredBullets().clear();
 //			p.setFiredBullets(firedBullets);
 		}
+	}
+
+	public void updateFlag(double x, double y, boolean visible){
+		//System.out.println(" flag visible:  " + visible );
+		flag.setLayoutX(x);
+		flag.setLayoutY(y);
+		flag.setVisible(visible);
+
 	}
 
 	/**

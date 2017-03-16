@@ -39,7 +39,7 @@ public abstract class GameMode {
 	public abstract Team whoWon();
 	
 	
-	public abstract long getRemainingTime();
+	public abstract int getRemainingTime();
 	
 	/** Getters and setters */
 	

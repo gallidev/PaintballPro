@@ -11,6 +11,7 @@ import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
+import physics.Flag;
 import players.AIPlayer;
 import players.GhostPlayer;
 import rendering.ImageFactory;
@@ -159,6 +160,7 @@ public class ClientReceiver extends Thread {
 	 * @author Filippo Galli
 	 */
 	public void startGameAction(String text) {
+		System.out.println("called start game");
 		// get all the relevant data from the message : 2:<gameMode>:2:Red:1:Red:
 		String[] data = text.split(":");
 
@@ -193,7 +195,7 @@ public class ClientReceiver extends Thread {
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
 				}
-					
+
 				else{
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.BLUE),null,  TeamEnum.BLUE);
@@ -202,7 +204,7 @@ public class ClientReceiver extends Thread {
 					System.out.println("Created player with nickname " + p.getNickname());
 
 				}
-					
+
 			} else {
 				if (clientTeam.equals("Red")){
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
@@ -212,7 +214,7 @@ public class ClientReceiver extends Thread {
 					System.out.println("Created player with nickname " + p.getNickname());
 
 				}
-					
+
 				else{
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
 							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED);
@@ -221,7 +223,7 @@ public class ClientReceiver extends Thread {
 					System.out.println("Created player with nickname " + p.getNickname());
 
 				}
-					
+
 			}
 		}
 
@@ -229,17 +231,25 @@ public class ClientReceiver extends Thread {
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
 
-		ClientGameStateReceiver gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
+		ClientGameStateReceiver gameStateReceiver;
+		Flag flag = new Flag();
+		if(gameMode == 1){
+			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
+		}else {
+			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), flag);
+		}
+
 		udpClient.setGameStateReceiver(gameStateReceiver);
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
 
+		System.out.println("game mode is " + gameMode);
 		//changing the scene
 		System.out.println("single player = " + singlePlayer);
 		if (!singlePlayer){
 			if (gameMode == 1){
-				Renderer r = new Renderer("elimination", this, m);
+				Renderer r = new Renderer("elimination", this, m, null);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
@@ -249,7 +259,7 @@ public class ClientReceiver extends Thread {
 				});
 			}
 			else{
-				Renderer r = new Renderer("ctf", this, m);
+				Renderer r = new Renderer("ctf", this, m, flag);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
@@ -261,7 +271,7 @@ public class ClientReceiver extends Thread {
 		}
 		else{
 			if (gameMode == 1){
-				Renderer r = new Renderer("elimination", this, m);
+				Renderer r = new Renderer("elimination", this, m, null);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
@@ -272,7 +282,7 @@ public class ClientReceiver extends Thread {
 
 			}
 			else{
-				Renderer r = new Renderer("ctf", this, m);
+				Renderer r = new Renderer("ctf", this, m, null);
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
