@@ -50,14 +50,15 @@ public class BehaviourManager{
 
     public void tick(){
         defaultTick();
-        if(ai.hasFlag()){
-            retreat.tick();
-        } else if(gameMode == GameMode.CAPTURETHEFLAG){
-            capture.tick();
+        if(gameMode == GameMode.CAPTURETHEFLAG) {
+            if (ai.hasFlag()) {
+                retreat.tick();
+            } else {
+                capture.tick();
+            }
         } else {
             move.tick();
         }
-
     }
 
     private void defaultTick(){
@@ -73,6 +74,7 @@ public class BehaviourManager{
         if(closestEnemy == null) return false;
         if(closestEnemy.isEliminated()) return false;
 	    return canSee(x, y) && distance < 350;
+
     }
 
     public boolean canSee(double x, double y){
@@ -100,6 +102,7 @@ public class BehaviourManager{
                 }
             }
         }
+
         closestDistance = minDistance;
         if(minDistance < 400){
             double deltaX = closestX - (ai.getLayoutX()+ PLAYER_HEAD_X);
