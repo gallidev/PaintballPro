@@ -56,10 +56,10 @@ public class EndGameMenu {
         GridPane gameStatusPane = MenuControls.centreInPane(gameStatusLabel);
 
 
-        MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
+        MenuOption[] set = {new MenuOption("Continue", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                m.exitClient();
-                m.transitionTo(Menu.MainMenu);
+                m.getClient().getSender().sendMessage("Exit:Game");
+                m.transitionTo(Menu.MultiplayerGameType);
             }
         })};
         GridPane options = MenuOptionSet.optionSetToGridPane(set);
