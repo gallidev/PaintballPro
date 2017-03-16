@@ -98,14 +98,11 @@ public class Renderer extends Scene
 		view.getChildren().addAll(players);
 		collisionsHandler.setPlayers(players);
 
-
-
 		hud = new HeadUpDisplay(guiManager, player.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
 
 		GameMode gameLoop = initGame(player);
-
 
 		gameLoop.start();
 
@@ -143,12 +140,14 @@ public class Renderer extends Scene
 //				}
 				hud.tick((int) gameLoop.getRemainingTime());
 
-
 				//update the scores
 				if (hud != null){
 					incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
 					incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
 				}
+				
+				System.out.println("Red score: " + gameLoop.getRedTeam().getScore());
+				System.out.println("Blue score: " + gameLoop.getBlueTeam().getScore());
 
 			}
 		};

@@ -15,7 +15,7 @@ import serverLogic.Team;
 public class CollisionsHandler
 {
 
-	private boolean debug = false;
+	private boolean debug = true;
 
 	private ArrayList<Rectangle> propsWalls;
 	private Rectangle spawnAreaRed;
@@ -204,6 +204,7 @@ public class CollisionsHandler
 						red.incrementScore(CaptureTheFlagMode.flagScore);
 					else
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
+					
 				}
 			}
 		}
