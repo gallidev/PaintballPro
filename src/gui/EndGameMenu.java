@@ -58,7 +58,8 @@ public class EndGameMenu {
 
         MenuOption[] set = {new MenuOption("Continue", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                m.getClient().getSender().sendMessage("Exit:Game");
+                if (m.getClient() != null && m.getClient().getSender() != null)
+                    m.getClient().getSender().sendMessage("Exit:Game");
                 m.transitionTo(Menu.MultiplayerGameType);
             }
         })};

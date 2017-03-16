@@ -44,6 +44,7 @@ public class TestGameTypeMenu {
         Scene s = GameTypeMenu.getScene(m, GameLocation.SingleplayerLocal);
         assertTrue(m.currentMenu == Menu.MainMenu);
         GUIManagerTestHelper.findButtonByTextInParent("Capture The Flag", s.getRoot()).fire();
+        Thread.sleep(4000);
         assertTrue(m.currentMenu == Menu.CTFSingle);
     }
 
