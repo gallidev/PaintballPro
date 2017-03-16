@@ -322,7 +322,8 @@ public class UDPClient extends Thread {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					Renderer.getHud().tick(Integer.parseInt(time));
+					if (Renderer.getHud() != null)
+						Renderer.getHud().tick(Integer.parseInt(time));
 				}
 			});
 		}

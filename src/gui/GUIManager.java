@@ -5,6 +5,7 @@ import audio.SFXResources;
 import enums.GameLocation;
 import enums.Menu;
 import enums.TeamEnum;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -141,7 +142,9 @@ public class GUIManager {
                     } else {
                         audio.startMusic(audio.music.getRandomTrack());
                         r = new Renderer("ctf", this);
-                        s.setScene(r);
+                        Platform.runLater(() -> {
+                            s.setScene(r);
+                        });
                     }
                     break;
                 case CTFMulti:
