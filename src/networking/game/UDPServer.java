@@ -19,7 +19,7 @@ import java.net.InetAddress;
 public class UDPServer extends Thread{
 
 	public boolean m_running = true;
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;
@@ -182,7 +182,7 @@ public class UDPServer extends Thread{
 	 * Interprets the client message containing the user inputs and calls the corresponding method in the ServerInputReceiver
 	 * class, which computes the player's new location.
 	 * @param text The protocol string received from the client.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
 	public void playerInputChanged(String text){
@@ -198,8 +198,7 @@ public class UDPServer extends Thread{
 		boolean left = false;
 		boolean right = false;
 		boolean shoot = false;
-		int mX = 0;
-		int mY = 0;
+		double angle = 0;
 
 		for(int i = 0; i < actions.length; i++){
 			String act = actions[i];
@@ -212,9 +211,8 @@ public class UDPServer extends Thread{
 			break;
 			case "Right" : right = true;
 			break;
-			case "Mouse" : mX = Integer.parseInt(actions[i+1]);
-			mY = Integer.parseInt(actions[i+2]);
-			i = i + 3;
+			case "Angle" : angle = Double.parseDouble(actions[i+1]);
+			i ++;
 			break;
 			case "Shoot" : shoot = true;
 			break;
@@ -222,7 +220,7 @@ public class UDPServer extends Thread{
 			}
 		}
 
-		inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
+		inputReceiver.updatePlayer(id, up, down, left, right, shoot, angle);
 
 
 	}
@@ -230,7 +228,7 @@ public class UDPServer extends Thread{
 	/**
 	 * Receives the game winner from the clients.
 	 * @param text The protocol string containing the winner.
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 */
 	public void getWinner(String text){
@@ -309,7 +307,7 @@ public class UDPServer extends Thread{
 	//		currentPlayer.setLayoutY(y);
 	//		currentPlayer.setAngle(angle);
 	//	}
-	//	
+	//
 	/* Getters and setters below */
 
 	/**

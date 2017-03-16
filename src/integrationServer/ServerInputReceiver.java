@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import networking.server.ServerSender;
 import players.EssentialPlayer;
+import players.UserPlayer;
 
 /**
  * Receives input information (server-side) from all clients and updates the
@@ -15,8 +16,9 @@ import players.EssentialPlayer;
  */
 public class ServerInputReceiver {
 
+	private boolean debug = false;
 	private ArrayList<EssentialPlayer> players;
-	
+
 	/**
 	 * Initialises a new Server input receiver with all the players currently playing in the game.
 	 * @param players A list of all the players involved in the game.
@@ -25,7 +27,7 @@ public class ServerInputReceiver {
 		super();
 		this.players = players;
 	}
-	
+
 	public ServerInputReceiver() {
 		super();
 	}
@@ -35,18 +37,19 @@ public class ServerInputReceiver {
 	 * Computes all the required changes on a player, based on the inputs received from the client. This method performs all the
 	 * collision handling and updates the player based on that and the user input.
 	 * @param id The id of the player to be updated.
-	 * @param up Whether or not a player has moved up. 
-	 * @param down Whether or not a player has moved down. 
-	 * @param left Whether or not a player has moved left. 
-	 * @param right Whether or not a player has moved right. 
+	 * @param up Whether or not a player has moved up.
+	 * @param down Whether or not a player has moved down.
+	 * @param left Whether or not a player has moved left.
+	 * @param right Whether or not a player has moved right.
 	 * @param shooting Whether or not a player has started shooting.
 	 * @param mouseX The new x coordinate of the user.
 	 * @param mouseY The new y coordinate of the user.
 	 */
-	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, int mouseX,
-			int mouseY) {
+	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, double angle) {
 
-		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
+		UserPlayer playerToBeUpdated = (UserPlayer) getPlayerWithId(id);
+
+		if(debug) System.out.println("angle: " + angle);
 
 		//update everything
 		playerToBeUpdated.setUp(up);
@@ -54,9 +57,8 @@ public class ServerInputReceiver {
 		playerToBeUpdated.setLeft(left);
 		playerToBeUpdated.setRight(right);
 		playerToBeUpdated.setShoot(shooting);
-		playerToBeUpdated.setMouseX(mouseX);
-		playerToBeUpdated.setMouseY(mouseY);
-		
+		playerToBeUpdated.updateRotation(angle);
+
 	}
 
 	/**

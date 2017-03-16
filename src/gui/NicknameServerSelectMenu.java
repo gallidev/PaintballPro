@@ -133,19 +133,27 @@ public class NicknameServerSelectMenu {
                                 });
                             }
                         } else {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String ipAddr = ipText.getText();
-                                    if (ipText.getText().equals("127.0.0.1") || ipText.getText().equals("localhost")) {
-                                        ipAddr = IPAddress.getLAN();
+                            (new Thread(() -> {
+                                final String ipAddr = ipText.getText();
+                                final String lanIP = IPAddress.getLAN();
+
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        if (ipText.getText().equals("127.0.0.1") || ipText.getText().equals("localhost")) {
+                                            m.setIpAddress(lanIP);
+                                        } else {
+                                            m.setIpAddress(ipAddr);
+                                        }
+
+                                        // Transition back to the main menu
+                                        if (m.establishConnection())
+                                            m.transitionTo(Menu.MultiplayerGameType);
                                     }
-                                    m.setIpAddress(ipAddr);
-                                    // Transition back to the main menu
-                                    if (m.establishConnection())
-                                        m.transitionTo(Menu.MultiplayerGameType);
-                                }
-                            });
+                                });
+                            })).start();
+
 
                         }
                     }
@@ -162,6 +170,7 @@ public class NicknameServerSelectMenu {
         // Add the options grid and the button grid to the main grid
         mainGrid.add(topGrid, 0, 0);
         mainGrid.add(connectGrid, 0, 1);
+        m.addButtonHoverSounds(mainGrid);
 
         sp.getChildren().addAll(mainGrid);
 

@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.Flag;
 import players.AIPlayer;
+import players.ClientPlayer;
 import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
@@ -31,7 +32,7 @@ public class ClientReceiver extends Thread {
 	private BufferedReader fromServer;
 	private ClientSender sender;
 	private GUIManager m;
-	private GhostPlayer cPlayer;
+	private ClientPlayer cPlayer;
 	private ArrayList<GhostPlayer> myTeam;
 	private ArrayList<GhostPlayer> enemies;
 	private UDPClient udpClient;
@@ -179,9 +180,9 @@ public class ClientReceiver extends Thread {
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
-			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
+			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
 		else
-			cPlayer = new GhostPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
+			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
 		// extract the other members
 		for (int i = 4; i < data.length - 2; i = i + 3) {
 			int id = Integer.parseInt(data[i]);
@@ -395,7 +396,7 @@ public class ClientReceiver extends Thread {
 	 * Return client player instantiation of player.
 	 * @return Client Player object.
 	 */
-	public GhostPlayer getClientPlayer() {
+	public ClientPlayer getClientPlayer() {
 		return cPlayer;
 	}
 

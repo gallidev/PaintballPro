@@ -86,6 +86,9 @@ public class OfflinePlayer extends EssentialPlayer
 			p.setOppTeam(myTeam);
 			p.setMyTeam(oppTeam);
 		}
+		
+		collisionsHandler.setRedTeam(myTeam);
+		collisionsHandler.setBlueTeam(oppTeam);
 
 	}
 

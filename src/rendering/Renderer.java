@@ -10,11 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import logic.GameMode;
 import networking.client.ClientReceiver;
 import physics.*;
+import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
 import players.OfflinePlayer;
@@ -37,7 +40,8 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	GhostPlayer cPlayer;
+
+	ClientPlayer cPlayer;
 	OfflinePlayer player;
 	private PauseMenu pauseMenu;
 	private PauseSettingsMenu settingsMenu;
@@ -119,6 +123,19 @@ public class Renderer extends Scene
 					}
 					player.tick();
 				}
+//				if(now - lastSecond >= 1000000000)
+//				{
+//					hud.tick(timeLeft--);
+//					lastSecond = now;
+//				}
+				hud.tick(gameLoop.getRemainingTime());
+
+				//update the scores
+				if (hud != null){
+					incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
+					incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
+				}
+				
 				hud.tick(gameLoop.getRemainingTime());
 
 				incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
@@ -162,6 +179,8 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		cPlayer.setInputHandler(inputHandler);
+
 		if(flag != null)
 			view.getChildren().add(flag);
 
@@ -169,7 +188,7 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
-		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer.getPlayerId());
+		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer);
 		inputSender.startSending();
 		Group displayBullets = new Group();
 		view.getChildren().add(displayBullets);
@@ -179,6 +198,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
+				cPlayer.tick();
 				updateView();
 				for(GhostPlayer player : players)
 				{
@@ -196,7 +216,6 @@ public class Renderer extends Scene
 	private GameMode initGame(OfflinePlayer player)
 	{
 		Team red = player.getMyTeam();
-		red.addMember(player);
 
 		Team blue = player.getOppTeam();
 
@@ -282,6 +301,9 @@ public class Renderer extends Scene
 	{
 		timer.stop();
 		view = new Pane();
+		PauseMenu.p = new GridPane();
+		PauseSettingsMenu.p = new GridPane();
+		HeadUpDisplay.view = new BorderPane();
 	}
 
 	private void generateSpray(Bullet pellet, TeamEnum team)
