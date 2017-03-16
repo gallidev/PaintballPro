@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class UDPClient extends Thread {
 
-	public boolean bulletDebug = true;
+	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
 	private boolean debug = false;
