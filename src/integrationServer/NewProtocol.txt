@@ -44,3 +44,4 @@ Number meanings:
 5 - end game 
 6 - server sends remaining time to the clients
 7 - server sends all clients when a player captured the flag
+8 - server sends players the id of the player who captured the flag

@@ -91,13 +91,25 @@ public class ClientGameStateReceiver {
 		}
 	}
 
-	public void updateFlag(double x, double y, boolean visible){
-		//System.out.println(" flag visible:  " + visible );
-		flag.setLayoutX(x);
-		flag.setLayoutY(y);
-		flag.setVisible(visible);
+	public void updateFlag(int id){
+
+		GhostPlayer player = getPlayerWithId(id);
+		
+		System.out.println("Player " + id + " captured the flag");
+	}
+	
+	public void lostFlag(int id){
+
+		GhostPlayer player = getPlayerWithId(id);
+		
+		System.out.println("Player " + id + " lost the flag");
 
 	}
+	
+	public void respawnFlag(double x, double y){
+		System.out.println("Flag has been respawned");
+	}
+
 
 	/**
 	 * Helper method to find the player with a specific id from the entire list of players in the game.

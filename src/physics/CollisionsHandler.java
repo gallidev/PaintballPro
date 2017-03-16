@@ -26,6 +26,10 @@ public class CollisionsHandler
 
 	private Team red;
 	private Team blue;
+	
+	private boolean flagCaptured = false;
+	private boolean flagDropped = false;
+	private boolean flagRespwaned = false;
 
 	public CollisionsHandler(Map map)
 	{
@@ -168,6 +172,8 @@ public class CollisionsHandler
 				flag.setVisible(false);
 				p.setHasFlag(true);
 				
+				flagCaptured = true;
+				
 			}
 			//check if the player got shot so leave the flag in the player position
 			if(p.isEliminated() && p.hasFlag()){
@@ -182,6 +188,8 @@ public class CollisionsHandler
 					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
 				else
 					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
+				
+				flagDropped = true;
 				
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
@@ -207,6 +215,8 @@ public class CollisionsHandler
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
 					
 				}
+				
+				flagRespwaned = true;
 			}
 		}
 	}
@@ -292,5 +302,30 @@ public class CollisionsHandler
 	public Flag getFlag(){
 		return flag;
 	}
+
+	public boolean isFlagCaptured() {
+		return flagCaptured;
+	}
+
+	public void setFlagCaptured(boolean flagCaptured) {
+		this.flagCaptured = flagCaptured;
+	}
+
+	public boolean isFlagDropped() {
+		return flagDropped;
+	}
+
+	public void setFlagDropped(boolean flagDropped) {
+		this.flagDropped = flagDropped;
+	}
+	
+	public boolean isFlagRespawned() {
+		return flagRespwaned;
+	}
+
+	public void setRespawned(boolean b) {
+		this.flagRespwaned = b;
+	}
+	
 
 }
