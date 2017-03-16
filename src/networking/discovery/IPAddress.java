@@ -1,6 +1,10 @@
 package networking.discovery;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 /**
  * Class to get the LAN IP for a user
@@ -14,13 +18,29 @@ public class IPAddress {
 	 *
 	 * @return LAN IP
 	 */
-	public static String getLAN() {
-		String ret = "";
+	public static String getLAN()
+	{
 		try {
-			ret = InetAddress.getLocalHost().getHostAddress();
-		} catch (Exception e) {
-			// Will never be reached.
+		    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+		    while (interfaces.hasMoreElements()) {
+		        NetworkInterface iface = interfaces.nextElement();
+		        if (iface.isLoopback() || !iface.isUp() || iface.isVirtual() || iface.isPointToPoint())
+		            continue;
+
+		        Enumeration<InetAddress> addresses = iface.getInetAddresses();
+		        //int skip = 0;
+		        while(addresses.hasMoreElements()) {
+		            InetAddress addr = addresses.nextElement();
+
+		            String ip = addr.getHostAddress();
+		            
+		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.")) 
+		            	return ip;
+		        }
+		    }
+		} catch (SocketException e) {
+		    throw new RuntimeException(e);
 		}
-		return ret;
+		return "";
 	}
 }
