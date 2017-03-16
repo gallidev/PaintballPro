@@ -5,6 +5,7 @@ import audio.SFXResources;
 import enums.GameLocation;
 import enums.Menu;
 import enums.TeamEnum;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 public class GUIManager {
 
     public static boolean localServerCode = false;
+    public static Renderer renderer;
     // Load the user's settings
     // When set methods are called for this class/object, the class will
     // automatically save the changed preferences
@@ -39,7 +41,6 @@ public class GUIManager {
     private Thread localServer;
     private Menu currentScene = Menu.MainMenu;
     private String ipAddress = "";
-    private Renderer r;
     private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
     private boolean lobbyTimerStarted = false;
     private int lobbyTimeLeft = 10;
@@ -78,8 +79,8 @@ public class GUIManager {
             currentScene = menu;
             switch (menu) {
                 case MainMenu:
-                    Renderer.destroy(r);
-                    r = null;
+                    renderer.destroy();
+                    renderer = null;
                     if (localServer != null) {
                         localServer.interrupt();
                         localServer = null;
@@ -118,41 +119,41 @@ public class GUIManager {
 
                         c.getSender().sendMessage("Play:Mode:1");
                         audio.startMusic(audio.music.getRandomTrack());
-                        r = new Renderer("elimination", c.getReceiver(), this, null);
-                        s.setScene(r);
+                        renderer = new Renderer("elimination", c.getReceiver(), this, null);
+                        s.setScene(renderer);
                     } else {
                         audio.startMusic(audio.music.getRandomTrack());
-                        r = new Renderer("elimination", this);
-                        s.setScene(r);
+                        renderer = new Renderer("elimination", this);
+                        s.setScene(renderer);
                     }
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    //r = new Renderer("elimination", c.getReceiver(), this);
-                    s.setScene(r);
+                    //renderer = new Renderer("elimination", c.getReceiver(), this);
+                    s.setScene(renderer);
                     break;
                 case CTFSingle:
                     if (localServerCode) {
                     	establishLocalServerConnection();
                         c.getSender().sendMessage("Play:Mode:2");
                         audio.startMusic(audio.music.getRandomTrack());
-                        r = new Renderer("ctf", c.getReceiver(), this, null);
-                        s.setScene(r);
+                        renderer = new Renderer("ctf", c.getReceiver(), this, null);
+                        s.setScene(renderer);
                     } else {
                         audio.startMusic(audio.music.getRandomTrack());
-                        r = new Renderer("ctf", this);
-                        s.setScene(r);
+                        renderer = new Renderer("ctf", this);
+                        Platform.runLater(() -> {
+                            s.setScene(renderer);
+                        });
                     }
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    //r = new Renderer("ctf", c.getReceiver(), this);
-                    s.setScene(r);
+                    //renderer = new Renderer("ctf", c.getReceiver(), this);
+                    s.setScene(renderer);
                     break;
                 case EndGame:
                     s.setScene(EndGameMenu.getScene(this, (String)o[0], (TeamEnum)o[1]));
-                    Renderer.destroy(r);
-                    r = null;
                     break;
                 default:
                     throw new RuntimeException("Menu '" + menu + "' is not a valid transition");
@@ -345,7 +346,19 @@ public class GUIManager {
     }
 
     public void setRenderer(Renderer r){
-    	this.r = r;
+    	renderer = r;
+    }
+
+    public void exitGame() {
+        if (this.getClient() != null && this.getClient().getSender() != null) {
+            this.getClient().getSender().sendMessage("Exit:Game");
+        }
+    }
+
+    public void exitClient() {
+        if (this.getClient() != null && this.getClient().getSender() != null) {
+            this.getClient().getSender().sendMessage("Exit:Client");
+        }
     }
 
 //    public void setGameTimeLeft(int gameTimeLeft) {

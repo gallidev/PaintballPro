@@ -136,6 +136,7 @@ public class ClientReceiver extends Thread {
 
 				} else // if the client wants to exit the system.
 				{
+					System.out.println("I've been told to exit.");
 					sender.stopThread();
 					return;
 				}

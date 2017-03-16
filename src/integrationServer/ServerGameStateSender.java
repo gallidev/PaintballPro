@@ -182,6 +182,8 @@ public class ServerGameStateSender {
 		if (winner != null){
 			String toBeSent = "2:" + (winner.getColour() == TeamEnum.RED ? "Red" : "Blue")  + ":"  + gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
 			udpServer.sendToAll(toBeSent, lobbyId);
+			
+			stopSending();
 		}
 
 	}
@@ -196,7 +198,6 @@ public class ServerGameStateSender {
 			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-
 		}
 	}
 

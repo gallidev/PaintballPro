@@ -142,7 +142,7 @@ class PauseSettingsMenu extends SubScene
         MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 // Transition back to the pause menu
-                Renderer.toggleSettingsMenu();
+                GUIManager.renderer.toggleSettingsMenu();
             }
         })};
         // Turn the array into a grid pane

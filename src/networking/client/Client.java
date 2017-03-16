@@ -114,11 +114,15 @@ public class Client {
 								if(debug) System.out.println("Client Started");
 								sender.join(); // Wait for sender to close
 								toServer.close(); // Close connection to server
+								System.out.println("Sender and Sender Stream closed");
 								receiver.join(); // Wait for receiver to stop
 								fromServer.close(); // Close connection from server
+								System.out.println("Receiver and Receiver Stream closed");
 								server.close(); // Close server socket
+								System.out.println("Server closed.");
 								udpReceiver.stopThread();
-								udpReceiver.join(3000);
+								udpReceiver.join(500);
+								System.out.println("UDP Client closed.");
 								// Acknowledge to the client that everything has
 								// stopped.
 								if(debug) System.out.println("Client has been stopped.");

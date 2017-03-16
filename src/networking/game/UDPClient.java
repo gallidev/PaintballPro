@@ -1,6 +1,5 @@
 package networking.game;
 
-import enums.Menu;
 import enums.TeamEnum;
 import gui.AlertBox;
 import gui.GUIManager;
@@ -8,7 +7,6 @@ import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
 import players.GhostPlayer;
-import rendering.Renderer;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -23,10 +21,10 @@ import java.util.Arrays;
  */
 public class UDPClient extends Thread {
 
-	public boolean bulletDebug = false;
+	public boolean bulletDebug = true;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -35,6 +33,8 @@ public class UDPClient extends Thread {
 	private GUIManager m;
 	private TeamTable teams;
 	private int sIP;
+	private boolean active = true;
+
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are connecting for the first time so that
@@ -95,7 +95,7 @@ public class UDPClient extends Thread {
 
 			} catch (Exception e) {
 				error = true;
-				if (debug) System.err.println(e.getMessage());
+				if (debug) e.printStackTrace();
 				port++;
 			}
 		}
@@ -168,6 +168,7 @@ public class UDPClient extends Thread {
 			if(debug) System.out.println("Closing Client.");
 			clientSocket.close();
 		}
+		System.out.println("Closing UDP Client");
 	}
 
 	private void getWinnerAction(String text) {
@@ -180,12 +181,11 @@ public class UDPClient extends Thread {
 		Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						if(Renderer.getHud() != null)
-							Renderer.getHud().setWinner(redScore, blueScore);
+						if(GUIManager.renderer.getHud() != null)
+							GUIManager.renderer.getHud().setWinner(redScore, blueScore);
 					}
 				});
-
-
+		active = false;
 	}
 
 	/**
@@ -204,14 +204,15 @@ public class UDPClient extends Thread {
 		catch(Exception e)
 		{
 			if (debug) System.out.println("Exception in sendMessage");
-			if (debug) System.err.println(e.getMessage());
+			if (debug) e.printStackTrace();
 			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
 		}
 	}
 
 	public void stopThread()
 	{
-		sendMessage("Exit");
+		super.interrupt();
+		clientSocket.close();
 	}
 
 	// -------------------------------------
@@ -261,12 +262,12 @@ public class UDPClient extends Thread {
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
-		if (Renderer.getHud() != null){
+		if (GUIManager.renderer.getHud() != null){
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					Renderer.incrementScore(TeamEnum.RED, redScore);
-					Renderer.incrementScore(TeamEnum.BLUE, blueScore);
+					GUIManager.renderer.incrementScore(TeamEnum.RED, redScore);
+					GUIManager.renderer.incrementScore(TeamEnum.BLUE, blueScore);
 				}
 			});
 		}
@@ -318,11 +319,12 @@ public class UDPClient extends Thread {
 		String time = sentence.split(":")[1];
 
 		if (debug) System.out.println("remaining time on client: " + time);
-		if(Renderer.getHud() != null){
+		if(GUIManager.renderer.getHud() != null){
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					Renderer.getHud().tick(Integer.parseInt(time));
+					if (GUIManager.renderer.getHud() != null)
+						GUIManager.renderer.getHud().tick(Integer.parseInt(time));
 				}
 			});
 		}
@@ -334,7 +336,7 @@ public class UDPClient extends Thread {
 		String[] data = text.split(":");
 		double x  = Double.parseDouble(data[1]);
 		double y = Double.parseDouble(data[2]);
-		boolean visible = (data[3].equals("true") ? true : false);
+		boolean visible = (data[3].equals("true"));
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateFlag(x, y, visible);
@@ -383,5 +385,9 @@ public class UDPClient extends Thread {
 
 		//set the corresponding GhostPlayer's nickname
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
+	}
+
+	public boolean isActive(){
+		return active;
 	}
 }

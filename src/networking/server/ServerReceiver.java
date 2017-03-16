@@ -29,7 +29,7 @@ public class ServerReceiver extends Thread {
 	private Lobby lobby;
 	private UDPServer udpReceiver;
 	private boolean singlePlayer;
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -348,7 +348,9 @@ public class ServerReceiver extends Thread {
 
 		// Remove client from any game lobbies.
 		ServerBasicPlayer myPlayer = clientTable.getPlayer(myClientsID);
-		gameLobby.removePlayer(myPlayer);
+		
+		if(myPlayer.getAllocatedLobby() != -1)
+			gameLobby.removePlayer(myPlayer);
 
 		// Remove client from client table data as they are exiting the system.
 		clientTable.removeClient(myClientsID);

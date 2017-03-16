@@ -92,7 +92,7 @@ public class ClientGameStateReceiver {
 	}
 
 	public void updateFlag(double x, double y, boolean visible){
-		System.out.println(" flag visible:  " + visible );
+		//System.out.println(" flag visible:  " + visible );
 		flag.setLayoutX(x);
 		flag.setLayoutY(y);
 		flag.setVisible(visible);

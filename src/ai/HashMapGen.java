@@ -5,7 +5,8 @@ import enums.GameMode;
 import javafx.geometry.Point2D;
 import rendering.Map;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,7 +34,7 @@ public class HashMapGen {
             generatePathMap();
             generateCoverMap();
         } catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
