@@ -32,6 +32,7 @@ import physics.InputHandler;
 import physics.KeyPressListener;
 import physics.KeyReleaseListener;
 import physics.MouseListener;
+import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
 import players.OfflinePlayer;
@@ -47,7 +48,7 @@ import serverLogic.TeamMatchMode;
 public class Renderer extends Scene
 {
 	static Pane view = new Pane();
-	static GhostPlayer cPlayer;
+	static ClientPlayer cPlayer;
 	static OfflinePlayer player;
 	private static PauseMenu pauseMenu;
 	private static PauseSettingsMenu settingsMenu;
@@ -189,6 +190,8 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
+		cPlayer.setInputHandler(inputHandler);
+
 		if(flag != null){
 			view.getChildren().add(flag);
 		}
@@ -197,7 +200,7 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
-		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer.getPlayerId());
+		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer);
 		inputSender.startSending();
 		Group displayBullets = new Group();
 		view.getChildren().add(displayBullets);
@@ -207,6 +210,7 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
+				cPlayer.tick();
 				updateView();
 				for(GhostPlayer player : players)
 				{

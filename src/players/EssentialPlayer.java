@@ -251,7 +251,7 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	public double getAngleDegrees(){
-		return Math.toDegrees(this.angle);
+		return rotation.getAngle();
 	}
 
 	public synchronized void setUp(boolean up){

@@ -7,19 +7,20 @@ import java.util.concurrent.TimeUnit;
 
 import networking.game.UDPClient;
 import physics.InputHandler;
+import players.ClientPlayer;
 
 /**
  * Sends user inputs(client-sided) to the server.
- * 
+ *
  * @author Alexandra Paduraru
  * @author Filippo Galli
  *
  */
 public class ClientInputSender {
 
+	private ClientPlayer player;
 	private UDPClient udpClient;
 	private InputHandler handler;
-	private int id;
 
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
@@ -31,10 +32,10 @@ public class ClientInputSender {
 	 * @param handler The handler which handles all user inputs in the player.
 	 * @param playerId The current player's id.
 	 */
-	public ClientInputSender(UDPClient udpClient, InputHandler handler, int playerId){
+	public ClientInputSender(UDPClient udpClient, InputHandler handler, ClientPlayer player){
 		this.udpClient = udpClient;
 		this.handler = handler;
-		id = playerId;
+		this.player = player;
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class ClientInputSender {
 	private void sendServer(){
 		//Protocol: "0:id:" + Up/Down/Left/Right/Shooting/Mouse, depending on the player's action
 
-		String toBeSent = "0:" + id + ":";
+		String toBeSent = "0:" + player.getPlayerId() + ":";
 		//did player move up?
 		if (handler.isUp())
 			toBeSent += ":Up:";
@@ -96,13 +97,13 @@ public class ClientInputSender {
 
 		//is the player shooting?
 		if (handler.isShooting())
-			toBeSent += ":Shoot:" + id;
+			toBeSent += ":Shoot:";
 
 		//did the mouse move?
-		toBeSent += ":Mouse:" + handler.getMouseX() + ":" + handler.getMouseY();
-		
+		toBeSent += ":Angle:" + player.getAngleRadians();
+
 		udpClient.sendMessage(toBeSent);
 	}
-	
+
 
 }

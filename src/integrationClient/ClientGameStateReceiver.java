@@ -56,7 +56,7 @@ public class ClientGameStateReceiver {
 	public void updatePlayer(int id, double x, double y, double angle, boolean visible){
 
 		GhostPlayer playerToBeUpdated = getPlayerWithId(id);
-
+		//System.out.println("angle :" + angle);
 		playerToBeUpdated.setSyncX(x);
 		playerToBeUpdated.setSyncY(y);
 		playerToBeUpdated.setSyncRotationAngle(angle);

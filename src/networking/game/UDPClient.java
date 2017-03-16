@@ -172,11 +172,11 @@ public class UDPClient extends Thread {
 
 	private void getWinnerAction(String text) {
 		// Protocol: 2:Red/Blue:RedScore:BlueScore
-		
+
 		String winner = text.split(":")[1];
 		String redScore = text.split(":")[2];
 		String blueScore = text.split(":")[3];
-		
+
 		Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
@@ -184,7 +184,7 @@ public class UDPClient extends Thread {
 							Renderer.getHud().setWinner(redScore, blueScore);
 					}
 				});
-		
+
 
 	}
 

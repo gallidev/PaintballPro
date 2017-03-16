@@ -33,7 +33,7 @@ public class UserPlayer extends EssentialPlayer{
 			lastAngle = angle;
 			updatePosition();
 			updateShooting();
-			updateAngle();
+			//updateAngle();
 		}
 		else
 		{
@@ -118,10 +118,13 @@ public class UserPlayer extends EssentialPlayer{
 
 	@Override
 	public void setOppTeam(Team oppTeam) {
-		// TODO Auto-generated method stub
 		this.oppTeam = oppTeam;
 	}
 
+	public void updateRotation(double angle){
+		this.angle = angle;
+		rotation.setAngle(Math.toDegrees(angle));
+	}
 
 }
 
