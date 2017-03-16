@@ -58,6 +58,7 @@ public class EndGameMenu {
 
         MenuOption[] set = {new MenuOption("Main Menu", true, new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
+                m.exitClient();
                 m.transitionTo(Menu.MainMenu);
             }
         })};
