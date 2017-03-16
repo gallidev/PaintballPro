@@ -62,11 +62,11 @@ public class HeadUpDisplay extends SubScene
 	{
 		if(time < 0)
 			return;
-		else if(time == 0)
-		{
-			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), (GUIManager.renderer.cPlayer == null ? GUIManager.renderer.player.getTeam() : GUIManager.renderer.cPlayer.getTeam()));
-			return;
-		}
+//		else if(time == 0)
+//		{
+//			guiManager.transitionTo(Menu.EndGame, redScore.getText() + "," + blueScore.getText(), (GUIManager.renderer.cPlayer == null ? GUIManager.renderer.player.getTeam() : GUIManager.renderer.cPlayer.getTeam()));
+//			return;
+//		}
 		int minutes = (time % 3600) / 60, seconds = time % 60;
 		timer.setText(String.format("%02d:%02d", minutes, seconds));
 

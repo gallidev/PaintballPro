@@ -12,7 +12,6 @@ import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.Flag;
-import players.AIPlayer;
 import players.ClientPlayer;
 import players.GhostPlayer;
 import rendering.ImageFactory;
@@ -136,14 +135,12 @@ public class ClientReceiver extends Thread {
 
 				} else // if the client wants to exit the system.
 				{
-					System.out.println("I've been told to exit.");
-					sender.stopThread();
+					System.out.println("Exiting now.");
 					return;
 				}
 			}
 		} catch (IOException e) {
 			// If there is something wrong... exit cleanly.
-			sender.stopThread();
 			return;
 		}
 	}

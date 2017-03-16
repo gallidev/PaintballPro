@@ -12,7 +12,7 @@ public class CaptureTheFlagMode extends GameMode {
 	
 	public static final int flagScore = 5;
 	public static final int lostFlagScore = 1;
-	private static final int roundTime = 300;
+	private static final int roundTime = 10;
 	private RoundTimer timer;
 
 	
@@ -55,11 +55,9 @@ public class CaptureTheFlagMode extends GameMode {
 		else if (getRedTeam().getScore() < getBlueTeam().getScore())
 			return getBlueTeam();
 		else{
-			int delayTime = 30;
-			RoundTimer newTimer = new RoundTimer(delayTime);
-			newTimer.startTimer();
-			while(!newTimer.isTimeElapsed()){}
-			return whoWon();
+			timer = new RoundTimer(15);
+			timer.startTimer();
+			return null;
 				
 		}
 	}
