@@ -334,7 +334,7 @@ public class UDPClient extends Thread {
 
 	private void updateFlagAction(String text){
 		//Protocol : 8:<x>:<y>:<isCaptured>
-		System.out.println("flagDataReceived: " + text);
+		//System.out.println("flagDataReceived: " + text);
 		String[] data = text.split(":");
 		double x  = Double.parseDouble(data[1]);
 		double y = Double.parseDouble(data[2]);
