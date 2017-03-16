@@ -219,12 +219,6 @@ public class CollisionsHandler
 					bullet.disable();
 					p.beenShot();
 
-					//update score
-					if (red.containsPlayer(p))
-						blue.incrementScore(1);
-					else
-						red.incrementScore(1);
-
 					return;
 				}
 			}
