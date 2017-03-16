@@ -121,6 +121,22 @@ public class Renderer extends Scene
 					}
 					player.tick();
 				}
+//				if(now - lastSecond >= 1000000000)
+//				{
+//					hud.tick(timeLeft--);
+//					lastSecond = now;
+//				}
+				hud.tick((int) gameLoop.getRemainingTime());
+
+				//update the scores
+				if (hud != null){
+					incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
+					incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
+				}
+				
+				System.out.println("Red score: " + gameLoop.getRedTeam().getScore());
+				System.out.println("Blue score: " + gameLoop.getBlueTeam().getScore());
+				
 				hud.tick(gameLoop.getRemainingTime());
 
 				incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());

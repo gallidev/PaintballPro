@@ -1,6 +1,7 @@
 import gui.GUIManager;
 import gui.ServerGUI;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -30,13 +31,16 @@ public class GameServer extends Application {
 			System.exit(0);
 		});
 		stage.show();
-		int portNo = 25566;
-		DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(portNo);
-		discovery.start();
-		server = new Server(portNo, IPAddress.getLAN(), gui, 0);
-		//server = new Server(portNo, "10.20.202.182", gui, 0);
-		server.start();
-		gui.setServer(server, discovery);
+		(new Thread(() -> {
+			int portNo = 25566;
+			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(portNo);
+			discovery.start();
+			server = new Server(portNo, IPAddress.getLAN(), gui, 0);
+			//server = new Server(portNo, "10.20.202.182", gui, 0);
+			server.start();
+			gui.setServer(server, discovery);
+		})).start();
+
 	}
 
 	public static void main(String[] args) {
