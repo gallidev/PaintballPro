@@ -58,7 +58,7 @@ public class ServerGameStateSender {
 		    	   sendClient();
 		    	   sendBullets();
 		    	   updateScore();
-		    	   //sendFlag();
+		    	   sendFlag();
 
 		    	   sendRemainingTime();
 
@@ -107,7 +107,7 @@ public class ServerGameStateSender {
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 		}
-	
+
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class ServerGameStateSender {
 			String toBeSent = "2:" + (winner.getColour() == TeamEnum.RED ? "Red" : "Blue")  + ":"  + gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
 			udpServer.sendToAll(toBeSent, lobbyId);
 		}
-		
+
 	}
 
 	public void sendFlag(){
