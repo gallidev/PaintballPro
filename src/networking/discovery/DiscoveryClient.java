@@ -2,6 +2,7 @@ package networking.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
@@ -26,18 +27,31 @@ public class DiscoveryClient extends Thread{
 		try {
 			InetAddress broadcastAddress = InetAddress.getByName("225.0.0.1");
 			System.setProperty("java.net.preferIPv4Stack", "true");
-			MulticastSocket socket = new MulticastSocket(25561);
+			MulticastSocket socket = new MulticastSocket(25561); 
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 			while (networkInterfaces.hasMoreElements()) {
 				NetworkInterface iface = networkInterfaces.nextElement();
-				try {
-					if (!iface.isLoopback())
-					{
-						socket.setNetworkInterface(iface);
-					}
-				} catch (IOException e) {
-					//e.printStackTrace();
-				}
+		        Enumeration<InetAddress> addresses = iface.getInetAddresses(); 
+		        //int skip = 0;
+		        while(addresses.hasMoreElements()) {
+		            InetAddress addr = addresses.nextElement();
+
+		            String ip = addr.getHostAddress();
+		            
+		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.")) 
+		            {
+		            	try {
+
+		            		if (!iface.isLoopback())
+		            		{
+		            			socket.setNetworkInterface(iface);
+		            		}
+		            	} catch (IOException e) {
+		            		//e.printStackTrace();
+		            	}
+		            }
+		        }
+
 			}
 			socket.joinGroup(broadcastAddress);
 

@@ -41,7 +41,7 @@ public class TestTeamMatchMode {
 		assertFalse(game.isGameFinished());
 		assertTrue(game.getTimer().getTimeLeft() >= 170);  
 
-		Thread.sleep(180500);  
+		Thread.sleep(100);   // 180500
 		assertTrue(game.isGameFinished());
 	}
 	

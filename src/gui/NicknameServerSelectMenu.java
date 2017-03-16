@@ -55,7 +55,7 @@ public class NicknameServerSelectMenu {
         TextField ipText = new TextField("127.0.0.1");
         GridPane manualField = new GridPane();
         manualField.add(ipLabel, 0, 0);
-        manualField.add(ipText, 0, 1);
+        manualField.add(ipText, 0, 1); 
         topGrid.add(manual, 0, 2);
         topGrid.add(manualField, 1, 2);
         automaticLabel.setStyle("-fx-opacity: 1.0;");
@@ -101,6 +101,7 @@ public class NicknameServerSelectMenu {
                         if (automatic.isSelected()) {
                             DiscoveryClientListener client = new DiscoveryClientListener();
                             String ipPort = client.findServer().split(":")[0];
+                            System.out.println("IP connecting to:"+ipPort);
                             if (ipPort.equals("")) {
                                 Platform.runLater(new Runnable() {
                                     @Override
