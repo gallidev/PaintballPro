@@ -349,7 +349,7 @@ public class UDPClient extends Thread {
 	private void capturedFlagAction(String text) {
 		System.out.println("flag captured" + clientID);
 		// TODO Auto-generated method stub
-		//do stuff here to render
+
 	}
 
 

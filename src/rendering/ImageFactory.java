@@ -2,6 +2,7 @@ package rendering;
 
 import enums.TeamEnum;
 import javafx.scene.image.Image;
+import physics.PowerupType;
 
 import java.util.HashMap;
 
@@ -12,6 +13,10 @@ public class ImageFactory
 	private static final Image RED_PLAYER_FLAG = new Image("assets/characters/player_red_flag.png", 30, 64, true, true);
 	private static final Image BLUE_PLAYER_FLAG = new Image("assets/characters/player_blue_flag.png", 30, 64, true, true);
 	private static final Image FLAG = new Image("assets/flag.png");
+
+	private static final Image POWERUP_SHIELD = new Image("assets/powerup_shield.png");
+	private static final Image POWERUP_SPEED = new Image("assets/powerup_speed.png");
+
 	private static final HashMap<String, Image> MATERIALS = new HashMap<>();
 
 	public static Image getPlayerImage(TeamEnum team)
@@ -32,6 +37,19 @@ public class ImageFactory
 				return FLAG;
 			default:
 				throw new NoSuchFieldError("Objective type not found!");
+		}
+	}
+
+	public static Image getPowerupImage(PowerupType powerup)
+	{
+		switch(powerup)
+		{
+			case SHIELD:
+				return POWERUP_SHIELD;
+			case SPEED:
+				return POWERUP_SPEED;
+			default:
+				throw new NoSuchFieldError("Powerup type not found!");
 		}
 	}
 
