@@ -29,7 +29,7 @@ public class ServerReceiver extends Thread {
 	private Lobby lobby;
 	private UDPServer udpReceiver;
 	private boolean singlePlayer;
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
