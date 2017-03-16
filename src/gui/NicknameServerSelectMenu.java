@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import networking.discovery.DiscoveryClientListener;
+import networking.discoveryNew.DiscoveryClientListener;
 import networking.discovery.IPAddress;
 
 /**

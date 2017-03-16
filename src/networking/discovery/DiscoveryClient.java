@@ -45,6 +45,7 @@ public class DiscoveryClient extends Thread{
 		            		if (!iface.isLoopback())
 		            		{
 		            			socket.setNetworkInterface(iface);
+		            			System.out.println("Socket set to:"+ip);
 		            		}
 		            	} catch (IOException e) {
 		            		//e.printStackTrace();
