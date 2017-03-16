@@ -153,9 +153,9 @@
 //
 //					//update score
 //					if (red.containsPlayer(p))
-//						blue.incrementScore(1);
+//						blue.setScore(1);
 //					else
-//						red.incrementScore(1);
+//						red.setScore(1);
 //
 //					return;
 //				}

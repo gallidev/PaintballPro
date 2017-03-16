@@ -1,9 +1,9 @@
 package rendering;
 
-public class Objective
+public class GameObject
 {
-	int x, y;
-	ObjectiveType type;
+	ObjectType type;
+	private int x, y;
 
 	public int getX()
 	{

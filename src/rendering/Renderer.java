@@ -65,11 +65,8 @@ public class Renderer extends Scene
 		init(mapName);
 		singlePlayer = true;
 
-		if(map.getGameMode() == enums.GameMode.CAPTURETHEFLAG)
-		{
-			map.flag = new Flag(map.objectives);
+		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
 			view.getChildren().add(map.flag);
-		}
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		InputHandler inputHandler = new InputHandler();
@@ -123,28 +120,12 @@ public class Renderer extends Scene
 					}
 					player.tick();
 				}
-//				if(now - lastSecond >= 1000000000)
-//				{
-//					hud.tick(timeLeft--);
-//					lastSecond = now;
-//				}
 				hud.tick(gameLoop.getRemainingTime());
+				if(gameLoop.getRemainingTime() == 0)
+					hud.setWinner(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
 
-				//update the scores
-				if (hud != null){
-					incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
-					incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
-				}
-				
-				hud.tick(gameLoop.getRemainingTime());
-				
-				if (gameLoop.getRemainingTime() == 0)
-					if (gameLoop.whoWon() != null)
-						hud.setWinner(gameLoop.getRedTeam().getScore() + "", gameLoop.getBlueTeam().getScore() + "");
-				
-
-				incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
-				incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
+				hud.setScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
+				hud.setScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
 			}
 		};
 		timer.start();
@@ -157,7 +138,7 @@ public class Renderer extends Scene
 	 * @param mapName    Name of the selected map
 	 * @param receiver   Client receiver for communication with the game server
 	 * @param guiManager GUI manager that creates this object
-	 * @param flag
+	 * @param flag       Flag object for Capture the Flag gamemode
 	 */
 	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager, Flag flag)
 	{
@@ -220,13 +201,9 @@ public class Renderer extends Scene
 
 	private GameMode initGame(OfflinePlayer player)
 	{
-		Team red = player.getMyTeam();
-
-		Team blue = player.getOppTeam();
-
+		Team red = player.getMyTeam(), blue = player.getOppTeam();
 		switch(map.getGameMode())
 		{
-
 			case ELIMINATION:
 				return new TeamMatchMode(red, blue);
 			case CAPTURETHEFLAG:
@@ -286,20 +263,15 @@ public class Renderer extends Scene
 		return settingsMenu.opened;
 	}
 
+	public Map getMap()
+	{
+		return map;
+	}
+
+
 	public HeadUpDisplay getHud()
 	{
 		return hud;
-	}
-
-	/**
-	 * Increment the score on the HUD for a given team by a given amount
-	 *
-	 * @param team   The team that has scored
-	 * @param amount The amount to increase the score by
-	 */
-	public void incrementScore(TeamEnum team, int amount)
-	{
-		hud.incrementScore(team, amount);
 	}
 
 	public void destroy()
@@ -346,23 +318,14 @@ public class Renderer extends Scene
 
 	private void updateView()
 	{
-		if(singlePlayer)
-		{
-			view.relocate(((getWidth() / 2) - PLAYER_HEAD_X - player.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - PLAYER_HEAD_Y - player.getLayoutY()) * view.getScaleY());
-			hud.relocate(player.getLayoutX() + PLAYER_HEAD_X - getWidth() / 2, player.getLayoutY() + PLAYER_HEAD_Y - getHeight() / 2);
-			if(view.getChildren().contains(pauseMenu))
-				pauseMenu.relocate(player.getLayoutX() + PLAYER_HEAD_X - getWidth() / 2, player.getLayoutY() + PLAYER_HEAD_Y - getHeight() / 2);
-			if(view.getChildren().contains(settingsMenu))
-				settingsMenu.relocate(player.getLayoutX() + PLAYER_HEAD_X - getWidth() / 2, player.getLayoutY() + PLAYER_HEAD_Y - getHeight() / 2);
-		}
-		else
-		{
-			view.relocate(((getWidth() / 2) - PLAYER_HEAD_X - cPlayer.getLayoutX()) * view.getScaleX(), ((getHeight() / 2) - PLAYER_HEAD_Y - cPlayer.getLayoutY()) * view.getScaleY());
-			hud.relocate(cPlayer.getLayoutX() + PLAYER_HEAD_X - getWidth() / 2, cPlayer.getLayoutY() + PLAYER_HEAD_Y - getHeight() / 2);
-			if(view.getChildren().contains(pauseMenu))
-				pauseMenu.relocate(cPlayer.getLayoutX() + PLAYER_HEAD_X - getWidth() / 2, cPlayer.getLayoutY() + PLAYER_HEAD_Y - getHeight() / 2);
-			if(view.getChildren().contains(settingsMenu))
-				settingsMenu.relocate(cPlayer.getLayoutX() + PLAYER_HEAD_X - getWidth() / 2, cPlayer.getLayoutY() + PLAYER_HEAD_Y - getHeight() / 2);
-		}
+		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
+
+		view.relocate(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX(), ((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
+		hud.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+
+		if(view.getChildren().contains(pauseMenu))
+			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+		if(view.getChildren().contains(settingsMenu))
+			settingsMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
 	}
 }

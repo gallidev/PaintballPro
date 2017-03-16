@@ -29,13 +29,15 @@ import static rendering.Renderer.view;
 public class Map
 {
 	GameMode gameMode;
+	transient Flag flag;
+	transient DropShadow propShadow, wallShadow;
+	transient Lighting propLighting, wallLighting;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
-	Objective[] objectives;
+	private GameObject[] gameObjects;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
-	transient Flag flag;
 
 	/**
 	 * Read a map file, extract map information and render all assets onto the scene.
@@ -96,40 +98,33 @@ public class Map
 
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
-//			if(map.gameMode == GameMode.CAPTURETHEFLAG)
-//			{
-//				map.flag = new Flag(map.objectives);
-//				view.getChildren().add(map.flag);
-//			}
+			//define shading
+			map.propShadow = new DropShadow(16, 0, 0, Color.BLACK);
+			map.propShadow.setSpread(0.5);
+			map.propShadow.setHeight(64);
+
+			map.wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
+			map.wallShadow.setSpread(0.5);
+			map.wallShadow.setHeight(64);
+
+			Light.Distant light = new Light.Distant();
+			light.setAzimuth(145.0);
+			light.setElevation(40);
+
+			map.propLighting = new Lighting();
+			map.propLighting.setLight(light);
+			map.propLighting.setSurfaceScale(3.0);
+
+			map.wallLighting = new Lighting();
+			map.wallLighting.setLight(light);
+			map.wallLighting.setSurfaceScale(5.0);
+
+			map.propShadow.setInput(map.propLighting);
+			map.wallShadow.setInput(map.wallLighting);
 
 			//turn on shading if the user has it enabled
 			if(GUIManager.getUserSettings().getShading())
-			{
-				DropShadow propShadow = new DropShadow(16, 0, 0, Color.BLACK);
-				propShadow.setSpread(0.5);
-				propShadow.setHeight(64);
-
-				DropShadow wallShadow = new DropShadow(32, 0, 0, Color.BLACK);
-				wallShadow.setSpread(0.5);
-				wallShadow.setHeight(64);
-
-				Light.Distant light = new Light.Distant();
-				light.setAzimuth(145.0);
-				light.setElevation(40);
-
-				Lighting propLighting = new Lighting();
-				propLighting.setLight(light);
-				propLighting.setSurfaceScale(3.0);
-
-				Lighting wallLighting = new Lighting();
-				wallLighting.setLight(light);
-				wallLighting.setSurfaceScale(5.0);
-
-				propShadow.setInput(propLighting);
-				wallShadow.setInput(wallLighting);
-				map.propGroup.setEffect(propShadow);
-				map.wallGroup.setEffect(wallShadow);
-			}
+				map.toggleShading();
 		}
 		catch(FileNotFoundException e)
 		{
@@ -147,7 +142,15 @@ public class Map
 			map.loadProps();
 			map.loadWalls();
 			if(map.gameMode == GameMode.CAPTURETHEFLAG)
-				map.flag = new Flag(map.objectives);
+			{
+				ArrayList<GameObject> flagLocations = new ArrayList<>();
+				for(GameObject object : map.gameObjects)
+					if(object.type == ObjectType.FLAG)
+						flagLocations.add(object);
+					else
+						break;
+				map.flag = new Flag(flagLocations);
+			}
 		}
 		catch(FileNotFoundException e)
 		{
@@ -235,5 +238,19 @@ public class Map
 	public Flag getFlag()
 	{
 		return flag;
+	}
+
+	void toggleShading()
+	{
+		if(propGroup.getEffect() == null)
+		{
+			propGroup.setEffect(propShadow);
+			wallGroup.setEffect(wallShadow);
+		}
+		else
+		{
+			propGroup.setEffect(null);
+			wallGroup.setEffect(null);
+		}
 	}
 }

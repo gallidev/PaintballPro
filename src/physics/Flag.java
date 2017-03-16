@@ -1,35 +1,33 @@
 package physics;
 
-import enums.TeamEnum;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import logic.GameObject;
 import players.EssentialPlayer;
+import rendering.GameObject;
 import rendering.ImageFactory;
-import rendering.Objective;
-import rendering.ObjectiveType;
+import rendering.ObjectType;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Flag extends ImageView implements GameObject
+public class Flag extends ImageView
 {
 	private boolean captured = false;
-	private Objective[] locations;
+	private ArrayList<GameObject> locations;
 	private EssentialPlayer flagCarrier;
 
-
-	public Flag(){
-		super(ImageFactory.getObjectiveImage(ObjectiveType.FLAG));
+	public Flag()
+	{
+		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
 		setEffect(new DropShadow(16, Color.BLACK));
 	}
 
-	public Flag(Objective[] locations)
+	public Flag(ArrayList<GameObject> locations)
 	{
-		super(ImageFactory.getObjectiveImage(ObjectiveType.FLAG));
+		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
 		this.locations = locations;
-		int randomLocation = (new Random()).nextInt(this.locations.length);
-		relocate(locations[randomLocation].getX() * 64, this.locations[randomLocation].getY() * 64);
+		resetPosition();
 		setEffect(new DropShadow(16, Color.BLACK));
 	}
 
@@ -38,35 +36,24 @@ public class Flag extends ImageView implements GameObject
 		return captured;
 	}
 
-	public void setCaptured(boolean b)
+	void setCaptured(boolean b)
 	{
 		captured = b;
 	}
 
-	public void resetPosition(){
-		int randomLocation = (new Random()).nextInt(locations.length);
-		relocate(locations[randomLocation].getX() * 64, locations[randomLocation].getY() * 64);
-		setEffect(new DropShadow(16, Color.BLACK));
+	void resetPosition()
+	{
+		int randomLocation = (new Random()).nextInt(locations.size());
+		relocate(locations.get(randomLocation).getX() * 64, locations.get(randomLocation).getY() * 64);
 	}
 
-	public EssentialPlayer getFlagCarrier(){
+	public EssentialPlayer getFlagCarrier()
+	{
 		return flagCarrier;
 	}
 
-	public void setFlagCarrier(EssentialPlayer p){
+	void setFlagCarrier(EssentialPlayer p)
+	{
 		this.flagCarrier = p;
-	}
-
-
-	@Override
-	public void tick()
-	{
-
-	}
-
-	@Override
-	public void interact()
-	{
-
 	}
 }

@@ -175,7 +175,7 @@ public class UDPClient extends Thread {
 	private void getWinnerAction(String text) {
 		// Protocol: 2:Red/Blue:RedScore:BlueScore
 
-		String winner = text.split(":")[1];
+		//String winner = text.split(":")[1];
 		String redScore = text.split(":")[2];
 		String blueScore = text.split(":")[3];
 
@@ -183,7 +183,7 @@ public class UDPClient extends Thread {
 					@Override
 					public void run() {
 						if(GUIManager.renderer.getHud() != null)
-							GUIManager.renderer.getHud().setWinner(redScore, blueScore);
+							GUIManager.renderer.getHud().setWinner(Integer.parseInt(redScore), Integer.parseInt(blueScore));
 					}
 				});
 		active = false;
@@ -268,8 +268,8 @@ public class UDPClient extends Thread {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					GUIManager.renderer.incrementScore(TeamEnum.RED, redScore);
-					GUIManager.renderer.incrementScore(TeamEnum.BLUE, blueScore);
+					GUIManager.renderer.getHud().setScore(TeamEnum.RED, redScore);
+					GUIManager.renderer.getHud().setScore(TeamEnum.BLUE, blueScore);
 				}
 			});
 		}

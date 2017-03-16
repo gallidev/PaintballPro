@@ -24,7 +24,7 @@ public class ImageFactory
 		return team == TeamEnum.RED ? RED_PLAYER_FLAG : BLUE_PLAYER_FLAG;
 	}
 
-	public static Image getObjectiveImage(ObjectiveType objective)
+	public static Image getObjectiveImage(ObjectType objective)
 	{
 		switch(objective)
 		{

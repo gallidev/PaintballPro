@@ -1,13 +1,10 @@
 package serverLogic;
 
-import static org.junit.Assert.*;
-
+import enums.TeamEnum;
 import org.junit.Before;
 import org.junit.Test;
 
-import enums.TeamEnum;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
+import static org.junit.Assert.*;
 
 /**
  * Tester for the TeamMatchMode logic simulation.
@@ -69,7 +66,7 @@ public class TestTeamMatchMode {
 		game.getBlueTeam().incrementScore(7);
 		
 //		game.whoWon();
-//		game.getRedTeam().incrementScore(5);
+//		game.getRedTeam().setScore(5);
 //		System.out.println(game.getTimer().getTimeLeft());
 //		assertTrue(game.getTimer().getTimeLeft() <=10);
 //		assertTrue(game.getTimer().getTimeLeft() >=1);

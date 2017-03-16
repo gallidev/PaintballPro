@@ -91,12 +91,11 @@ class PauseSettingsMenu extends SubScene
 
         CheckBox shadingCheckbox = new CheckBox();
         shadingCheckbox.setSelected(s.getShading());
-        shadingCheckbox.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
-            @Override
-            public void handle(InputEvent event) {
-                s.setShading(shadingCheckbox.isSelected());
-                m.notifySettingsObservers();
-            }
+        shadingCheckbox.addEventHandler(InputEvent.ANY, event ->
+        {
+            s.setShading(shadingCheckbox.isSelected());
+            GUIManager.renderer.getMap().toggleShading();
+            m.notifySettingsObservers();
         });
 
         Label resolutionLabel = new Label("Resolution");
