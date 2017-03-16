@@ -20,8 +20,8 @@ public class TestEndGameMenu {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
         Scene s = EndGameMenu.getScene(m, "1,0", TeamEnum.BLUE);
         m.currentMenu = Menu.EndGame;
-        GUIManagerTestHelper.findButtonByTextInParent("Main Menu", s.getRoot()).fire();
-        assertTrue(m.currentMenu == Menu.MainMenu);
+        GUIManagerTestHelper.findButtonByTextInParent("Continue", s.getRoot()).fire();
+        assertTrue(m.currentMenu == Menu.MultiplayerGameType);
     }
 
 }
