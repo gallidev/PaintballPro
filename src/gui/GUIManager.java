@@ -351,6 +351,18 @@ public class GUIManager {
     	this.r = r;
     }
 
+    public void exitGame() {
+        if (this.getClient() != null && this.getClient().getSender() != null) {
+            this.getClient().getSender().sendMessage("Exit:Game");
+        }
+    }
+
+    public void exitClient() {
+        if (this.getClient() != null && this.getClient().getSender() != null) {
+            this.getClient().getSender().sendMessage("Exit:Client");
+        }
+    }
+
 //    public void setGameTimeLeft(int gameTimeLeft) {
 //        this.gameTimeLeft = gameTimeLeft;
 //        notifyGameChanged();

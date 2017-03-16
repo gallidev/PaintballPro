@@ -72,6 +72,8 @@ public class GameTypeMenu {
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
+		    	if (loc == GameLocation.MultiplayerServer)
+		    		m.exitClient();
 		    	m.transitionTo(Menu.MainMenu);
 		    }
 		})};
