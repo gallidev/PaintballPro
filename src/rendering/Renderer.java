@@ -132,9 +132,6 @@ public class Renderer extends Scene
 					incrementScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
 				}
 				
-				System.out.println("Red score: " + gameLoop.getRedTeam().getScore());
-				System.out.println("Blue score: " + gameLoop.getBlueTeam().getScore());
-				
 				hud.tick(gameLoop.getRemainingTime());
 
 				incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
@@ -212,7 +209,6 @@ public class Renderer extends Scene
 	private GameMode initGame(OfflinePlayer player)
 	{
 		Team red = player.getMyTeam();
-		red.addMember(player);
 
 		Team blue = player.getOppTeam();
 

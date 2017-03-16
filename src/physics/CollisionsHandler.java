@@ -15,7 +15,7 @@ import serverLogic.Team;
 public class CollisionsHandler
 {
 
-	private boolean debug = true;
+	private boolean debug = false;
 
 	private ArrayList<Rectangle> propsWalls;
 	private Rectangle spawnAreaRed;
