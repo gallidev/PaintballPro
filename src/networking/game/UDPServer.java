@@ -179,6 +179,31 @@ public class UDPServer extends Thread{
 		// we can now send to all clients in the same lobby as the origin client.
 		sendToAll(toBeSent,lobbyID);
 	}
+	
+	/**
+	 * Method to send to specific client.
+	 * @param clientID ID of client to send to.
+	 * @param toBeSent Message to send to client.
+	 */
+	public void sendToSpec(int clientID, String toBeSent)
+	{
+		byte[] sendData = new byte[1024];
+		sendData = toBeSent.getBytes();
+		
+		String playerIP = clients.getIP(clientID);
+		String ipAddr = playerIP.split(":")[0];
+		int port = Integer.parseInt(playerIP.split(":")[1]);
+		try{
+			// Let's send the message.
+			InetAddress sendAddress = InetAddress.getByName(ipAddr);
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, port);
+			serverSocket.send(sendPacket);
+		}
+		catch(Exception e)
+		{
+			if(debug) System.out.println("Cannot send message:"+toBeSent+", to:" +ipAddr);
+		}
+	}
 
 	// -------------------------------------
 	// -----------Game Methods--------------

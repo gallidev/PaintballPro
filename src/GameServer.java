@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import networking.discovery.DiscoveryServerAnnouncer;
+import networking.discoveryNew.DiscoveryServerAnnouncer;
 import networking.discovery.IPAddress;
 import networking.server.Server;
 

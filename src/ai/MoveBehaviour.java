@@ -34,9 +34,15 @@ public class MoveBehaviour extends Behaviour {
                 mover.setPath(ai.getHashMaps().getPathMap().get(p));
             }
         }
-        else if (!mover.isFinished()) {
+        else if (!mover.isFinished() && !manager.getClosestEnemy().isEliminated()) {
             PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), Math.floor(manager.getClosestX() / 64), Math.floor(manager.getClosestY() / 64));
             mover.setPath(ai.getHashMaps().getPathMap().get(p));
+        } else if (manager.getClosestEnemy().isEliminated()) {
+            if (ai.getMap().getGameMode() == GameMode.ELIMINATION) {
+                //fix ai walking into walls after all enemies have been killed!!!!!!
+                PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 15, 12);
+                mover.setPath(ai.getHashMaps().getPathMap().get(p));
+            }
         }
         mover.tick();
     }
