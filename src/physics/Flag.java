@@ -15,6 +15,12 @@ public class Flag extends ImageView implements GameObject
 	private boolean captured = false;
 	private Objective[] locations;
 
+
+	public Flag(){
+		super(ImageFactory.getObjectiveImage(ObjectiveType.FLAG));
+		setEffect(new DropShadow(16, Color.BLACK));
+	}
+
 	public Flag(Objective[] locations)
 	{
 		super(ImageFactory.getObjectiveImage(ObjectiveType.FLAG));
@@ -39,6 +45,7 @@ public class Flag extends ImageView implements GameObject
 		relocate(locations[randomLocation].getX() * 64, locations[randomLocation].getY() * 64);
 		setEffect(new DropShadow(16, Color.BLACK));
 	}
+
 
 	@Override
 	public void tick()

@@ -16,7 +16,7 @@ import serverLogic.TeamMatchMode;
 
 /**
  * Sends user inputs(client-sided) to the server.
- * 
+ *
  * @author Alexandra Paduraru
  * @author Filippo Galli
  *
@@ -29,12 +29,12 @@ public class ServerGameStateSender {
 	private int frames = 0;
 	private ServerGameSimulation gameLoop;
 	private ScheduledExecutorService scheduler;
-	
+
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;
 
 	/**
-	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby 
+	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby
 	 * corresponding to that game.
 	 * @param udpServer The server used to send information to all clients involved in a game.
 	 * @param players A list of players currently involved in a game.
@@ -88,14 +88,14 @@ public class ServerGameStateSender {
 //				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 
 	}
-	
+
 	/**
 	 * Stops the server from sending information when the game finishes.
 	 */
 	public void stopSending(){
 		scheduler.shutdown();
 	}
-	
+
 
 	/**
 	 * Sends the remaining game time to clients.
@@ -150,13 +150,13 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-			
+
 			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
 				if (p.hasFlag()){
 					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
 				}
 			}
-			
+
 		}
 	}
 
@@ -179,22 +179,22 @@ public class ServerGameStateSender {
 
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
-	
+
 	public void sendFlag(){
 		if (gameLoop.getGame() instanceof CaptureTheFlagMode){
 			String toBeSent = "8:";
-			
+
 			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
 			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY() + ":";
-			
-			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isCaptured();
+
+			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-			
+
 		}
 	}
 
-	
+
 	/*
 	 * Sets the game simulation.
 	 * @param sim The simulation of the game, which runs on the server.

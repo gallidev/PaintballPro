@@ -26,6 +26,7 @@ import logic.GameMode;
 import networking.client.ClientReceiver;
 import physics.Bullet;
 import physics.CollisionsHandler;
+import physics.Flag;
 import physics.GhostBullet;
 import physics.InputHandler;
 import physics.KeyPressListener;
@@ -70,6 +71,12 @@ public class Renderer extends Scene
 		init(mapName);
 		singlePlayer = true;
 
+		if(mapName.equals("ctf"))
+		{
+			map.flag = new Flag(map.objectives);
+			view.getChildren().add(map.flag);
+		}
+
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
@@ -84,19 +91,22 @@ public class Renderer extends Scene
 
 		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler);
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
-		
+
 		players.addAll(player.getMyTeam().getMembers());
 		players.addAll(player.getOppTeam().getMembers());
 
 		view.getChildren().addAll(players);
 		collisionsHandler.setPlayers(players);
 
+
+
 		hud = new HeadUpDisplay(guiManager, player.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
-		
+
 		GameMode gameLoop = initGame(player);
-		
+
+
 		gameLoop.start();
 
 		timer = new AnimationTimer()
@@ -133,7 +143,7 @@ public class Renderer extends Scene
 //				}
 				hud.tick((int) gameLoop.getRemainingTime());
 
-				
+
 				//update the scores
 				if (hud != null){
 					incrementScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
@@ -152,8 +162,9 @@ public class Renderer extends Scene
 	 * @param mapName    Name of the selected map
 	 * @param receiver   Client receiver for communication with the game server
 	 * @param guiManager GUI manager that creates this object
+	 * @param flag
 	 */
-	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager, Flag flag)
 	{
 		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
 		this.guiManager = guiManager;
@@ -177,6 +188,10 @@ public class Renderer extends Scene
 		setOnMouseMoved(mouseListener);
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
+
+		if(flag != null){
+			view.getChildren().add(flag);
+		}
 
 		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
 		view.getChildren().add(hud);
@@ -209,19 +224,19 @@ public class Renderer extends Scene
 	private GameMode initGame(OfflinePlayer player) {
 		Team red = player.getMyTeam();
 		red.addMember(player);
-		
+
 		Team blue = player.getOppTeam();
-		
+
 		switch (map.getGameMode()){
 
 			case ELIMINATION : return new TeamMatchMode(red, blue);
 			case CAPTURETHEFLAG : return new CaptureTheFlagMode(red, blue);
 		}
 		return null;
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Toggles the pause menu whilst in-game
 	 */
