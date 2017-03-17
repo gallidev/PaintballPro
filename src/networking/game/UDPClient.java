@@ -395,7 +395,7 @@ public class UDPClient extends Thread {
 		double y = Double.parseDouble(text.split(":")[2]);
 		String colour = text.split(":")[3];
 
-		System.out.println("Hit wall in coord " + x + ": " + y + " with colour " + colour );
+		//System.out.println("Hit wall in coord " + x + ": " + y + " with colour " + colour );
 	}
 
 	private void pingTimeUpdate(String receivedPacket) {
