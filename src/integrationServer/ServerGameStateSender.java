@@ -57,7 +57,7 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
-		    	   sendHitWall();
+		    	   //sendHitWall();
 
 		    	   sendRemainingTime();
 
@@ -153,11 +153,11 @@ public class ServerGameStateSender {
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 
-			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
-				if (p.hasFlag()){
-					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
-				}
-			}
+//			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+//				if (p.hasFlag()){
+//					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+//				}
+//			}
 			
 			if (p.getScoreChanged()){
 				updateScore();
@@ -207,7 +207,7 @@ public class ServerGameStateSender {
 
 	}
 
-	public void sendFlagCaptured(EssentialPlayer p){
+	private void sendFlagCaptured(EssentialPlayer p){
 		
 			String toBeSent = "8:" + p.getPlayerId();
 
@@ -217,30 +217,30 @@ public class ServerGameStateSender {
 //			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-			udpServer.sendToAll(toBeSent, lobbyId);
-			udpServer.sendToAll(toBeSent, lobbyId);
+//			udpServer.sendToAll(toBeSent, lobbyId);
+//			udpServer.sendToAll(toBeSent, lobbyId);
 
 		//}
 	}
 	
-	public void sendFlagLost(EssentialPlayer p){
-		String toBeSent = "9:" + p.getPlayerId();
+	private void sendFlagLost(EssentialPlayer p){
+		String toBeSent = "7:" + p.getPlayerId();
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 	
-	public void sendBaseFlag(){
+	private void sendBaseFlag(){
 		String toBeSent = "!:";
 		
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
 	
 	}
 	

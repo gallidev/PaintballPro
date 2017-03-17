@@ -21,7 +21,7 @@ public class ClientInputSender {
 	private ClientPlayer player;
 	private UDPClient udpClient;
 	private InputHandler handler;
-	private boolean debug = true;
+	private boolean debug = false;
 
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 33;

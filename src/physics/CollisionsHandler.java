@@ -66,12 +66,13 @@ public class CollisionsHandler
 
 			for(Bullet bullet : p.getBullets())
 			{
-				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent()))
+				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
 					bullet.disable(propWall);
-				
-				hitWallX = propX;
-				hitWallY = propY;
-				splashColour = bullet.getColour();
+
+					hitWallX = propX;
+					hitWallY = propY;
+					splashColour = bullet.getColour();
+				}
 				
 			}
 

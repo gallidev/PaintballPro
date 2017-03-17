@@ -24,7 +24,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -145,11 +145,11 @@ public class UDPClient extends Thread {
 							   break;
 					case '6' : getRemainingTime(receivedPacket);
 							   break;
-					case '7' : capturedFlagAction(receivedPacket);
-							   break;
+//					case '7' : capturedFlagAction(receivedPacket);
+//							   break;
 					case '8' : capturedFlagAction(receivedPacket);
 							   break;
-					case '9' : lostFlagAction(receivedPacket);
+					case '7' : lostFlagAction(receivedPacket);
 							   break;
 					case '!' : baseFlagAction(receivedPacket);
 							   break;
@@ -344,28 +344,33 @@ public class UDPClient extends Thread {
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateFlag(id);
+			
+			System.out.println("flag captured");
 		}
 
 	}
 	
 	private void lostFlagAction(String text){
-		//Protocol : 8:<id>
+		//Protocol : 9:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.lostFlag(id);
 		}
+		
+		System.out.println("flag lost");
 
 	}
 	
 	private void baseFlagAction(String text){
-		//Protocol : 8:<id>
+		//Protocol : !:<id>
 		double x = Double.parseDouble(text.split(":")[1]);
 		double y = Double.parseDouble(text.split(":")[2]);
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.respawnFlag(x, y);
 		}
+		System.out.println("flag rebased");
 	}
 	
 	private void hitWallAction(String text){
