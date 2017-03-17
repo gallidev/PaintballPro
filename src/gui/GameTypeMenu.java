@@ -30,7 +30,7 @@ public class GameTypeMenu {
 		LoadingPane sp = new LoadingPane(mainGrid);
 
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Elimination", true, new EventHandler<ActionEvent>() {
+		MenuOption[] set = {new MenuOption("Team Match", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	if (loc == GameLocation.MultiplayerServer) {
 					m.transitionTo(Menu.Lobby, "Elimination");
