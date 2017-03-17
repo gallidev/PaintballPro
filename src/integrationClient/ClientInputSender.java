@@ -125,7 +125,7 @@ public class ClientInputSender {
 
 	private void sendCurrentTime(){
 		String toSend = "3:"  + player.getPlayerId() + ":";
-		if(debug) System.out.println("cliend Sending times: " + System.currentTimeMillis());
+		if(debug) System.out.println("cliend Sending time: " + System.currentTimeMillis());
 		toSend +=  System.currentTimeMillis();
 		udpClient.sendMessage(toSend);
 

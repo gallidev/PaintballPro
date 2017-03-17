@@ -58,7 +58,7 @@ public class NicknameServerSelectMenu {
         TextField ipText = new TextField("127.0.0.1");
         GridPane manualField = new GridPane();
         manualField.add(ipLabel, 0, 0);
-        manualField.add(ipText, 0, 1); 
+        manualField.add(ipText, 0, 1);
         topGrid.add(manual, 0, 2);
         topGrid.add(manualField, 1, 2);
         automaticLabel.setStyle("-fx-opacity: 1.0;");
@@ -149,7 +149,6 @@ public class NicknameServerSelectMenu {
                                         if (m.establishConnection())
                                             m.transitionTo(Menu.MultiplayerGameType);
                                         else {
-                                            AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
                                             sp.stopLoading();
                                         }
                                     }

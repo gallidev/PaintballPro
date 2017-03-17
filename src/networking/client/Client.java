@@ -136,8 +136,7 @@ public class Client {
 								if (!testing)
 									AlertBox.showAlert("Connection Failed",
 											"Something went wrong, please try again.");
-								else
-									exceptionCheck = 5;
+								exceptionCheck = 5;
 							}
 							System.out.println("All closed.");
 						}
@@ -153,8 +152,7 @@ public class Client {
 					if (!testing)
 						AlertBox.showAlert("Connection Failed",
 								"Cannot read from the server, please try again.");
-					else
-						exceptionCheck = 4;
+					exceptionCheck = 4;
 				}
 			}
 			// If server isn't running.
@@ -162,8 +160,7 @@ public class Client {
 				if (!testing)
 					AlertBox.showAlert("Connection Failed",
 							"Please check that the server is running, and the IP address is correct.");
-				else
-					exceptionCheck = 2;
+				exceptionCheck = 2;
 			}
 		}
 		// If username contains the character : or - (used for a string information
@@ -171,8 +168,7 @@ public class Client {
 		else {
 			if (!testing)
 				AlertBox.showAlert("Username error", "Your username cannot contain ':' or '-' characters, please try again.");
-			else
-				exceptionCheck = 1;
+			exceptionCheck = 1;
 		}
 	}
 

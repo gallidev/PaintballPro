@@ -165,6 +165,8 @@ public class UDPClient extends Thread {
 							   break;
 					case '!' : baseFlagAction(receivedPacket);
 							   break;
+					case 'T' : pingTimeUpdate(receivedPacket);
+							   break;
 					case '@' : hitWallAction(receivedPacket);
 							   break;
 
@@ -190,6 +192,7 @@ public class UDPClient extends Thread {
 		}
 		System.out.println("Closing UDP Client");
 	}
+
 
 	private void getWinnerAction(String text) {
 		// Protocol: 2:Red/Blue:RedScore:BlueScore
@@ -357,12 +360,12 @@ public class UDPClient extends Thread {
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateFlag(id);
-			
+
 			System.out.println("flag captured");
 		}
 
 	}
-	
+
 	private void lostFlagAction(String text){
 		//Protocol : 9:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
@@ -370,14 +373,14 @@ public class UDPClient extends Thread {
 		if(gameStateReceiver != null){
 			gameStateReceiver.lostFlag(id);
 		}
-		
+
 		System.out.println("flag lost");
 
 	}
-	
+
 	private void baseFlagAction(String text){
 		//Protocol : !:<id>
-		
+
 		int id = Integer.parseInt(text.split(":")[1]);
 		double x = Double.parseDouble(text.split(":")[2]);
 		double y = Double.parseDouble(text.split(":")[3]);
@@ -387,15 +390,32 @@ public class UDPClient extends Thread {
 		}
 		System.out.println("flag rebased");
 	}
-	
+
 	private void hitWallAction(String text){
 		//Protocol: "@:<x>:<y>"
-		
+
 		double x = Double.parseDouble(text.split(":")[1]);
 		double y = Double.parseDouble(text.split(":")[2]);
 		String colour = text.split(":")[3];
-		
+
 		System.out.println("Hit wall in coord " + x + ": " + y + " with colour " + colour );
+	}
+
+	private void pingTimeUpdate(String receivedPacket) {
+		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
+
+		String[] actions = receivedPacket.split(":");
+		int id = Integer.parseInt(actions[1]);
+		long ClientTime = Long.parseLong(actions[2]);
+		long ServerTime = Long.parseLong(actions[3]);
+
+		GhostPlayer p = getPlayerWithID(id);
+
+		p.setPingToServer(ServerTime - ClientTime);
+		p.setPingFromServer(System.currentTimeMillis() - ServerTime);
+
+		System.out.println("toServer ping : " + p.getPingToServer() + " fromServer ping: " + p.getPingFromServer());
+
 	}
 
 	/**

@@ -90,6 +90,16 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
+		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
+		{
+			map.flag = new Flag(map.flagLocations);
+			view.getChildren().add(map.flag);
+		}
+
+		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
+		};
+		view.getChildren().addAll(map.powerups);
+
 		GameMode gameLoop = initGame(player);
 		gameLoop.start();
 		
@@ -191,7 +201,6 @@ public class Renderer extends Scene
 			public void handle(long now)
 			{
 				cPlayer.tick();
-
 				for(GhostPlayer player : players)
 				{
 					for(GhostBullet pellet : player.getFiredBullets())
@@ -318,9 +327,7 @@ public class Renderer extends Scene
 		view.setScaleY(Double.parseDouble(resolution[1]) / 576);
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
-
 		map = Map.load(mapName);
-
 		paintIndex = view.getChildren().size();
 	}
 
@@ -328,8 +335,9 @@ public class Renderer extends Scene
 	{
 		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
 
-		hud.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
-		view.relocate(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX(), ((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
+		view.setLayoutX(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX());
+		view.setLayoutY(((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
+		hud.relocate((playerLayoutX + PLAYER_HEAD_X - getWidth() / 2) * hud.getScaleX(), (playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2) * hud.getScaleY());
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
