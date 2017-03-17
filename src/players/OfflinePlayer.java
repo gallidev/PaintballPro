@@ -121,6 +121,7 @@ public class OfflinePlayer extends EssentialPlayer
 		}
 		updatePlayerBounds();
 		updateBullets();
+		handlePowerUp();
 
 		if(!invincible)
 		{

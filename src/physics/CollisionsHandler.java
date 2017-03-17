@@ -245,13 +245,15 @@ public class CollisionsHandler
 
 		for(int i = 0; i < powerups.length; i ++){
 			if(p.getPolygonBounds().getBoundsInParent().intersects(powerups[i].getBoundsInParent())){
-				powerups[i].setTaken(true);
-				powerups[i].took();
-				if(powerups[i].getType() == PowerupType.SHIELD){
-					p.giveShield();
+				if(!powerups[i].isTaken()) {
+					powerups[i].setTaken(true);
+					powerups[i].took();
+					if (powerups[i].getType() == PowerupType.SHIELD) {
+						p.giveShield();
 
-				}else if(powerups[i].getType() == PowerupType.SPEED){
-					p.giveSpeed();
+					} else if (powerups[i].getType() == PowerupType.SPEED) {
+						p.giveSpeed();
+					}
 				}
 			}
 		}

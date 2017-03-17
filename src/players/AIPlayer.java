@@ -61,6 +61,7 @@ public class AIPlayer extends EssentialPlayer{
 		}
 		updatePlayerBounds();
 		updateBullets();
+		handlePowerUp();
 
 		if(!invincible){
 			collisionsHandler.handleBulletCollision(this);

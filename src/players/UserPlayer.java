@@ -44,6 +44,7 @@ public class UserPlayer extends EssentialPlayer{
 
 		updatePlayerBounds();
 		updateBullets();
+		handlePowerUp();
 
 		if(!invincible)
 		{
