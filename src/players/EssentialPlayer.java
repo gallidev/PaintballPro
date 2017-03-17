@@ -376,11 +376,11 @@ public abstract class EssentialPlayer extends ImageView {
 		return scoreChanged;
 	}
 
-	public void speedUp(){
+	private void speedUp(){
 		this.movementSpeed = 4;
 	}
 
-	public void speedDown(){
+	private void speedDown(){
 		this.movementSpeed = 2.5;
 	}
 
@@ -388,12 +388,22 @@ public abstract class EssentialPlayer extends ImageView {
 		this.shieldActive = true;
 	}
 
+	public void removeShield(){
+		this.shieldActive = false;
+	}
+
 	public boolean getShieldActive(){
 		return this.shieldActive;
 	}
 
 	public void giveSpeed(){
+		speedUp();
 		this.speedActive = true;
+	}
+
+	public void removeSpeed(){
+		speedDown();
+		this.speedActive = false;
 	}
 
 	public boolean getSpeedActive(){

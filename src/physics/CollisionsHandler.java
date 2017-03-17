@@ -247,7 +247,11 @@ public class CollisionsHandler
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
 				{
 					bullet.disable();
-					p.beenShot();
+					if(p.getShieldActive()){
+						p.removeShield();
+					} else {
+						p.beenShot();
+					}
 
 					return;
 				}
