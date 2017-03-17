@@ -100,9 +100,9 @@ public class Map
 			map.loadWalls();
 			map.wallGroup.setCache(true);
 
-			map.initGameObjects();
-
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
+
+			map.initGameObjects();
 			view.getChildren().addAll(map.powerups);
 
 			//define shading

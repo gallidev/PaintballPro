@@ -258,7 +258,7 @@ public class ClientReceiver extends Thread {
 		{
 			if (!singlePlayer){
 				if (gameMode == 1){
-					m.transitionTo(Menu.EliminationMulti, flag);
+					m.transitionTo(Menu.EliminationMulti);
 				}
 				else{
 					m.transitionTo(Menu.CTFMulti, flag);
