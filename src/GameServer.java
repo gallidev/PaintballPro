@@ -1,14 +1,10 @@
-import gui.GUIManager;
 import gui.ServerGUI;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import networking.discoveryNew.DiscoveryServerAnnouncer;
-import networking.discovery.IPAddress;
+import networking.discoveryNew.IPAddress;
 import networking.server.Server;
 
 public class GameServer extends Application {
@@ -33,7 +29,7 @@ public class GameServer extends Application {
 		stage.show();
 		(new Thread(() -> {
 			int portNo = 25566;
-			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(portNo);
+			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(25561);
 			discovery.start();
 			server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 			//server = new Server(portNo, "10.20.202.182", gui, 0);

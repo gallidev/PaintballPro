@@ -33,13 +33,14 @@ public class Map
 	GameMode gameMode;
 	transient Flag flag;
 	transient Powerup[] powerups = new Powerup[2];
-	transient DropShadow propShadow, wallShadow;
-	transient Lighting propLighting, wallLighting;
+	GameObject[] flagLocations;
+	GameObject[] powerupLocations;
+	private transient DropShadow propShadow, wallShadow;
+	private transient Lighting propLighting, wallLighting;
 	private Wall[] walls;
 	private Floor[] floors;
 	private Prop[] props;
 	private Spawn[] spawns;
-	private GameObject[] gameObjects;
 	transient private Group wallGroup = new Group(), propGroup = new Group();
 
 	/**
@@ -144,19 +145,9 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
-
-			if(map.gameMode == GameMode.CAPTURETHEFLAG)
-			{
-				ArrayList<GameObject> flagLocations = new ArrayList<>();
-				for(GameObject object : map.gameObjects)
-					if(object.type == ObjectType.FLAG)
-						flagLocations.add(object);
-					else
-						break;
-				map.flag = new Flag(flagLocations);
-			}
-			//map.powerups[0] = new Powerup(PowerupType.SHIELD, map.gameObjects);
-			//map.powerups[1] = new Powerup(PowerupType.SPEED, map.gameObjects);
+			map.flag = new Flag(map.flagLocations);
+			map.powerups[0] = new Powerup(PowerupType.SHIELD, map.powerupLocations);
+			map.powerups[1] = new Powerup(PowerupType.SPEED, map.powerupLocations);
 
 		}
 		catch(FileNotFoundException e)
@@ -245,6 +236,11 @@ public class Map
 	public Flag getFlag()
 	{
 		return flag;
+	}
+
+	public GameObject[] getFlagLocations()
+	{
+		return flagLocations;
 	}
 
 	void toggleShading()

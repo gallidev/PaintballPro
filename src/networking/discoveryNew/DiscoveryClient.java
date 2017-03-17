@@ -3,15 +3,13 @@ package networking.discoveryNew;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
-import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
 /**
- * Class to listen out for servers in the LAN
+ * Class to broadcast presence to the LAN in search of a running server.
  * 
  * @author Matthew Walters
  */
@@ -22,22 +20,23 @@ public class DiscoveryClient extends Thread{
 	/**
 	 * Get the IP address and port of the first server found
 	 * 
-	 * @return IP address and port, separated by a colon
+	 * @return IP address and port, separated by a colon, e.g. 192.168.0.1:80
 	 */
 	public String findServer() {
 		// Find the server using UDP broadcast
 		try {
 		  //Open a random port to send the package
-		  DatagramSocket c = new DatagramSocket();
-		  c.setBroadcast(true);
+		  DatagramSocket clientSocket = new DatagramSocket();
+		  clientSocket.setBroadcast(true);
 
-		  byte[] sendData = "DISCOVER_FUIFSERVER_REQUEST".getBytes();
+		  byte[] sendData = "discover_server".getBytes();
 
-		  //Try the 255.255.255.255 first
+		  
+		  
+		  //Try multicast ip first.
 		  try {
-		    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 8888);
-		    c.send(sendPacket);
-		    System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
+		    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 25561);
+		    clientSocket.send(sendPacket);
 		  } catch (Exception e) {
 		  }
 
@@ -47,7 +46,7 @@ public class DiscoveryClient extends Thread{
 		    NetworkInterface networkInterface = interfaces.nextElement();
 
 		    if (networkInterface.isLoopback() || !networkInterface.isUp()) {
-		      continue; // Don't want to broadcast to the loopback interface
+		      continue;
 		    }
 
 		    for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
@@ -56,40 +55,35 @@ public class DiscoveryClient extends Thread{
 		        continue;
 		      }
 
-		      // Send the broadcast package!
+		      // Send the broadcast package
 		      try {
-		        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 8888);
-		        c.send(sendPacket);
+		        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 25561);
+		        System.out.println("Sending a packet from client.");
+		        clientSocket.send(sendPacket);
 		      } catch (Exception e) {
 		      }
-
-		      System.out.println(getClass().getName() + ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
 		    }
 		  }
 
-		  System.out.println(getClass().getName() + ">>> Done looping over all network interfaces. Now waiting for a reply!");
-
-		  //Wait for a response
-		  byte[] recvBuf = new byte[15000];
-		  DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+		  //Wait for a response from the Server.
+		  byte[] receivedMessage = new byte[240];
+		  DatagramPacket receivePacket = new DatagramPacket(receivedMessage, receivedMessage.length);
 		  while(true)
 		  {
-			  c.receive(receivePacket);
-
-			  //We have a response
-			  System.out.println(getClass().getName() + ">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
-			  
+			  System.out.println("Waiting to receive packet from server.");
+			  clientSocket.receive(receivePacket);
+			  System.out.println("Received a packet from server.");
 			  if(!receivePacket.getAddress().getHostAddress().contains("192.168.56"))
 				  break;
 		  }
 		  
 		  //Check if the message is correct
 		  String message = new String(receivePacket.getData()).trim();
-		  if (message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
-			  c.close();
-		    return receivePacket.getAddress().getHostAddress();
+		  if (message.equals("discover_response")) {
+			  clientSocket.close();
+		    return receivePacket.getAddress().getHostAddress() + ":25566";
 		  }
-		  c.close();
+		  clientSocket.close();
 
 		  //Close the port!
 		} catch (IOException ex) {

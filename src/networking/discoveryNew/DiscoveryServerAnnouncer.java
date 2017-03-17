@@ -3,20 +3,17 @@ package networking.discoveryNew;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 
 /**
- * Class to announce a server's presence to a LAN
+ * Class to wait for a client's announcement of presence to a LAN
  * 
  * @author Matthew Walters
  */
 public class DiscoveryServerAnnouncer extends Thread {
 
 	private int portNo;
+	private DatagramSocket socket;
 	public boolean m_running = true;
 
 	/**
@@ -28,41 +25,47 @@ public class DiscoveryServerAnnouncer extends Thread {
 	}
 
 	/**
-	 * Run the announcer
+	 * Run the listener
 	 */
 	@Override
 	public void run() {
-		    try {
-		      //Keep a socket open to listen to all the UDP trafic that is destined for this port
-		      DatagramSocket socket = new DatagramSocket(8888, InetAddress.getByName("0.0.0.0"));
-		      socket.setBroadcast(true);
+		try {
+			//Keep a socket open to listen to all the UDP traffic that is destined for this port
+			System.out.println("Starting a server.");
+			socket = new DatagramSocket(25561, InetAddress.getByName(IPAddress.getLAN()));
+			socket.setBroadcast(true);
 
-		      while (true) {
-		        System.out.println(getClass().getName() + ">>>Ready to receive broadcast packets!");
+			while (true) {
+				//Receive a packet
+				byte[] received = new byte[240];
+				DatagramPacket packet = new DatagramPacket(received, received.length);
+				System.out.println("Waiting to receive a packet.");
+				socket.receive(packet);
 
-		        //Receive a packet
-		        byte[] recvBuf = new byte[15000];
-		        DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
-		        socket.receive(packet);
+				if(!m_running)
+					break;
+				
+				//Packet received - see if the packet has the right message
+				String message = new String(packet.getData()).trim();
+				if (message.equals("discover_server")) {
+					System.out.println("We've been sent a packet.");
+					byte[] sendData = "discover_response".getBytes();
 
-		        //Packet received
-		        System.out.println(getClass().getName() + ">>>Discovery packet received from: " + packet.getAddress().getHostAddress());
-		        System.out.println(getClass().getName() + ">>>Packet received; data: " + new String(packet.getData()));
-
-		        //See if the packet holds the right command (message)
-		        String message = new String(packet.getData()).trim();
-		        if (message.equals("DISCOVER_FUIFSERVER_REQUEST")) {
-		          byte[] sendData = "DISCOVER_FUIFSERVER_RESPONSE".getBytes();
-
-		          //Send a response
-		          DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
-		          socket.send(sendPacket);
-
-		          System.out.println(getClass().getName() + ">>>Sent packet to: " + sendPacket.getAddress().getHostAddress());
-		        }
-		      }
-		    } catch (IOException ex) {
-		      //
-		    }
+					//Send a response
+					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+					socket.send(sendPacket);
+				}
+			}
+			socket.close();
+		} catch (IOException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return;
+	}
+	
+	public void stopThread()
+	{
+		m_running = false;
+		socket.close();
 	}
 }
