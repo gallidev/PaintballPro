@@ -50,4 +50,14 @@ public class TestMainMenu {
         assertTrue(m.currentMenu == Menu.Settings);
     }
 
+    @Test
+    public void helpButton() throws Exception {
+        GUIManagerTestHelper m = new GUIManagerTestHelper();
+        Scene mainMenu = MainMenu.getScene(m);
+
+        (GUIManagerTestHelper.findButtonByTextInParent("Help", mainMenu.getRoot())).fire();
+
+        assertTrue(m.currentMenu == Menu.Help);
+    }
+
 }
