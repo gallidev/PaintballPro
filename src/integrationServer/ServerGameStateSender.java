@@ -61,6 +61,8 @@ public class ServerGameStateSender {
 		    	   sendHitWall();
 
 		    	   sendRemainingTime();
+		    	   
+		    	   sendEliminatedPlayers();
 
 		    	   if(gameLoop.getGame().isGameFinished()){
 
@@ -87,6 +89,13 @@ public class ServerGameStateSender {
 //		ScheduledFuture<?> frameCounterHandle =
 //				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 
+	}
+
+	protected void sendEliminatedPlayers() {
+		for(EssentialPlayer p : players){
+			if (p.isEliminated())
+				udpServer.sendToAll("#:" + p.getPlayerId(), lobbyId);
+		}
 	}
 
 	/**

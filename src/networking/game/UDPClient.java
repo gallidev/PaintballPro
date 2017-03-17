@@ -168,6 +168,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '@' : hitWallAction(receivedPacket);
 							   break;
+					case '#' : eliminatedPlayerAction(receivedPacket);
 
 				}
 
@@ -453,6 +454,12 @@ public class UDPClient extends Thread {
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 
+	private void eliminatedPlayerAction(String text){
+		int id = Integer.parseInt(text.split(":")[1]);
+		
+		//System.out.println("Player " + id + " eliminated");
+	}
+	
 	public boolean isActive(){
 		return active;
 	}
