@@ -256,6 +256,16 @@ public class Map
 		return flagLocations;
 	}
 
+	public Powerup[] getPowerups()
+	{
+		return powerups;
+	}
+
+	public GameObject[] getPowerupLocations()
+	{
+		return powerupLocations;
+	}
+
 	void toggleShading()
 	{
 		if(propGroup.getEffect() == null)

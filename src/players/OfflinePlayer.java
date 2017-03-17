@@ -149,24 +149,24 @@ public class OfflinePlayer extends EssentialPlayer
 		//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
 		if(inputHandler.isUp() && !collUp){
-			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() - movementSpeed);
 		}else if(!inputHandler.isUp() && collUp){
-			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() + movementSpeed);
 		}
 		if(inputHandler.isDown() && !collDown){
-			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() + movementSpeed);
 		}else if(!inputHandler.isDown() && collDown){
-			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() - movementSpeed);
 		}
 		if(inputHandler.isLeft() && !collLeft) {
-			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() - movementSpeed);
 		} else if(!inputHandler.isLeft() && collLeft){
-			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() + movementSpeed);
 		}
 		if(inputHandler.isRight() && !collRight){
-			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() + movementSpeed);
 		}else if (!inputHandler.isRight() && collRight){
-			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() - movementSpeed);
 		}
 
 	}
