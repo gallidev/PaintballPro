@@ -165,17 +165,22 @@ public class ServerGameStateSender {
 			}
 			
 			if (p.getCollisionsHandler().isFlagCaptured()){
-				sendFlagCaptured(p);
+				System.out.println("flag captured");
+				sendFlagCaptured();
+				updateScore();
+
 				p.getCollisionsHandler().setFlagCaptured(false);
 			}
 			
 			if (p.getCollisionsHandler().isFlagDropped()){
-				sendFlagLost(p);
+				updateScore();
+				sendFlagLost();
 				p.getCollisionsHandler().setFlagDropped(false);
 			}
 			
 			if (p.getCollisionsHandler().isFlagRespawned()){
-				sendBaseFlag(p.getPlayerId());
+				updateScore();
+				sendBaseFlag();
 				p.getCollisionsHandler().setRespawned(false);
 			}
 		}
@@ -207,9 +212,9 @@ public class ServerGameStateSender {
 
 	}
 
-	private void sendFlagCaptured(EssentialPlayer p){
+	private void sendFlagCaptured(){
 		
-			String toBeSent = "8:" + p.getPlayerId();
+			String toBeSent = "8:" + players.get(0).getCollisionsHandler().getPlayerWithFlagId() + ":";
 
 //			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
 //			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY() + ":";
@@ -223,8 +228,8 @@ public class ServerGameStateSender {
 		//}
 	}
 	
-	private void sendFlagLost(EssentialPlayer p){
-		String toBeSent = "7:" + p.getPlayerId();
+	private void sendFlagLost(){
+		String toBeSent = "7:" + + players.get(0).getCollisionsHandler().getPlayerWithFlagId() + ":";
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
 //		udpServer.sendToAll(toBeSent, lobbyId);
@@ -232,8 +237,8 @@ public class ServerGameStateSender {
 
 	}
 	
-	private void sendBaseFlag(int id){
-		String toBeSent = "!:" + id;
+	private void sendBaseFlag(){
+		String toBeSent = "!:" + players.get(0).getCollisionsHandler().getPlayerWithFlagId() + ":";
 		
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();

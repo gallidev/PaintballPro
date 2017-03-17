@@ -17,7 +17,7 @@ import serverLogic.Team;
 public class CollisionsHandler
 {
 
-	private boolean debug = false;
+	private boolean debug = true;
 
 	private ArrayList<Rectangle> propsWalls;
 	private Rectangle spawnAreaRed;
@@ -32,6 +32,7 @@ public class CollisionsHandler
 	private boolean flagCaptured = false;
 	private boolean flagDropped = false;
 	private boolean flagRespwaned = false;
+	private int playerWithFlagId;
 	
 	private double hitWallX;
 	private double hitWallY;
@@ -185,6 +186,7 @@ public class CollisionsHandler
 				p.setHasFlag(true);
 				
 				flagCaptured = true;
+				playerWithFlagId = p.getPlayerId();
 				
 			}
 			//check if the player got shot so leave the flag in the player position
@@ -202,6 +204,8 @@ public class CollisionsHandler
 					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
 				
 				flagDropped = true;
+				playerWithFlagId = p.getPlayerId();
+
 				
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
@@ -226,9 +230,9 @@ public class CollisionsHandler
 					else
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
 					
+					flagRespwaned = true;
+					playerWithFlagId = p.getPlayerId();
 				}
-				
-				flagRespwaned = true;
 			}
 		}
 	}
@@ -349,6 +353,10 @@ public class CollisionsHandler
 	
 	public TeamEnum getSplashColour(){
 		return splashColour;
+	}
+	
+	public int getPlayerWithFlagId(){
+		return playerWithFlagId;
 	}
 	
 
