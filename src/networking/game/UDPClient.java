@@ -66,7 +66,19 @@ public class UDPClient extends Thread {
 			try {
 				if (debug) System.out.println("Attempting to make client socket");
 
-				clientSocket = new DatagramSocket(port);
+				boolean run = true;
+				while(run)
+				{
+					try
+					{
+						clientSocket = new DatagramSocket(port);
+						run = false;
+					}
+					catch(Exception e)
+					{
+						port++;
+					}
+				}
 
 				if (debug) System.out.println("Attempting to get ip address");
 
