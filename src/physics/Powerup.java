@@ -3,6 +3,7 @@ package physics;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import logic.RoundTimer;
 import rendering.GameObject;
 import rendering.ImageFactory;
 
@@ -12,7 +13,7 @@ public class Powerup extends ImageView
 {
 	private boolean taken = false;
 	private PowerupType type;
-	private int duration = 10000; //SPEED lasts for 10 seconds
+	private int duration = 15000; //SPEED lasts for 15 seconds
 	private GameObject[] locations;
 
 	public Powerup(PowerupType type, GameObject[] locations)
@@ -52,5 +53,20 @@ public class Powerup extends ImageView
 	{
 		int randomLocation = (new Random()).nextInt(locations.length);
 		relocate(locations[randomLocation].getX() * 64 + 16, locations[randomLocation].getY() * 64 + 16);
+	}
+
+	public void took() {
+		setVisible(false);
+		new java.util.Timer().schedule(
+		        new java.util.TimerTask() {
+		            @Override
+		            public void run() {
+		            	setVisible(true);
+		                resetPosition();
+		            }
+		        },
+		        duration
+		);
+
 	}
 }

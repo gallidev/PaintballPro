@@ -15,7 +15,7 @@ public class UserPlayer extends EssentialPlayer{
 
 	private Team oppTeam;
 	private Team myTeam;
-	
+
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image, GameMode game) {
 		super(x, y, id, spawn, team, collisionsHandler, image, game);
@@ -29,6 +29,7 @@ public class UserPlayer extends EssentialPlayer{
 		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated)
 		{
+			collisionsHandler.handlePowerUpCollision(this);
 			lastX = getLayoutX();
 			lastY = getLayoutY();
 			lastAngle = angle;
@@ -125,7 +126,7 @@ public class UserPlayer extends EssentialPlayer{
 		this.angle = angle;
 		rotation.setAngle(Math.toDegrees(angle));
 	}
-	
+
 
 }
 

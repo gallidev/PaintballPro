@@ -46,7 +46,7 @@ public class OfflinePlayer extends EssentialPlayer
 		this.inputHandler = inputHandler;
 		angle = 0.0;
 		this.team = team;
-			
+
 		rand = new Random();
 
 		nameTag = new Label("Player");
@@ -88,10 +88,10 @@ public class OfflinePlayer extends EssentialPlayer
 			p.setOppTeam(myTeam);
 			p.setMyTeam(oppTeam);
 		}
-		
+
 		collisionsHandler.setRedTeam(myTeam);
 		collisionsHandler.setBlueTeam(oppTeam);
-		
+
 	}
 
 
@@ -110,6 +110,7 @@ public class OfflinePlayer extends EssentialPlayer
 		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated)
 		{
+			collisionsHandler.handlePowerUpCollision(this);
 			updatePosition();
 			updateShooting();
 			updateAngle();
@@ -139,7 +140,7 @@ public class OfflinePlayer extends EssentialPlayer
 	public void updateScore() {
 		if (gameMode == GameMode.ELIMINATION)
 			oppTeam.incrementScore();
-		
+
 		scoreChanged = true;
 	}
 

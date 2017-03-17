@@ -49,6 +49,7 @@ public class AIPlayer extends EssentialPlayer{
 		collisionsHandler.handlePropWallCollision(this);
 		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated){
+			collisionsHandler.handlePowerUpCollision(this);
 			lastX = getLayoutX();
 			lastY = getLayoutY();
 			lastAngle = angle;
@@ -89,7 +90,7 @@ public class AIPlayer extends EssentialPlayer{
 
 		if (gameMode == GameMode.ELIMINATION)
 			oppTeam.incrementScore();
-		
+
 		scoreChanged = true;
 	}
 

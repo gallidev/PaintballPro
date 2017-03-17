@@ -25,15 +25,16 @@ public class CollisionsHandler
 	private ArrayList<EssentialPlayer> redTeam;
 	private ArrayList<EssentialPlayer> blueTeam;
 	private Flag flag;
+	private Powerup[] powerups;
 
 	private Team red;
 	private Team blue;
-	
+
 	private boolean flagCaptured = false;
 	private boolean flagDropped = false;
 	private boolean flagRespwaned = false;
 	private int playerWithFlagId;
-	
+
 	private double hitWallX;
 	private double hitWallY;
 	private TeamEnum splashColour;
@@ -50,6 +51,7 @@ public class CollisionsHandler
 		this.spawnAreaBlue = map.getRecSpawn(TeamEnum.BLUE);
 		this.spawnAreaRed = map.getRecSpawn(TeamEnum.RED);
 		this.flag = map.getFlag();
+		this.powerups = map.getPowerups();
 	}
 
 	public void handlePropWallCollision(EssentialPlayer p){
@@ -76,7 +78,7 @@ public class CollisionsHandler
 					splashColour = bullet.getColour();
 					hasHitWall = true;
 				}
-				
+
 			}
 
 			//filter out walls and props far away from the player
@@ -186,10 +188,10 @@ public class CollisionsHandler
 				flag.setCaptured(true);
 				flag.setVisible(false);
 				p.setHasFlag(true);
-				
+
 				flagCaptured = true;
 				playerWithFlagId = p.getPlayerId();
-				
+
 			}
 			//check if the player got shot so leave the flag in the player position
 			if(p.isEliminated() && p.hasFlag()){
@@ -199,16 +201,16 @@ public class CollisionsHandler
 				flag.setCaptured(false);
 				flag.setVisible(true);
 				p.setHasFlag(false);
-				
+
 				if (red.containsPlayer(p))
 					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
 				else
 					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
-				
+
 				flagDropped = true;
 				playerWithFlagId = p.getPlayerId();
 
-				
+
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
 				boolean baseTouched = false;
@@ -226,14 +228,30 @@ public class CollisionsHandler
 					flag.setCaptured(false);
 					flag.setVisible(true);
 					p.setHasFlag(false);
-					
+
 					if (red.containsPlayer(p))
 						red.incrementScore(CaptureTheFlagMode.flagScore);
 					else
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
-					
+
 					flagRespwaned = true;
 					playerWithFlagId = p.getPlayerId();
+				}
+			}
+		}
+	}
+
+	public void handlePowerUpCollision(EssentialPlayer p){
+
+		for(int i = 0; i < powerups.length; i ++){
+			if(p.getPolygonBounds().getBoundsInParent().intersects(powerups[i].getBoundsInParent())){
+				powerups[i].setTaken(true);
+				powerups[i].took();
+				if(powerups[i].getType() == PowerupType.SHIELD){
+					p.giveShield();
+
+				}else if(powerups[i].getType() == PowerupType.SPEED){
+					p.giveSpeed();
 				}
 			}
 		}
@@ -336,7 +354,7 @@ public class CollisionsHandler
 	public void setFlagDropped(boolean flagDropped) {
 		this.flagDropped = flagDropped;
 	}
-	
+
 	public boolean isFlagRespawned() {
 		return flagRespwaned;
 	}
@@ -344,29 +362,29 @@ public class CollisionsHandler
 	public void setRespawned(boolean b) {
 		this.flagRespwaned = b;
 	}
-	
+
 	public double getHitWallX(){
 		return hitWallX;
 	}
-	
+
 	public double getHitWallY(){
 		return hitWallY;
 	}
-	
+
 	public TeamEnum getSplashColour(){
 		return splashColour;
 	}
-	
+
 	public int getPlayerWithFlagId(){
 		return playerWithFlagId;
 	}
-	
+
 	public void setWallHit(boolean b){
 		hasHitWall = b;
 	}
-	
+
 	public boolean isWallHit(){
 		return hasHitWall;
 	}
-	
+
 }
