@@ -161,6 +161,9 @@ public class GUIManager {
                 case EndGame:
                     s.setScene(EndGameMenu.getScene(this, (String)o[0], (TeamEnum)o[1]));
                     break;
+                case Help:
+                    s.setScene(HelpMenu.getScene(this));
+                    break;
                 default:
                     throw new RuntimeException("Menu '" + menu + "' is not a valid transition");
             }
