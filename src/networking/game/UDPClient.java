@@ -1,7 +1,6 @@
 package networking.game;
 
 import enums.TeamEnum;
-import gui.AlertBox;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
@@ -165,8 +164,8 @@ public class UDPClient extends Thread {
 							   break;
 					case '!' : baseFlagAction(receivedPacket);
 							   break;
-					case 'T' : pingTimeUpdate(receivedPacket);
-							   break;
+					//case 'T' : pingTimeUpdate(receivedPacket);
+				//			   break;
 					case '@' : hitWallAction(receivedPacket);
 							   break;
 
@@ -181,8 +180,6 @@ public class UDPClient extends Thread {
 
 				@Override
 				public void run() {
-					//AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
-					//System.err.println(e.getStackTrace().toString());
 					e.printStackTrace();
 				}
 			});
@@ -227,8 +224,8 @@ public class UDPClient extends Thread {
 		catch(Exception e)
 		{
 			if (debug) System.out.println("Exception in sendMessage");
-			 e.printStackTrace();
-			//AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
+			if (debug) e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
