@@ -92,7 +92,7 @@ public class Renderer extends Scene
 
 		GameMode gameLoop = initGame(player);
 		gameLoop.start();
-		
+
 		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
 		{
 				map.flag = new Flag(map.flagLocations);
@@ -173,7 +173,7 @@ public class Renderer extends Scene
 
 		cPlayer.setInputHandler(inputHandler);
 
-		if(flag != null)
+		if(flag.hasInitialised())
 			view.getChildren().add(flag);
 
 		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
@@ -273,7 +273,7 @@ public class Renderer extends Scene
 	{
 		return map;
 	}
-	
+
 	public HeadUpDisplay getHud()
 	{
 		return hud;
