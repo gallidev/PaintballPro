@@ -106,10 +106,11 @@ public class ClientGameStateReceiver {
 
 	}
 	
-	public void respawnFlag(double x, double y){
+	public void respawnFlag(int id, double x, double y){
 		flag.setVisible(true);
 		flag.relocate(x, y);
 		System.out.println("Flag has been respawned");
+		
 	}
 
 

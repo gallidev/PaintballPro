@@ -164,20 +164,20 @@ public class ServerGameStateSender {
 				p.setScoreChanged(false);
 			}
 			
-//			if (p.getCollisionsHandler().isFlagCaptured()){
-//				sendFlagCaptured(p);
-//				p.getCollisionsHandler().setFlagCaptured(false);
-//			}
-//			
-//			if (p.getCollisionsHandler().isFlagDropped()){
-//				sendFlagLost(p);
-//				p.getCollisionsHandler().setFlagDropped(false);
-//			}
-//			
-//			if (p.getCollisionsHandler().isFlagRespawned()){
-//				sendBaseFlag();
-//				p.getCollisionsHandler().setRespawned(false);
-//			}
+			if (p.getCollisionsHandler().isFlagCaptured()){
+				sendFlagCaptured(p);
+				p.getCollisionsHandler().setFlagCaptured(false);
+			}
+			
+			if (p.getCollisionsHandler().isFlagDropped()){
+				sendFlagLost(p);
+				p.getCollisionsHandler().setFlagDropped(false);
+			}
+			
+			if (p.getCollisionsHandler().isFlagRespawned()){
+				sendBaseFlag(p.getPlayerId());
+				p.getCollisionsHandler().setRespawned(false);
+			}
 		}
 	}
 
@@ -232,8 +232,8 @@ public class ServerGameStateSender {
 
 	}
 	
-	private void sendBaseFlag(){
-		String toBeSent = "!:";
+	private void sendBaseFlag(int id){
+		String toBeSent = "!:" + id;
 		
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();

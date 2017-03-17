@@ -24,7 +24,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -376,11 +376,13 @@ public class UDPClient extends Thread {
 	
 	private void baseFlagAction(String text){
 		//Protocol : !:<id>
-		double x = Double.parseDouble(text.split(":")[1]);
-		double y = Double.parseDouble(text.split(":")[2]);
+		
+		int id = Integer.parseInt(text.split(":"[1]));
+		double x = Double.parseDouble(text.split(":")[2]);
+		double y = Double.parseDouble(text.split(":")[3]);
 
 		if(gameStateReceiver != null){
-			gameStateReceiver.respawnFlag(x, y);
+			gameStateReceiver.respawnFlag(int id, x, y);
 		}
 		System.out.println("flag rebased");
 	}
