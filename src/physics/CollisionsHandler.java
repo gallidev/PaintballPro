@@ -267,12 +267,14 @@ public class CollisionsHandler
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
 				{
 					bullet.disable();
+					//check if the player has the shield power up
 					if(p.getShieldActive()){
+						//shield absorbs a bullet
 						p.removeShield();
 					} else {
+						//if the player has no shield, the player is eliminated
 						p.beenShot();
 					}
-
 					return;
 				}
 			}
