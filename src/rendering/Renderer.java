@@ -93,15 +93,6 @@ public class Renderer extends Scene
 		GameMode gameLoop = initGame(player);
 		gameLoop.start();
 
-		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
-		{
-				map.flag = new Flag(map.flagLocations);
-				view.getChildren().add(map.flag);
-		}
-		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
-			};
-		view.getChildren().addAll(map.powerups);
-
 		timer = new AnimationTimer()
 		{
 			@Override
@@ -327,7 +318,7 @@ public class Renderer extends Scene
 
 		view.setLayoutX(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX());
 		view.setLayoutY(((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
-		hud.relocate((playerLayoutX + PLAYER_HEAD_X - getWidth() / 2) * hud.getScaleX(), (playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2) * hud.getScaleY());
+		hud.relocate((playerLayoutX - getWidth() / 2), (playerLayoutY - getHeight() / 2));
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);

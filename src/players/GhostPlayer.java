@@ -57,7 +57,7 @@ public class GhostPlayer extends ImageView {
 		return firedBullets;
 	}
 
-	public synchronized void updateSingleBullet(int bulletId, double x, double y){
+	public void updateSingleBullet(int bulletId, double x, double y){
 		for(GhostBullet firedBullet : this.firedBullets)
 		{
 			if(firedBullet.getBulletId() == bulletId)
