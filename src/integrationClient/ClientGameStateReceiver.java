@@ -91,6 +91,7 @@ public class ClientGameStateReceiver {
 
 		GhostPlayer player = getPlayerWithId(id);
 		player.setFlagStatus(true);
+		flag.setVisible(false);
 		
 		System.out.println("Player " + id + " captured the flag");
 	}
@@ -109,6 +110,9 @@ public class ClientGameStateReceiver {
 	public void respawnFlag(int id, double x, double y){
 		flag.setVisible(true);
 		flag.relocate(x, y);
+
+		GhostPlayer player = getPlayerWithId(id);
+		player.setFlagStatus(false);
 		System.out.println("Flag has been respawned");
 		
 	}

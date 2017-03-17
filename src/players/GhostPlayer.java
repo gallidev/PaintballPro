@@ -32,7 +32,7 @@ public class GhostPlayer extends ImageView {
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
-		setEffect(new DropShadow(16, 0, 0, Color.BLACK));
+		setEffect(shadow);
 
 		this.playerId = playerId;
 		this.audio = audio;

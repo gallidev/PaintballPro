@@ -319,6 +319,7 @@ public class Renderer extends Scene
 
 		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
 		};
+		view.getChildren().addAll(map.powerups);
 
 		paintIndex = view.getChildren().size();
 	}
