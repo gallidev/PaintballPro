@@ -65,9 +65,6 @@ public class Renderer extends Scene
 		init(mapName);
 		singlePlayer = true;
 
-		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
-			view.getChildren().add(map.flag);
-
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
@@ -312,7 +309,17 @@ public class Renderer extends Scene
 		view.setScaleY(Double.parseDouble(resolution[1]) / 576);
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
+
 		map = Map.load(mapName);
+		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
+		{
+			map.flag = new Flag(map.flagLocations);
+			view.getChildren().add(map.flag);
+		}
+
+		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
+		};
+
 		paintIndex = view.getChildren().size();
 	}
 

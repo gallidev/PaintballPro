@@ -15,10 +15,6 @@ public class Powerup extends ImageView
 	private int duration;
 	private GameObject[] locations;
 
-	public Powerup()
-	{
-	}
-
 	public Powerup(PowerupType type, GameObject[] locations)
 	{
 		super(ImageFactory.getPowerupImage(type));

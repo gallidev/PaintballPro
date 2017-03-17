@@ -12,7 +12,7 @@ public class ImageFactory
 	private static final Image BLUE_PLAYER = new Image("assets/characters/player_blue.png", 30, 64, true, true);
 	private static final Image RED_PLAYER_FLAG = new Image("assets/characters/player_red_flag.png", 30, 64, true, true);
 	private static final Image BLUE_PLAYER_FLAG = new Image("assets/characters/player_blue_flag.png", 30, 64, true, true);
-	private static final Image FLAG = new Image("assets/flag.png");
+	private static final Image FLAG = new Image("assets/flag.png", 48, 48, true, true);
 
 	private static final Image POWERUP_SHIELD = new Image("assets/powerup_shield.png");
 	private static final Image POWERUP_SPEED = new Image("assets/powerup_speed.png");
