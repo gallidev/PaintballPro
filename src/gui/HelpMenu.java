@@ -13,7 +13,13 @@ import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.web.WebView;
 import javafx.stage.Screen;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Class to create a scene for the help screen
@@ -34,9 +40,13 @@ public class HelpMenu {
         mainGrid.setVgap(10);
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
 
-        TextArea textArea = new TextArea();
-        textArea.editableProperty().setValue(false);
-        textArea.setText("Welcome to Painball Pro");
+        WebView webView = new WebView();
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("res/help.html")));
+            webView.getEngine().loadContent(content);
+        } catch (IOException e) {
+            AlertBox.showAlert("Help Missing", "Could not load help document");
+        }
 
         // Create a array of options for the cancel and apply buttons
         MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
@@ -49,7 +59,7 @@ public class HelpMenu {
         GridPane buttonGrid = MenuOptionSet.optionSetToGridPane(set);
 
         // Add the options grid and the button grid to the main grid
-        mainGrid.add(textArea, 0, 0);
+        mainGrid.add(webView, 0, 0);
         mainGrid.add(buttonGrid, 0, 1);
 
         // Create a new scene using the main grid
