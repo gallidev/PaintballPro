@@ -167,15 +167,19 @@ public class ServerGameStateSender {
 			if (p.getCollisionsHandler().isFlagCaptured()){
 				System.out.println("flag captured");
 				sendFlagCaptured();
+				updateScore();
+
 				p.getCollisionsHandler().setFlagCaptured(false);
 			}
 			
 			if (p.getCollisionsHandler().isFlagDropped()){
+				updateScore();
 				sendFlagLost();
 				p.getCollisionsHandler().setFlagDropped(false);
 			}
 			
 			if (p.getCollisionsHandler().isFlagRespawned()){
+				updateScore();
 				sendBaseFlag();
 				p.getCollisionsHandler().setRespawned(false);
 			}
