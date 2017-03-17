@@ -31,8 +31,6 @@ public class DiscoveryClient extends Thread{
 
 		  byte[] sendData = "discover_server".getBytes();
 
-		  
-		  
 		  //Try multicast ip first.
 		  try {
 		    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 25561);
