@@ -31,7 +31,7 @@ public class ServerGameStateSender {
 	private ScheduledExecutorService scheduler;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 33;
+	private long delayMilliseconds = 17;
 
 	/**
 	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby
@@ -57,7 +57,8 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
-		    	   //sendHitWall();
+		    	   
+		    	   sendHitWall();
 
 		    	   sendRemainingTime();
 
@@ -232,8 +233,8 @@ public class ServerGameStateSender {
 		String toBeSent = "7:" + + players.get(0).getCollisionsHandler().getPlayerWithFlagId() + ":";
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
-//		udpServer.sendToAll(toBeSent, lobbyId);
-//		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 	
@@ -244,22 +245,25 @@ public class ServerGameStateSender {
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
-//		udpServer.sendToAll(toBeSent, lobbyId);
-//		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
 	
 	}
 	
 	public void sendHitWall(){
-		String toBeSent = "@:";
-		
-		toBeSent += players.get(0).getCollisionsHandler().getHitWallX() + ":";
-		toBeSent += players.get(0).getCollisionsHandler().getHitWallY() + ":";
-		toBeSent += (players.get(0).getCollisionsHandler().getSplashColour() == TeamEnum.RED ? "Red" : "Blue" ) + ":";
-		
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-
+		if(players.get(0).getCollisionsHandler().isWallHit()){
+			String toBeSent = "@:";
+			
+			toBeSent += players.get(0).getCollisionsHandler().getHitWallX() + ":";
+			toBeSent += players.get(0).getCollisionsHandler().getHitWallY() + ":";
+			toBeSent += (players.get(0).getCollisionsHandler().getSplashColour() == TeamEnum.RED ? "Red" : "Blue" ) + ":";
+			
+			players.get(0).getCollisionsHandler().setWallHit(false);
+			
+			udpServer.sendToAll(toBeSent, lobbyId);
+			udpServer.sendToAll(toBeSent, lobbyId);
+			udpServer.sendToAll(toBeSent, lobbyId);
+		}
 	}
 
 

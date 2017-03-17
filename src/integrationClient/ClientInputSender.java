@@ -24,7 +24,7 @@ public class ClientInputSender {
 	private boolean debug = false;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 33;
+	private long delayMilliseconds = 17;
 	private int times = 0;
 
 	/**
