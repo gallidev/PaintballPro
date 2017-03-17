@@ -39,5 +39,9 @@ public class MoveBehaviour extends Behaviour {
             mover.setPath(ai.getHashMaps().getPathMap().get(p));
         }
         mover.tick();
+        if(ai.isEliminated()){
+            started = true;
+            timerStarted = false;
+        }
     }
 }
