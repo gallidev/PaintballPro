@@ -179,8 +179,9 @@ public class UDPClient extends Thread {
 
 				@Override
 				public void run() {
-					AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
-					System.err.println(e.getStackTrace().toString());
+					//AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
+					//System.err.println(e.getStackTrace().toString());
+					e.printStackTrace();
 				}
 			});
 			if(debug) System.out.println("Closing Client.");
@@ -223,8 +224,8 @@ public class UDPClient extends Thread {
 		catch(Exception e)
 		{
 			if (debug) System.out.println("Exception in sendMessage");
-			if (debug) e.printStackTrace();
-			AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
+			 e.printStackTrace();
+			//AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
 		}
 	}
 
