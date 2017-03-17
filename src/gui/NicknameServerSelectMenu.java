@@ -9,12 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import networking.discoveryNew.DiscoveryClientListener;
 import networking.discoveryNew.IPAddress;
@@ -50,11 +50,23 @@ public class NicknameServerSelectMenu {
         automatic.setToggleGroup(group);
         automatic.setSelected(true);
         Label automaticLabel = new Label("Search LAN for a Server");
+        automaticLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                automatic.fire();
+            }
+        });
         topGrid.add(automatic, 0, 1);
         topGrid.add(automaticLabel, 1, 1);
         RadioButton manual = new RadioButton();
         manual.setToggleGroup(group);
         Label ipLabel = new Label("Manually Enter IP Address");
+        ipLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                manual.fire();
+            }
+        });
         TextField ipText = new TextField("127.0.0.1");
         GridPane manualField = new GridPane();
         manualField.add(ipLabel, 0, 0);
@@ -173,6 +185,19 @@ public class NicknameServerSelectMenu {
         mainGrid.add(topGrid, 0, 0);
         mainGrid.add(connectGrid, 0, 1);
         m.addButtonHoverSounds(mainGrid);
+
+        ipText.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    for (Node n: connectGrid.getChildren()) {
+                        if (n instanceof Button && ((Button) n).getText().equals("Connect")) {
+                            ((Button) n).fire();
+                        }
+                    }
+                }
+            }
+        });
 
         // Create a new scene using the main grid
         Scene scene = new Scene(sp, m.width, m.height);

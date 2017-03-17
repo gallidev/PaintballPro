@@ -37,6 +37,7 @@ public class CollisionsHandler
 	private double hitWallX;
 	private double hitWallY;
 	private TeamEnum splashColour;
+	private boolean hasHitWall = false;
 
 	public CollisionsHandler(Map map)
 	{
@@ -73,6 +74,7 @@ public class CollisionsHandler
 					hitWallX = propX;
 					hitWallY = propY;
 					splashColour = bullet.getColour();
+					hasHitWall = true;
 				}
 				
 			}
@@ -359,5 +361,12 @@ public class CollisionsHandler
 		return playerWithFlagId;
 	}
 	
-
+	public void setWallHit(boolean b){
+		hasHitWall = b;
+	}
+	
+	public boolean isWallHit(){
+		return hasHitWall;
+	}
+	
 }
