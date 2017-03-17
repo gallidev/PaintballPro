@@ -155,8 +155,8 @@ public class Map
 						break;
 				map.flag = new Flag(flagLocations);
 			}
-			map.powerups[0] = new Powerup(PowerupType.SHIELD, map.gameObjects);
-			map.powerups[1] = new Powerup(PowerupType.SPEED, map.gameObjects);
+//			map.powerups[0] = new Powerup(PowerupType.SHIELD, map.gameObjects);
+//			map.powerups[1] = new Powerup(PowerupType.SPEED, map.gameObjects);
 
 		}
 		catch(FileNotFoundException e)

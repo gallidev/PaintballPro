@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import networking.discoveryNew.DiscoveryClientListener;
+import networking.discovery.DiscoveryClientListener;
 import networking.discovery.IPAddress;
 
 /**
@@ -55,7 +55,7 @@ public class NicknameServerSelectMenu {
         TextField ipText = new TextField("127.0.0.1");
         GridPane manualField = new GridPane();
         manualField.add(ipLabel, 0, 0);
-        manualField.add(ipText, 0, 1); 
+        manualField.add(ipText, 0, 1);
         topGrid.add(manual, 0, 2);
         topGrid.add(manualField, 1, 2);
         automaticLabel.setStyle("-fx-opacity: 1.0;");
