@@ -25,7 +25,7 @@ public class TestGameTypeMenu {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
         Scene s = GameTypeMenu.getScene(m, GameLocation.SingleplayerLocal);
         assertTrue(m.currentMenu == Menu.MainMenu);
-        GUIManagerTestHelper.findButtonByTextInParent("Elimination", s.getRoot()).fire();
+        GUIManagerTestHelper.findButtonByTextInParent("Team Match", s.getRoot()).fire();
         assertTrue(m.currentMenu == Menu.EliminationSingle);
     }
 
@@ -34,7 +34,7 @@ public class TestGameTypeMenu {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
         Scene s = GameTypeMenu.getScene(m, GameLocation.MultiplayerServer);
         assertTrue(m.currentMenu == Menu.MainMenu);
-        GUIManagerTestHelper.findButtonByTextInParent("Elimination", s.getRoot()).fire();
+        GUIManagerTestHelper.findButtonByTextInParent("Team Match", s.getRoot()).fire();
         assertTrue(m.currentMenu == Menu.Lobby);
     }
 

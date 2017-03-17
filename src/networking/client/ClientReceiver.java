@@ -168,7 +168,7 @@ public class ClientReceiver extends Thread {
 		int gameMode = Integer.parseInt(data[1]);
 		clientID = Integer.parseInt(data[2]);
 		String myNickname = data[3];
-		
+
 		String clientTeam = data[3];
 		Map map = null;
 		if (gameMode == 1)
@@ -183,7 +183,7 @@ public class ClientReceiver extends Thread {
 			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
 		else
 			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
-		
+
 		cPlayer.setNickname(myNickname);
 
 		// extract the other members
@@ -234,11 +234,15 @@ public class ClientReceiver extends Thread {
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
 
+		//Flag flag = new Flag(map.getFlagLocations());
+
+		Flag flag = new Flag();
 		ClientGameStateReceiver gameStateReceiver;
-		Flag flag = new Flag(map.getFlagLocations());
+
 		if(gameMode == 1){
 			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		}else {
+			flag.setLocations(map.getFlagLocations());
 			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), flag);
 		}
 

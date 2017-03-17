@@ -24,6 +24,11 @@ public class Flag extends ImageView
 		setEffect(new DropShadow(12, Color.BLACK));
 	}
 
+	public Flag(){
+		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
+		setEffect(new DropShadow(12, Color.BLACK));
+	}
+
 	public boolean isCaptured()
 	{
 		return captured;
@@ -32,6 +37,10 @@ public class Flag extends ImageView
 	void setCaptured(boolean b)
 	{
 		captured = b;
+	}
+
+	public void setLocations(GameObject[] locations){
+		this.locations = locations;
 	}
 
 	void resetPosition()
