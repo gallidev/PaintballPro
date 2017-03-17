@@ -406,7 +406,7 @@ public class UDPClient extends Thread {
 		long ClientTime = Long.parseLong(actions[2]);
 		long ServerTime = Long.parseLong(actions[3]);
 
-		System.out.println("toServer ping : " + (ServerTime - ClientTime)  + " fromServer ping: " + (System.currentTimeMillis() - ServerTime));
+		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
 
 		//GhostPlayer p = getPlayerWithID(id);
