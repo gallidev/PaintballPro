@@ -149,7 +149,6 @@ public class NicknameServerSelectMenu {
                                         if (m.establishConnection())
                                             m.transitionTo(Menu.MultiplayerGameType);
                                         else {
-                                            AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
                                             sp.stopLoading();
                                         }
                                     }

@@ -206,7 +206,7 @@ public class GUIManager {
             System.out.println("Connecting to: " + ipAddress + ":" + tcpPortNumber);
             try {
                 c = new Client(nickname, tcpPortNumber, ipAddress, this, udpPortNumber, false);
-                return true;
+                return c.exceptionCheck == 0;
             } catch (Exception e) {
                 return false;
             }
