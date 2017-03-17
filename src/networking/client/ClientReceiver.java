@@ -193,7 +193,7 @@ public class ClientReceiver extends Thread {
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red")){
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED);
+							ImageFactory.getPlayerImage(TeamEnum.RED), m.getAudioManager(), TeamEnum.RED);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -201,7 +201,7 @@ public class ClientReceiver extends Thread {
 
 				else{
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE),null,  TeamEnum.BLUE);
+							ImageFactory.getPlayerImage(TeamEnum.BLUE),m.getAudioManager(),  TeamEnum.BLUE);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -211,7 +211,7 @@ public class ClientReceiver extends Thread {
 			} else {
 				if (clientTeam.equals("Red")){
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE), null, TeamEnum.BLUE);
+							ImageFactory.getPlayerImage(TeamEnum.BLUE), m.getAudioManager(), TeamEnum.BLUE);
 					p.setNickname(nickname);
 					enemies.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -220,7 +220,7 @@ public class ClientReceiver extends Thread {
 
 				else{
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), null, TeamEnum.RED);
+							ImageFactory.getPlayerImage(TeamEnum.RED), m.getAudioManager(), TeamEnum.RED);
 					p.setNickname(nickname);
 					enemies.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());

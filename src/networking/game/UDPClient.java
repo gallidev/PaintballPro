@@ -33,6 +33,7 @@ public class UDPClient extends Thread {
 	private TeamTable teams;
 	private int sIP;
 	private boolean active = true;
+	private GUIManager guiManager;
 
 
 	/**
@@ -53,6 +54,7 @@ public class UDPClient extends Thread {
 		this.m = guiManager;
 		this.teams = teams;
 		this.nickname = nickname;
+		this.guiManager = guiManager;
 
 		sIP = udpServPort;
 
@@ -456,7 +458,8 @@ public class UDPClient extends Thread {
 
 	private void eliminatedPlayerAction(String text){
 		int id = Integer.parseInt(text.split(":")[1]);
-		
+
+		guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float)1.0);
 		//System.out.println("Player " + id + " eliminated");
 	}
 	
