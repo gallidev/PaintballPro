@@ -135,7 +135,7 @@ public class GUIManager {
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    renderer = new Renderer("elimination", c.getReceiver(), this, (Flag) o[0]);
+                    renderer = new Renderer("elimination", c.getReceiver(), this, null);
                     s.setScene(renderer);
                     break;
                 case CTFSingle:
