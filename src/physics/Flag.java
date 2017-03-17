@@ -15,7 +15,6 @@ public class Flag extends ImageView
 	private boolean captured = false;
 	private GameObject[] locations;
 	private EssentialPlayer flagCarrier;
-	private boolean hasInitialised;
 
 	public Flag(GameObject[] locations)
 	{
@@ -23,13 +22,11 @@ public class Flag extends ImageView
 		this.locations = locations;
 		resetPosition();
 		setEffect(new DropShadow(12, Color.BLACK));
-		this.hasInitialised = true;
 	}
 
 	public Flag(){
 		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
 		setEffect(new DropShadow(12, Color.BLACK));
-		this.hasInitialised = false;
 	}
 
 	public boolean isCaptured()
@@ -45,7 +42,6 @@ public class Flag extends ImageView
 	public void setLocations(GameObject[] locations){
 		this.locations = locations;
 		resetPosition();
-		this.hasInitialised = true;
 	}
 
 	void resetPosition()
@@ -62,9 +58,5 @@ public class Flag extends ImageView
 	void setFlagCarrier(EssentialPlayer p)
 	{
 		this.flagCarrier = p;
-	}
-
-	public boolean hasInitialised(){
-		return this.hasInitialised;
 	}
 }

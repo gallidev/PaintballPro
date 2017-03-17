@@ -173,7 +173,7 @@ public class Renderer extends Scene
 
 		cPlayer.setInputHandler(inputHandler);
 
-		if(flag.hasInitialised())
+		if(flag != null)
 			view.getChildren().add(flag);
 
 		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
