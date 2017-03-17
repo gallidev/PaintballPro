@@ -90,16 +90,6 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
-		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
-		{
-			map.flag = new Flag(map.flagLocations);
-			view.getChildren().add(map.flag);
-		}
-
-		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
-		};
-		view.getChildren().addAll(map.powerups);
-
 		GameMode gameLoop = initGame(player);
 		gameLoop.start();
 

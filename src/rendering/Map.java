@@ -100,7 +100,10 @@ public class Map
 			map.loadWalls();
 			map.wallGroup.setCache(true);
 
-			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
+			map.initGameObjects();
+
+			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup, map.flag);
+			view.getChildren().addAll(map.powerups);
 
 			//define shading
 			map.propShadow = new DropShadow(16, 0, 0, Color.BLACK);
@@ -145,10 +148,7 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
-			if(map.gameMode == GameMode.CAPTURETHEFLAG)
-				map.flag = new Flag(map.flagLocations);
-			map.powerups[0] = new Powerup(PowerupType.SHIELD, map.powerupLocations);
-			map.powerups[1] = new Powerup(PowerupType.SPEED, map.powerupLocations);
+			map.initGameObjects();
 
 		}
 		catch(FileNotFoundException e)
@@ -189,6 +189,15 @@ public class Map
 			rectangles.add(new Rectangle(node.getBoundsInParent().getMinX(), node.getBoundsInParent().getMinY(), 64, 64));
 		});
 		return rectangles;
+	}
+
+	private void initGameObjects()
+	{
+		if(gameMode == GameMode.CAPTURETHEFLAG)
+			flag = new Flag(flagLocations);
+
+		powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, powerupLocations), new Powerup(PowerupType.SPEED, powerupLocations)
+		};
 	}
 
 	public ArrayList<Rectangle> getRecWalls()
