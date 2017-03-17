@@ -12,7 +12,7 @@ public class Powerup extends ImageView
 {
 	private boolean taken = false;
 	private PowerupType type;
-	private int duration;
+	private int duration = 10000; //SPEED lasts for 10 seconds
 	private GameObject[] locations;
 
 	public Powerup(PowerupType type, GameObject[] locations)
@@ -42,6 +42,10 @@ public class Powerup extends ImageView
 	public void setType(PowerupType type)
 	{
 		this.type = type;
+	}
+
+	public int getDuration(){
+		return this.duration;
 	}
 
 	void resetPosition()

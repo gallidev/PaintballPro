@@ -24,7 +24,6 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
 	static final long SHOOT_DELAY = 450;
-	static final double MOVEMENT_SPEED = 2;
 	private static final long SPAWN_DELAY = 2000;
 	protected Rotate rotation, boundRotation;
 	protected int id;
@@ -43,6 +42,14 @@ public abstract class EssentialPlayer extends ImageView {
 	private boolean hasFlag;
 	protected GameMode gameMode;
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
+	protected double movementSpeed = 2.5;
+
+	//--Power up stats--
+	//Base movement speed = 2.5
+	//Power up movement speed = 4
+	protected boolean speedActive = false;
+	//If shield is true, player is able to take an extra shot
+	protected boolean shieldActive = false;
 
 	private String nickname;
 	
@@ -367,6 +374,30 @@ public abstract class EssentialPlayer extends ImageView {
 	
 	public boolean getScoreChanged(){
 		return scoreChanged;
+	}
+
+	public void speedUp(){
+		this.movementSpeed = 4;
+	}
+
+	public void speedDown(){
+		this.movementSpeed = 2.5;
+	}
+
+	public void giveShield(){
+		this.shieldActive = true;
+	}
+
+	public boolean getShieldActive(){
+		return this.shieldActive;
+	}
+
+	public void giveSpeed(){
+		this.speedActive = true;
+	}
+
+	public boolean getSpeedActive(){
+		return this.speedActive;
 	}
 
 }

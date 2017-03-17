@@ -56,26 +56,25 @@ public class UserPlayer extends EssentialPlayer{
 
 	protected void updatePosition()
 	{
-		//System.out.println("collup: " + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 		if(up && !collUp){
-			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() - movementSpeed);
 		}else if(!up && collUp){
-			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() + movementSpeed);
 		}
 		if(down && !collDown){
-			setLayoutY(getLayoutY() + MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() + movementSpeed);
 		}else if(!down && collDown){
-			setLayoutY(getLayoutY() - MOVEMENT_SPEED);
+			setLayoutY(getLayoutY() - movementSpeed);
 		}
 		if(left && !collLeft) {
-			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() - movementSpeed);
 		} else if(!left && collLeft){
-			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() + movementSpeed);
 		}
 		if(right && !collRight){
-			setLayoutX(getLayoutX() + MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() + movementSpeed);
 		}else if (!right && collRight){
-			setLayoutX(getLayoutX() - MOVEMENT_SPEED);
+			setLayoutX(getLayoutX() - movementSpeed);
 		}
 	}
 

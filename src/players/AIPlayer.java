@@ -71,8 +71,8 @@ public class AIPlayer extends EssentialPlayer{
 	@Override
 	protected void updatePosition(){
 
-		double yToReduce = MOVEMENT_SPEED * Math.cos(movementAngle);
-		double xToAdd = MOVEMENT_SPEED * Math.sin(movementAngle);
+		double yToReduce = movementSpeed * Math.cos(movementAngle);
+		double xToAdd = movementSpeed * Math.sin(movementAngle);
 
 		if(moving) {
 			if ((yToReduce > 0 && !collUp) || (yToReduce < 0 && !collDown)) setLayoutY(getLayoutY() - yToReduce);

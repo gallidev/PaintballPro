@@ -168,6 +168,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '@' : hitWallAction(receivedPacket);
 							   break;
+					case '#' : eliminatedPlayerAction(receivedPacket);
 
 				}
 
@@ -395,7 +396,6 @@ public class UDPClient extends Thread {
 		double y = Double.parseDouble(text.split(":")[2]);
 		String colour = text.split(":")[3];
 
-		//System.out.println("Hit wall in coord " + x + ": " + y + " with colour " + colour );
 	}
 
 	private void pingTimeUpdate(String receivedPacket) {
@@ -406,7 +406,7 @@ public class UDPClient extends Thread {
 		long ClientTime = Long.parseLong(actions[2]);
 		long ServerTime = Long.parseLong(actions[3]);
 
-		System.out.println("toServer ping : " + (ServerTime - ClientTime)  + " fromServer ping: " + (System.currentTimeMillis() - ServerTime));
+		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
 
 		//GhostPlayer p = getPlayerWithID(id);
@@ -454,6 +454,12 @@ public class UDPClient extends Thread {
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 
+	private void eliminatedPlayerAction(String text){
+		int id = Integer.parseInt(text.split(":")[1]);
+		
+		//System.out.println("Player " + id + " eliminated");
+	}
+	
 	public boolean isActive(){
 		return active;
 	}
