@@ -15,14 +15,10 @@ public class Powerup extends ImageView
 	private int duration;
 	private GameObject[] locations;
 
-	public Powerup()
-	{
-	}
-
 	public Powerup(PowerupType type, GameObject[] locations)
 	{
 		super(ImageFactory.getPowerupImage(type));
-		setEffect(new DropShadow(8, Color.GREEN));
+		setEffect(new DropShadow(8, type == PowerupType.SHIELD ? Color.GREEN : Color.YELLOW));
 		this.type = type;
 		this.locations = locations;
 		resetPosition();
@@ -51,6 +47,6 @@ public class Powerup extends ImageView
 	void resetPosition()
 	{
 		int randomLocation = (new Random()).nextInt(locations.length);
-		relocate(locations[randomLocation].getX() * 64 + 32, locations[randomLocation].getY() * 64 + 32);
+		relocate(locations[randomLocation].getX() * 64 + 16, locations[randomLocation].getY() * 64 + 16);
 	}
 }

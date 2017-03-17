@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import networking.discovery.IPAddress;
+import networking.discoveryNew.IPAddress;
 import networking.server.Server;
 
 /**

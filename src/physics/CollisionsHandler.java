@@ -3,6 +3,8 @@ package physics;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.javafx.scene.traversal.Hueristic2D;
+
 import enums.TeamEnum;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
@@ -30,6 +32,10 @@ public class CollisionsHandler
 	private boolean flagCaptured = false;
 	private boolean flagDropped = false;
 	private boolean flagRespwaned = false;
+	
+	private double hitWallX;
+	private double hitWallY;
+	private TeamEnum splashColour;
 
 	public CollisionsHandler(Map map)
 	{
@@ -60,8 +66,14 @@ public class CollisionsHandler
 
 			for(Bullet bullet : p.getBullets())
 			{
-				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent()))
+				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
 					bullet.disable(propWall);
+
+					hitWallX = propX;
+					hitWallY = propY;
+					splashColour = bullet.getColour();
+				}
+				
 			}
 
 			//filter out walls and props far away from the player
@@ -325,6 +337,18 @@ public class CollisionsHandler
 
 	public void setRespawned(boolean b) {
 		this.flagRespwaned = b;
+	}
+	
+	public double getHitWallX(){
+		return hitWallX;
+	}
+	
+	public double getHitWallY(){
+		return hitWallY;
+	}
+	
+	public TeamEnum getSplashColour(){
+		return splashColour;
 	}
 	
 

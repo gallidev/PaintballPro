@@ -1,7 +1,7 @@
 package networking.discoveryNew;
 
 /**
- * Class to listen out for servers in the LAN
+ * Class to broadcast a client's presence on the LAN
  * 
  * @author Matthew Walters
  */
@@ -18,8 +18,10 @@ public class DiscoveryClientListener {
 		client = new DiscoveryClient();
 		client.start();
 		try {
-			client.join(10000);
+			client.join(10000); // Timeout after 10 seconds.
 		} catch (InterruptedException e) {
+			// Close Client Thread.
+			
 			return client.retVal;
 		}
 		return client.retVal;
@@ -35,7 +37,7 @@ public class DiscoveryClientListener {
 		String ret = this.findServer();
 		annoc.m_running = false;
 		client.interrupt();
-		if(ret.split(":")[1].contains("25561"))
+		if(ret.split(":")[1].contains("25566"))
 			return true;
 		else
 			return false;

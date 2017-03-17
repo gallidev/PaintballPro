@@ -235,7 +235,7 @@ public class ClientReceiver extends Thread {
 		teams.setMyTeam(myTeam);
 
 		ClientGameStateReceiver gameStateReceiver;
-		Flag flag = new Flag();
+		Flag flag = new Flag(map.getFlagLocations());
 		if(gameMode == 1){
 			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
 		}else {

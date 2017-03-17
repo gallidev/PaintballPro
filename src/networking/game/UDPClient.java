@@ -66,7 +66,19 @@ public class UDPClient extends Thread {
 			try {
 				if (debug) System.out.println("Attempting to make client socket");
 
-				clientSocket = new DatagramSocket(port);
+				boolean run = true;
+				while(run)
+				{
+					try
+					{
+						clientSocket = new DatagramSocket(port);
+						run = false;
+					}
+					catch(Exception e)
+					{
+						port++;
+					}
+				}
 
 				if (debug) System.out.println("Attempting to get ip address");
 
@@ -145,15 +157,17 @@ public class UDPClient extends Thread {
 							   break;
 					case '6' : getRemainingTime(receivedPacket);
 							   break;
-					case '7' : capturedFlagAction(receivedPacket);
-							   break;
+//					case '7' : capturedFlagAction(receivedPacket);
+//							   break;
 					case '8' : capturedFlagAction(receivedPacket);
 							   break;
-					case '9' : lostFlagAction(receivedPacket);
+					case '7' : lostFlagAction(receivedPacket);
 							   break;
 					case '!' : baseFlagAction(receivedPacket);
 							   break;
 					case 'T' : pingTimeUpdate(receivedPacket);
+							   break;
+					case '@' : hitWallAction(receivedPacket);
 							   break;
 
 				}
@@ -167,8 +181,8 @@ public class UDPClient extends Thread {
 
 				@Override
 				public void run() {
-					AlertBox.showAlert("Connection Failed","There was an error, "+ e.getStackTrace());
-
+					AlertBox.showAlert("Connection Failed","There was an error, "+ e.getMessage());
+					System.err.println(e.getStackTrace().toString());
 				}
 			});
 			if(debug) System.out.println("Closing Client.");
@@ -345,28 +359,45 @@ public class UDPClient extends Thread {
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.updateFlag(id);
+
+			System.out.println("flag captured");
 		}
 
 	}
 
 	private void lostFlagAction(String text){
-		//Protocol : 8:<id>
+		//Protocol : 9:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
 
 		if(gameStateReceiver != null){
 			gameStateReceiver.lostFlag(id);
 		}
 
+		System.out.println("flag lost");
+
 	}
 
 	private void baseFlagAction(String text){
-		//Protocol : 8:<id>
-		double x = Double.parseDouble(text.split(":")[1]);
-		double y = Double.parseDouble(text.split(":")[2]);
+		//Protocol : !:<id>
+
+		int id = Integer.parseInt(text.split(":")[1]);
+		double x = Double.parseDouble(text.split(":")[2]);
+		double y = Double.parseDouble(text.split(":")[3]);
 
 		if(gameStateReceiver != null){
-			gameStateReceiver.respawnFlag(x, y);
+			gameStateReceiver.respawnFlag(id, x, y);
 		}
+		System.out.println("flag rebased");
+	}
+
+	private void hitWallAction(String text){
+		//Protocol: "@:<x>:<y>"
+
+		double x = Double.parseDouble(text.split(":")[1]);
+		double y = Double.parseDouble(text.split(":")[2]);
+		String colour = text.split(":")[3];
+
+		System.out.println("Hit wall in coord " + x + ": " + y + " with colour " + colour );
 	}
 
 	private void pingTimeUpdate(String receivedPacket) {

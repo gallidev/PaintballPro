@@ -27,14 +27,15 @@ public class IPAddress {
 		        if (iface.isLoopback() || !iface.isUp() || iface.isVirtual() || iface.isPointToPoint())
 		            continue;
 
-		        Enumeration<InetAddress> addresses = iface.getInetAddresses(); 
+		        Enumeration<InetAddress> addresses = iface.getInetAddresses();
 		        //int skip = 0;
 		        while(addresses.hasMoreElements()) {
 		            InetAddress addr = addresses.nextElement();
 
 		            String ip = addr.getHostAddress();
-		            
-		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.")) 
+
+		            //System.out.println("name is:"+iface.getDisplayName());
+		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.168.56") && !iface.getDisplayName().toLowerCase().contains("virtualbox"))
 		            	return ip;
 		        }
 		    }

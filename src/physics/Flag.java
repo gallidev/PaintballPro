@@ -8,27 +8,20 @@ import rendering.GameObject;
 import rendering.ImageFactory;
 import rendering.ObjectType;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Flag extends ImageView
 {
 	private boolean captured = false;
-	private ArrayList<GameObject> locations;
+	private GameObject[] locations;
 	private EssentialPlayer flagCarrier;
 
-	public Flag()
-	{
-		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
-		setEffect(new DropShadow(16, Color.BLACK));
-	}
-
-	public Flag(ArrayList<GameObject> locations)
+	public Flag(GameObject[] locations)
 	{
 		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
 		this.locations = locations;
 		resetPosition();
-		setEffect(new DropShadow(16, Color.BLACK));
+		setEffect(new DropShadow(12, Color.BLACK));
 	}
 
 	public boolean isCaptured()
@@ -43,8 +36,8 @@ public class Flag extends ImageView
 
 	void resetPosition()
 	{
-		int randomLocation = (new Random()).nextInt(locations.size());
-		relocate(locations.get(randomLocation).getX() * 64, locations.get(randomLocation).getY() * 64);
+		int randomLocation = (new Random()).nextInt(locations.length);
+		relocate(locations[randomLocation].getX() * 64 + 8, locations[randomLocation].getY() * 64 + 8);
 	}
 
 	public EssentialPlayer getFlagCarrier()

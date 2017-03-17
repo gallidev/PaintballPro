@@ -57,7 +57,7 @@ public class ServerGameStateSender {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
-		    	   //sendFlag();
+		    	   //sendHitWall();
 
 		    	   sendRemainingTime();
 
@@ -153,31 +153,31 @@ public class ServerGameStateSender {
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 
-			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
-				if (p.hasFlag()){
-					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
-				}
-			}
+//			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+//				if (p.hasFlag()){
+//					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+//				}
+//			}
 			
 			if (p.getScoreChanged()){
 				updateScore();
 				p.setScoreChanged(false);
 			}
 			
-//			if (p.getCollisionsHandler().isFlagCaptured()){
-//				sendFlagCaptured(p);
-//				p.getCollisionsHandler().setFlagCaptured(false);
-//			}
-//			
-//			if (p.getCollisionsHandler().isFlagDropped()){
-//				sendFlagLost(p);
-//				p.getCollisionsHandler().setFlagDropped(false);
-//			}
-//			
-//			if (p.getCollisionsHandler().isFlagRespawned()){
-//				sendBaseFlag();
-//				p.getCollisionsHandler().setRespawned(false);
-//			}
+			if (p.getCollisionsHandler().isFlagCaptured()){
+				sendFlagCaptured(p);
+				p.getCollisionsHandler().setFlagCaptured(false);
+			}
+			
+			if (p.getCollisionsHandler().isFlagDropped()){
+				sendFlagLost(p);
+				p.getCollisionsHandler().setFlagDropped(false);
+			}
+			
+			if (p.getCollisionsHandler().isFlagRespawned()){
+				sendBaseFlag(p.getPlayerId());
+				p.getCollisionsHandler().setRespawned(false);
+			}
 		}
 	}
 
@@ -207,7 +207,7 @@ public class ServerGameStateSender {
 
 	}
 
-	public void sendFlagCaptured(EssentialPlayer p){
+	private void sendFlagCaptured(EssentialPlayer p){
 		
 			String toBeSent = "8:" + p.getPlayerId();
 
@@ -217,28 +217,44 @@ public class ServerGameStateSender {
 //			toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-			udpServer.sendToAll(toBeSent, lobbyId);
-			udpServer.sendToAll(toBeSent, lobbyId);
+//			udpServer.sendToAll(toBeSent, lobbyId);
+//			udpServer.sendToAll(toBeSent, lobbyId);
 
 		//}
 	}
 	
-	public void sendFlagLost(EssentialPlayer p){
-		String toBeSent = "9:" + p.getPlayerId();
+	private void sendFlagLost(EssentialPlayer p){
+		String toBeSent = "7:" + p.getPlayerId();
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 	
-	public void sendBaseFlag(){
-		String toBeSent = "!:";
+	private void sendBaseFlag(int id){
+		String toBeSent = "!:" + id;
 		
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutX() + ":";
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();
 		
 		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
+	
+	}
+	
+	public void sendHitWall(){
+		String toBeSent = "@:";
+		
+		toBeSent += players.get(0).getCollisionsHandler().getHitWallX() + ":";
+		toBeSent += players.get(0).getCollisionsHandler().getHitWallY() + ":";
+		toBeSent += (players.get(0).getCollisionsHandler().getSplashColour() == TeamEnum.RED ? "Red" : "Blue" ) + ":";
+		
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+		udpServer.sendToAll(toBeSent, lobbyId);
+
 	}
 
 

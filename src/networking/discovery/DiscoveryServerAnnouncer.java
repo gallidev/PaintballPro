@@ -8,6 +8,8 @@ import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
+import networking.discoveryNew.IPAddress;
+
 /**
  * Class to announce a server's presence to a LAN
  * 
