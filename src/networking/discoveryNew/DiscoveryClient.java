@@ -31,8 +31,6 @@ public class DiscoveryClient extends Thread{
 
 		  byte[] sendData = "discover_server".getBytes();
 
-		  
-		  
 		  //Try multicast ip first.
 		  try {
 		    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 25561);
@@ -58,7 +56,6 @@ public class DiscoveryClient extends Thread{
 		      // Send the broadcast package
 		      try {
 		        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 25561);
-		        System.out.println("Sending a packet from client.");
 		        clientSocket.send(sendPacket);
 		      } catch (Exception e) {
 		      }
@@ -70,7 +67,6 @@ public class DiscoveryClient extends Thread{
 		  DatagramPacket receivePacket = new DatagramPacket(receivedMessage, receivedMessage.length);
 		  while(true)
 		  {
-			  System.out.println("Waiting to receive packet from server.");
 			  clientSocket.receive(receivePacket);
 			  System.out.println("Received a packet from server.");
 			  if(!receivePacket.getAddress().getHostAddress().contains("192.168.56"))

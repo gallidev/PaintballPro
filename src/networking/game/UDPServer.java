@@ -274,11 +274,13 @@ public class UDPServer extends Thread{
 
 	private void sendBackTime(String text) {
 		if(debug) System.out.println("Input Received: "+text);
+		//System.out.println("Input Received: "+text);
 		String[] actions = text.split(":");
 		int id = Integer.parseInt(actions[1]);
-		String toBeSent = "9:" + id;
+		String toBeSent = "T:" + id;
 		toBeSent += ":" + actions[2];
-		//sendToAll(text, );
+		toBeSent += ":" + System.currentTimeMillis();
+
 		sendToSpec(id, toBeSent);
 	}
 

@@ -31,7 +31,6 @@ public class DiscoveryServerAnnouncer extends Thread {
 	public void run() {
 		try {
 			//Keep a socket open to listen to all the UDP traffic that is destined for this port
-			System.out.println("Starting a server.");
 			socket = new DatagramSocket(25561, InetAddress.getByName(IPAddress.getLAN()));
 			socket.setBroadcast(true);
 
@@ -39,7 +38,6 @@ public class DiscoveryServerAnnouncer extends Thread {
 				//Receive a packet
 				byte[] received = new byte[240];
 				DatagramPacket packet = new DatagramPacket(received, received.length);
-				System.out.println("Waiting to receive a packet.");
 				socket.receive(packet);
 
 				if(!m_running)
@@ -48,7 +46,6 @@ public class DiscoveryServerAnnouncer extends Thread {
 				//Packet received - see if the packet has the right message
 				String message = new String(packet.getData()).trim();
 				if (message.equals("discover_server")) {
-					System.out.println("We've been sent a packet.");
 					byte[] sendData = "discover_response".getBytes();
 
 					//Send a response

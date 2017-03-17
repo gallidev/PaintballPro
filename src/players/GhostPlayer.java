@@ -27,6 +27,8 @@ public class GhostPlayer extends ImageView {
 	private String nickname;
 	private Label nameTag;
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
+	private long pingToServer;
+	private long pingFromServer;
 
 	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio, TeamEnum team) {
 		super(image);
@@ -41,6 +43,9 @@ public class GhostPlayer extends ImageView {
 		rotation.setPivotX(playerHeadX);
 		rotation.setPivotY(playerHeadY);
 		this.team = team;
+
+		this.pingFromServer = 0;
+		this.pingToServer = 0;
 	}
 
 	public void beenShot() {
@@ -123,5 +128,22 @@ public class GhostPlayer extends ImageView {
 	{
 		return nameTag;
 	}
+
+	public long getPingToServer() {
+		return pingToServer;
+	}
+
+	public void setPingToServer(long pingToServer) {
+		this.pingToServer = pingToServer;
+	}
+
+	public long getPingFromServer() {
+		return pingFromServer;
+	}
+
+	public void setPingFromServer(long pingFromServer) {
+		this.pingFromServer = pingFromServer;
+	}
+
 }
 

@@ -34,7 +34,8 @@ public class IPAddress {
 
 		            String ip = addr.getHostAddress();
 
-		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.168.56"))
+		            //System.out.println("name is:"+iface.getDisplayName());
+		            if(Inet4Address.class == addr.getClass() && !ip.contains("192.168.56") && !iface.getDisplayName().toLowerCase().contains("virtualbox"))
 		            	return ip;
 		        }
 		    }
