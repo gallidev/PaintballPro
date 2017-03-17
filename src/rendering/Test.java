@@ -46,6 +46,7 @@ public class Test extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
+		stage.setOnCloseRequest(event -> System.exit(0));
 		GUIManager guiManager = new GUIManager();
 		guiManager.setStage(stage);
 		guiManager.transitionTo(Menu.CTFSingle);

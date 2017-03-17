@@ -1,5 +1,7 @@
 package networking.discoveryNew;
 
+import networking.discovery.*;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -57,10 +59,18 @@ public class DiscoveryClient extends Thread{
 		      try {
 		        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 25561);
 		        clientSocket.send(sendPacket);
-		      } catch (Exception e) {
+				  System.out.println("::: " + broadcast.toString());
+			  } catch (Exception e) {
 		      }
 		    }
 		  }
+
+		  try {
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(networking.discovery.IPAddress.getLAN()), 25561);
+				clientSocket.send(sendPacket);
+				System.out.println("::: " + InetAddress.getByName("127.0.0.1").toString());
+			} catch (Exception e) {
+			}
 
 		  //Wait for a response from the Server.
 		  byte[] receivedMessage = new byte[240];

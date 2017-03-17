@@ -145,9 +145,8 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
-			if(map.getGameMode() == GameMode.CAPTURETHEFLAG){
+			if(map.gameMode == GameMode.CAPTURETHEFLAG)
 				map.flag = new Flag(map.flagLocations);
-			}
 			map.powerups[0] = new Powerup(PowerupType.SHIELD, map.powerupLocations);
 			map.powerups[1] = new Powerup(PowerupType.SPEED, map.powerupLocations);
 
