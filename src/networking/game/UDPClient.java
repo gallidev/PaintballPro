@@ -411,10 +411,10 @@ public class UDPClient extends Thread {
 
 		GhostPlayer p = getPlayerWithID(id);
 
-		p.setPingToServer(ServerTime - ClientTime);
-		p.setPingFromServer(System.currentTimeMillis() - ServerTime);
+		/*p.setPingToServer(ServerTime - ClientTime);
+		p.setPingFromServer(System.currentTimeMillis() - ServerTime);*/
 
-		System.out.println("toServer ping : " + p.getPingToServer() + " fromServer ping: " + p.getPingFromServer());
+		//System.out.println("toServer ping : " + p.getPingToServer() + " fromServer ping: " + p.getPingFromServer());
 
 	}
 
