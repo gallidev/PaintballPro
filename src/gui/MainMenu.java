@@ -43,6 +43,11 @@ public class MainMenu {
 		    @Override public void handle(ActionEvent event) {
 		    	m.transitionTo(Menu.Settings);
 		    }
+		}), new MenuOption("Help", false, new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				m.transitionTo(Menu.Help);
+			}
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed

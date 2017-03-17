@@ -8,5 +8,6 @@ public enum Menu
     MainMenu, NicknameServerConnection, Settings, MultiplayerGameType, SingleplayerGameType, Lobby,
     EliminationSingle, EliminationMulti,
     CTFSingle, CTFMulti,
-    EndGame
+    EndGame,
+    Help
 }
