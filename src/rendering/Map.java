@@ -102,9 +102,6 @@ public class Map
 
 			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
-			map.initGameObjects();
-			view.getChildren().addAll(map.powerups);
-
 			//define shading
 			map.propShadow = new DropShadow(16, 0, 0, Color.BLACK);
 			map.propShadow.setSpread(0.5);

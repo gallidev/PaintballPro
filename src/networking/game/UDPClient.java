@@ -201,7 +201,7 @@ public class UDPClient extends Thread {
 	private void shieldRemovedAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
 		
-		System.out.println("player with id " + id + " does not have shield anymore" );
+		//System.out.println("player with id " + id + " does not have shield anymore" );
 		
 	}
 

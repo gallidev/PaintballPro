@@ -66,6 +66,16 @@ public class Renderer extends Scene
 		init(mapName);
 		singlePlayer = true;
 
+		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
+		{
+			map.flag = new Flag(map.flagLocations);
+			view.getChildren().add(map.flag);
+		}
+
+		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
+		};
+		view.getChildren().addAll(map.powerups);
+
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
