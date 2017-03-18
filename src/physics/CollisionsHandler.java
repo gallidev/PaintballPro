@@ -248,13 +248,15 @@ public class CollisionsHandler
 
 		for(int i = 0; i < powerups.length; i ++){
 			if(p.getPolygonBounds().getBoundsInParent().intersects(powerups[i].getBoundsInParent())){
-				powerups[i].setTaken(true);
-				powerups[i].took();
-				if(powerups[i].getType() == PowerupType.SHIELD){
-					p.giveShield();
+				if(!powerups[i].isTaken()) {
+					powerups[i].setTaken(true);
+					powerups[i].took();
+					if (powerups[i].getType() == PowerupType.SHIELD) {
+						p.giveShield();
 
-				}else if(powerups[i].getType() == PowerupType.SPEED){
-					p.giveSpeed();
+					} else if (powerups[i].getType() == PowerupType.SPEED) {
+						p.giveSpeed();
+					}
 				}
 				
 				powerupPlayerId = p.getPlayerId();
@@ -271,12 +273,14 @@ public class CollisionsHandler
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
 				{
 					bullet.disable();
+					//check if the player has the shield power up
 					if(p.getShieldActive()){
+						//shield absorbs a bullet
 						p.removeShield();
 					} else {
+						//if the player has no shield, the player is eliminated
 						p.beenShot();
 					}
-
 					return;
 				}
 			}

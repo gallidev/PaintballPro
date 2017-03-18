@@ -11,6 +11,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -34,6 +35,8 @@ public class UDPClient extends Thread {
 	private int sIP;
 	private boolean active = true;
 	private GUIManager guiManager;
+
+	private HashMap<Integer, Long> lastPlayedEliminatedSound = new HashMap<Integer, Long>();
 
 
 	/**
@@ -459,7 +462,17 @@ public class UDPClient extends Thread {
 	private void eliminatedPlayerAction(String text){
 		int id = Integer.parseInt(text.split(":")[1]);
 
-		guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float)1.0);
+		if (lastPlayedEliminatedSound.containsKey(id)) {
+			if (lastPlayedEliminatedSound.get(id) + 3000 < System.currentTimeMillis()) {
+				guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float)1.0);
+				lastPlayedEliminatedSound.put(id, System.currentTimeMillis());
+			}
+		} else {
+			guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float)1.0);
+			lastPlayedEliminatedSound.put(id, System.currentTimeMillis());
+		}
+
+
 		//System.out.println("Player " + id + " eliminated");
 	}
 	

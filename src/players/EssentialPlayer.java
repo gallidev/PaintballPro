@@ -44,12 +44,17 @@ public abstract class EssentialPlayer extends ImageView {
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 	protected double movementSpeed = 2.5;
 
-	//--Power up stats--
+	//===================Power-up stats=======================
 	//Base movement speed = 2.5
 	//Power up movement speed = 4
+	//Speed lasts 10 seconds
 	protected boolean speedActive = false;
+	protected long speedTimer;
+	protected long speedDuration = 10000;
+	protected boolean speedTimerActive = false;
 	//If shield is true, player is able to take an extra shot
 	protected boolean shieldActive = false;
+	//========================================================
 
 	private String nickname;
 	
@@ -324,6 +329,18 @@ public abstract class EssentialPlayer extends ImageView {
 		{
 			shadow.setColor(Color.BLACK);
 			setImage(ImageFactory.getPlayerImage(team));
+		}
+	}
+
+	public void handlePowerUp() {
+		if (speedActive && !speedTimerActive) {
+			speedTimerActive = true;
+			speedTimer = System.currentTimeMillis();
+		} else if (speedActive) {
+			if (speedTimer < System.currentTimeMillis() - speedDuration || eliminated) {
+				removeSpeed();
+				speedTimerActive = false;
+			}
 		}
 	}
 
