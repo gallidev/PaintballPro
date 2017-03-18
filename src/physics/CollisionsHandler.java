@@ -40,6 +40,9 @@ public class CollisionsHandler
 	private TeamEnum splashColour;
 	private boolean hasHitWall = false;
 
+	private boolean speedPowerup = false;
+	private boolean shieldPowerup = false;
+	
 	public CollisionsHandler(Map map)
 	{
 		this.propsWalls = map.getRecProps();
@@ -250,9 +253,10 @@ public class CollisionsHandler
 					powerups[i].took();
 					if (powerups[i].getType() == PowerupType.SHIELD) {
 						p.giveShield();
-
+						shieldPowerup = true;
 					} else if (powerups[i].getType() == PowerupType.SPEED) {
 						p.giveSpeed();
+						speedPowerup = true;
 					}
 				}
 			}
@@ -393,6 +397,35 @@ public class CollisionsHandler
 
 	public boolean isWallHit(){
 		return hasHitWall;
+	}
+
+	public void setSplashColour(TeamEnum splashColour) {
+		this.splashColour = splashColour;
+	}
+	
+
+	public Rectangle getSpawnAreaRed() {
+		return spawnAreaRed;
+	}
+
+	public void setSpawnAreaRed(Rectangle spawnAreaRed) {
+		this.spawnAreaRed = spawnAreaRed;
+	}
+
+	public boolean isSpeedPowerup() {
+		return speedPowerup;
+	}
+
+	public void setSpeedPowerup(boolean speedPowerup) {
+		this.speedPowerup = speedPowerup;
+	}
+
+	public boolean isShieldPowerup() {
+		return shieldPowerup;
+	}
+
+	public void setShieldPowerup(boolean shieldPowerup) {
+		this.shieldPowerup = shieldPowerup;
 	}
 
 }
