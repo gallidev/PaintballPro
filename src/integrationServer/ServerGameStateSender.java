@@ -193,6 +193,11 @@ public class ServerGameStateSender {
 				sendBaseFlag();
 				p.getCollisionsHandler().setRespawned(false);
 			}
+			
+			if (p.getCollisionsHandler().isTookPowerup()){
+				sendPowerupCaptured();
+				p.getCollisionsHandler().setTookPowerup(false);
+			}
 		}
 	}
 
@@ -245,6 +250,12 @@ public class ServerGameStateSender {
 		udpServer.sendToAll(toBeSent, lobbyId);
 		udpServer.sendToAll(toBeSent, lobbyId);
 
+	}
+	
+	private void sendPowerupCaptured(){
+		String toBeSent = "$:" + players.get(0).getCollisionsHandler().getPowerupPlayerId() + ":";
+		
+		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
 	private void sendBaseFlag(){
