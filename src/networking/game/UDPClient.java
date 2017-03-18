@@ -174,6 +174,8 @@ public class UDPClient extends Thread {
 					case '@' : hitWallAction(receivedPacket);
 							   break;
 					case '#' : eliminatedPlayerAction(receivedPacket);
+					case '$' : powerUpAction(receivedPacket);
+					case '%' : shieldAction(receivedPacket);
 
 				}
 
@@ -196,6 +198,27 @@ public class UDPClient extends Thread {
 		System.out.println("Closing UDP Client");
 	}
 
+
+	private void shieldAction(String receivedPacket) {
+		int id = Integer.parseInt(receivedPacket.split(":")[1]);
+		
+		System.out.println("player with id " + id + " has shield" );
+		
+	}
+
+	private void powerUpAction(String receivedPacket) {
+		switch (receivedPacket.split(":")[1])
+		{
+		case "0" : //powerup is speed 
+					System.out.println("Player took speed powerup");
+					break;
+		case "1" : System.out.println("Player took shield powerup");
+				   break;
+		}
+		
+		
+		
+	}
 
 	private void getWinnerAction(String text) {
 		// Protocol: 2:Red/Blue:RedScore:BlueScore
@@ -405,13 +428,13 @@ public class UDPClient extends Thread {
 
 	private void pingTimeUpdate(String receivedPacket) {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
-		System.out.println("Server ping packet : " + receivedPacket);
+		//System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
 		int id = Integer.parseInt(actions[1]);
 		long ClientTime = Long.parseLong(actions[2]);
 		long ServerTime = Long.parseLong(actions[3]);
 
-		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		//System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
 
 		//GhostPlayer p = getPlayerWithID(id);

@@ -194,10 +194,19 @@ public class ServerGameStateSender {
 				p.getCollisionsHandler().setRespawned(false);
 			}
 			
-			if (p.getCollisionsHandler().isTookPowerup()){
-				sendPowerupCaptured();
-				p.getCollisionsHandler().setTookPowerup(false);
+			if (p.getCollisionsHandler().isSpeedPowerup()){
+				sendPowerupCaptured("speed");
+				p.getCollisionsHandler().setSpeedPowerup(false);
 			}
+			
+			if (p.getCollisionsHandler().isShieldPowerup()){
+				sendPowerupCaptured("shield");
+				p.getCollisionsHandler().setShieldPowerup(false);
+			}
+			
+			if (p.getShieldActive())
+				sendShieldActive(p);
+				
 		}
 	}
 
@@ -252,9 +261,14 @@ public class ServerGameStateSender {
 
 	}
 	
-	private void sendPowerupCaptured(){
-		String toBeSent = "$:" + players.get(0).getCollisionsHandler().getPowerupPlayerId() + ":";
-		
+	private void sendPowerupCaptured(String s){
+		String toBeSent = "";
+		switch(s){
+		case "speed" : toBeSent = "$:0";
+					   break;
+		case "shield": toBeSent = "$:1";
+						break;
+		}
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
@@ -289,6 +303,13 @@ public class ServerGameStateSender {
 	}
 
 
+	private void sendShieldActive(EssentialPlayer p){
+		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+
+	}
+	
 	/*
 	 * Sets the game simulation.
 	 * @param sim The simulation of the game, which runs on the server.

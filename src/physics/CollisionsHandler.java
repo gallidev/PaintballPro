@@ -40,8 +40,8 @@ public class CollisionsHandler
 	private TeamEnum splashColour;
 	private boolean hasHitWall = false;
 
-	private boolean tookPowerup = false;
-	private int powerupPlayerId;
+	private boolean speedPowerup = false;
+	private boolean shieldPowerup = false;
 	
 	public CollisionsHandler(Map map)
 	{
@@ -253,14 +253,12 @@ public class CollisionsHandler
 					powerups[i].took();
 					if (powerups[i].getType() == PowerupType.SHIELD) {
 						p.giveShield();
-
+						shieldPowerup = true;
 					} else if (powerups[i].getType() == PowerupType.SPEED) {
 						p.giveSpeed();
+						speedPowerup = true;
 					}
 				}
-				
-				powerupPlayerId = p.getPlayerId();
-				tookPowerup = true;
 			}
 		}
 	}
@@ -401,20 +399,33 @@ public class CollisionsHandler
 		return hasHitWall;
 	}
 
-	public boolean isTookPowerup() {
-		return tookPowerup;
-	}
-
-	public void setTookPowerup(boolean tookPowerup) {
-		this.tookPowerup = tookPowerup;
-	}
-
 	public void setSplashColour(TeamEnum splashColour) {
 		this.splashColour = splashColour;
 	}
 	
-	public int getPowerupPlayerId(){
-		return powerupPlayerId;
+
+	public Rectangle getSpawnAreaRed() {
+		return spawnAreaRed;
+	}
+
+	public void setSpawnAreaRed(Rectangle spawnAreaRed) {
+		this.spawnAreaRed = spawnAreaRed;
+	}
+
+	public boolean isSpeedPowerup() {
+		return speedPowerup;
+	}
+
+	public void setSpeedPowerup(boolean speedPowerup) {
+		this.speedPowerup = speedPowerup;
+	}
+
+	public boolean isShieldPowerup() {
+		return shieldPowerup;
+	}
+
+	public void setShieldPowerup(boolean shieldPowerup) {
+		this.shieldPowerup = shieldPowerup;
 	}
 
 }
