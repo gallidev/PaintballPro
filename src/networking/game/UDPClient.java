@@ -175,7 +175,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '#' : eliminatedPlayerAction(receivedPacket);
 					case '$' : powerUpAction(receivedPacket);
-					case '%' : shieldAction(receivedPacket);
+					case '%' : shieldRemovedAction(receivedPacket);
 
 				}
 
@@ -198,14 +198,15 @@ public class UDPClient extends Thread {
 		System.out.println("Closing UDP Client");
 	}
 
-
-	private void shieldAction(String receivedPacket) {
+	//use this to switch back to the normal player image
+	private void shieldRemovedAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
 		
-		System.out.println("player with id " + id + " has shield" );
+		System.out.println("player with id " + id + " does not have shield anymore" );
 		
 	}
 
+	//use this to remove powerups from maps and change to the shield player image
 	private void powerUpAction(String receivedPacket) {
 		switch (receivedPacket.split(":")[1])
 		{

@@ -54,6 +54,7 @@ public abstract class EssentialPlayer extends ImageView {
 	protected boolean speedTimerActive = false;
 	//If shield is true, player is able to take an extra shot
 	protected boolean shieldActive = false;
+	private boolean shieldRemoved = false;
 	//========================================================
 
 	private String nickname;
@@ -407,6 +408,7 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public void removeShield(){
 		this.shieldActive = false;
+		shieldRemoved = true;
 	}
 
 	public boolean getShieldActive(){
@@ -425,6 +427,14 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public boolean getSpeedActive(){
 		return this.speedActive;
+	}
+	
+	public boolean getShieldRemoved(){
+		return shieldRemoved;
+	}
+	
+	public void setShieldRemoved(boolean b){
+		shieldRemoved = b;
 	}
 
 }

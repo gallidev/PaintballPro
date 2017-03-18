@@ -204,8 +204,10 @@ public class ServerGameStateSender {
 				p.getCollisionsHandler().setShieldPowerup(false);
 			}
 			
-			if (p.getShieldActive())
-				sendShieldActive(p);
+			if (p.getShieldRemoved()){
+				sendShieldRemoved(p);
+				p.setShieldRemoved(true);
+			}
 				
 		}
 	}
@@ -303,7 +305,7 @@ public class ServerGameStateSender {
 	}
 
 
-	private void sendShieldActive(EssentialPlayer p){
+	private void sendShieldRemoved(EssentialPlayer p){
 		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
