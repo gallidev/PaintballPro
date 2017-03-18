@@ -137,23 +137,35 @@ public class ServerGameStateSender {
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
+//		for(EssentialPlayer p : players){
+//
+//				String toBeSent = "4:" + p.getPlayerId();
+//
+//				boolean haveBullets = false;
+//				for(Bullet bullet : p.getBullets())
+//				{
+//					if(bullet.isActive())
+//					{
+//						haveBullets = true;
+//						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
+//					}
+//				}
+//				//System.out.println("Bullet msg sent from server " + toBeSent);
+//				if (haveBullets)
+//					udpServer.sendToAll(toBeSent, lobbyId);
+//		}
+
 		for(EssentialPlayer p : players){
 
-				String toBeSent = "4:" + p.getPlayerId();
+			String toBeSent = "4:" + p.getPlayerId();
 
-				boolean haveBullets = false;
-				for(Bullet bullet : p.getBullets())
-				{
-					if(bullet.isActive())
-					{
-						haveBullets = true;
-						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
-					}
-				}
-				//System.out.println("Bullet msg sent from server " + toBeSent);
-				if (haveBullets)
-					udpServer.sendToAll(toBeSent, lobbyId);
+			if(p.isShooting()){
+				toBeSent += ":shot";
+				udpServer.sendToAll(toBeSent, lobbyId);
+			}
+
 		}
+
 	}
 
 	/**
@@ -170,41 +182,41 @@ public class ServerGameStateSender {
 
 			toBeSent += ":" + p.getLayoutX();
 			toBeSent += ":" + p.getLayoutY();
-			toBeSent += ":" + p.getAngleDegrees();
+			toBeSent += ":" + p.getAngle();
 			toBeSent += ":" + p.isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 
-//			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
-//				if (p.hasFlag()){
-//					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
-//				}
-//			}
+			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+				if (p.hasFlag()){
+					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+				}
+			}
 
-//			if (p.getScoreChanged()){
-//				updateScore();
-//				p.setScoreChanged(false);
-//			}
-//
-//			if (p.getCollisionsHandler().isFlagCaptured()){
-//				System.out.println("flag captured");
-//				sendFlagCaptured();
-//				updateScore();
-//
-//				p.getCollisionsHandler().setFlagCaptured(false);
-//			}
-//
-//			if (p.getCollisionsHandler().isFlagDropped()){
-//				updateScore();
-//				sendFlagLost();
-//				p.getCollisionsHandler().setFlagDropped(false);
-//			}
-//
-//			if (p.getCollisionsHandler().isFlagRespawned()){
-//				updateScore();
-//				sendBaseFlag();
-//				p.getCollisionsHandler().setRespawned(false);
-//			}
+			if (p.getScoreChanged()){
+				updateScore();
+				p.setScoreChanged(false);
+			}
+
+			if (p.getCollisionsHandler().isFlagCaptured()){
+				System.out.println("flag captured");
+				sendFlagCaptured();
+				updateScore();
+
+				p.getCollisionsHandler().setFlagCaptured(false);
+			}
+
+			if (p.getCollisionsHandler().isFlagDropped()){
+				updateScore();
+				sendFlagLost();
+				p.getCollisionsHandler().setFlagDropped(false);
+			}
+
+			if (p.getCollisionsHandler().isFlagRespawned()){
+				updateScore();
+				sendBaseFlag();
+				p.getCollisionsHandler().setRespawned(false);
+			}
 		}
 	}
 

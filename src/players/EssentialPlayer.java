@@ -5,6 +5,7 @@ import java.util.List;
 
 import enums.GameMode;
 import enums.TeamEnum;
+import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -59,7 +60,7 @@ public abstract class EssentialPlayer extends ImageView {
 	protected boolean shieldActive = false;
 	//========================================================
 
-	private String nickname;
+	protected String nickname;
 
 	protected boolean scoreChanged = false;
 
@@ -245,10 +246,13 @@ public abstract class EssentialPlayer extends ImageView {
 		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
 		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 
-		Bullet bullet = new Bullet(bulletCounter,bulletX, bulletY, angle, team, gameSpeed);
+		generateBullet(bulletX, bulletY, angle);
+	}
+
+	public void generateBullet(double x, double y, double angle){
+		Bullet bullet = new Bullet(bulletCounter, x, y, angle, team, gameSpeed);
 
 		firedBullets.add(bullet);
-
 		bulletCounter ++;
 	}
 
@@ -427,6 +431,10 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	public abstract void updateRotation(double angleRotation);
+
+	public Node getNameTag() {
+		return null;
+	}
 
 }
 

@@ -117,7 +117,7 @@ public class ClientInputSender {
 			toBeSent += "Shoot:";
 
 		//did the mouse move?
-		toBeSent += "Angle:" + player.getAngleRadians();
+		toBeSent += "Angle:" + player.getAngle();
 
 		udpClient.sendMessage(toBeSent);
 	}

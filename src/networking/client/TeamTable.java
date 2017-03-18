@@ -1,6 +1,8 @@
 package networking.client;
 
 import java.util.ArrayList;
+
+import players.EssentialPlayer;
 import players.GhostPlayer;
 
 /**
@@ -9,23 +11,23 @@ import players.GhostPlayer;
  * @author Matthew Walters
  */
 public class TeamTable {
-	private ArrayList<GhostPlayer> myTeam;
-	private ArrayList<GhostPlayer> enemies;
+	private ArrayList<EssentialPlayer> myTeam;
+	private ArrayList<EssentialPlayer> enemies;
 
 	/**
 	 * Set up teams.
 	 */
 	public TeamTable()
 	{
-		myTeam = new ArrayList<GhostPlayer>();
-		enemies = new ArrayList<GhostPlayer>();
+		myTeam = new ArrayList<EssentialPlayer>();
+		enemies = new ArrayList<EssentialPlayer>();
 	}
 
 	/**
 	 * Return team myTeam.
 	 * @return myTeam arraylist.
 	 */
-	public ArrayList<GhostPlayer> getMyTeam() {
+	public ArrayList<EssentialPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -33,7 +35,7 @@ public class TeamTable {
 	 * Sets contents of myTeam arraylist.
 	 * @param myTeam Representation of myTeam arraylist.
 	 */
-	public void setMyTeam(ArrayList<GhostPlayer> myTeam) {
+	public void setMyTeam(ArrayList<EssentialPlayer> myTeam) {
 		this.myTeam = myTeam;
 	}
 
@@ -41,7 +43,7 @@ public class TeamTable {
 	 * Return team enemies.
 	 * @return enemies arraylist.
 	 */
-	public ArrayList<GhostPlayer> getEnemies() {
+	public ArrayList<EssentialPlayer> getEnemies() {
 		return enemies;
 	}
 
@@ -49,7 +51,7 @@ public class TeamTable {
 	 * Sets contents of enemies arraylist.
 	 * @param enemies Representation of enemies arraylist.
 	 */
-	public void setEnemies(ArrayList<GhostPlayer> enemies) {
+	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
 		this.enemies = enemies;
 	}
 }

@@ -6,11 +6,15 @@ import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
+import physics.CollisionsHandler;
 import physics.Flag;
 import players.ClientPlayer;
+import players.EssentialPlayer;
 import players.GhostPlayer;
+import players.GhostPlayerWithColls;
 import rendering.ImageFactory;
 import rendering.Map;
+import rendering.Renderer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,8 +35,8 @@ public class ClientReceiver extends Thread {
 	private ClientSender sender;
 	private GUIManager m;
 	private ClientPlayer cPlayer;
-	private ArrayList<GhostPlayer> myTeam;
-	private ArrayList<GhostPlayer> enemies;
+	private ArrayList<EssentialPlayer> myTeam;
+	private ArrayList<EssentialPlayer> enemies;
 	private UDPClient udpClient;
 	private TeamTable teams;
 	private boolean singlePlayer;
@@ -176,13 +180,14 @@ public class ClientReceiver extends Thread {
 		else
 			map = Map.loadRaw("ctf");
 
+		CollisionsHandler collisionHandler = new CollisionsHandler(map);
 
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
-			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.RED),null, TeamEnum.RED);
+			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.RED, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
 		else
-			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, ImageFactory.getPlayerImage(TeamEnum.BLUE),null, TeamEnum.BLUE);
+			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.RED, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
 
 		cPlayer.setNickname(myNickname);
 
@@ -192,35 +197,32 @@ public class ClientReceiver extends Thread {
 			String nickname = data[i+2];
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red")){
-					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), m.getAudioManager(), TeamEnum.RED);
+					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+							TeamEnum.RED, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
 				}
-
 				else{
-					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size() + 4].x * 64, map.getSpawns()[myTeam.size() + 4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE),m.getAudioManager(),  TeamEnum.BLUE);
+					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+							TeamEnum.BLUE, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
-
 				}
 
 			} else {
 				if (clientTeam.equals("Red")){
-					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()+4].x * 64, map.getSpawns()[enemies.size()+4].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.BLUE), m.getAudioManager(), TeamEnum.BLUE);
+					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+							TeamEnum.BLUE, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
 
 				}
-
 				else{
-					GhostPlayer p = new GhostPlayer(map.getSpawns()[enemies.size()].x * 64, map.getSpawns()[enemies.size()].y * 64, id,
-							ImageFactory.getPlayerImage(TeamEnum.RED), m.getAudioManager(), TeamEnum.RED);
+					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+							TeamEnum.RED, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -352,7 +354,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<GhostPlayer> getMyTeam() {
+	public ArrayList<EssentialPlayer> getMyTeam() {
 		return myTeam;
 	}
 
@@ -363,7 +365,7 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<GhostPlayer> getEnemies() {
+	public ArrayList<EssentialPlayer> getEnemies() {
 		return enemies;
 	}
 
@@ -393,8 +395,8 @@ public class ClientReceiver extends Thread {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	public ArrayList<GhostPlayer> getAllPlayers() {
-		ArrayList<GhostPlayer> allplayers = new ArrayList<GhostPlayer>();
+	public ArrayList<EssentialPlayer> getAllPlayers() {
+		ArrayList<EssentialPlayer> allplayers = new ArrayList<EssentialPlayer>();
 		allplayers.addAll(enemies);
 		allplayers.addAll(myTeam);
 		allplayers.add(cPlayer);

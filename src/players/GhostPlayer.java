@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+import physics.Bullet;
+import physics.CollisionsHandler;
 import physics.GhostBullet;
 import rendering.ImageFactory;
 
@@ -18,8 +20,9 @@ import java.util.ArrayList;
  */
 public class GhostPlayer extends ImageView {
 
+	private static final double targetFPS = 60;
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-	private ArrayList<GhostBullet> firedBullets = new ArrayList<GhostBullet>();
+	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private int playerId;
 	private TeamEnum team;
@@ -27,10 +30,9 @@ public class GhostPlayer extends ImageView {
 	private String nickname;
 	private Label nameTag;
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
-	private long pingToServer;
-	private long pingFromServer;
+	private double gameSpeed;
 
-	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio, TeamEnum team) {
+	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio, TeamEnum team, double currentFPS) {
 		super(image);
 		setLayoutX(x);
 		setLayoutY(y);
@@ -44,8 +46,40 @@ public class GhostPlayer extends ImageView {
 		rotation.setPivotY(playerHeadY);
 		this.team = team;
 
-		this.pingFromServer = 0;
-		this.pingToServer = 0;
+		this.gameSpeed = targetFPS/currentFPS;
+	}
+
+	public void tick(){
+//		collisionsHandler.handlePropWallCollision(this);
+//		collisionsHandler.handleFlagCollision(this);
+//		if(!eliminated)
+//		{
+//			collisionsHandler.handlePowerUpCollision(this);
+//			lastX = getLayoutX();
+//			lastY = getLayoutY();
+//			lastAngle = angle;
+//			updatePosition();
+//			updateShooting();
+//			//updateAngle();
+//		}
+//		else
+//		{
+//			checkSpawn();
+//		}
+//
+//		updatePlayerBounds();
+//		updateBullets();
+//		handlePowerUp();
+//
+//		if(!invincible)
+//		{
+//			collisionsHandler.handleBulletCollision(this);
+//		}
+//		else
+//		{
+//			checkInvincibility();
+//		}
+
 	}
 
 	public void beenShot() {
@@ -53,22 +87,19 @@ public class GhostPlayer extends ImageView {
 		setVisible(false);
 	}
 
-	public ArrayList<GhostBullet> getFiredBullets() {
+	public ArrayList<Bullet> getBullets() {
 		return firedBullets;
 	}
 
-	public void updateSingleBullet(int bulletId, double x, double y){
-		for(GhostBullet firedBullet : this.firedBullets)
-		{
-			if(firedBullet.getBulletId() == bulletId)
-			{
-				firedBullet.setX(x);
-				firedBullet.setY(y);
-				return;
-			}
-		}
-		GhostBullet bullet = new GhostBullet(bulletId, x, y, team);
+	public void generateBullet(int bulletId, double x, double y, double angle){
+		Bullet bullet = new Bullet(bulletId, x, y, angle, team, gameSpeed);
 		this.firedBullets.add(bullet);
+	}
+
+	//Updates the location of the bullets
+	void updateBullets(){
+		for(Bullet firedBullet : firedBullets)
+			firedBullet.moveInDirection();
 	}
 
 	public void setRotationAngle(double angle) {
@@ -127,22 +158,6 @@ public class GhostPlayer extends ImageView {
 	public Label getNameTag()
 	{
 		return nameTag;
-	}
-
-	public long getPingToServer() {
-		return pingToServer;
-	}
-
-	public void setPingToServer(long pingToServer) {
-		this.pingToServer = pingToServer;
-	}
-
-	public long getPingFromServer() {
-		return pingFromServer;
-	}
-
-	public void setPingFromServer(long pingFromServer) {
-		this.pingFromServer = pingFromServer;
 	}
 
 }

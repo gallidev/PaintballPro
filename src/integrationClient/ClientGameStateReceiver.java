@@ -1,6 +1,7 @@
 package integrationClient;
 
 import physics.Flag;
+import players.EssentialPlayer;
 import players.GhostPlayer;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
-	private ArrayList<GhostPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 	private Flag flag;
 	private boolean debug = false;
 
@@ -26,7 +27,7 @@ public class ClientGameStateReceiver {
 	 * @param players The list of all players in the game.
 	 *
 	 */
-	public ClientGameStateReceiver(ArrayList<GhostPlayer> players) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players) {
 		this.players = players;
 	}
 
@@ -37,7 +38,7 @@ public class ClientGameStateReceiver {
 	 * @param players The list of all players in the game.
 	 * @param flag The flag of the capture the flag mode
 	 */
-	public ClientGameStateReceiver(ArrayList<GhostPlayer> players, Flag flag) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag) {
 		this.players = players;
 		this.flag = flag;
 	}
@@ -52,11 +53,14 @@ public class ClientGameStateReceiver {
 	 */
 	public void updatePlayer(int id, double x, double y, double angle, boolean visible){
 
-		GhostPlayer playerToBeUpdated = getPlayerWithId(id);
+		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
-		playerToBeUpdated.relocatePlayer(x, y);
-		playerToBeUpdated.setRotationAngle(angle);
-		playerToBeUpdated.setVisible(visible);
+		if(id == 1){
+			playerToBeUpdated.relocate(x, y);
+			playerToBeUpdated.setAngle(angle);
+			playerToBeUpdated.setVisible(visible);
+		}
+
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
@@ -66,55 +70,42 @@ public class ClientGameStateReceiver {
 	 * @param bullets String which contains the coordinates and the angle of the bullets fired by this player,
 	 * 				  according to the protocol.
 	 */
-	public void updateBullets(int id, String[] bullets){
-		GhostPlayer p = getPlayerWithId(id);
+	public void updateBullets(int id){
+		EssentialPlayer p = getPlayerWithId(id);
 
-		if (p != null) { // the player is not us
-
-//			ArrayList<GhostBullet> firedBullets = new ArrayList<>();
-			for (int i = 0; i < bullets.length - 2; i = i + 3) {
-
-				int bulletId = Integer.parseInt(bullets[i]);
-				double x = Double.parseDouble(bullets[i+1]);
-				double y = Double.parseDouble(bullets[i + 2]);
-
-//				firedBullets.add(new GhostBullet(bulletId, x, y, p.getTeam()));
-				p.updateSingleBullet(bulletId, x, y);
-
-			}
-//			p.getFiredBullets().clear();
-//			p.setFiredBullets(firedBullets);
+		if(p!= null){
+			//p.shoot();
 		}
 	}
 
 	public void updateFlag(int id){
 
-		GhostPlayer player = getPlayerWithId(id);
-		player.setFlagStatus(true);
+		EssentialPlayer player = getPlayerWithId(id);
+		player.setHasFlag(true);
 		flag.setVisible(false);
-		
+
 		System.out.println("Player " + id + " captured the flag");
 	}
-	
+
 	public void lostFlag(int id){
 
-		GhostPlayer player = getPlayerWithId(id);
-		player.setFlagStatus(false);
+		EssentialPlayer player = getPlayerWithId(id);
+		player.setHasFlag(false);
 		flag.setVisible(true);
 		flag.relocate(player.getLayoutX(), player.getLayoutY());
-		
+
 		System.out.println("Player " + id + " lost the flag");
 
 	}
-	
+
 	public void respawnFlag(int id, double x, double y){
 		flag.setVisible(true);
 		flag.relocate(x, y);
 
-		GhostPlayer player = getPlayerWithId(id);
-		player.setFlagStatus(false);
+		EssentialPlayer player = getPlayerWithId(id);
+		player.setHasFlag(false);
 		System.out.println("Flag has been respawned");
-		
+
 	}
 
 
@@ -122,8 +113,8 @@ public class ClientGameStateReceiver {
 	 * Helper method to find the player with a specific id from the entire list of players in the game.
 	 * @param id The player's id.
 	 */
-	public GhostPlayer getPlayerWithId(int id){
-		for (GhostPlayer p : players){
+	public EssentialPlayer getPlayerWithId(int id){
+		for (EssentialPlayer p : players){
 			if (p.getPlayerId() == id)
 				return p;
 		}

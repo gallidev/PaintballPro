@@ -39,6 +39,9 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
  */
 public class Renderer extends Scene
 {
+
+	public static double TARGET_FPS = 60.0;
+
 	static Pane view = new Pane();
 
 	ClientPlayer cPlayer;
@@ -144,7 +147,7 @@ public class Renderer extends Scene
 		init(mapName);
 
 		cPlayer = receiver.getClientPlayer();
-		ArrayList<GhostPlayer> players = receiver.getAllPlayers();
+		ArrayList<EssentialPlayer> players = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 		view.getChildren().addAll(receiver.getMyTeam());
 		receiver.getMyTeam().forEach(player -> view.getChildren().add(player.getNameTag()));
@@ -181,14 +184,24 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				cPlayer.tick();
-				for(GhostPlayer player : players)
+
+				for(EssentialPlayer player : players)
 				{
-					for(GhostBullet pellet : player.getFiredBullets())
+					for(Bullet pellet : player.getBullets())
 					{
-						if(!displayBullets.getChildren().contains(pellet))
-							displayBullets.getChildren().add(pellet);
+						if(pellet.isActive())
+						{
+							if(!view.getChildren().contains(pellet))
+								view.getChildren().add(view.getChildren().size() - 2, pellet);
+						}
+						else if(view.getChildren().contains(pellet))
+						{
+							if(pellet.getCollision() != null)
+								generateSpray(pellet, player.getTeam());
+							view.getChildren().remove(pellet);
+						}
 					}
+					player.tick();
 				}
 				updateView();
 			}
