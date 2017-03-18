@@ -42,6 +42,7 @@ public class CollisionsHandler
 
 	private boolean speedPowerup = false;
 	private boolean shieldPowerup = false;
+	private int playerWithShieldID;
 	
 	public CollisionsHandler(Map map)
 	{
@@ -254,6 +255,7 @@ public class CollisionsHandler
 					if (powerups[i].getType() == PowerupType.SHIELD) {
 						p.giveShield();
 						shieldPowerup = true;
+						playerWithShieldID = p.getPlayerId();
 					} else if (powerups[i].getType() == PowerupType.SPEED) {
 						p.giveSpeed();
 						speedPowerup = true;
@@ -426,6 +428,14 @@ public class CollisionsHandler
 
 	public void setShieldPowerup(boolean shieldPowerup) {
 		this.shieldPowerup = shieldPowerup;
+	}
+
+	public int getPlayerWithShieldID() {
+		return playerWithShieldID;
+	}
+
+	public void setPlayerWithShieldID(int playerWithShieldID) {
+		this.playerWithShieldID = playerWithShieldID;
 	}
 
 }

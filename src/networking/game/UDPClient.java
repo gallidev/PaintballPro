@@ -174,8 +174,11 @@ public class UDPClient extends Thread {
 					case '@' : hitWallAction(receivedPacket);
 							   break;
 					case '#' : eliminatedPlayerAction(receivedPacket);
+							   break;
 					case '$' : powerUpAction(receivedPacket);
+							   break;
 					case '%' : shieldRemovedAction(receivedPacket);
+							   break;
 				}
 
 			}
@@ -207,12 +210,14 @@ public class UDPClient extends Thread {
 
 	//use this to remove powerups from maps and change to the shield player image
 	private void powerUpAction(String receivedPacket) {
+		int id = Integer.parseInt(receivedPacket.split(":")[2]);
+		
 		switch (receivedPacket.split(":")[1])
 		{
 		case "0" : //powerup is speed 
-					System.out.println("Player took speed powerup");
+					System.out.println("Player " +id +" took speed powerup");
 					break;
-		case "1" : System.out.println("Player took shield powerup");
+		case "1" : System.out.println("Player" + id +" took shield powerup");
 				   break;
 		}
 		
@@ -428,13 +433,13 @@ public class UDPClient extends Thread {
 
 	private void pingTimeUpdate(String receivedPacket) {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
-		System.out.println("Server ping packet : " + receivedPacket);
+		//System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
 		int id = Integer.parseInt(actions[1]);
 		long ClientTime = Long.parseLong(actions[2]);
 		long ServerTime = Long.parseLong(actions[3]);
 
-		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		//System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
 
 		//GhostPlayer p = getPlayerWithID(id);

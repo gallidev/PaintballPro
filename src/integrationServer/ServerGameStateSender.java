@@ -195,18 +195,18 @@ public class ServerGameStateSender {
 			}
 			
 			if (p.getCollisionsHandler().isSpeedPowerup()){
-				sendPowerupCaptured("speed");
+				sendPowerupCaptured("speed", p.getPlayerId());
 				p.getCollisionsHandler().setSpeedPowerup(false);
 			}
 			
 			if (p.getCollisionsHandler().isShieldPowerup()){
-				sendPowerupCaptured("shield");
+				sendPowerupCaptured("shield", p.getPlayerId());
 				p.getCollisionsHandler().setShieldPowerup(false);
 			}
 			
 			if (p.getShieldRemoved()){
 				sendShieldRemoved(p);
-				p.setShieldRemoved(true);
+				p.setShieldRemoved(false);
 			}
 				
 		}
@@ -263,12 +263,12 @@ public class ServerGameStateSender {
 
 	}
 	
-	private void sendPowerupCaptured(String s){
+	private void sendPowerupCaptured(String s, int id){
 		String toBeSent = "";
 		switch(s){
-		case "speed" : toBeSent = "$:0";
+		case "speed" : toBeSent = "$:0:" + id;
 					   break;
-		case "shield": toBeSent = "$:1";
+		case "shield": toBeSent = "$:1:" + id;
 						break;
 		}
 		udpServer.sendToAll(toBeSent, lobbyId);
