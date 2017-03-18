@@ -2,8 +2,6 @@ package gui;
 
 import enums.Menu;
 import enums.TeamEnum;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -56,12 +54,11 @@ public class EndGameMenu {
         GridPane gameStatusPane = MenuControls.centreInPane(gameStatusLabel);
 
 
-        MenuOption[] set = {new MenuOption("Continue", true, new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                if (m.getClient() != null && m.getClient().getSender() != null)
-                    m.getClient().getSender().sendMessage("Exit:Game");
-                m.transitionTo(Menu.MultiplayerGameType);
-            }
+        MenuOption[] set = {new MenuOption("Continue", true, event ->
+        {
+            if (m.getClient() != null && m.getClient().getSender() != null)
+                m.getClient().getSender().sendMessage("Exit:Game");
+            m.transitionTo(Menu.MainMenu);
         })};
         GridPane options = MenuOptionSet.optionSetToGridPane(set);
 
