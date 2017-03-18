@@ -27,8 +27,6 @@ public class GUIManager {
 
     // Renderer
     public static Renderer renderer;
-    // Local server code toggle
-    private static boolean localServerCode = false;
     // Settings
     private static UserSettings user = UserSettingsManager.loadSettings();
     // Scene
@@ -85,8 +83,10 @@ public class GUIManager {
             switch (menu) {
                 case MainMenu:
                     if(renderer != null)
-                    	renderer.destroy();
-                    renderer = null;
+                    {
+                        renderer.destroy();
+                        renderer = null;
+                    }
                     if (localServer != null) {
                         localServer.interrupt();
                         localServer = null;
@@ -103,7 +103,6 @@ public class GUIManager {
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
                     break;
                 case SingleplayerGameType:
-                    //if (localServerCode) establishLocalServerConnection();
                     s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
                     break;
                 case Lobby:
@@ -120,46 +119,32 @@ public class GUIManager {
                     s.setScene(GameLobbyMenu.getScene(this, lobbyData));
                     break;
                 case EliminationSingle:
-                    if (localServerCode) {
-                    	//establishLocalServerConnection();
-
-                        c.getSender().sendMessage("Play:Mode:1");
-                        audio.startMusic(audio.music.getRandomTrack());
-                        renderer = new Renderer("elimination", c.getReceiver(), this, null);
-                        s.setScene(renderer);
-                    } else {
-                        audio.startMusic(audio.music.getRandomTrack());
-                        renderer = new Renderer("elimination", this);
-                        s.setScene(renderer);
-                    }
+                    audio.startMusic(audio.music.getRandomTrack());
+                    renderer = new Renderer("elimination", this);
+                    Platform.runLater(() ->  s.setScene(renderer));
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.getRandomTrack());
                     renderer = new Renderer("elimination", c.getReceiver(), this, null);
-                    s.setScene(renderer);
+                    Platform.runLater(() ->  s.setScene(renderer));
                     break;
                 case CTFSingle:
-                    if (localServerCode) {
-                    	establishLocalServerConnection();
-                        c.getSender().sendMessage("Play:Mode:2");
-                        audio.startMusic(audio.music.getRandomTrack());
-                        renderer = new Renderer("ctf", c.getReceiver(), this, null);
-                        s.setScene(renderer);
-                    } else {
-                        audio.startMusic(audio.music.getRandomTrack());
-                        renderer = new Renderer("ctf", this);
-                        Platform.runLater(() -> {
-                            s.setScene(renderer);
-                        });
-                    }
+                    renderer = new Renderer("ctf", this);
+                    audio.startMusic(audio.music.getRandomTrack());
+                    Platform.runLater(() ->  s.setScene(renderer));
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.getRandomTrack());
                     renderer = new Renderer("ctf", c.getReceiver(), this, (Flag) o[0]);
-                    s.setScene(renderer);
+                    Platform.runLater(() ->  s.setScene(renderer));
                     break;
                 case EndGame:
                     s.setScene(EndGameMenu.getScene(this, (String)o[0], (TeamEnum)o[1]));
+                    if(renderer != null)
+                    {
+                        renderer.destroy();
+                        renderer = null;
+                    }
                     break;
                 case Help:
                     s.setScene(HelpMenu.getScene(this));
@@ -174,30 +159,28 @@ public class GUIManager {
      * Start a local server and connect to it (for single player)
      * @return true if the connection was established
      */
+    @Deprecated
     private boolean establishLocalServerConnection() {
-        if (localServerCode) {
-            ipAddress = "127.0.0.1";
-            Server local = new Server(tcpPortNumber,ipAddress,new ServerConsole(), 0);
+        ipAddress = "127.0.0.1";
+        Server local = new Server(tcpPortNumber,ipAddress,new ServerConsole(), 0);
 
-            local.setSinglePlayer(true);
+        local.setSinglePlayer(true);
 
-            localServer = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    local.start();
-                }
-            });
-            localServer.start();
-            try {
-                Thread.sleep(1000);
-                boolean b = establishConnection();
-                Thread.sleep(1000);
-                return b;
-            } catch (Exception e) {
-                return false;
+        localServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                local.start();
             }
+        });
+        localServer.start();
+        try {
+            Thread.sleep(1000);
+            boolean b = establishConnection();
+            Thread.sleep(1000);
+            return b;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
     /**

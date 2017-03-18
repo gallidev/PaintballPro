@@ -2,15 +2,8 @@ package gui;
 
 import enums.GameLocation;
 import enums.Menu;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 /**
  * Class for the game type picker screen
@@ -30,41 +23,24 @@ public class GameTypeMenu {
 		LoadingPane sp = new LoadingPane(mainGrid);
 
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Team Match", true, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	if (loc == GameLocation.MultiplayerServer) {
+		MenuOption[] set = {new MenuOption("Team Match", true, event -> {
+			if (loc == GameLocation.MultiplayerServer) {
 					m.transitionTo(Menu.Lobby, "Elimination");
 				} else {
-					m.transitionTo(Menu.EliminationSingle);
+				sp.startLoading();
+				new Thread(() -> m.transitionTo(Menu.EliminationSingle)).start();
 				}
+			}), new MenuOption("Capture The Flag", true, event -> {
+			if (loc == GameLocation.MultiplayerServer) {
+				m.transitionTo(Menu.Lobby, "CTF");
+			} else {
+				sp.startLoading();
+				new Thread(() -> m.transitionTo(Menu.CTFSingle)).start();
 			}
-		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
-				if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo(Menu.Lobby, "CTF");
-				} else {
-
-					sp.startLoading();
-
-					Thread t = new Thread(new Runnable() {
-						@Override
-						public void run() {
-
-							m.transitionTo(Menu.CTFSingle);
-
-						}
-					});
-					t.start();
-
-				}
-
-			}
-		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	if (loc == GameLocation.MultiplayerServer)
-		    		m.exitClient();
-		    	m.transitionTo(Menu.MainMenu);
-		    }
+		}), new MenuOption("Back", false, event -> {
+			if (loc == GameLocation.MultiplayerServer)
+				m.exitClient();
+			m.transitionTo(Menu.MainMenu);
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed
