@@ -400,18 +400,18 @@ public class UDPClient extends Thread {
 		double x = Double.parseDouble(text.split(":")[1]);
 		double y = Double.parseDouble(text.split(":")[2]);
 		String colour = text.split(":")[3];
-
+		//Platform.runLater(() -> GUIManager.renderer.generateSpray(x, y, colour));
 	}
 
 	private void pingTimeUpdate(String receivedPacket) {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
-		System.out.println("Server ping packet : " + receivedPacket);
+		if(debug) System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
 		int id = Integer.parseInt(actions[1]);
 		long ClientTime = Long.parseLong(actions[2]);
 		long ServerTime = Long.parseLong(actions[3]);
 
-		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		if(debug) System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
 
 		//GhostPlayer p = getPlayerWithID(id);
