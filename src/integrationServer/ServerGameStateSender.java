@@ -1,9 +1,11 @@
 package integrationServer;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import enums.TeamEnum;
@@ -31,7 +33,7 @@ public class ServerGameStateSender {
 	private ScheduledExecutorService scheduler;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 17;
+	private long delayMilliseconds = 22;
 
 	/**
 	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby
@@ -52,6 +54,16 @@ public class ServerGameStateSender {
 	public void startSending(){
 
 		scheduler = Executors.newScheduledThreadPool(1);
+
+		ScheduledExecutorService schdExctr = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread t = Executors.defaultThreadFactory().newThread(r);
+                t.setPriority(Thread.MIN_PRIORITY);
+                return t;
+            }
+        });
+
 		Runnable sender = new Runnable() {
 		       public void run() {
 		    	   frames ++;
@@ -61,7 +73,7 @@ public class ServerGameStateSender {
 		    	   sendHitWall();
 
 		    	   sendRemainingTime();
-		    	   
+
 		    	   sendEliminatedPlayers();
 
 		    	   if(gameLoop.getGame().isGameFinished()){
@@ -169,30 +181,30 @@ public class ServerGameStateSender {
 //				}
 //			}
 
-			if (p.getScoreChanged()){
-				updateScore();
-				p.setScoreChanged(false);
-			}
-
-			if (p.getCollisionsHandler().isFlagCaptured()){
-				System.out.println("flag captured");
-				sendFlagCaptured();
-				updateScore();
-
-				p.getCollisionsHandler().setFlagCaptured(false);
-			}
-
-			if (p.getCollisionsHandler().isFlagDropped()){
-				updateScore();
-				sendFlagLost();
-				p.getCollisionsHandler().setFlagDropped(false);
-			}
-
-			if (p.getCollisionsHandler().isFlagRespawned()){
-				updateScore();
-				sendBaseFlag();
-				p.getCollisionsHandler().setRespawned(false);
-			}
+//			if (p.getScoreChanged()){
+//				updateScore();
+//				p.setScoreChanged(false);
+//			}
+//
+//			if (p.getCollisionsHandler().isFlagCaptured()){
+//				System.out.println("flag captured");
+//				sendFlagCaptured();
+//				updateScore();
+//
+//				p.getCollisionsHandler().setFlagCaptured(false);
+//			}
+//
+//			if (p.getCollisionsHandler().isFlagDropped()){
+//				updateScore();
+//				sendFlagLost();
+//				p.getCollisionsHandler().setFlagDropped(false);
+//			}
+//
+//			if (p.getCollisionsHandler().isFlagRespawned()){
+//				updateScore();
+//				sendBaseFlag();
+//				p.getCollisionsHandler().setRespawned(false);
+//			}
 		}
 	}
 

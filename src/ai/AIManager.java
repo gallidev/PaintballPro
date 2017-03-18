@@ -3,6 +3,7 @@ package ai;
 import java.util.ArrayList;
 
 import enums.TeamEnum;
+import integrationServer.ServerGameSimulation;
 import networking.server.Lobby;
 import physics.CollisionsHandler;
 import players.AIPlayer;
@@ -29,8 +30,8 @@ public class AIManager{
 
 	public void createPlayers(){
 		int currentPlayersNo = team.getMembersNo();
-		
-		
+
+
 		while (currentPlayersNo < 4){
 			int spawnLoc = 0;
 
@@ -39,14 +40,14 @@ public class AIManager{
 			else
 				spawnLoc = currentPlayersNo + 4;
 
-			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, nextId, map, team.getColour(), collissionsHandler, hashMaps, map.getGameMode());
-		
+			EssentialPlayer newPlayer = new AIPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, nextId, map, team.getColour(), collissionsHandler, hashMaps, map.getGameMode(), ServerGameSimulation.GAME_HERTZ);
+
 			System.out.println("Created AI with id " + newPlayer.getPlayerId());
 			team.addMember(newPlayer);
 			currentPlayersNo++;
 			nextId++;
 		}
-		
+
 		Lobby.setMaxId(nextId);
 
 //		ArrayList<EssentialPlayer> yourTeam = team.getMembers();

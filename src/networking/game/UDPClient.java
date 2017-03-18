@@ -407,9 +407,9 @@ public class UDPClient extends Thread {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
 		System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
-		int id = Integer.parseInt(actions[1]);
+//		int id = Integer.parseInt(actions[1]);
 		long ClientTime = Long.parseLong(actions[2]);
-		long ServerTime = Long.parseLong(actions[3]);
+//		long ServerTime = Long.parseLong(actions[3]);
 
 		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
@@ -475,7 +475,7 @@ public class UDPClient extends Thread {
 
 		//System.out.println("Player " + id + " eliminated");
 	}
-	
+
 	public boolean isActive(){
 		return active;
 	}

@@ -17,8 +17,8 @@ public class UserPlayer extends EssentialPlayer{
 	private Team myTeam;
 
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
-			CollisionsHandler collisionsHandler, Image image, GameMode game) {
-		super(x, y, id, spawn, team, collisionsHandler, image, game);
+			CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS) {
+		super(x, y, id, spawn, team, collisionsHandler, image, game, currentFPS);
 	}
 
 	public void tick()

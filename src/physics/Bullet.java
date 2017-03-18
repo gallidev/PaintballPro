@@ -11,14 +11,14 @@ import javafx.scene.shape.Rectangle;
 
 public class Bullet extends Circle
 {
-	private static final float speed = 10f;
+	private double speed = 10f;
 	private double angle;
 	private double x, y;
 	private double originX, originY;
 	private boolean active;
 	private int id;
 	private Rectangle collision;
-	
+
 	private TeamEnum colour;
 
 	/**
@@ -29,7 +29,7 @@ public class Bullet extends Circle
 	 * @param angle The angle at which the bullet will travel
 	 */
 
-	public Bullet(int id, double x, double y, double angle, TeamEnum team) {
+	public Bullet(int id, double x, double y, double angle, TeamEnum team, double gameSpeed) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -41,7 +41,8 @@ public class Bullet extends Circle
 		setCenterY(y);
 		setRadius(3);
 		setFill(team == TeamEnum.RED ? Color.RED : Color.BLUE);
-		
+
+		this.speed = this.speed * gameSpeed;
 		this.colour = team;
 	}
 
@@ -112,7 +113,7 @@ public class Bullet extends Circle
 	{
 		return collision;
 	}
-	
+
 	public TeamEnum getColour(){
 		return colour;
 	}

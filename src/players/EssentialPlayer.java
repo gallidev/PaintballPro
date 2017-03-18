@@ -22,9 +22,10 @@ import serverLogic.Team;
  */
 public abstract class EssentialPlayer extends ImageView {
 
+	private static final double targetFPS = 60;
 	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
-	static final long SHOOT_DELAY = 450;
-	private static final long SPAWN_DELAY = 2000;
+	protected long SHOOT_DELAY = 450;
+	protected long SPAWN_DELAY = 2000;
 	protected Rotate rotation, boundRotation;
 	protected int id;
 	protected TeamEnum team;
@@ -43,6 +44,8 @@ public abstract class EssentialPlayer extends ImageView {
 	protected GameMode gameMode;
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 	protected double movementSpeed = 2.5;
+	protected double gameSpeed;
+
 
 	//===================Power-up stats=======================
 	//Base movement speed = 2.5
@@ -57,7 +60,7 @@ public abstract class EssentialPlayer extends ImageView {
 	//========================================================
 
 	private String nickname;
-	
+
 	protected boolean scoreChanged = false;
 
 	/**
@@ -69,7 +72,7 @@ public abstract class EssentialPlayer extends ImageView {
 	 * @param image
 	 *
 	 */
-	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image, GameMode game){
+	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS){
 		super(image);
 		this.angle = 0;
 		setLayoutX(x);
@@ -95,7 +98,10 @@ public abstract class EssentialPlayer extends ImageView {
 		boundRotation.setPivotY(PLAYER_HEAD_Y);
 		updatePlayerBounds();
 		bulletCounter = 1;
-		
+		this.gameSpeed = targetFPS/currentFPS;
+		this.movementSpeed = this.movementSpeed * gameSpeed;
+		this.SPAWN_DELAY = this.SPAWN_DELAY * (long) gameSpeed;
+		this.SHOOT_DELAY = this.SHOOT_DELAY * (long) gameSpeed;
 		gameMode = game;
 	}
 
@@ -239,7 +245,7 @@ public abstract class EssentialPlayer extends ImageView {
 		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
 		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 
-		Bullet bullet = new Bullet(bulletCounter,bulletX, bulletY, angle, team);
+		Bullet bullet = new Bullet(bulletCounter,bulletX, bulletY, angle, team, gameSpeed);
 
 		firedBullets.add(bullet);
 
@@ -303,13 +309,6 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public int getPlayerId(){
 		return id;
-	}
-
-	public synchronized void setMouseX(int newX) {
-		mouseX = newX;
-	}
-	public synchronized void setMouseY(int newY){
-		mouseY = newY;
 	}
 
 	public boolean hasFlag()
@@ -384,11 +383,11 @@ public abstract class EssentialPlayer extends ImageView {
 	public CollisionsHandler getCollisionsHandler(){
 		return collisionsHandler;
 	}
-	
+
 	public void setScoreChanged(boolean b){
 		scoreChanged  = b;
 	}
-	
+
 	public boolean getScoreChanged(){
 		return scoreChanged;
 	}
@@ -426,6 +425,8 @@ public abstract class EssentialPlayer extends ImageView {
 	public boolean getSpeedActive(){
 		return this.speedActive;
 	}
+
+	public abstract void updateRotation(double angleRotation);
 
 }
 
