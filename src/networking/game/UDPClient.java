@@ -176,7 +176,6 @@ public class UDPClient extends Thread {
 					case '#' : eliminatedPlayerAction(receivedPacket);
 					case '$' : powerUpAction(receivedPacket);
 					case '%' : shieldRemovedAction(receivedPacket);
-
 				}
 
 			}
@@ -429,13 +428,13 @@ public class UDPClient extends Thread {
 
 	private void pingTimeUpdate(String receivedPacket) {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
-		//System.out.println("Server ping packet : " + receivedPacket);
+		System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
 		int id = Integer.parseInt(actions[1]);
 		long ClientTime = Long.parseLong(actions[2]);
 		long ServerTime = Long.parseLong(actions[3]);
 
-		//System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 
 
 		//GhostPlayer p = getPlayerWithID(id);

@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import logic.GameMode;
 import networking.client.ClientReceiver;
 import physics.*;
@@ -110,7 +111,7 @@ public class Renderer extends Scene
 						else if(view.getChildren().contains(pellet))
 						{
 							if(pellet.getCollision() != null)
-								generateSpray(pellet, player.getTeam());
+								generateSpray(pellet);
 							view.getChildren().remove(pellet);
 						}
 					}
@@ -279,7 +280,7 @@ public class Renderer extends Scene
 		HeadUpDisplay.view = new BorderPane();
 	}
 
-	private void generateSpray(Bullet pellet, TeamEnum team)
+	private void generateSpray(Bullet pellet)
 	{
 		WritableImage paint = new WritableImage(64, 64);
 		PixelWriter pixelWriter = paint.getPixelWriter();
@@ -289,12 +290,42 @@ public class Renderer extends Scene
 		{
 			for(int j = 1; j < 63; j++)
 				if(random.nextDouble() < probability)
-					pixelWriter.setArgb(i, j, (team == TeamEnum.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
+					pixelWriter.setArgb(i, j, (pellet.getColour() == TeamEnum.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
 		}
 		ImageView imageView = new ImageView(paint);
 		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
 		imageView.setCache(true);
 		view.getChildren().add(paintIndex, imageView);
+	}
+
+	public void generateSpray(double x, double y, String colour)
+	{
+		Rectangle collision = null;
+		for(Rectangle rec : map.getRecWalls())
+		{
+			if(rec.getX() == x && rec.getY() == y)
+			{
+				collision = rec;
+				break;
+			}
+		}
+		if(collision == null)
+		{
+			for(Rectangle rec : map.getRecProps())
+			{
+				if(rec.getX() == x && rec.getY() == y)
+				{
+					collision = rec;
+					break;
+				}
+			}
+		}
+		if(collision != null)
+		{
+			Bullet pellet = new Bullet(0, x, y, 0, colour.equals("red") ? TeamEnum.RED : TeamEnum.BLUE);
+			pellet.disable(collision);
+			generateSpray(pellet);
+		}
 	}
 
 	private void init(String mapName)
@@ -303,9 +334,8 @@ public class Renderer extends Scene
 		setCursor(Cursor.CROSSHAIR);
 		view.setStyle("-fx-background-color: black;");
 		view.getStylesheets().add("styles/menu.css");
-		String[] resolution = GUIManager.getUserSettings().getResolution().split("x");
-		view.setScaleX(Double.parseDouble(resolution[0]) / 1024);
-		view.setScaleY(Double.parseDouble(resolution[1]) / 576);
+		view.setScaleX(guiManager.width / 1024);
+		view.setScaleY(guiManager.height / 576);
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
@@ -318,7 +348,7 @@ public class Renderer extends Scene
 
 		view.setLayoutX(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX());
 		view.setLayoutY(((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
-		hud.relocate((playerLayoutX - getWidth() / 2), (playerLayoutY - getHeight() / 2));
+		hud.relocate((playerLayoutX + PLAYER_HEAD_X - getWidth() / 2) * hud.getScaleX(), (playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2) * hud.getScaleY());
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);

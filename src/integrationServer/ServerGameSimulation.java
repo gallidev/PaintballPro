@@ -1,14 +1,14 @@
 package integrationServer;
 
+import logic.GameMode;
+import players.EssentialPlayer;
+import serverLogic.Team;
+
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import logic.GameMode;
-import players.EssentialPlayer;
-import serverLogic.Team;
 
 /**
  * Class that represents a simulation of the enitre game logic, running on the server.
@@ -17,11 +17,10 @@ import serverLogic.Team;
  */
 public class ServerGameSimulation {
 
+	private static final long delayMilliseconds = 17;
 	private Team redTeam;
 	private Team blueTeam;
 	private GameMode game;
-
-	private long delayMilliseconds = 17;
 	private int frames = 0;
 
 	private boolean debug = false;

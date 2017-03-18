@@ -1,5 +1,6 @@
 package integrationClient;
 
+import javafx.application.Platform;
 import physics.Flag;
 import players.GhostPlayer;
 
@@ -14,9 +15,9 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
+	private static final boolean debug = false;
 	private ArrayList<GhostPlayer> players;
 	private Flag flag;
-	private boolean debug = false;
 
 
 	/**
@@ -54,9 +55,12 @@ public class ClientGameStateReceiver {
 
 		GhostPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
-		playerToBeUpdated.relocatePlayer(x, y);
-		playerToBeUpdated.setRotationAngle(angle);
-		playerToBeUpdated.setVisible(visible);
+		Platform.runLater(() ->
+		{
+			playerToBeUpdated.relocatePlayer(x, y);
+			playerToBeUpdated.setRotationAngle(angle);
+			playerToBeUpdated.setVisible(visible);
+		});
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
@@ -79,7 +83,7 @@ public class ClientGameStateReceiver {
 				double y = Double.parseDouble(bullets[i + 2]);
 
 //				firedBullets.add(new GhostBullet(bulletId, x, y, p.getTeam()));
-				p.updateSingleBullet(bulletId, x, y);
+				Platform.runLater(() -> p.updateSingleBullet(bulletId, x, y));
 
 			}
 //			p.getFiredBullets().clear();
