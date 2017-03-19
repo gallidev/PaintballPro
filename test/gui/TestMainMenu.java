@@ -10,16 +10,23 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by jack on 01/03/2017.
+ * Tests for the main menu
  */
 public class TestMainMenu {
 
+    /**
+     * Create the JavaFX Application Thread
+     * @throws Exception test failed
+     */
     @Before
     public void setUp() throws Exception {
-        // Setup JavaFX
         JavaFXTestHelper.setupApplication();
     }
 
+    /**
+     * Test for selecting singleplayer
+     * @throws Exception test failed
+     */
     @Test
     public void singleButton() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
@@ -30,6 +37,10 @@ public class TestMainMenu {
         assertTrue(m.currentMenu == Menu.SingleplayerGameType);
     }
 
+    /**
+     * Test for selecting multiplayer
+     * @throws Exception test failed
+     */
     @Test
     public void multiButton() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
@@ -40,6 +51,10 @@ public class TestMainMenu {
         assertTrue(m.currentMenu == Menu.NicknameServerConnection);
     }
 
+    /**
+     * Test for selecting settings
+     * @throws Exception test failed
+     */
     @Test
     public void settingsButton() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
@@ -50,6 +65,10 @@ public class TestMainMenu {
         assertTrue(m.currentMenu == Menu.Settings);
     }
 
+    /**
+     * Test for selecting the help menu
+     * @throws Exception test failed
+     */
     @Test
     public void helpButton() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();

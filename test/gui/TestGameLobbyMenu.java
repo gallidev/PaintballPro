@@ -12,15 +12,23 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by jack on 07/03/2017.
+ * Tests for the game lobby menu
  */
 public class TestGameLobbyMenu {
 
+    /**
+     * Setup the JavaFX thread
+     * @throws Exception test failed
+     */
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
     }
 
+    /**
+     * Test that the scene is created correctly
+     * @throws Exception test failed
+     */
     @Test
     public void getScene() throws Exception {
         GUIManager g = new GUIManager();
@@ -34,6 +42,13 @@ public class TestGameLobbyMenu {
         assertTrue(firstRow.getBlueName().equals("bluePlayer"));
 
         assertTrue(table.getItems().size() == 1);
+
+        g.setTimerStarted();
+        g.setTimeLeft(5);
+
+        Thread.sleep(1000);
+
+        g.setTimeLeft(4);
     }
 
 }

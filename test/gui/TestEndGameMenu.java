@@ -10,15 +10,20 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by jack on 02/03/2017.
+ * Tests for the end game menu
  */
 public class TestEndGameMenu {
+
+    /**
+     * Test the end game menu
+     * @throws Exception test failed
+     */
     @Test
     public void getScene() throws Exception {
         JavaFXTestHelper.setupApplication();
 
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = EndGameMenu.getScene(m, "1,0", TeamEnum.BLUE);
+        Scene s = EndGameMenu.getScene(m, "1:0", TeamEnum.BLUE);
         m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Continue", s.getRoot()).fire();
         Thread.sleep(2000);

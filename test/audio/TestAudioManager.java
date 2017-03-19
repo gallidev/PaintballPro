@@ -6,8 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import audio.AudioManager;
-import audio.SFXResources;
 import gui.GUIManager;
 import gui.UserSettings;
 import helpers.JavaFXTestHelper;

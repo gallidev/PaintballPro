@@ -11,15 +11,23 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by jack on 17/03/2017.
+ * Tests for the Help Menu
  */
 public class TestHelpMenu {
 
+    /**
+     * Create the JavaFX Application Thread
+     * @throws Exception test failed
+     */
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
     }
 
+    /**
+     * Test for the scene being correctly created, and for the back button
+     * @throws Exception
+     */
     @Test
     public void getScene() throws Exception {
         GUIManagerTestHelper g = new GUIManagerTestHelper();
