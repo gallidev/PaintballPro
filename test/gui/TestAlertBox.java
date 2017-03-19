@@ -34,7 +34,7 @@ public class TestAlertBox {
             ab.dismissAlert();
         });
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
     }
 

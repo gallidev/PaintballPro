@@ -35,8 +35,8 @@ public class AlertBox {
      * Dismiss the alert
      */
     public void dismissAlert() {
-        if (alert != null)
-            alert.hide();
+        if (alert != null && alert.isShowing())
+            alert.close();
     }
 
 }
