@@ -35,8 +35,8 @@ public class TestHelpMenu {
         Platform.runLater(() -> {
 
             Scene s = HelpMenu.getScene(g);
-
             GUIManagerTestHelper.findButtonByTextInParent("Back", s.getRoot()).fire();
+            System.out.println("Pressed!");
 
         });
         Thread.sleep(5000);

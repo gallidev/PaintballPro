@@ -18,23 +18,15 @@ public class TestAlertBox {
         JavaFXTestHelper.setupApplication();
 
         Platform.runLater(() -> {
-            AlertBox ab = new AlertBox("Example Alert", "Testing");
+            AlertBox ab = new AlertBox("Example Alert", "Testing - Press OK");
             (new Thread(() -> {
                 Platform.runLater(() -> {
-                    ab.showAlert();
+                    ab.showAlert(false);
                 });
             })).start();
-
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                throw new RuntimeException("Thread could not sleep");
-            }
-
-            ab.dismissAlert();
         });
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
     }
 

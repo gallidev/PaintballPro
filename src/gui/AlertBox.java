@@ -9,7 +9,7 @@ public class AlertBox {
 
     private String title;
     private String message;
-    protected Alert alert;
+    private Alert alert;
 
     /**
      * Construct a new alert box
@@ -25,10 +25,21 @@ public class AlertBox {
      * Show the alert
      */
     public void showAlert() {
+        showAlert(true);
+    }
+
+    /**
+     * Show the alert
+     * @param blocking true if the GUI should wait for the alert to be dimissed
+     */
+    public void showAlert(boolean blocking) {
         alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setContentText(message);
-        alert.showAndWait();
+        if (blocking)
+            alert.showAndWait();
+        else
+            alert.show();
     }
 
     /**
