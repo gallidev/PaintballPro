@@ -31,6 +31,7 @@ public class TestHelpMenu {
     @Test
     public void getScene() throws Exception {
         GUIManagerTestHelper g = new GUIManagerTestHelper();
+        g.currentMenu = Menu.Help;
         Platform.runLater(() -> {
 
             Scene s = HelpMenu.getScene(g);
@@ -38,7 +39,7 @@ public class TestHelpMenu {
             GUIManagerTestHelper.findButtonByTextInParent("Back", s.getRoot()).fire();
 
         });
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         assertTrue(g.currentMenu == Menu.MainMenu);
 
 

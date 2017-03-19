@@ -45,7 +45,7 @@ public class Server extends Thread {
 		} catch (UnknownHostException e) {
 			if(testing == 0) 
 			{
-				AlertBox.showAlert("Connection Failed","Unknown host.");
+				(new AlertBox("Connection Failed","Unknown host.")).showAlert();
 				System.exit(1);
 			}
 			else
@@ -138,7 +138,7 @@ public class Server extends Thread {
 				} catch (IOException e) {
 					if(testing == 0) 
 					{
-						AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
+						(new AlertBox("Connection Failed","Couldn't listen on port "+portNumber)).showAlert();
 						System.exit(1);
 					}
 					else
@@ -157,8 +157,9 @@ public class Server extends Thread {
 				Platform.runLater(new Runnable() {
 		            @Override
 		            public void run() {
-		        		AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
-						System.exit(1);		            }
+						(new AlertBox("Connection Failed","Couldn't listen on port "+portNumber)).showAlert();
+						System.exit(1);
+		            }
 		        });
 		
 			}

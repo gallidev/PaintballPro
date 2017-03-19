@@ -36,7 +36,7 @@ public class HelpMenu {
             String content = new String(Files.readAllBytes(Paths.get("res/help.html")));
             webView.getEngine().loadContent(content);
         } catch (IOException e) {
-            AlertBox.showAlert("Help Missing", "Could not load help document");
+            (new AlertBox("Help Missing", "Could not load help document")).showAlert();
         }
 
         // Create a array of options for the cancel and apply buttons

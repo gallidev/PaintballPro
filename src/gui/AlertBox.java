@@ -3,19 +3,40 @@ package gui;
 import javafx.scene.control.Alert;
 
 /**
- * Helper class for showing alert/warning boxes
+ * Class for showing alert/warning boxes
  */
 public class AlertBox {
 
+    private String title;
+    private String message;
+    protected Alert alert;
+
     /**
-     * Show an alert
-     * @param title title of alert
-     * @param message message of alert
+     * Construct a new alert box
+     * @param title title of alert box
+     * @param message message of alert box
      */
-    public static void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public AlertBox(String title, String message) {
+        this.title = title;
+        this.message = message;
+    }
+
+    /**
+     * Show the alert
+     */
+    public void showAlert() {
+        alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    /**
+     * Dismiss the alert
+     */
+    public void dismissAlert() {
+        if (alert != null)
+            alert.hide();
+    }
+
 }

@@ -107,7 +107,7 @@ public class NicknameServerSelectMenu {
                     if (ipPort.equals("")) {
                         // Could not find a LAN server
                         Platform.runLater(() -> {
-                            AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+                            (new AlertBox("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.")).showAlert();
                             loadingPane.stopLoading();
                         });
                     } else {
@@ -117,7 +117,7 @@ public class NicknameServerSelectMenu {
                             if (guiManager.establishConnection())
                                 guiManager.transitionTo(Menu.MultiplayerGameType);
                             else {
-                                AlertBox.showAlert("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.");
+                                (new AlertBox("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.")).showAlert();
                                 loadingPane.stopLoading();
                             }
                         });
