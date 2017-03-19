@@ -4,48 +4,52 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-
 import static java.lang.Thread.sleep;
 
 /**
- * Created by jack on 16/03/2017.
+ * Class containing a thread to get updates for the lobby
  */
 public class GameLobbyChecker implements Runnable {
-    public boolean threadRunning = true;
-    private GUIManager m;
-    private Label timeLabel;
-    private StackPane sp;
-    private GridPane mainGrid;
-    private GridPane loadingGrid;
 
-    public GameLobbyChecker(GUIManager m, Label timeLabel, StackPane sp, GridPane mainGrid, GridPane loadingGrid) {
-        this.m = m;
+    public boolean threadRunning = true;
+    private GUIManager guiManager;
+    private Label timeLabel;
+    private LoadingPane loadingPane;
+
+    /**
+     * Constructor for the lobby checker
+     * @param guiManager GUIManager to use to fetch lobby updates
+     * @param timeLabel label containing the time left in the game
+     * @param loadingPane loading pane containing the main view and loading spinner view
+     */
+    public GameLobbyChecker(GUIManager guiManager, Label timeLabel, LoadingPane loadingPane) {
+        this.guiManager = guiManager;
         this.timeLabel = timeLabel;
-        this.sp = sp;
-        this.mainGrid = mainGrid;
-        this.loadingGrid = loadingGrid;
     }
 
+    /**
+     * Method to run the lobby checking
+     */
     @Override
     public void run() {
         while (threadRunning) {
             try {
-                if (m.isTimerStarted()) {
+                if (guiManager.isTimerStarted()) {
                     Platform.runLater(() -> {
-                        timeLabel.setText("Game starting in " + m.getTimeLeft() + " second(s)...");
+                        timeLabel.setText("Game starting in " + guiManager.getTimeLeft() + " second(s)...");
                     });
-                    if (m.getTimeLeft() <= 1) {
+                    if (guiManager.getTimeLeft() <= 1) {
+                        // Game starting soon, so show the loading view
                         Platform.runLater(() -> {
-                            sp.getChildren().remove(mainGrid);
-                            sp.getChildren().addAll(loadingGrid);
+                            loadingPane.startLoading();
                         });
                         threadRunning = false;
                     } else {
-                        m.fetchLobbyUpdates();
+                        guiManager.fetchLobbyUpdates();
                     }
                     sleep(100);
                 } else {
-                    m.fetchLobbyUpdates();
+                    guiManager.fetchLobbyUpdates();
                     sleep(1000);
                 }
             } catch (InterruptedException e) {

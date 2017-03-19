@@ -1,9 +1,11 @@
 package gui;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+
 /**
  * Helper methods for loading and saving user settings
  */
@@ -15,7 +17,7 @@ public class UserSettingsManager {
 	 */
 	public static UserSettings loadSettings() {
 		// Run load settings with a counter of 0
-		// This should prevent infinite loops from occurring
+		// This will prevent infinite loops from occurring
 		return loadSettings(0);
 	}
 	

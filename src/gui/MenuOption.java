@@ -7,14 +7,16 @@ import javafx.event.ActionEvent;
  * Class to hold data about a menu option (e.g. button)
  */
 public class MenuOption {
-	String name;
-	EventHandler<ActionEvent> handler;
-	boolean primary;
+
+	private String name;
+	private EventHandler<ActionEvent> handler;
+	private boolean primary;
 	
 	/**
 	 * Create a menu option, with a given name and event handler
-	 * @param name
-	 * @param handler
+	 * @param name name of menu option
+	 * @param primary is the option a primary action for the menu
+	 * @param handler event handler for the menu option
 	 */
 	public MenuOption(String name, boolean primary, EventHandler<ActionEvent> handler) {
 		super();
@@ -39,6 +41,10 @@ public class MenuOption {
 		return handler;
 	}
 
+	/**
+	 * Method to return true if the option is a primary action for the menu
+	 * @return true if primary action
+	 */
 	public boolean isPrimary() {
 		return primary;
 	}

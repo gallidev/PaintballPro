@@ -11,7 +11,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 
@@ -22,10 +21,10 @@ public class SettingsMenu {
 
 	/**
 	 * Create and return a settings menu scene for a given GUI manager
-	 * @param m GUI manager to use
+	 * @param guiManager GUI manager to use
 	 * @return scene for the settings menu
 	 */
-	public static Scene getScene(GUIManager m) {
+	public static Scene getScene(GUIManager guiManager) {
 		// Obtain the user's settings
 		UserSettings s = GUIManager.getUserSettings();
 		
@@ -59,7 +58,7 @@ public class SettingsMenu {
 			@Override
 			public void handle(InputEvent event) {
 				s.setMusicVolume((int) musicSlider.getValue());
-				m.notifySettingsObservers();
+				guiManager.notifySettingsObservers();
 			}
 		});
 		
@@ -79,7 +78,7 @@ public class SettingsMenu {
 			@Override
 			public void handle(InputEvent event) {
 				s.setSfxVolume((int) sfxSlider.getValue());
-				m.notifySettingsObservers();
+				guiManager.notifySettingsObservers();
 			}
 		});
 		
@@ -92,17 +91,18 @@ public class SettingsMenu {
 			@Override
 			public void handle(InputEvent event) {
 				s.setShading(shadingCheckbox.isSelected());
-				m.notifySettingsObservers();
+				guiManager.notifySettingsObservers();
 			}
 		});
 
+		// Create the resolution label and combo box
 		Label resolutionLabel = new Label("Resolution");
 
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		ComboBox<String> resolutionComboBox = new ComboBox<>();
-		int i = 0;
 		boolean found = false;
-		for (String res: UserSettings.possibleResolutions) {
+		for (int i = 0; i < UserSettings.possibleResolutions.length; i++) {
+			String res = UserSettings.possibleResolutions[i];
 			try {
 				String[] components = res.split("x");
 				if (Integer.parseInt(components[0]) <= primaryScreenBounds.getWidth() && Integer.parseInt(components[1]) <= primaryScreenBounds.getHeight()) {
@@ -111,24 +111,20 @@ public class SettingsMenu {
 						resolutionComboBox.getSelectionModel().select(i);
 						found = true;
 					}
-					i++;
 				}
 			} catch (NumberFormatException e) {
-
+				// The resolution could not be converted to integers, this should not happen under normal use
 			}
 		}
 		if (!found) {
 			resolutionComboBox.getSelectionModel().select("1024x576");
 		}
-		resolutionComboBox.valueProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		resolutionComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 				s.setResolution(newValue);
 				String[] resolution = newValue.split("x");
-				m.getStage().setWidth(Double.parseDouble(resolution[0]));
-				m.getStage().setHeight(Double.parseDouble(resolution[1]));
-				m.getStage().centerOnScreen();
-			}
+				guiManager.getStage().setWidth(Double.parseDouble(resolution[0]));
+				guiManager.getStage().setHeight(Double.parseDouble(resolution[1]));
+				guiManager.getStage().centerOnScreen();
 		});
 
 		
@@ -146,7 +142,7 @@ public class SettingsMenu {
 		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent event) {
 		    	// Transition back to the main menu
-		    	m.transitionTo(Menu.MainMenu);
+				guiManager.transitionTo(Menu.MainMenu);
 		    }     
 		})};
 		// Turn the array into a grid pane
@@ -157,10 +153,6 @@ public class SettingsMenu {
 		mainGrid.add(buttonGrid, 0, 1);
 		
 		// Create a new scene using the main grid
-		m.addButtonHoverSounds(mainGrid);
-		Scene scene = new Scene(mainGrid, m.width, m.height);
-		scene.getStylesheets().add("styles/menu.css");
-		scene.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
-		return scene;
+		return guiManager.createScene(mainGrid);
 	}
 }

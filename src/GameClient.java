@@ -4,25 +4,33 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-// Ensure res is part of Build Path folder and gson-2.8.0.jar is part of References Libraries before running.
-
+/**
+ * Class for running a game client
+ */
 public class GameClient extends Application {
-	GUIManager m = new GUIManager();
+	private GUIManager guiManager = new GUIManager();
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-//always run the server first!!
-	//for testing use ports  9878 first and then 9879 and make sure you close the server first
-
+	/**
+	 * Start the application
+	 * @param stage the primary stage to use for the GUI
+	 * @throws Exception exception when creating the application
+	 */
 	@Override
 	public void start(Stage stage) throws Exception{
-		m.udpPortNumber = 9879;
+		guiManager.udpPortNumber = 9879;
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 16);
 		Font.loadFont(getClass().getResourceAsStream("styles/fonts/roboto-slab/RobotoSlab-Regular.ttf"), 32);
 		stage.getIcons().addAll(new Image("assets/icon_dock.png"), new Image("assets/icon_32.png"), new Image("assets/icon_16.png"));
-		m.setStage(stage);
+		guiManager.setStage(stage);
 		stage.setResizable(false);
 		stage.setOnCloseRequest(event -> System.exit(0));
+	}
+
+	/**
+	 * Main method for starting the server
+	 * @param args command line arguments
+	 */
+	public static void main(String[] args) {
+		launch(args);
 	}
 }

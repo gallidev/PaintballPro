@@ -21,23 +21,23 @@ public class MenuControls {
 
 	/**
 	 * Method to centre a node in a GridPane cell
-	 * @param n node to centre
+	 * @param node node to centre
 	 * @param padding padding for pane
 	 * @return GridPane that should be placed where the node needs to be
 	 */
-	public static GridPane centreInPane(Node n, Insets padding) {
+	public static GridPane centreInPane(Node node, Insets padding) {
 		// Create a new grid pane
-		GridPane g = new GridPane();
+		GridPane gridPane = new GridPane();
 		// Centre the grid pane in its parent
-		g.setAlignment(Pos.CENTER);
+		gridPane.setAlignment(Pos.CENTER);
 		// Add padding
-		g.setHgap(10);
-		g.setVgap(10);
-		g.setPadding(padding);
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
+		gridPane.setPadding(padding);
 		// Add the node into the grid pane
-		g.add(n, 0, 0);
+		gridPane.add(node, 0, 0);
 		// Return the grid pane
-		return g;
+		return gridPane;
 	}
 	
 }

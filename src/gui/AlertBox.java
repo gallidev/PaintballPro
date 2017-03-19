@@ -3,7 +3,7 @@ package gui;
 import javafx.scene.control.Alert;
 
 /**
- * Helper class for alert/warning boxes
+ * Helper class for showing alert/warning boxes
  */
 public class AlertBox {
 

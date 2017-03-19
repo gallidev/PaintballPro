@@ -13,23 +13,28 @@ import javafx.scene.layout.GridPane;
 import networking.discoveryNew.IPAddress;
 import networking.server.Server;
 
+import java.util.ArrayList;
+
 /**
  * Server GUI scene class
  */
-public class ServerGUI extends Scene implements ServerView {
+public class ServerGUI extends Scene {
 
     static GridPane view = new GridPane();
-    static LoadingPane sp = new LoadingPane(ServerGUI.view);
+    static LoadingPane loadingPane = new LoadingPane(ServerGUI.view);
 
-    private String messages = "";
+    private ArrayList<String> messages = new ArrayList<>();
     private TextArea textArea;
     private Server server;
     private Thread discovery;
 
+    /**
+     * Create the server GUI scene
+     */
     public ServerGUI() {
-        super(sp, 1024, 576);
+        super(loadingPane, 1024, 576);
 
-        sp.startLoading();
+        loadingPane.startLoading();
 
         view.setAlignment(Pos.CENTER);
         view.setHgap(10);
@@ -67,16 +72,15 @@ public class ServerGUI extends Scene implements ServerView {
     }
 
     public void addMessage(String message) {
-        System.out.println("Test: " + message);
-        messages += message + "\n";
-        textArea.setText(messages);
+        messages.add(message);
+        textArea.setText(String.join("\n", messages));
     }
 
     public void setServer(Server server, Thread discovery) {
         this.server = server;
         this.discovery = discovery;
         Platform.runLater(() -> {
-            sp.stopLoading();
+            loadingPane.stopLoading();
         });
     }
 

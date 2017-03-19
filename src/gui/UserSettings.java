@@ -79,12 +79,20 @@ public class UserSettings {
 		UserSettingsManager.saveSettings(this);
 	}
 
-
+	/**
+	 * Get the user's resolution option
+	 * @return chosen resolution
+	 */
 	public String getResolution() {
 		return resolution;
 	}
 
+	/**
+	 * Set the resolution for the user
+	 * @param resolution chosen resolution
+	 */
 	public void setResolution(String resolution) {
+		// Check to see if the chosen resolution is a valid option
 		for (String res: possibleResolutions) {
 			if (resolution.equals(res)) {
 				this.resolution = resolution;

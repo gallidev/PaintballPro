@@ -4,14 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.BindException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import gui.AlertBox;
-import gui.ServerView;
+import gui.ServerGUI;
 import javafx.application.Platform;
 import networking.game.UDPServer;
 import networking.shared.Message;
@@ -32,11 +31,11 @@ public class Server extends Thread {
 	
 	private int portNumber;
 	private InetAddress listenAddress;
-	private ServerView gui;
+	private ServerGUI gui;
 	private ServerExitListener exitListener;
 	private int testing = 0;
 	
-	public Server(int portNumber, String host, ServerView gui, int testing)
+	public Server(int portNumber, String host, ServerGUI gui, int testing)
 	{
 		this.testing = testing;
 		try {

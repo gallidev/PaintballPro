@@ -11,19 +11,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 /**
- * Main Menu scene class
+ * Class containing the Main Menu scene
  */
 public class MainMenu {
 
 	/**
 	 * Return a main menu scene for a given GUI manager
-	 * @param m GUI manager to use
+	 * @param guiManager GUI manager to use
 	 * @return main menu scene
 	 */
-	public static Scene getScene(GUIManager m) {
-
-//		JOptionPane.showMessageDialog(null, "Cannot find any LAN servers running.", "No LAN server.", JOptionPane.ERROR_MESSAGE);
-
+	public static Scene getScene(GUIManager guiManager) {
 		Image i = new Image("assets/paintballlogo.png");
 		ImageView iv = new ImageView(i);
 		iv.setId("logo");
@@ -31,24 +28,10 @@ public class MainMenu {
 		iv.setFitWidth(400);
 		
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Single Player", true, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.SingleplayerGameType);
-		    }
-		}), new MenuOption("Multiplayer", true, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.NicknameServerConnection);
-		    }
-		}), new MenuOption("Settings", false, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	m.transitionTo(Menu.Settings);
-		    }
-		}), new MenuOption("Help", false, new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				m.transitionTo(Menu.Help);
-			}
-		})};
+		MenuOption[] set = {new MenuOption("Single Player", true, (event) -> guiManager.transitionTo(Menu.SingleplayerGameType)),
+				new MenuOption("Multiplayer", true, (event) -> guiManager.transitionTo(Menu.NicknameServerConnection)),
+				new MenuOption("Settings", false, (event) -> guiManager.transitionTo(Menu.Settings)),
+				new MenuOption("Help", false, (event) -> guiManager.transitionTo(Menu.Help) )};
 		
 		// Turn the collection of button options into a GridPane to be displayed
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
@@ -63,10 +46,6 @@ public class MainMenu {
 		view.add(grid, 0, 1);
 
 		// Create the scene and return it
-		m.addButtonHoverSounds(view);
-		Scene s = new Scene(view, m.width, m.height);
-		s.getStylesheets().add("styles/menu.css");
-		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
-		return s;
+		return guiManager.createScene(view);
 	}
 }
