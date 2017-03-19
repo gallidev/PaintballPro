@@ -47,8 +47,9 @@ public class TestUDP {
 
 	@After
 	public void tearDown() throws Exception {
-		client1.interrupt();
-		client2.interrupt();
+		client1.stopThread();
+		client2.stopThread();
+		server.m_running = false;
 		server.interrupt();
 	}
 
