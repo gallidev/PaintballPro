@@ -12,7 +12,7 @@ public class JavaFXTestHelper {
      */
     public static void setupApplication() {
         try {
-            Thread t = new Thread(() -> new JFXPanel());
+            Thread t = new Thread(JFXPanel::new);
             t.start();
             t.join();
         } catch (InterruptedException e) {
