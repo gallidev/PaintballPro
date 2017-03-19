@@ -285,8 +285,8 @@ public class Renderer extends Scene
 	{
 		timer.stop();
 		view = new Pane();
-		PauseMenu.p = new GridPane();
-		PauseSettingsMenu.p = new GridPane();
+		PauseMenu.gridPane = new GridPane();
+		PauseSettingsMenu.gridPane = new GridPane();
 		HeadUpDisplay.view = new BorderPane();
 	}
 

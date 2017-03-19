@@ -4,37 +4,37 @@ import gui.GUIManager;
 import gui.MenuOption;
 import gui.MenuOptionSet;
 import gui.UserSettings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.SubScene;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Screen;
 
+/**
+ * Class containing the settings menu for the pause screen
+ */
 class PauseSettingsMenu extends SubScene
 {
-    static GridPane p = new GridPane();
+    static GridPane gridPane = new GridPane();
     boolean opened = false;
 
-    PauseSettingsMenu(GUIManager m)
+    /**
+     * Create a new pause settings menu
+     * @param guiManager GUIManager for the game
+     */
+    PauseSettingsMenu(GUIManager guiManager)
     {
-        super(p, m.getStage().getWidth(), m.getStage().getHeight());
-        p.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
-        p.getStylesheets().add("styles/menu.css");
+        super(gridPane, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+        gridPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
+        gridPane.getStylesheets().add("styles/menu.css");
 
-        p.setAlignment(Pos.CENTER);
-        p.setHgap(10);
-        p.setVgap(10);
-        p.setPadding(new Insets(25, 25, 25, 25));
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
 
         // Obtain the user's settings
         UserSettings s = GUIManager.getUserSettings();
@@ -58,12 +58,9 @@ class PauseSettingsMenu extends SubScene
         musicSlider.setMajorTickUnit(50);
         musicSlider.setMinorTickCount(5);
         musicSlider.setBlockIncrement(10);
-        musicSlider.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
-            @Override
-            public void handle(InputEvent event) {
-                s.setMusicVolume((int) musicSlider.getValue());
-                m.notifySettingsObservers();
-            }
+        musicSlider.addEventHandler(InputEvent.ANY, (event) -> {
+            s.setMusicVolume((int) musicSlider.getValue());
+            guiManager.notifySettingsObservers();
         });
 
         // Create the sound FX label and slider
@@ -78,12 +75,9 @@ class PauseSettingsMenu extends SubScene
         sfxSlider.setMajorTickUnit(50);
         sfxSlider.setMinorTickCount(5);
         sfxSlider.setBlockIncrement(10);
-        sfxSlider.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
-            @Override
-            public void handle(InputEvent event) {
-                s.setSfxVolume((int) sfxSlider.getValue());
-                m.notifySettingsObservers();
-            }
+        sfxSlider.addEventHandler(InputEvent.ANY, (event) -> {
+            s.setSfxVolume((int) sfxSlider.getValue());
+            guiManager.notifySettingsObservers();
         });
 
         // Create the shading option label and checkbox
@@ -95,38 +89,7 @@ class PauseSettingsMenu extends SubScene
         {
             s.setShading(shadingCheckbox.isSelected());
             GUIManager.renderer.getMap().toggleShading();
-            m.notifySettingsObservers();
-        });
-
-        Label resolutionLabel = new Label("Resolution");
-
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        ComboBox<String> resolutionComboBox = new ComboBox<>();
-        int i = 0;
-        boolean found = false;
-        for (String res: UserSettings.possibleResolutions) {
-            try {
-                String[] components = res.split("x");
-                if (Integer.parseInt(components[0]) <= primaryScreenBounds.getWidth() && Integer.parseInt(components[1]) <= primaryScreenBounds.getHeight()) {
-                    resolutionComboBox.getItems().add(res);
-                    if (res.equals(s.getResolution())) {
-                        resolutionComboBox.getSelectionModel().select(i);
-                        found = true;
-                    }
-                    i++;
-                }
-            } catch (NumberFormatException e) {
-
-            }
-        }
-        if (!found) {
-            resolutionComboBox.getSelectionModel().select("1024x576");
-        }
-        resolutionComboBox.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                s.setResolution(newValue);
-            }
+            guiManager.notifySettingsObservers();
         });
 
         // Add all of the options to the options grid
@@ -138,19 +101,16 @@ class PauseSettingsMenu extends SubScene
         optGrid.add(shadingCheckbox, 1, 2);
 
         // Create a array of options for the cancel and apply buttons
-        MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                // Transition back to the pause menu
-                GUIManager.renderer.toggleSettingsMenu();
-            }
-        })};
+        MenuOption[] set = {
+                new MenuOption("Back", true, (event) -> GUIManager.renderer.toggleSettingsMenu())
+        };
         // Turn the array into a grid pane
         GridPane buttonGrid = MenuOptionSet.optionSetToGridPane(set);
 
         // Add the options grid and the button grid to the main grid
-        p.add(optGrid, 0, 0);
-        p.add(buttonGrid, 0, 1);
+        gridPane.add(optGrid, 0, 0);
+        gridPane.add(buttonGrid, 0, 1);
 
-        m.addButtonHoverSounds(p);
+        guiManager.addButtonHoverSounds(gridPane);
     }
 }

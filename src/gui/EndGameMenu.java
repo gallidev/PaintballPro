@@ -61,7 +61,7 @@ public class EndGameMenu {
         {
             if (guiManager.getClient() != null && guiManager.getClient().getSender() != null)
                 guiManager.getClient().getSender().sendMessage("Exit:Game");
-            guiManager.transitionTo(Menu.MainMenu);
+            guiManager.transitionTo(Menu.MultiplayerGameType);
         })};
         GridPane options = MenuOptionSet.optionSetToGridPane(set);
 

@@ -26,6 +26,7 @@ public class TestGameTypeMenu {
         Scene s = GameTypeMenu.getScene(m, GameLocation.SingleplayerLocal);
         assertTrue(m.currentMenu == Menu.MainMenu);
         GUIManagerTestHelper.findButtonByTextInParent("Team Match", s.getRoot()).fire();
+        Thread.sleep(1000);
         assertTrue(m.currentMenu == Menu.EliminationSingle);
     }
 
