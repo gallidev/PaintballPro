@@ -87,7 +87,7 @@ public class GameLobbyMenu {
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
 
-		return guiManager.createScene(mainGrid);
+		return guiManager.createScene(loadingPane);
 	}
 	
 }

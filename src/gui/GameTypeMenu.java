@@ -48,6 +48,6 @@ public class GameTypeMenu {
 		mainGrid.add(grid, 0, 0);
 
 		// Create the scene and return it
-		return guiManager.createScene(grid);
+		return guiManager.createScene(loadingPane);
 	}
 }
