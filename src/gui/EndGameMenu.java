@@ -16,7 +16,7 @@ public class EndGameMenu {
     /**
      * Method to get the scene for the end game
      * @param guiManager manager for the GUI
-     * @param scores string containing the scores of the game, in the format "red:blue"
+     * @param scores string containing the scores of the game, in the format "red,blue"
      * @param winningTeam the winning team of the game
      * @return scene of the end game menu
      */

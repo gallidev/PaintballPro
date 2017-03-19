@@ -23,7 +23,7 @@ public class TestEndGameMenu {
         JavaFXTestHelper.setupApplication();
 
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = EndGameMenu.getScene(m, "1:0", TeamEnum.BLUE);
+        Scene s = EndGameMenu.getScene(m, "1,0", TeamEnum.BLUE);
         m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Continue", s.getRoot()).fire();
         Thread.sleep(2000);
