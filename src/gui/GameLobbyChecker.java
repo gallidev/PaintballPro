@@ -25,6 +25,7 @@ public class GameLobbyChecker implements Runnable {
     public GameLobbyChecker(GUIManager guiManager, Label timeLabel, LoadingPane loadingPane) {
         this.guiManager = guiManager;
         this.timeLabel = timeLabel;
+        this.loadingPane = loadingPane;
     }
 
     /**
