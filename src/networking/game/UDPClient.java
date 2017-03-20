@@ -27,6 +27,7 @@ public class UDPClient extends Thread {
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
+	public boolean testIntegration = false;
 	private boolean debug = false;
 	private int clientID;
 	private String nickname;
@@ -150,6 +151,10 @@ public class UDPClient extends Thread {
 				else if (receivedPacket.contains("TestSendToAll"))
 				{
 					testSendToAll = true;
+				}
+				else if (receivedPacket.contains("0:1:Up:Left:Right:Shoot:2:3"))
+				{
+					testIntegration = true;
 				}
 
 				switch(receivedPacket.charAt(0)){

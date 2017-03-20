@@ -150,14 +150,14 @@ public class GUIManager {
      * Connect to a remote server
      * @return true if the connection was established
      */
-    public boolean establishConnection() {
+    public int establishConnection() {
             String nickname = user.getUsername();
             System.out.println("Connecting to: " + ipAddress + ":" + tcpPortNumber);
             try {
                 c = new Client(nickname, tcpPortNumber, ipAddress, this, udpPortNumber, false);
-                return c.exceptionCheck == 0;
+                return c.exceptionCheck;
             } catch (Exception e) {
-                return false;
+                return -1;
             }
     }
 
