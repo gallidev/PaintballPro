@@ -88,87 +88,110 @@ public class Client {
 							// Set client id as returned value.
 							clientID = Integer.parseInt(text.substring(10));
 							found = true;
+							
+							// Sanity output.
+							if(debug) System.out.println("Client has id:" + clientID);
+
+							TeamTable teams = new TeamTable();
+
+							// Make a UDP Receiver and Sender for low-latency in-game.
+							UDPClient udpReceiver = new UDPClient(clientID, hostname, 19857, guiManager, teams,
+									udpPortSenderNum, nickname);
+							udpReceiver.start();
+
+							// We can now set up the message received for the client.
+							receiver = new ClientReceiver(clientID, fromServer, sender, guiManager, udpReceiver, teams);
+							receiver.start();
+
+							// Wait for them to end and then close sockets.
+							Thread t = new Thread(new Runnable() {
+								// Define our thread.
+								@Override
+								public void run() {
+									try {
+										if(debug) System.out.println("Client Started");
+										sender.join(); // Wait for sender to close
+										toServer.close(); // Close connection to server
+										System.out.println("Sender and Sender Stream closed");
+										receiver.join(); // Wait for receiver to stop
+										fromServer.close(); // Close connection from server
+										System.out.println("Receiver and Receiver Stream closed");
+										server.close(); // Close server socket
+										System.out.println("Server closed.");
+										udpReceiver.stopThread();
+										udpReceiver.join(500);
+										System.out.println("UDP Client closed.");
+										// Acknowledge to the client that everything has
+										// stopped.
+										if(debug) System.out.println("Client has been stopped.");
+										// Catch possible errors.
+									} catch (InterruptedException | IOException e) {
+										// Close threads smoothly.
+										receiver.interrupt();
+										toServer.close();
+										udpReceiver.stopThread();
+										
+										if (!testing)
+											(new AlertBox("Connection Failed",
+													"Something went wrong, please try again.")).showAlert();
+										exceptionCheck = 5;
+									}
+									System.out.println("All closed.");
+								}
+							});
+							// Run the thread.
+							t.start();
+						}
+						else if(text.contains("UsernameInUse"))
+						{
+							System.out.println("Username already in use.");
+							sender.m_running = false;
+							try {
+								sender.interrupt();
+								sender.join(1000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							toServer.close();
+							fromServer.close();
+							server.close();
+							if (!testing)
+								(new AlertBox("Username Error",
+										"Your username is already in use, please try again.")).showAlert();
+							if(exceptionCheck == 0)
+								exceptionCheck = 6;
 						}
 					}
-
-					// Sanity output.
-					if(debug) System.out.println("Client has id:" + clientID);
-
-					TeamTable teams = new TeamTable();
-
-					// Make a UDP Receiver and Sender for low-latency in-game.
-					UDPClient udpReceiver = new UDPClient(clientID, hostname, 19857, guiManager, teams,
-							udpPortSenderNum, nickname);
-					udpReceiver.start();
-
-					// We can now set up the message received for the client.
-					receiver = new ClientReceiver(clientID, fromServer, sender, guiManager, udpReceiver, teams);
-					receiver.start();
-
-					// Wait for them to end and then close sockets.
-					Thread t = new Thread(new Runnable() {
-						// Define our thread.
-						@Override
-						public void run() {
-							try {
-								if(debug) System.out.println("Client Started");
-								sender.join(); // Wait for sender to close
-								toServer.close(); // Close connection to server
-								System.out.println("Sender and Sender Stream closed");
-								receiver.join(); // Wait for receiver to stop
-								fromServer.close(); // Close connection from server
-								System.out.println("Receiver and Receiver Stream closed");
-								server.close(); // Close server socket
-								System.out.println("Server closed.");
-								udpReceiver.stopThread();
-								udpReceiver.join(500);
-								System.out.println("UDP Client closed.");
-								// Acknowledge to the client that everything has
-								// stopped.
-								if(debug) System.out.println("Client has been stopped.");
-								// Catch possible errors.
-							} catch (InterruptedException | IOException e) {
-								// Close threads smoothly.
-								receiver.interrupt();
-								toServer.close();
-								udpReceiver.stopThread();
-								
-								if (!testing)
-									(new AlertBox("Connection Failed",
-											"Something went wrong, please try again.")).showAlert();
-								exceptionCheck = 5;
-							}
-							System.out.println("All closed.");
-						}
-					});
-					// Run the thread.
-					t.start();
 				} catch (IOException e) {
 					// Close threads smoothly.
 					toServer.close();
 					fromServer.close();
 					server.close();
 					
-					if (!testing)
+					if (!testing && exceptionCheck == 0)
 						(new AlertBox("Connection Failed",
 								"Cannot read from the server, please try again.")).showAlert();
-					exceptionCheck = 4;
+					if(exceptionCheck == 0)
+						exceptionCheck = 4;
 				}
 			}
 			// If server isn't running.
 			catch (IOException e) {
-				if (!testing)
+				if (!testing && exceptionCheck == 0)
 					(new AlertBox("Connection Failed",
 							"Please check that the server is running, and the IP address is correct.")).showAlert();
-				exceptionCheck = 2;
+				if(exceptionCheck == 0)
+					exceptionCheck = 2;
 			}
 		}
 		// If username contains the character : or - (used for a string information
 		// separator so cannot be in a nickname).
 		else {
-			if (!testing)
+			if (!testing && exceptionCheck == 0)
 				(new AlertBox("Username error", "Your username cannot contain ':' or '-' characters, please try again.")).showAlert();
-			exceptionCheck = 1;
+			if(exceptionCheck == 0)
+				exceptionCheck = 1;
 		}
 	}
 

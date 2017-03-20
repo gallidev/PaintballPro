@@ -104,34 +104,45 @@ public class Server extends Thread {
 						// We ask the client what its name is:
 						String clientName = fromClient.readLine();
 						PrintStream toClient = new PrintStream(socket.getOutputStream());
-						String text = "";
-						int clientID;
 						
-						// For debugging:
-						if(testing == 0) gui.addMessage(clientName + " connected");
+						boolean usernameAvailable = clientTable.checkUsernameAvailable(clientName);
+						if(usernameAvailable)
+						{
+							String text = "";
+							int clientID;
 
-						// We add the client to the table. Returns a unique client
-						// id
-						clientID = clientTable.add(clientName);
-						// We create and start a new thread to write to the client:
-						ServerSender sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
-						sender.start();
+							// For debugging:
+							if(testing == 0) gui.addMessage(clientName + " connected");
 
-						// We create and start a new thread to read from the client:
-						ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpServer, singlePlayer);
-						reciever.start();
+							// We add the client to the table. Returns a unique client
+							// id
+							clientID = clientTable.add(clientName);
+							// We create and start a new thread to write to the client:
+							ServerSender sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
+							sender.start();
 
-						// For debugging
-						text = "UserID is:" + clientID;
-						if(testing == 0) gui.addMessage(text);
+							// We create and start a new thread to read from the client:
+							ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpServer, singlePlayer);
+							reciever.start();
 
-						if (singlePlayer)
-							singlePlayerIntegration();
+							// For debugging
+							text = "UserID is:" + clientID;
+							if(testing == 0) gui.addMessage(text);
 
-						// Sends a message to the client detailing their unique user id.
-						Message msg = new Message(text);
-						MessageQueue recipientsQueue = clientTable.getQueue(clientID);
-						recipientsQueue.offer(msg);
+							if (singlePlayer)
+								singlePlayerIntegration();
+
+							// Sends a message to the client detailing their unique user id.
+							Message msg = new Message(text);
+							MessageQueue recipientsQueue = clientTable.getQueue(clientID);
+							recipientsQueue.offer(msg);
+						}
+						else
+						{
+							toClient.write("UsernameInUse".getBytes());
+							toClient.close();
+							fromClient.close();
+						}
 					}
 					udpServer.interrupt();
 				// Catch some possible errors - IO.

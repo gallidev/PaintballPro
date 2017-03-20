@@ -140,7 +140,7 @@ public class ClientTable {
 	 * @param username Username to check.
 	 * @return True if username is available, false if not available.
 	 */
-	public boolean checkUsername(String username) {
+	public boolean checkUsernameAvailable(String username) {
 		for(ServerBasicPlayer player : playerInstances.values())
 		{
 			if(player.getUsername().contains(username))
