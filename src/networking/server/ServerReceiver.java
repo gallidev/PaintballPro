@@ -112,6 +112,9 @@ public class ServerReceiver extends Thread {
 					// Get the client's currently set username.
 					else if (text.contains("Get:Username"))
 						getUsernameAction();
+					
+					else if (text.contains("Check:Username"))
+						checkUsernameAction(text);
 
 
 					// Reset the client when they exit the game.
@@ -216,6 +219,15 @@ public class ServerReceiver extends Thread {
 	 * clients.
 	 */
 
+	/**
+	 * Method to check whether or not a username has been taken.
+	 * @param text Input sent from client to server.
+	 */
+	public void checkUsernameAction(String text) {
+		String username = text.substring(15, text.length());
+		boolean ret = clientTable.checkUsername(username);
+		myMsgQueue.offer(new Message("Ret:Check:"+ret));
+	}
 
 	/**
 	 * Retrieve the username for a particular client.

@@ -134,4 +134,18 @@ public class ClientTable {
 		//Null if not in the table.
 		return queueTable.get(clientID);
 	}
+
+	/**
+	 * Checks whether a username has been used.
+	 * @param username Username to check.
+	 * @return True if username is available, false if not available.
+	 */
+	public boolean checkUsername(String username) {
+		for(ServerBasicPlayer player : playerInstances.values())
+		{
+			if(player.getUsername().contains(username))
+				return false;
+		}
+		return true;
+	}
 }
