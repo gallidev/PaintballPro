@@ -28,15 +28,15 @@ public class CollisionsHandler
 	private Team red;
 	private Team blue;
 
-	private boolean flagCaptured = false;
-	private boolean flagDropped = false;
-	private boolean flagRespawned = false;
-	private int playerWithFlagId;
-
-	private boolean speedPowerup = false;
-	private boolean shieldPowerup = false;
-	private int playerWithShieldID;
-	private int playerWithSpeedID;
+//	private boolean flagCaptured = false;
+//	private boolean flagDropped = false;
+//	private boolean flagRespawned = false;
+//	private int playerWithFlagId;
+//
+//	private boolean speedPowerup = false;
+//	private boolean shieldPowerup = false;
+//	private int playerWithShieldID;
+//	private int playerWithSpeedID;
 
 	private CollisionHandlerListener listener;
 
@@ -264,7 +264,8 @@ public class CollisionsHandler
 					if(p.getShieldActive()){
 						//shield absorbs a bullet
 						p.removeShield();
-						listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
+						if(listener != null)
+							listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
 					} else {
 						//if the player has no shield, the player is eliminated
 						p.beenShot();
@@ -300,26 +301,26 @@ public class CollisionsHandler
 		return redTeam;
 	}
 
-	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
-		this.redTeam = redTeam;
-	}
-
 	public void setRedTeam(Team red) {
 		this.red = red;
 		redTeam = red.getMembers();
+	}
+
+	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
+		this.redTeam = redTeam;
 	}
 
 	public ArrayList<EssentialPlayer> getBlueTeam() {
 		return blueTeam;
 	}
 
-	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
-		this.blueTeam = blueTeam;
-	}
-
 	public void setBlueTeam(Team blue) {
 		this.blue = blue;
 		blueTeam = blue.getMembers();
+	}
+
+	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
+		this.blueTeam = blueTeam;
 	}
 
 	public void setPlayers(ArrayList<EssentialPlayer> players){

@@ -202,6 +202,9 @@ public class UDPClient extends Thread
 					case '$':
 						powerUpAction(receivedPacket);
 						break;
+					case 'P':
+						powerUpRespawn(receivedPacket);
+						break;
 					case '%':
 						shieldRemovedAction(receivedPacket);
 						break;
@@ -218,6 +221,13 @@ public class UDPClient extends Thread
 				clientSocket.close();
 		}
 		System.out.println("Closing UDP Client");
+	}
+
+	private void powerUpRespawn(String receivedPacket)
+	{
+		String[] message = receivedPacket.split(":");
+		PowerupType type = (message[1].equals("0") ? PowerupType.SHIELD : PowerupType.SPEED);
+		gameStateReceiver.powerUpRespawn(type, Integer.parseInt(message[2]));
 	}
 
 	//use this to switch back to the normal player image

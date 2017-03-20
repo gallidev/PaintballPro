@@ -56,8 +56,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 		    return t;
 		});
 
-		players.forEach(p -> p.getCollisionsHandler().setListener(this));
-
 		Runnable sender = () ->
 		{
 			sendClient();
@@ -290,6 +288,23 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 			case SPEED: toBeSent = "$:1:" + player;
 				break;
 		}
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+
+	@Override
+	public void onPowerupRespawn(PowerupType type, int location)
+	{
+		String toBeSent = "";
+		switch(type)
+		{
+			case SHIELD:
+				toBeSent += "P:0:";
+				break;
+			case SPEED:
+				toBeSent += "P:1:";
+				break;
+		}
+		toBeSent += location;
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 }

@@ -8,4 +8,5 @@ public interface CollisionHandlerListener
 	void onFlagDropped(int player);
 	void onFlagRespawned(int player);
 	void onPowerupAction(PowerupType type, int player);
+	void onPowerupRespawn(PowerupType type, int location);
 }

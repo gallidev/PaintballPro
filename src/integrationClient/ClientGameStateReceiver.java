@@ -95,13 +95,29 @@ public class ClientGameStateReceiver {
 		{
 			case SHIELD:
 				powerups[0].setVisible(false);
-				player.setShieldEffect(true);
+				player.giveShield();
 				break;
 			case SPEED:
 				powerups[1].setVisible(false);
+				player.giveSpeed();
 				break;
 		}
 
+	}
+
+	public void powerUpRespawn(PowerupType type, int location)
+	{
+		switch(type)
+		{
+			case SHIELD:
+				powerups[0].resetPosition(location);
+				powerups[0].setVisible(true);
+				break;
+			case SPEED:
+				powerups[1].resetPosition(location);
+				powerups[1].setVisible(true);
+				break;
+		}
 	}
 
 	public void shieldRemovedAction(int id)

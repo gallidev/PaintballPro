@@ -399,11 +399,11 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	private void speedUp(){
-		this.movementSpeed = 4;
+		this.movementSpeed = 4 * gameSpeed;
 	}
 
 	private void speedDown(){
-		this.movementSpeed = 2.5;
+		this.movementSpeed = 2.5 * gameSpeed;
 	}
 
 	public boolean getShieldActive(){

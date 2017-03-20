@@ -1,7 +1,5 @@
 package players;
 
-import java.util.Random;
-
 import audio.AudioManager;
 import enums.GameMode;
 import enums.TeamEnum;
@@ -16,15 +14,17 @@ import physics.InputHandler;
 import rendering.Spawn;
 import serverLogic.Team;
 
+import java.util.Random;
+
 public class ClientPlayer extends EssentialPlayer {
 
 
+	double angleRadians;
 	private double limitDifferencePosition = 30;
 	private InputHandler inputHandler;
 	private AudioManager audio;
 	private Random rand;
 	private Label nameTag;
-	double angleRadians;
 
 	public ClientPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team, GUIManager guiManager,
 			CollisionsHandler collisionsHandler, InputHandler inputHandler, Image image, GameMode game, double currentFPS) {
@@ -77,18 +77,9 @@ public class ClientPlayer extends EssentialPlayer {
 		updateBullets();
 		updatePlayerBounds();
 
-		//handlePowerUp();
+		handlePowerUp();
 
 		collisionsHandler.handleBulletCollision(this);
-
-//		if(!invincible)
-//		{
-//
-//		}
-//		else
-//		{
-//			checkInvincibility();
-//		}
 	}
 
 	//Calculates the angle the player is facing with respect to the mouse
@@ -117,13 +108,12 @@ public class ClientPlayer extends EssentialPlayer {
 		return angleRadians;
 	}
 
-	public double getAngleDegrees() {
-		return Math.toDegrees(angleRadians);
-	}
-
-
 	public void setAngleRadians(double angleRadians) {
 		this.angleRadians = angleRadians;
+	}
+
+	public double getAngleDegrees() {
+		return Math.toDegrees(angleRadians);
 	}
 
 	public void setInputHandler(InputHandler inputHandler){
