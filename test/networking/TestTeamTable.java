@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import enums.TeamEnum;
 import networking.client.TeamTable;
+import players.EssentialPlayer;
 import players.GhostPlayer;
 
 /**
@@ -39,9 +40,9 @@ public class TestTeamTable {
 
 	@Test
 	public void testMyTeam() {
-		ArrayList<GhostPlayer> team = new ArrayList<GhostPlayer>();
-		team.add(new GhostPlayer(0, 0, 1, null, null, TeamEnum.BLUE));
-		team.add(new GhostPlayer(0, 0, 2, null, null, TeamEnum.BLUE));
+		ArrayList<EssentialPlayer> team = new ArrayList<EssentialPlayer>();
+		team.add(new GhostPlayer(0, 0, 1, null, null, TeamEnum.BLUE, 0));
+		team.add(new GhostPlayer(0, 0, 2, null, null, TeamEnum.BLUE, 0));
 		table.setMyTeam(team);
 		ArrayList<GhostPlayer> test = table.getMyTeam();
 		assertEquals(test.get(1).getPlayerId(),2);
@@ -50,9 +51,9 @@ public class TestTeamTable {
 	
 	@Test
 	public void testEnemies() {
-		ArrayList<GhostPlayer> team = new ArrayList<GhostPlayer>();
-		team.add(new GhostPlayer(0, 0, 3, null, null, TeamEnum.RED));
-		team.add(new GhostPlayer(0, 0, 4, null, null, TeamEnum.RED));
+		ArrayList<EssentialPlayer> team = new ArrayList<EssentialPlayer>();
+		team.add(new GhostPlayer(0, 0, 3, null, null, TeamEnum.RED, 0));
+		team.add(new GhostPlayer(0, 0, 4, null, null, TeamEnum.RED, 0));
 		table.setEnemies(team);
 		ArrayList<GhostPlayer> test = table.getEnemies();
 		assertEquals(test.get(1).getPlayerId(),4);
