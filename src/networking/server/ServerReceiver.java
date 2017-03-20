@@ -103,15 +103,6 @@ public class ServerReceiver extends Thread {
 					else if (text.contains("Get:Blue"))
 						getBlueTeamAction();
 
-
-					// Get the client's currently set username.
-					else if (text.contains("Get:Username"))
-						getUsernameAction();
-					
-					else if (text.contains("Check:Username"))
-						checkUsernameAction(text);
-
-
 					// Reset the client when they exit the game.
 					else if (text.contains("Exit:Game") || text.contains("QuitLobby"))
 						exitGame();
@@ -213,18 +204,6 @@ public class ServerReceiver extends Thread {
 	 * Different actions performed depending on the messages received from
 	 * clients.
 	 */
-
-	/**
-	 * Method to check whether or not a username has been taken.
-	 * @param text Input sent from client to server.
-	 */
-	public synchronized void checkUsernameAction(String text) {
-		String username = text.substring(15, text.length());
-		boolean ret = clientTable.checkUsername(username);
-		if(ret)
-			clientTable.getPlayer(myClientsID).setUsername(username);
-		myMsgQueue.offer(new Message("Ret:Check:"+ret));
-	}
 
 	/**
 	 * Retrieve the username for a particular client.
