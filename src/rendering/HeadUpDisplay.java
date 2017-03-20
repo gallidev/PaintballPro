@@ -15,14 +15,14 @@ import javafx.scene.shape.Circle;
 public class HeadUpDisplay extends SubScene
 {
 	static BorderPane view = new BorderPane();
-	private final Label timer = new Label("3:00"),
+	private final Label timer = new Label("0:00"),
 			redScore = new Label("0"),
 			blueScore = new Label("0");
 	private final GUIManager guiManager;
 
 	HeadUpDisplay(GUIManager guiManager, TeamEnum playerTeam)
 	{
-		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		super(view, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		view.setStyle("-fx-background-color: transparent");
 		view.getStylesheets().add("styles/menu.css");

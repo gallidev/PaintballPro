@@ -31,8 +31,8 @@ public class GUIManager {
     // Settings
     private static UserSettings user = UserSettingsManager.loadSettings();
     // Scene
-    public final double width;
-    public final double height;
+    public double width;
+    public double height;
     // Networking
     public int udpPortNumber = 0;
     private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();

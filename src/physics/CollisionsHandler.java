@@ -1,10 +1,5 @@
 package physics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.sun.javafx.scene.traversal.Hueristic2D;
-
 import enums.TeamEnum;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
@@ -13,6 +8,9 @@ import players.EssentialPlayer;
 import rendering.Map;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionsHandler
 {
@@ -314,26 +312,26 @@ public class CollisionsHandler
 		return redTeam;
 	}
 
-	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
-		this.redTeam = redTeam;
-	}
-
 	public void setRedTeam(Team red) {
 		this.red = red;
 		redTeam = red.getMembers();
+	}
+
+	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
+		this.redTeam = redTeam;
 	}
 
 	public ArrayList<EssentialPlayer> getBlueTeam() {
 		return blueTeam;
 	}
 
-	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
-		this.blueTeam = blueTeam;
-	}
-
 	public void setBlueTeam(Team blue) {
 		this.blue = blue;
 		blueTeam = blue.getMembers();
+	}
+
+	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
+		this.blueTeam = blueTeam;
 	}
 
 	public void setPlayers(ArrayList<EssentialPlayer> players){
@@ -391,20 +389,20 @@ public class CollisionsHandler
 		return splashColour;
 	}
 
-	public int getPlayerWithFlagId(){
-		return playerWithFlagId;
+	public void setSplashColour(TeamEnum splashColour) {
+		this.splashColour = splashColour;
 	}
 
-	public void setWallHit(boolean b){
-		hasHitWall = b;
+	public int getPlayerWithFlagId(){
+		return playerWithFlagId;
 	}
 
 	public boolean isWallHit(){
 		return hasHitWall;
 	}
 
-	public void setSplashColour(TeamEnum splashColour) {
-		this.splashColour = splashColour;
+	public void setWallHit(boolean b){
+		hasHitWall = b;
 	}
 
 	public Rectangle getSpawnAreaRed() {

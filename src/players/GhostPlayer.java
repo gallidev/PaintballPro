@@ -10,8 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import physics.Bullet;
-import physics.CollisionsHandler;
-import physics.GhostBullet;
 import rendering.ImageFactory;
 
 import java.util.ArrayList;
@@ -20,8 +18,8 @@ import java.util.ArrayList;
  */
 public class GhostPlayer extends ImageView {
 
-	private static final double targetFPS = 60;
 	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
+	private static final double targetFPS = 60;
 	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
 	private Rotate rotation;
 	private int playerId;

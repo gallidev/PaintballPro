@@ -1,18 +1,20 @@
 package networking.game;
 
-import enums.TeamEnum;
 import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
+import physics.PowerupType;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
+
+import static gui.GUIManager.renderer;
 
 /**
  * Client-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -34,7 +36,6 @@ public class UDPClient extends Thread {
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
 	private InetAddress IPAddress;
-	private GUIManager m;
 	private TeamTable teams;
 	private int sIP;
 	private boolean active = true;
@@ -58,7 +59,6 @@ public class UDPClient extends Thread {
 	{
 		int port = portNum;
 		this.clientID = clientID;
-		this.m = guiManager;
 		this.teams = teams;
 		this.nickname = nickname;
 		this.guiManager = guiManager;
@@ -194,13 +194,7 @@ public class UDPClient extends Thread {
 		catch (Exception e)
 		{
 			//e.printStackTrace();
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					e.printStackTrace();
-				}
-			});
+			Platform.runLater(e::printStackTrace);
 			if(debug) System.out.println("Closing Client.");
 			if(clientSocket.isConnected())
 				clientSocket.close();
@@ -211,6 +205,7 @@ public class UDPClient extends Thread {
 	//use this to switch back to the normal player image
 	private void shieldRemovedAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
+		getPlayerWithID(id).setShieldEffect(false);
 
 		//System.out.println("player with id " + id + " does not have shield anymore" );
 
@@ -220,17 +215,20 @@ public class UDPClient extends Thread {
 	private void powerUpAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[2]);
 
-		switch (receivedPacket.split(":")[1])
+		switch(receivedPacket.split(":")[1])
 		{
-		case "0" : //powerup is speed
-					System.out.println("Player " +id +" took speed powerup");
-					break;
-		case "1" : System.out.println("Player" + id +" took shield powerup");
-				   break;
+			case "0":
+				gameStateReceiver.powerupAction(id, PowerupType.SHIELD);
+				System.out.println("Player " +id +" took shield powerup");
+				break;
+			case "1":
+				gameStateReceiver.powerupAction(id, PowerupType.SPEED);
+				System.out.println("Player" + id +" took speed powerup");
+			   break;
 		}
-
-
-
+		
+		
+		
 	}
 
 	private void getWinnerAction(String text) {
@@ -243,8 +241,8 @@ public class UDPClient extends Thread {
 		Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						if(GUIManager.renderer.getHud() != null)
-							GUIManager.renderer.getHud().setWinner(Integer.parseInt(redScore), Integer.parseInt(blueScore));
+						if(renderer != null)
+							renderer.getHud().setWinner(Integer.parseInt(redScore), Integer.parseInt(blueScore));
 					}
 				});
 		active = false;
@@ -490,7 +488,7 @@ public class UDPClient extends Thread {
 			if (p.getPlayerId() == id)
 				return p;
 
-		return null;
+		throw new NoSuchElementException("Player with ID " + id + " not found!");
 	}
 
 	/**

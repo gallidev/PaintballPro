@@ -1,15 +1,16 @@
 package gui;
 
 import enums.Menu;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
@@ -125,8 +126,10 @@ public class SettingsMenu {
 		resolutionComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 				s.setResolution(newValue);
 				String[] resolution = newValue.split("x");
-				guiManager.getStage().setWidth(Double.parseDouble(resolution[0]));
-				guiManager.getStage().setHeight(Double.parseDouble(resolution[1]));
+				guiManager.width = Double.parseDouble(resolution[0]);
+				guiManager.getStage().setWidth(guiManager.width);
+				guiManager.height = Double.parseDouble(resolution[1]);
+				guiManager.getStage().setHeight(guiManager.height);
 				guiManager.getStage().centerOnScreen();
 		});
 

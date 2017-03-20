@@ -20,7 +20,6 @@ import networking.client.ClientReceiver;
 import physics.*;
 import players.ClientPlayer;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 import players.OfflinePlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
@@ -47,6 +46,10 @@ public class Renderer extends Scene
 
 	ClientPlayer cPlayer;
 	OfflinePlayer player;
+	//attributes for multiplayer
+	int blueScore = 0;
+	int redScore = 0;
+	int timeRemaining = 0;
 	private PauseMenu pauseMenu;
 	private PauseSettingsMenu settingsMenu;
 	private HeadUpDisplay hud;
@@ -56,11 +59,6 @@ public class Renderer extends Scene
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
 
-	//attributes for multiplayer
-	int blueScore = 0;
-	int redScore = 0;
-	int timeRemaining = 0;
-
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
@@ -69,7 +67,7 @@ public class Renderer extends Scene
 	 */
 	public Renderer(String mapName, GUIManager guiManager)
 	{
-		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		super(view, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 		singlePlayer = true;
@@ -158,7 +156,7 @@ public class Renderer extends Scene
 	 */
 	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager, Flag flag)
 	{
-		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		super(view, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 
@@ -357,7 +355,9 @@ public class Renderer extends Scene
 			Bullet pellet = new Bullet(0, x, y, 0, colour.equals("red") ? TeamEnum.RED : TeamEnum.BLUE, Renderer.TARGET_FPS);
 			pellet.disable(collision);
 			generateSpray(pellet);
+			return;
 		}
+		throw new NoSuchElementException("Could not generate spray. Invalid collision given!");
 	}
 
 	private void init(String mapName)
@@ -378,9 +378,8 @@ public class Renderer extends Scene
 	{
 		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
 
-		view.setLayoutX(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX());
-		view.setLayoutY(((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
-		hud.relocate((playerLayoutX + PLAYER_HEAD_X - getWidth() / 2) * hud.getScaleX(), (playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2) * hud.getScaleY());
+		view.relocate((getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * view.getScaleX(), (getHeight() / 2 - playerLayoutY - PLAYER_HEAD_Y) * view.getScaleY());
+		hud.relocate(playerLayoutX + PLAYER_HEAD_X - (getWidth() / 2), playerLayoutY + PLAYER_HEAD_Y - (getHeight() / 2));
 
 		if(view.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);

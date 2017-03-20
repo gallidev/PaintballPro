@@ -27,7 +27,7 @@ class PauseMenu extends SubScene
 	 */
 	PauseMenu(GUIManager guiManager)
 	{
-		super(gridPane, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		super(gridPane, guiManager.width, guiManager.height);
 		gridPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
 
 		gridPane.setAlignment(Pos.CENTER);

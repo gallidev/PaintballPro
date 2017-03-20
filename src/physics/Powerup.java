@@ -3,7 +3,6 @@ package physics;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import logic.RoundTimer;
 import rendering.GameObject;
 import rendering.ImageFactory;
 
@@ -58,6 +57,7 @@ public class Powerup extends ImageView
 		            @Override
 		            public void run() {
 		            	setVisible(true);
+		            	setTaken(false);
 		                resetPosition();
 		            }
 		        },

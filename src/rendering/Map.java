@@ -191,10 +191,7 @@ public class Map
 	private void initGameObjects()
 	{
 		if(gameMode == GameMode.CAPTURETHEFLAG)
-		{
 			flag = new Flag(flagLocations);
-			view.getChildren().add(flag);
-		}
 
 		powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, powerupLocations), new Powerup(PowerupType.SPEED, powerupLocations)
 		};

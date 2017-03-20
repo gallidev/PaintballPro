@@ -2,11 +2,14 @@ package integrationClient;
 
 import javafx.application.Platform;
 import physics.Flag;
+import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
 
 import java.util.ArrayList;
+
+import static gui.GUIManager.renderer;
 
 /**
  * Client-sided class which receives an action imposed by the server on the
@@ -17,9 +20,8 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
-	private ArrayList<EssentialPlayer> players;
-
 	private static final boolean debug = false;
+	private ArrayList<EssentialPlayer> players;
 	private Flag flag;
 
 
@@ -86,6 +88,22 @@ public class ClientGameStateReceiver {
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
+	public void powerupAction(int id, PowerupType type)
+	{
+		GhostPlayer player = getPlayerWithId(id);
+		switch(type)
+		{
+			case SHIELD:
+				renderer.getMap().getPowerups()[0].setVisible(false);
+				player.setShieldEffect(true);
+				break;
+			case SPEED:
+				renderer.getMap().getPowerups()[1].setVisible(false);
+				break;
+		}
+
+	}
+
 	/**
 	 * Update a player's active bullets.
 	 * @param id The id of the player.
@@ -110,6 +128,12 @@ public class ClientGameStateReceiver {
 		player.setHasFlag(true);
 		flag.setVisible(false);
 
+		GhostPlayer player = getPlayerWithId(id);
+		Platform.runLater(() -> {
+			player.setFlagStatus(true);
+			flag.setVisible(false);
+		});
+
 		System.out.println("Player " + id + " captured the flag");
 	}
 
@@ -119,6 +143,13 @@ public class ClientGameStateReceiver {
 		player.setHasFlag(false);
 		flag.setVisible(true);
 		flag.relocate(player.getLayoutX(), player.getLayoutY());
+
+		GhostPlayer player = getPlayerWithId(id);
+		Platform.runLater(() -> {
+			player.setFlagStatus(false);
+			flag.setVisible(true);
+			flag.relocate(player.getLayoutX(), player.getLayoutY());
+		});
 
 		System.out.println("Player " + id + " lost the flag");
 
@@ -130,6 +161,14 @@ public class ClientGameStateReceiver {
 
 		EssentialPlayer player = getPlayerWithId(id);
 		player.setHasFlag(false);
+		GhostPlayer player = getPlayerWithId(id);
+
+		Platform.runLater(() -> {
+			flag.setVisible(true);
+			flag.relocate(x, y);
+			player.setFlagStatus(false);
+		});
+
 		System.out.println("Flag has been respawned");
 
 	}

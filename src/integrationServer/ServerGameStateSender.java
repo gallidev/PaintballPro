@@ -1,20 +1,14 @@
 package integrationServer;
 
-import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-
 import enums.TeamEnum;
 import networking.game.UDPServer;
-import physics.Bullet;
+import physics.PowerupType;
 import players.EssentialPlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
-import serverLogic.TeamMatchMode;
+
+import java.util.ArrayList;
+import java.util.concurrent.*;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -221,12 +215,12 @@ public class ServerGameStateSender {
 			}
 
 			if (p.getCollisionsHandler().isSpeedPowerup()){
-				sendPowerupCaptured("speed", p.getPlayerId());
+				sendPowerupCaptured(PowerupType.SPEED, p.getPlayerId());
 				p.getCollisionsHandler().setSpeedPowerup(false);
 			}
 
 			if (p.getCollisionsHandler().isShieldPowerup()){
-				sendPowerupCaptured("shield", p.getPlayerId());
+				sendPowerupCaptured(PowerupType.SHIELD, p.getPlayerId());
 				p.getCollisionsHandler().setShieldPowerup(false);
 			}
 
@@ -234,7 +228,7 @@ public class ServerGameStateSender {
 				sendShieldRemoved(p);
 				p.setShieldRemoved(false);
 			}
-			
+
 			if (p.getShieldRemoved()){
 				sendShieldRemoved(p);
 				p.setShieldRemoved(false);
@@ -292,13 +286,13 @@ public class ServerGameStateSender {
 
 	}
 
-	private void sendPowerupCaptured(String s, int id){
+	private void sendPowerupCaptured(PowerupType type, int id){
 		String toBeSent = "";
-		switch(s){
-		case "speed" : toBeSent = "$:0:" + id;
-					   break;
-		case "shield": toBeSent = "$:1:" + id;
-						break;
+		switch(type){
+			case SHIELD: toBeSent = "$:0:" + id;
+				break;
+			case SPEED: toBeSent = "$:1:" + id;
+				break;
 		}
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
@@ -310,6 +304,8 @@ public class ServerGameStateSender {
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();
 
 		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
+//		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 
@@ -325,6 +321,8 @@ public class ServerGameStateSender {
 			players.get(0).getCollisionsHandler().setWallHit(false);
 
 			udpServer.sendToAll(toBeSent, lobbyId);
+//			udpServer.sendToAll(toBeSent, lobbyId);
+//			udpServer.sendToAll(toBeSent, lobbyId);
 		}
 
 	}
@@ -332,6 +330,8 @@ public class ServerGameStateSender {
 
 	private void sendShieldRemoved(EssentialPlayer p){
 		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+//		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+//		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 
 	}
 
