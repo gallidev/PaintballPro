@@ -47,7 +47,11 @@ public class ServerInputReceiver {
 	 */
 	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting, double angle) {
 
-		UserPlayer playerToBeUpdated = (UserPlayer) getPlayerWithId(id);
+//		double timeUpdating = 0;
+//
+//		timeUpdating = System.nanoTime();
+
+		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 
 		if(debug) System.out.println("angle: " + angle);
 
@@ -59,6 +63,7 @@ public class ServerInputReceiver {
 		playerToBeUpdated.setShoot(shooting);
 		playerToBeUpdated.updateRotation(angle);
 
+		//System.out.println("timeUpdating a player in nanoSeconds: " + ( System.nanoTime() - timeUpdating));
 	}
 
 	/**

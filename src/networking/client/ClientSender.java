@@ -16,7 +16,7 @@ public class ClientSender extends Thread {
 
 	private MessageQueue queue;
 	private PrintStream server;
-	private boolean m_running = true;
+	public boolean m_running = true;
 	private String clientNickname;
 
 	/**

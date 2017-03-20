@@ -40,6 +40,9 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
  */
 public class Renderer extends Scene
 {
+
+	public static double TARGET_FPS = 60.0;
+
 	static Pane view = new Pane();
 
 	ClientPlayer cPlayer;
@@ -52,6 +55,11 @@ public class Renderer extends Scene
 	private AnimationTimer timer;
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
+
+	//attributes for multiplayer
+	int blueScore = 0;
+	int redScore = 0;
+	int timeRemaining = 0;
 
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
@@ -88,7 +96,7 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler, map.getGameMode());
+		player = new OfflinePlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map, guiManager, TeamEnum.RED, collisionsHandler, inputHandler, map.getGameMode(), 60);
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 
 		players.addAll(player.getMyTeam().getMembers());
@@ -155,7 +163,7 @@ public class Renderer extends Scene
 		init(mapName);
 
 		cPlayer = receiver.getClientPlayer();
-		ArrayList<GhostPlayer> players = receiver.getAllPlayers();
+		ArrayList<EssentialPlayer> players = receiver.getAllPlayers();
 		view.getChildren().add(cPlayer);
 		view.getChildren().addAll(receiver.getMyTeam());
 		receiver.getMyTeam().forEach(player -> view.getChildren().add(player.getNameTag()));
@@ -192,15 +200,29 @@ public class Renderer extends Scene
 			@Override
 			public void handle(long now)
 			{
-				cPlayer.tick();
-				for(GhostPlayer player : players)
+
+				for(EssentialPlayer player : players)
 				{
-					for(GhostBullet pellet : player.getFiredBullets())
+					for(Bullet pellet : player.getBullets())
 					{
-						if(!displayBullets.getChildren().contains(pellet))
-							displayBullets.getChildren().add(pellet);
+						if(pellet.isActive())
+						{
+							if(!view.getChildren().contains(pellet))
+								view.getChildren().add(view.getChildren().size() - 2, pellet);
+						}
+						else if(view.getChildren().contains(pellet))
+						{
+							if(pellet.getCollision() != null)
+								generateSpray(pellet);
+							view.getChildren().remove(pellet);
+						}
 					}
+					player.tick();
 				}
+
+				hud.tick(timeRemaining);
+				hud.setScore(TeamEnum.RED, redScore);
+				hud.setScore(TeamEnum.BLUE, blueScore);
 				updateView();
 			}
 		};
@@ -332,7 +354,7 @@ public class Renderer extends Scene
 		}
 		if(collision != null)
 		{
-			Bullet pellet = new Bullet(0, x, y, 0, colour.equals("red") ? TeamEnum.RED : TeamEnum.BLUE);
+			Bullet pellet = new Bullet(0, x, y, 0, colour.equals("red") ? TeamEnum.RED : TeamEnum.BLUE, Renderer.TARGET_FPS);
 			pellet.disable(collision);
 			generateSpray(pellet);
 		}
@@ -365,4 +387,18 @@ public class Renderer extends Scene
 		if(view.getChildren().contains(settingsMenu))
 			settingsMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
 	}
+
+
+	public void setBlueScore(int blueScore) {
+		this.blueScore = blueScore;
+	}
+
+	public void setRedScore(int redScore) {
+		this.redScore = redScore;
+	}
+
+	public void setTimeRemaining(int timeRemaining) {
+		this.timeRemaining = timeRemaining;
+	}
+
 }

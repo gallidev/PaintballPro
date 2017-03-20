@@ -91,11 +91,6 @@ public class ServerReceiver extends Thread {
 					else if (text.contains("SwitchTeam"))
 						gameLobby.switchTeams(clientTable.getPlayer(myClientsID), this);
 
-					// When user tries to change their username.
-					else if (text.contains("Set:Username:"))
-						setUsernameAction(text);
-
-
 					// UI Client Requests
 					// ------------------
 					// Team 1 for blue, 2 for red.
@@ -107,12 +102,6 @@ public class ServerReceiver extends Thread {
 					// Get usernames of people currently in blue team of lobby.
 					else if (text.contains("Get:Blue"))
 						getBlueTeamAction();
-
-
-					// Get the client's currently set username.
-					else if (text.contains("Get:Username"))
-						getUsernameAction();
-
 
 					// Reset the client when they exit the game.
 					else if (text.contains("Exit:Game") || text.contains("QuitLobby"))
@@ -216,7 +205,6 @@ public class ServerReceiver extends Thread {
 	 * clients.
 	 */
 
-
 	/**
 	 * Retrieve the username for a particular client.
 	 */
@@ -260,15 +248,6 @@ public class ServerReceiver extends Thread {
 			lobby.switchGameStatus();
 			
 		}
-	}
-
-	/**
-	 * Set username for a given client.
-	 * @param text Text sent to server from client, containing new username.
-	 */
-	public void setUsernameAction(String text) {
-		String username = text.substring(13, text.length());
-		clientTable.getPlayer(myClientsID).setUsername(username);
 	}
 
 	/* Methods to communicate between client and sender */

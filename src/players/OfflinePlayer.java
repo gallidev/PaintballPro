@@ -39,9 +39,9 @@ public class OfflinePlayer extends EssentialPlayer
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
 	 */
-	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode)
+	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode, double currentFPS)
 	{
-		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode);
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode, currentFPS);
 		this.audio = guiManager.getAudioManager();
 		this.inputHandler = inputHandler;
 		angle = 0.0;
@@ -62,7 +62,7 @@ public class OfflinePlayer extends EssentialPlayer
 
 		myTeam.addMember(this);
 		for(int i = 1; i < 4; i++){
-			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, collisionsHandler, hashMaps, map.getGameMode());
+			AIPlayer p = new AIPlayer(map.getSpawns()[i].x * 64, map.getSpawns()[i].y * 64, i, map, team, collisionsHandler, hashMaps, map.getGameMode(), currentFPS);
 			myTeam.addMember(p);
 		}
 
@@ -73,7 +73,7 @@ public class OfflinePlayer extends EssentialPlayer
 
 
 		for (int i = 0; i < 4; i++){
-				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps, gameMode);
+				AIPlayer p = new AIPlayer(map.getSpawns()[i+4].x * 64, map.getSpawns()[i+4].y * 64, i + 4, map, team == TeamEnum.RED ? TeamEnum.BLUE : TeamEnum.RED, collisionsHandler, hashMaps, gameMode, currentFPS);
 				oppTeam.addMember(p);
 		}
 
@@ -215,7 +215,7 @@ public class OfflinePlayer extends EssentialPlayer
 		} else {
 			bulletAngle -= deviation;
 		}
-		Bullet bullet = new Bullet(bulletCounter++, bulletX, bulletY, bulletAngle, team);
+		Bullet bullet = new Bullet(bulletCounter++, bulletX, bulletY, bulletAngle, team, gameSpeed);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
 		firedBullets.add(bullet);
 	}
@@ -270,6 +270,13 @@ public class OfflinePlayer extends EssentialPlayer
 	@Override
 	public void setOppTeam(Team team) {
 		this.oppTeam = team;
+
+	}
+
+
+	@Override
+	public void updateRotation(double angleRotation) {
+		// TODO Auto-generated method stub
 
 	}
 

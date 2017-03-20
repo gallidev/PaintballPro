@@ -1,9 +1,11 @@
 package integrationServer;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import enums.TeamEnum;
@@ -31,7 +33,7 @@ public class ServerGameStateSender {
 	private ScheduledExecutorService scheduler;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 17;
+	private long delayMilliseconds = 25;
 
 	/**
 	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby
@@ -52,17 +54,27 @@ public class ServerGameStateSender {
 	public void startSending(){
 
 		scheduler = Executors.newScheduledThreadPool(1);
+
+		ScheduledExecutorService schdExctr = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread t = Executors.defaultThreadFactory().newThread(r);
+                t.setPriority(Thread.MIN_PRIORITY);
+                return t;
+            }
+        });
+
 		Runnable sender = new Runnable() {
 		       public void run() {
 		    	   frames ++;
 		    	   sendClient();
 		    	   sendBullets();
 
-		    	   sendHitWall();
+		    	   //sendHitWall();
 
 		    	   sendRemainingTime();
-		    	   
-		    	   sendEliminatedPlayers();
+
+		    	   //sendEliminatedPlayers();
 
 		    	   if(gameLoop.getGame().isGameFinished()){
 
@@ -125,23 +137,36 @@ public class ServerGameStateSender {
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
+//		for(EssentialPlayer p : players){
+//
+//				String toBeSent = "4:" + p.getPlayerId();
+//
+//				boolean haveBullets = false;
+//				for(Bullet bullet : p.getBullets())
+//				{
+//					if(bullet.isActive())
+//					{
+//						haveBullets = true;
+//						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
+//					}
+//				}
+//				//System.out.println("Bullet msg sent from server " + toBeSent);
+//				if (haveBullets)
+//					udpServer.sendToAll(toBeSent, lobbyId);
+//		}
+
 		for(EssentialPlayer p : players){
 
-				String toBeSent = "4:" + p.getPlayerId();
+			String toBeSent = "4:" + p.getPlayerId();
 
-				boolean haveBullets = false;
-				for(Bullet bullet : p.getBullets())
-				{
-					if(bullet.isActive())
-					{
-						haveBullets = true;
-						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
-					}
-				}
-				//System.out.println("Bullet msg sent from server " + toBeSent);
-				if (haveBullets)
-					udpServer.sendToAll(toBeSent, lobbyId);
+			if(p.hasShot()){
+				p.setHasShot(false);
+				toBeSent += ":shot";
+				udpServer.sendToAll(toBeSent, lobbyId);
+			}
+
 		}
+
 	}
 
 	/**
@@ -158,16 +183,16 @@ public class ServerGameStateSender {
 
 			toBeSent += ":" + p.getLayoutX();
 			toBeSent += ":" + p.getLayoutY();
-			toBeSent += ":" + p.getAngleDegrees();
+			toBeSent += ":" + p.getAngle();
 			toBeSent += ":" + p.isVisible();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 
-//			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
-//				if (p.hasFlag()){
-//					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
-//				}
-//			}
+			if (gameLoop.getGame() instanceof CaptureTheFlagMode){
+				if (p.hasFlag()){
+					udpServer.sendToAll("7:" + p.getPlayerId(), lobbyId);
+				}
+			}
 
 			if (p.getScoreChanged()){
 				updateScore();
@@ -193,22 +218,22 @@ public class ServerGameStateSender {
 				sendBaseFlag();
 				p.getCollisionsHandler().setRespawned(false);
 			}
-			
+
 			if (p.getCollisionsHandler().isSpeedPowerup()){
 				sendPowerupCaptured("speed", p.getPlayerId());
 				p.getCollisionsHandler().setSpeedPowerup(false);
 			}
-			
+
 			if (p.getCollisionsHandler().isShieldPowerup()){
 				sendPowerupCaptured("shield", p.getPlayerId());
 				p.getCollisionsHandler().setShieldPowerup(false);
 			}
-			
+
 			if (p.getShieldRemoved()){
 				sendShieldRemoved(p);
 				p.setShieldRemoved(false);
 			}
-				
+
 		}
 	}
 
@@ -220,7 +245,7 @@ public class ServerGameStateSender {
 		String toBeSent = "3:" +  gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
 
 		udpServer.sendToAll(toBeSent, lobbyId);
-		System.out.println("send updated score");
+		//System.out.println("send updated score");
 	}
 
 	/**
@@ -262,7 +287,7 @@ public class ServerGameStateSender {
 		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
-	
+
 	private void sendPowerupCaptured(String s, int id){
 		String toBeSent = "";
 		switch(s){
@@ -311,7 +336,7 @@ public class ServerGameStateSender {
 		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 
 	}
-	
+
 	/*
 	 * Sets the game simulation.
 	 * @param sim The simulation of the game, which runs on the server.

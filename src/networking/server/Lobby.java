@@ -68,7 +68,7 @@ public class Lobby {
 	 * @param testEnv Flag to determine whether this class is under test.
 	 */
 	public Lobby(int myid, int PassedGameType, boolean testEnv) {
-		
+
 		inGameStatus = false;
 		GameType = PassedGameType;
 		MaxPlayers = 8;
@@ -158,13 +158,13 @@ public class Lobby {
 			currPlayerBlueNum++;
 		}
 	}
-	
+
 	/**
 	 * Remove player from a team and re-order other team members as appropriate.
 	 * @param playerToRemove Player obejct to remove from the team.
 	 */
 	public void removePlayer(ServerBasicPlayer playerToRemove) {
-		
+
 		boolean removed = false;
 		int counter = 0;
 		for (ServerBasicPlayer player : blueTeam.values()) {
@@ -215,7 +215,7 @@ public class Lobby {
 	 * @param receiver Server Receiver used to retrieve/send messages between clients
 	 */
 	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
-		
+
 		boolean switched = false;
 		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
@@ -322,11 +322,11 @@ public class Lobby {
 			}
 
 			if (teamNum == 1){
-				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer, map.getGameMode());
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer, map.getGameMode(), ServerGameSimulation.GAME_HERTZ);
 				player.setNickname(origPlayer.getUsername());
 			}
 			else{
-				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer, map.getGameMode());
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer, map.getGameMode(), ServerGameSimulation.GAME_HERTZ);
 				player.setNickname(origPlayer.getUsername());
 			}
 
@@ -334,7 +334,7 @@ public class Lobby {
 		}
 		return newTeam;
 	}
-	
+
 	private void setPlayerNames(){
 		File names = new File("res/names.txt");
 		Scanner readNames;
@@ -349,12 +349,12 @@ public class Lobby {
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());
 			}
-			
+
 			readNames.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -423,7 +423,7 @@ public class Lobby {
 	 * @param receiver A server receiver used to send the start game information to the clients.
 	 * @param udpServer An UDP server used after the game starts.
 	 * @param gameMode The game mode to be played : 1 for Team Match Mode and 2 for CTF
-	 * 
+	 *
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
@@ -441,18 +441,18 @@ public class Lobby {
 
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
 		blueAIM.createPlayers();
-		
+
 		//setting team players and enemies
 		for(EssentialPlayer p : red.getMembers()){
 			p.setOppTeam(blue);
 			p.setMyTeam(red);
 		}
-		
+
 		for(EssentialPlayer p : blue.getMembers()){
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
 		}
-		
+
 		setPlayerNames();
 
 		collissionsHandler.setRedTeam(red);
@@ -502,7 +502,7 @@ public class Lobby {
 		else
 			gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
 
-		gameloop.startExecution();
+		gameloop.runGameLoop();
 		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
 		stateSender.setGameLoop(gameloop);
 		stateSender.startSending();

@@ -5,6 +5,7 @@ import gui.GUIManager;
 import integrationClient.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
+import players.EssentialPlayer;
 import players.GhostPlayer;
 
 import java.net.DatagramPacket;
@@ -20,6 +21,8 @@ import java.util.HashMap;
  * @author Matthew Walters
  */
 public class UDPClient extends Thread {
+
+	public static double PINGDELAY = 0;
 
 	public boolean bulletDebug = false;
 	public boolean connected = false;
@@ -162,7 +165,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '3' : updateScoreAction(receivedPacket);
 							   break;
-					case '4' : updateBulletAction(receivedPacket);
+					case '4' : generateBullet(receivedPacket);
 							   break;
 					case '6' : getRemainingTime(receivedPacket);
 							   break;
@@ -208,26 +211,26 @@ public class UDPClient extends Thread {
 	//use this to switch back to the normal player image
 	private void shieldRemovedAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
-		
+
 		//System.out.println("player with id " + id + " does not have shield anymore" );
-		
+
 	}
 
 	//use this to remove powerups from maps and change to the shield player image
 	private void powerUpAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[2]);
-		
+
 		switch (receivedPacket.split(":")[1])
 		{
-		case "0" : //powerup is speed 
+		case "0" : //powerup is speed
 					System.out.println("Player " +id +" took speed powerup");
 					break;
 		case "1" : System.out.println("Player" + id +" took shield powerup");
 				   break;
 		}
-		
-		
-		
+
+
+
 	}
 
 	private void getWinnerAction(String text) {
@@ -323,11 +326,12 @@ public class UDPClient extends Thread {
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
 		if (GUIManager.renderer!= null && GUIManager.renderer.getHud() != null){
+
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					GUIManager.renderer.getHud().setScore(TeamEnum.RED, redScore);
-					GUIManager.renderer.getHud().setScore(TeamEnum.BLUE, blueScore);
+					GUIManager.renderer.setRedScore(redScore);
+					GUIManager.renderer.setBlueScore(blueScore);
 				}
 			});
 		}
@@ -370,7 +374,20 @@ public class UDPClient extends Thread {
 		String[] bullets = Arrays.copyOfRange(data, 2, data.length);
 
 		if(gameStateReceiver != null){
-			gameStateReceiver.updateBullets(id, bullets);
+			//gameStateReceiver.updateBullets(id, bullets);
+		}
+	}
+
+	public void generateBullet(String text){
+		// Protocol message: 4:id:idBullet:x:y:...
+
+		int id = Integer.parseInt(text.split(":")[1]);
+
+		//get all the bullets
+		String[] data = text.split(":");
+
+		if(gameStateReceiver != null){
+			gameStateReceiver.updateBullets(id);
 		}
 	}
 
@@ -384,7 +401,7 @@ public class UDPClient extends Thread {
 				@Override
 				public void run() {
 					if (GUIManager.renderer.getHud() != null)
-						GUIManager.renderer.getHud().tick(Integer.parseInt(time));
+						GUIManager.renderer.setTimeRemaining(Integer.parseInt(time));
 				}
 			});
 		}
@@ -438,21 +455,14 @@ public class UDPClient extends Thread {
 
 	private void pingTimeUpdate(String receivedPacket) {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
-		//System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
-		int id = Integer.parseInt(actions[1]);
+
 		long ClientTime = Long.parseLong(actions[2]);
-		long ServerTime = Long.parseLong(actions[3]);
 
-		//System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		PINGDELAY = (System.currentTimeMillis() - ClientTime);
 
 
-		//GhostPlayer p = getPlayerWithID(id);
-
-		//p.setPingToServer(ServerTime - ClientTime);
-		//p.setPingFromServer(System.currentTimeMillis() - ServerTime);
-
-		//System.out.println("toServer ping : " + p.getPingToServer() + " fromServer ping: " + p.getPingFromServer());
 
 	}
 
@@ -465,14 +475,14 @@ public class UDPClient extends Thread {
 	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-	private GhostPlayer getPlayerWithID(int id) {
+	private EssentialPlayer getPlayerWithID(int id) {
 		// Check if the Player is in my team
-		for (GhostPlayer p : teams.getMyTeam())
+		for (EssentialPlayer p : teams.getMyTeam())
 			if (p.getPlayerId() == id)
 				return p;
 
 		// otherwise, player is in the enemy team
-		for (GhostPlayer p : teams.getEnemies())
+		for (EssentialPlayer p : teams.getEnemies())
 			if (p.getPlayerId() == id)
 				return p;
 
@@ -508,7 +518,7 @@ public class UDPClient extends Thread {
 
 		//System.out.println("Player " + id + " eliminated");
 	}
-	
+
 	public boolean isActive(){
 		return active;
 	}

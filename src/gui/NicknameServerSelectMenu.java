@@ -32,6 +32,9 @@ public class NicknameServerSelectMenu {
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
         LoadingPane loadingPane = new LoadingPane(mainGrid);
 
+        Label titleLabel = new Label("Multiplayer");
+        titleLabel.setStyle("-fx-font-size: 26px;");
+
         GridPane topGrid = new GridPane();
         topGrid.setAlignment(Pos.CENTER);
         topGrid.setHgap(10);
@@ -42,11 +45,17 @@ public class NicknameServerSelectMenu {
         Label usernameLabel = new Label("Username");
         TextField usernameText = new TextField();
         usernameText.setText(userSettings.getUsername());
+        topGrid.add(usernameLabel, 0, 0);
+        topGrid.add(usernameText, 1, 0);
+
+        GridPane selectionGrid = new GridPane();
+        selectionGrid.setAlignment(Pos.CENTER);
+        selectionGrid.setHgap(10);
+        selectionGrid.setVgap(10);
+        selectionGrid.setPadding(new Insets(25, 25, 25, 25));
 
         // Create the toggle group
         final ToggleGroup group = new ToggleGroup();
-        topGrid.add(usernameLabel, 0, 0);
-        topGrid.add(usernameText, 1, 0);
 
         // Create the automatic radio button
         RadioButton automatic = new RadioButton();
@@ -56,8 +65,8 @@ public class NicknameServerSelectMenu {
         // Create the search label
         Label automaticLabel = new Label("Search LAN for a Server");
         automaticLabel.setOnMouseClicked((event) -> automatic.fire());
-        topGrid.add(automatic, 0, 1);
-        topGrid.add(automaticLabel, 1, 1);
+        selectionGrid.add(automatic, 0, 0);
+        selectionGrid.add(automaticLabel, 1, 0);
 
         // Create the manual radio button, label and text field
         RadioButton manual = new RadioButton();
@@ -68,8 +77,8 @@ public class NicknameServerSelectMenu {
         GridPane manualField = new GridPane();
         manualField.add(ipLabel, 0, 0);
         manualField.add(ipText, 0, 1);
-        topGrid.add(manual, 0, 2);
-        topGrid.add(manualField, 1, 2);
+        selectionGrid.add(manual, 0, 1);
+        selectionGrid.add(manualField, 1, 1);
 
         // Add opacity styling to the form
         automaticLabel.setStyle("-fx-opacity: 1.0;");
@@ -114,8 +123,11 @@ public class NicknameServerSelectMenu {
                         // Found a LAN server, so try to connect to it
                         Platform.runLater(() -> {
                             guiManager.setIpAddress(ipPort);
-                            if (guiManager.establishConnection())
+                            int error = guiManager.establishConnection();
+                            if (error == 0)
                                 guiManager.transitionTo(Menu.MultiplayerGameType);
+                            else if (error == 6)
+                                loadingPane.stopLoading();
                             else {
                                 (new AlertBox("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.")).showAlert();
                                 loadingPane.stopLoading();
@@ -133,7 +145,7 @@ public class NicknameServerSelectMenu {
                                 guiManager.setIpAddress(ipText.getText());
 
                             // Try to establish a connection
-                            if (guiManager.establishConnection())
+                            if (guiManager.establishConnection() == 0)
                                 guiManager.transitionTo(Menu.MultiplayerGameType);
                             else
                                 loadingPane.stopLoading();
@@ -146,8 +158,10 @@ public class NicknameServerSelectMenu {
         // Turn the array into a grid pane
         GridPane connectGrid = MenuOptionSet.optionSetToGridPane(connect);
         // Add the options grid and the button grid to the main grid
-        mainGrid.add(topGrid, 0, 0);
-        mainGrid.add(connectGrid, 0, 1);
+        mainGrid.add(MenuControls.centreInPane(titleLabel), 0, 0);
+        mainGrid.add(topGrid, 0, 1);
+        mainGrid.add(selectionGrid, 0, 2);
+        mainGrid.add(connectGrid, 0, 3);
 
         ipText.setOnKeyPressed((event) -> {
             if (event.getCode().equals(KeyCode.ENTER))

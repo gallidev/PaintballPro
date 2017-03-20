@@ -26,8 +26,8 @@ public class AIPlayer extends EssentialPlayer{
 	private String nickname;
 
 
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps, GameMode mode){
-		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode);
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps, GameMode mode, double currentFPS){
+		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode, currentFPS);
 		this.hashMaps = hashMaps;
 		angle = Math.toRadians(90);
 		movementAngle = 0;
@@ -150,6 +150,12 @@ public class AIPlayer extends EssentialPlayer{
 
 	public ArrayList<EssentialPlayer> getTeamPlayers() {
 		return myTeam.getMembers();
+	}
+
+	@Override
+	public void updateRotation(double angleRotation) {
+		// TODO Auto-generated method stub
+
 	}
 
 //	public CollisionsHandler getCollisionHandler(){

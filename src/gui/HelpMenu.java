@@ -32,12 +32,8 @@ public class HelpMenu {
         mainGrid.setPadding(new Insets(25, 25, 25, 25));
 
         WebView webView = new WebView();
-        try {
-            String content = new String(Files.readAllBytes(Paths.get("res/help.html")));
-            webView.getEngine().loadContent(content);
-        } catch (IOException e) {
-            (new AlertBox("Help Missing", "Could not load help document")).showAlert();
-        }
+        String url = HelpMenu.class.getResource("/help.html").toExternalForm();
+        webView.getEngine().load(url);
 
         // Create a array of options for the cancel and apply buttons
         MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {

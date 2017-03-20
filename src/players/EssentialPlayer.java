@@ -5,6 +5,7 @@ import java.util.List;
 
 import enums.GameMode;
 import enums.TeamEnum;
+import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,15 +23,17 @@ import serverLogic.Team;
  */
 public abstract class EssentialPlayer extends ImageView {
 
+	private static final double targetFPS = 60.0;
 	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
-	static final long SHOOT_DELAY = 450;
-	private static final long SPAWN_DELAY = 2000;
+	protected long SHOOT_DELAY = 450;
+	protected long SPAWN_DELAY = 2000;
 	protected Rotate rotation, boundRotation;
 	protected int id;
 	protected TeamEnum team;
 	protected CollisionsHandler collisionsHandler;
 	boolean up, down, left, right, shoot, eliminated, invincible;
 	boolean collUp, collDown, collLeft, collRight;
+	boolean hasShot;
 	double angle, lastAngle;
 	double mouseX, mouseY;
 	ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
@@ -43,6 +46,8 @@ public abstract class EssentialPlayer extends ImageView {
 	protected GameMode gameMode;
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 	protected double movementSpeed = 2.5;
+	protected double gameSpeed;
+
 
 	//===================Power-up stats=======================
 	//Base movement speed = 2.5
@@ -57,8 +62,8 @@ public abstract class EssentialPlayer extends ImageView {
 	private boolean shieldRemoved = false;
 	//========================================================
 
-	private String nickname;
-	
+	protected String nickname;
+
 	protected boolean scoreChanged = false;
 
 	/**
@@ -70,7 +75,7 @@ public abstract class EssentialPlayer extends ImageView {
 	 * @param image
 	 *
 	 */
-	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image, GameMode game){
+	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS){
 		super(image);
 		this.angle = 0;
 		setLayoutX(x);
@@ -88,6 +93,7 @@ public abstract class EssentialPlayer extends ImageView {
 		this.spawn = spawn;
 		eliminated = false;
 		invincible = false;
+		hasShot = false;
 		this.collisionsHandler = collisionsHandler;
 		createPlayerBounds();
 		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -96,8 +102,12 @@ public abstract class EssentialPlayer extends ImageView {
 		boundRotation.setPivotY(PLAYER_HEAD_Y);
 		updatePlayerBounds();
 		bulletCounter = 1;
-		
+		this.gameSpeed = targetFPS/currentFPS;
+		this.movementSpeed = this.movementSpeed * gameSpeed;
+		this.SPAWN_DELAY = this.SPAWN_DELAY * (long) gameSpeed;
+		this.SHOOT_DELAY = this.SHOOT_DELAY * (long) gameSpeed;
 		gameMode = game;
+
 	}
 
 	protected abstract void updatePosition();
@@ -240,10 +250,15 @@ public abstract class EssentialPlayer extends ImageView {
 		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
 		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 
-		Bullet bullet = new Bullet(bulletCounter,bulletX, bulletY, angle, team);
+		generateBullet(bulletX, bulletY, angle);
+
+		hasShot = true;
+	}
+
+	public void generateBullet(double x, double y, double angle){
+		Bullet bullet = new Bullet(bulletCounter, x, y, angle, team, gameSpeed);
 
 		firedBullets.add(bullet);
-
 		bulletCounter ++;
 	}
 
@@ -253,6 +268,12 @@ public abstract class EssentialPlayer extends ImageView {
 		setVisible(false);
 		updateScore();
 	}
+
+	public void relocatePlayerWithTag(double x, double y)
+	{
+
+	}
+
 
 
 	//Getters and setters below this point
@@ -304,13 +325,6 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public int getPlayerId(){
 		return id;
-	}
-
-	public synchronized void setMouseX(int newX) {
-		mouseX = newX;
-	}
-	public synchronized void setMouseY(int newY){
-		mouseY = newY;
 	}
 
 	public boolean hasFlag()
@@ -385,11 +399,11 @@ public abstract class EssentialPlayer extends ImageView {
 	public CollisionsHandler getCollisionsHandler(){
 		return collisionsHandler;
 	}
-	
+
 	public void setScoreChanged(boolean b){
 		scoreChanged  = b;
 	}
-	
+
 	public boolean getScoreChanged(){
 		return scoreChanged;
 	}
@@ -409,6 +423,7 @@ public abstract class EssentialPlayer extends ImageView {
 	public void removeShield(){
 		this.shieldActive = false;
 		shieldRemoved = true;
+		collisionsHandler.getShieldPowerup().setTaken(false);
 	}
 
 	public boolean getShieldActive(){
@@ -423,35 +438,52 @@ public abstract class EssentialPlayer extends ImageView {
 	public void removeSpeed(){
 		speedDown();
 		this.speedActive = false;
+		collisionsHandler.getSpeedPowerup().setTaken(false);
 	}
 
 	public boolean getSpeedActive(){
 		return this.speedActive;
 	}
-	
+
+	public abstract void updateRotation(double angleRotation);
+
+	public Node getNameTag() {
+		return null;
+	}
+
+	public boolean hasShot(){
+		return hasShot;
+	}
+	public void setHasShot(boolean shot){
+		this.hasShot = shot;
+	}
+
 	public boolean getShieldRemoved(){
 		return shieldRemoved;
 	}
-	
+
 	public void setShieldRemoved(boolean b){
 		shieldRemoved = b;
 	}
-	
+
 	public boolean getUp(){
 		return up;
 	}
-	
+
 	public boolean getDown(){
 		return down;
 	}
-	
+
 	public boolean getLeft(){
 		return left;
 	}
-	
+
 	public boolean getRight(){
 		return right;
 	}
-	
+
+	public void updateGameSpeed(){
+
+	}
 }
 

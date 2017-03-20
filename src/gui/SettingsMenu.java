@@ -34,6 +34,9 @@ public class SettingsMenu {
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
 		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+
+		Label titleLabel = new Label("Settings");
+		titleLabel.setStyle("-fx-font-size: 26px;");
 		
 		// Create the option grid (grid to contain all possible options)
 		GridPane optGrid = new GridPane();
@@ -149,8 +152,9 @@ public class SettingsMenu {
 		GridPane buttonGrid = MenuOptionSet.optionSetToGridPane(set);
 		
 		// Add the options grid and the button grid to the main grid
-		mainGrid.add(optGrid, 0, 0);
-		mainGrid.add(buttonGrid, 0, 1);
+		mainGrid.add(MenuControls.centreInPane(titleLabel), 0, 0);
+		mainGrid.add(optGrid, 0, 1);
+		mainGrid.add(buttonGrid, 0, 2);
 		
 		// Create a new scene using the main grid
 		return guiManager.createScene(mainGrid);

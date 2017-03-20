@@ -24,7 +24,7 @@ public class ClientInputSender {
 	private boolean debug = true;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 17;
+	private long delayMilliseconds = 25;
 	private int times = 0;
 
 	/**
@@ -98,26 +98,26 @@ public class ClientInputSender {
 		String toBeSent = "0:" + player.getPlayerId() + ":";
 		//did player move up?
 		if (handler.isUp())
-			toBeSent += ":Up:";
+			toBeSent += "Up:";
 
 		//did player move down?
 		if (handler.isDown())
-			toBeSent += ":Down:";
+			toBeSent += "Down:";
 
 		//did player move left?
 		if (handler.isLeft())
-			toBeSent += ":Left:";
+			toBeSent += "Left:";
 
 		//did player move right?
 		if (handler.isRight())
-			toBeSent += ":Right:";
+			toBeSent += "Right:";
 
 		//is the player shooting?
 		if (handler.isShooting())
-			toBeSent += ":Shoot:";
+			toBeSent += "Shoot:";
 
 		//did the mouse move?
-		toBeSent += ":Angle:" + player.getAngleRadians();
+		toBeSent += "Angle:" + player.getAngle();
 
 		udpClient.sendMessage(toBeSent);
 	}
@@ -128,7 +128,7 @@ public class ClientInputSender {
 	 */
 	private void sendCurrentTime(){
 		String toSend = "3:"  + player.getPlayerId() + ":";
-		if(debug) System.out.println("cliend Sending time: " + System.currentTimeMillis());
+		if(debug) System.out.println("client Sending time: " + System.currentTimeMillis());
 		toSend +=  System.currentTimeMillis();
 		udpClient.sendMessage(toSend);
 	}
