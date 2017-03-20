@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests AI Path and Cover Generators
  */
-public class TestPathAndCoverGenerators {
+public class TestPathHashMapGenerators {
 
     HashMapGen elimPathGen;
     HashMapGen ctfPathGen;
@@ -56,18 +56,6 @@ public class TestPathAndCoverGenerators {
     public void ctfPathsGenerated() {
         HashMap<PointPairs, ArrayList<Point2D>> pathMap = ctfPathGen.getPathMap();
         assertTrue(!pathMap.isEmpty());
-    }
-
-    @Test
-    public void elimCoverMapsGenerated() {
-        HashMap<PointPairs, Boolean> coverMap = elimPathGen.getCoverMap();
-        assertTrue(!coverMap.isEmpty());
-    }
-
-    @Test
-    public void ctfCoverMapsGenerated() {
-        HashMap<PointPairs, Boolean> coverMap = ctfPathGen.getCoverMap();
-        assertTrue(!coverMap.isEmpty());
     }
 
 

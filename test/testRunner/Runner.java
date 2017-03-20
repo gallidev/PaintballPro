@@ -4,6 +4,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
+import testSuites.AISuite;
 import testSuites.NetworkingSuite;
 
 /**
@@ -13,7 +14,7 @@ import testSuites.NetworkingSuite;
  */
 public class Runner {
    public static void main(String[] args) {
-      Result result = JUnitCore.runClasses(NetworkingSuite.class);
+      Result result = JUnitCore.runClasses(NetworkingSuite.class, AISuite.class);
 
       for (Failure failure : result.getFailures()) {
          System.out.println(failure.toString());

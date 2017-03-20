@@ -119,6 +119,35 @@ public class TestPrimitives {
         assertTrue(p.equals(newPath));
     }
 
+    @Test
+    public void PointPairEquality(){
+        PointPairs pp1 = new PointPairs(1,1,5,5);
+        PointPairs pp2 = new PointPairs(18,4,9,5);
+        PointPairs pp3 = new PointPairs(1,1,5,5);
+        Node n1 = new Node(1,1);
+        assertTrue(!pp1.equals(pp2));
+        assertTrue(pp1.equals(pp3));
+        assertTrue(!pp1.equals(n1));
+    }
+
+    @Test
+    public void comparatorTest(){
+        CostComparator cc = new CostComparator();
+
+        Node n1 = new Node(1,4);
+        n1.finalCost = 100;
+
+        Node n2 = new Node(5,8);
+        n2.finalCost = 0;
+
+        Node n3 = new Node(6,3);
+        n3.finalCost = 100;
+
+        assertTrue(cc.compare(n1,n2) == 1);
+        assertTrue(cc.compare(n2, n3) == -1);
+        assertTrue(cc.compare(n1,n3) == 0);
+    }
+
 
 
 

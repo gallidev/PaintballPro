@@ -157,6 +157,4 @@ public class TestPathFinding {
         assertTrue(grid[1][1] == null);
         assertTrue(grid[22][10].equals(new Node(22, 10)));
     }
-
-
 }

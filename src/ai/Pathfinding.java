@@ -230,9 +230,6 @@ public class Pathfinding {
     }
 
     public Path getPath(int x, int y, int tx, int ty){
-        if(path == null){
-            path = new Path();
-        }
         resetNodes();
         AStar(x, y, tx, ty);
         return path;
