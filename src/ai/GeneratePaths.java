@@ -16,14 +16,13 @@ public class GeneratePaths extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Arguments - name of map
-        Map map = Map.loadRaw("ctf") ;
+        Map map = Map.loadRaw("elimination") ;
         Pathfinding pathfinder = new Pathfinding(map);
         Node[][] nodes = pathfinder.getNodeGrid();
         int x = nodes.length;
         int y = nodes[0].length;
 
-        String csvFile = "res/maps/" + "ctf" + "_paths.csv";
+        String csvFile = "res/maps/" + "elimination" + "_paths.csv";
         FileWriter writer = new FileWriter(csvFile);
 
         //For every node, calculate a path to every other node

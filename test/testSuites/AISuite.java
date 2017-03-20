@@ -1,5 +1,6 @@
 package testSuites;
 
+import ai.TestPathCSVGenerator;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -12,7 +13,8 @@ import ai.TestPrimitives;
 @Suite.SuiteClasses({
         TestPathHashMapGenerators.class,
         TestPathFinding.class,
-        TestPrimitives.class
+        TestPrimitives.class,
+        TestPathCSVGenerator.class
 })
 
 /**
