@@ -414,6 +414,20 @@ public class CollisionsHandler
 		this.spawnAreaRed = spawnAreaRed;
 	}
 
+	public Powerup getSpeedPowerup(){
+		for(Powerup powerup: powerups){
+			if(powerup.getType() == PowerupType.SPEED) return powerup;
+		}
+		return null;
+	}
+
+	public Powerup getShieldPowerup(){
+		for(Powerup powerup: powerups){
+			if(powerup.getType() == PowerupType.SHIELD) return powerup;
+		}
+		return null;
+	}
+
 	public boolean isSpeedPowerup() {
 		return speedPowerup;
 	}

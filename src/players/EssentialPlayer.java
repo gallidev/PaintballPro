@@ -409,6 +409,7 @@ public abstract class EssentialPlayer extends ImageView {
 	public void removeShield(){
 		this.shieldActive = false;
 		shieldRemoved = true;
+		collisionsHandler.getShieldPowerup().setTaken(false);
 	}
 
 	public boolean getShieldActive(){
@@ -423,6 +424,7 @@ public abstract class EssentialPlayer extends ImageView {
 	public void removeSpeed(){
 		speedDown();
 		this.speedActive = false;
+		collisionsHandler.getSpeedPowerup().setTaken(false);
 	}
 
 	public boolean getSpeedActive(){
