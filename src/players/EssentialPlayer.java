@@ -23,7 +23,7 @@ import serverLogic.Team;
  */
 public abstract class EssentialPlayer extends ImageView {
 
-	private static final double targetFPS = 60;
+	private static final double targetFPS = 60.0;
 	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
 	protected long SHOOT_DELAY = 450;
 	protected long SPAWN_DELAY = 2000;
@@ -33,6 +33,7 @@ public abstract class EssentialPlayer extends ImageView {
 	protected CollisionsHandler collisionsHandler;
 	boolean up, down, left, right, shoot, eliminated, invincible;
 	boolean collUp, collDown, collLeft, collRight;
+	boolean hasShot;
 	double angle, lastAngle;
 	double mouseX, mouseY;
 	ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
@@ -92,6 +93,7 @@ public abstract class EssentialPlayer extends ImageView {
 		this.spawn = spawn;
 		eliminated = false;
 		invincible = false;
+		hasShot = false;
 		this.collisionsHandler = collisionsHandler;
 		createPlayerBounds();
 		boundRotation = new Rotate(Math.toDegrees(angle), 0, 0, 0, Rotate.Z_AXIS);
@@ -105,6 +107,7 @@ public abstract class EssentialPlayer extends ImageView {
 		this.SPAWN_DELAY = this.SPAWN_DELAY * (long) gameSpeed;
 		this.SHOOT_DELAY = this.SHOOT_DELAY * (long) gameSpeed;
 		gameMode = game;
+
 	}
 
 	protected abstract void updatePosition();
@@ -248,6 +251,8 @@ public abstract class EssentialPlayer extends ImageView {
 		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 
 		generateBullet(bulletX, bulletY, angle);
+
+		hasShot = true;
 	}
 
 	public void generateBullet(double x, double y, double angle){
@@ -438,6 +443,12 @@ public abstract class EssentialPlayer extends ImageView {
 		return null;
 	}
 
+	public boolean hasShot(){
+		return hasShot;
+	}
+	public void setHasShot(boolean shot){
+		this.hasShot = shot;
+	}
 
 	public boolean getShieldRemoved(){
 		return shieldRemoved;

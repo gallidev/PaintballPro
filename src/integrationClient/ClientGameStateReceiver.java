@@ -2,6 +2,7 @@ package integrationClient;
 
 import javafx.application.Platform;
 import physics.Flag;
+import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
 
@@ -15,6 +16,8 @@ import java.util.ArrayList;
  *
  */
 public class ClientGameStateReceiver {
+
+	public static int PINGDELAY = 0;
 
 	private ArrayList<EssentialPlayer> players;
 
@@ -57,12 +60,29 @@ public class ClientGameStateReceiver {
 
 		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
-		Platform.runLater(() ->
-		{
-			playerToBeUpdated.relocate(x, y);
-			playerToBeUpdated.setAngle(angle);
-			playerToBeUpdated.setVisible(visible);
-		});
+
+		if(playerToBeUpdated instanceof ClientPlayer){
+
+			ClientPlayer cPlayer = (ClientPlayer) playerToBeUpdated;
+			Platform.runLater(() ->
+			{
+				if(cPlayer.shouldIUpdatePosition(x, y)){
+					playerToBeUpdated.relocate(x, y);
+				}
+				//playerToBeUpdated.setAngle(angle);
+				playerToBeUpdated.setVisible(visible);
+			});
+
+		}else{
+			Platform.runLater(() ->
+			{
+				playerToBeUpdated.relocate(x, y);
+				playerToBeUpdated.setAngle(angle);
+				playerToBeUpdated.setVisible(visible);
+			});
+		}
+
+
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
@@ -75,8 +95,12 @@ public class ClientGameStateReceiver {
 
 	public void updateBullets(int id){
 		EssentialPlayer p = getPlayerWithId(id);
-		if(p!= null){
-			//p.shoot();
+
+		if(p != null &&  !(p instanceof ClientPlayer)){
+			Platform.runLater(() ->
+			{
+				p.shoot();
+			});
 		}
 	}
 

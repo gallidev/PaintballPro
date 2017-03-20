@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServerGameSimulation {
 
-    public static final double GAME_HERTZ = 45.0;
+    public static final double GAME_HERTZ = 40.0;
 
 	private static final long delayMilliseconds = 17;
 	private Team redTeam;

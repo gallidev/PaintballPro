@@ -74,7 +74,7 @@ public class ServerGameStateSender {
 
 		    	   sendRemainingTime();
 
-		    	   sendEliminatedPlayers();
+		    	   //sendEliminatedPlayers();
 
 		    	   if(gameLoop.getGame().isGameFinished()){
 
@@ -159,7 +159,8 @@ public class ServerGameStateSender {
 
 			String toBeSent = "4:" + p.getPlayerId();
 
-			if(p.isShooting()){
+			if(p.hasShot()){
+				p.setHasShot(false);
 				toBeSent += ":shot";
 				udpServer.sendToAll(toBeSent, lobbyId);
 			}
@@ -244,7 +245,7 @@ public class ServerGameStateSender {
 		String toBeSent = "3:" +  gameLoop.getGame().getRedTeam().getScore() + ":" + gameLoop.getGame().getBlueTeam().getScore();
 
 		udpServer.sendToAll(toBeSent, lobbyId);
-		System.out.println("send updated score");
+		//System.out.println("send updated score");
 	}
 
 	/**

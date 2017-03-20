@@ -30,11 +30,12 @@ public class GhostPlayerWithColls extends EssentialPlayer {
 	@Override
 	public void tick() {
 
-		//collisionsHandler.handlePropWallCollision(this);
-		//updateBullets();
+		collisionsHandler.handlePropWallCollision(this);
+		updateBullets();
+		updatePlayerBounds();
 		updateAngle();
 
-		//collisionsHandler.handleBulletCollision(this);
+		collisionsHandler.handleBulletCollision(this);
 
 	}
 

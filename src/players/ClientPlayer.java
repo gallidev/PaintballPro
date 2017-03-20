@@ -17,6 +17,8 @@ import serverLogic.Team;
 
 public class ClientPlayer extends EssentialPlayer {
 
+
+	private double limitDifferencePosition = 30;
 	private InputHandler inputHandler;
 	private AudioManager audio;
 	private Random rand;
@@ -44,7 +46,7 @@ public class ClientPlayer extends EssentialPlayer {
 	public void tick(){
 		// handle the collisions with walls and props before moving the position
 		// of the player so to understand if he can move or not in a specific direction
-		//collisionsHandler.handlePropWallCollision(this);
+		collisionsHandler.handlePropWallCollision(this);
 		//collisionsHandler.handleFlagCollision(this);
 //		if(!eliminated)
 //		{
@@ -62,13 +64,13 @@ public class ClientPlayer extends EssentialPlayer {
 //		}
 
 		updatePlayerBounds();
-		//updatePosition();
+		updatePosition();
 		updateShooting();
 		updateAngle();
 		updateBullets();
 		//handlePowerUp();
 
-		//collisionsHandler.handleBulletCollision(this);
+		collisionsHandler.handleBulletCollision(this);
 
 //		if(!invincible)
 //		{
@@ -117,6 +119,10 @@ public class ClientPlayer extends EssentialPlayer {
 
 	public void setInputHandler(InputHandler inputHandler){
 		 this.inputHandler = inputHandler;
+	}
+
+	public boolean shouldIUpdatePosition(double x, double y){
+		return ((Math.abs(x - getLayoutX()) + Math.abs(y - getLayoutY())) > limitDifferencePosition);
 	}
 
 

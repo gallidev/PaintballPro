@@ -208,7 +208,7 @@ public class Renderer extends Scene
 						else if(view.getChildren().contains(pellet))
 						{
 							if(pellet.getCollision() != null)
-								//generateSpray(pellet, player.getTeam());
+								generateSpray(pellet);
 							view.getChildren().remove(pellet);
 						}
 					}

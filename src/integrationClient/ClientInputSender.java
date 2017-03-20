@@ -24,7 +24,7 @@ public class ClientInputSender {
 	private boolean debug = false;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 22;
+	private long delayMilliseconds = 25;
 	private int times = 0;
 
 	/**
@@ -125,7 +125,7 @@ public class ClientInputSender {
 
 	private void sendCurrentTime(){
 		String toSend = "3:"  + player.getPlayerId() + ":";
-		if(debug) System.out.println("cliend Sending time: " + System.currentTimeMillis());
+		if(debug) System.out.println("client Sending time: " + System.currentTimeMillis());
 		toSend +=  System.currentTimeMillis();
 		udpClient.sendMessage(toSend);
 

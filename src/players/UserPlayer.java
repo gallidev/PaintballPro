@@ -15,7 +15,7 @@ public class UserPlayer extends EssentialPlayer{
 
 	private Team oppTeam;
 	private Team myTeam;
-	
+
 	/* For testing purposes */
 	public static boolean isTicked = false;
 
@@ -57,7 +57,7 @@ public class UserPlayer extends EssentialPlayer{
 		{
 			checkInvincibility();
 		}
-		
+
 		isTicked = true;
 	}
 

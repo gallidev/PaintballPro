@@ -156,7 +156,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '2' : getWinnerAction(receivedPacket);
 							   break;
-					case '3' : updateScoreAction(receivedPacket);
+					case '3' : //updateScoreAction(receivedPacket);
 							   break;
 					case '4' : generateBullet(receivedPacket);
 							   break;
@@ -204,26 +204,26 @@ public class UDPClient extends Thread {
 	//use this to switch back to the normal player image
 	private void shieldRemovedAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
-		
+
 		//System.out.println("player with id " + id + " does not have shield anymore" );
-		
+
 	}
 
 	//use this to remove powerups from maps and change to the shield player image
 	private void powerUpAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[2]);
-		
+
 		switch (receivedPacket.split(":")[1])
 		{
-		case "0" : //powerup is speed 
+		case "0" : //powerup is speed
 					System.out.println("Player " +id +" took speed powerup");
 					break;
 		case "1" : System.out.println("Player" + id +" took shield powerup");
 				   break;
 		}
-		
-		
-		
+
+
+
 	}
 
 	private void getWinnerAction(String text) {
