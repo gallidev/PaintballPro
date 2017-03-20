@@ -307,8 +307,8 @@ public class UDPClient extends Thread {
 				visibility = false;
 
 			boolean eliminated = false;
-			if (actions[5].equals("true"))
-				visibility = true;
+			if (actions[6].equals("true"))
+				eliminated = true;
 
 //			if (visibility == false)
 //				System.out.println("I'm invisible " + id);

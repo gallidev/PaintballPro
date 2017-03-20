@@ -71,10 +71,12 @@ public class ClientPlayer extends EssentialPlayer {
 			updatePosition();
 			updateShooting();
 			updateAngle();
+
 		}
 
-		updatePlayerBounds();
 		updateBullets();
+		updatePlayerBounds();
+
 		//handlePowerUp();
 
 		collisionsHandler.handleBulletCollision(this);
