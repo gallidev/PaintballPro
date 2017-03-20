@@ -3,7 +3,6 @@ package networking.client;
 import java.util.ArrayList;
 
 import players.EssentialPlayer;
-import players.GhostPlayer;
 
 /**
  * Stores teams for each client - their team and enemy team by their perspective.
@@ -11,16 +10,16 @@ import players.GhostPlayer;
  * @author Matthew Walters
  */
 public class TeamTable {
+	private ArrayList<EssentialPlayer> enemyTeam;
 	private ArrayList<EssentialPlayer> myTeam;
-	private ArrayList<EssentialPlayer> enemies;
-
+	
 	/**
 	 * Set up teams.
 	 */
 	public TeamTable()
 	{
+		enemyTeam = new ArrayList<EssentialPlayer>();
 		myTeam = new ArrayList<EssentialPlayer>();
-		enemies = new ArrayList<EssentialPlayer>();
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class TeamTable {
 	 * @return enemies arraylist.
 	 */
 	public ArrayList<EssentialPlayer> getEnemies() {
-		return enemies;
+		return enemyTeam;
 	}
 
 	/**
@@ -52,6 +51,6 @@ public class TeamTable {
 	 * @param enemies Representation of enemies arraylist.
 	 */
 	public void setEnemies(ArrayList<EssentialPlayer> enemies) {
-		this.enemies = enemies;
+		this.enemyTeam = enemies;
 	}
 }
