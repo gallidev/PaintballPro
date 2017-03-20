@@ -104,6 +104,12 @@ public class ClientGameStateReceiver {
 
 	}
 
+	public void shieldRemovedAction(int id)
+	{
+		EssentialPlayer player = getPlayerWithId(id);
+		player.setShieldEffect(false);
+	}
+
 	/**
 	 * Update a player's active bullets.
 	 * @param id The id of the player.
@@ -184,6 +190,4 @@ public class ClientGameStateReceiver {
 	{
 		return powerups;
 	}
-
-
 }

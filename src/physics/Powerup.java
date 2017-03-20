@@ -44,13 +44,13 @@ public class Powerup extends ImageView
 		this.type = type;
 	}
 
-	void resetPosition()
+	private void resetPosition()
 	{
 		int randomLocation = (new Random()).nextInt(locations.length);
 		relocate(locations[randomLocation].getX() * 64 + 16, locations[randomLocation].getY() * 64 + 16);
 	}
 
-	public void took() {
+	void took() {
 		setVisible(false);
 		new java.util.Timer().schedule(
 		        new java.util.TimerTask() {

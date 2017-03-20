@@ -2,7 +2,6 @@ package networking.game;
 
 import integrationServer.ServerInputReceiver;
 import networking.server.ClientTable;
-import networking.server.Lobby;
 import networking.server.LobbyTable;
 import players.ServerBasicPlayer;
 
