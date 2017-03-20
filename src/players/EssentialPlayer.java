@@ -420,6 +420,10 @@ public abstract class EssentialPlayer extends ImageView {
 		this.movementSpeed = 2.5;
 	}
 
+	public boolean getShieldActive(){
+		return this.shieldActive;
+	}
+
 	public void giveShield(){
 		this.shieldActive = true;
 	}
@@ -428,10 +432,6 @@ public abstract class EssentialPlayer extends ImageView {
 		this.shieldActive = false;
 		shieldRemoved = true;
 		collisionsHandler.getShieldPowerup().setTaken(false);
-	}
-
-	public boolean getShieldActive(){
-		return this.shieldActive;
 	}
 
 	public void giveSpeed(){
@@ -443,10 +443,6 @@ public abstract class EssentialPlayer extends ImageView {
 		speedDown();
 		this.speedActive = false;
 		collisionsHandler.getSpeedPowerup().setTaken(false);
-	}
-
-	public boolean getSpeedActive(){
-		return this.speedActive;
 	}
 
 	public abstract void updateRotation(double angleRotation);
