@@ -1,21 +1,13 @@
 package players;
 
-import java.util.ArrayList;
-
-import audio.AudioManager;
 import enums.GameMode;
 import enums.TeamEnum;
-import integrationClient.ClientGameStateReceiver;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import networking.game.UDPClient;
-import physics.Bullet;
 import physics.CollisionsHandler;
+import rendering.ImageFactory;
 import rendering.Spawn;
 import serverLogic.Team;
 
@@ -24,8 +16,8 @@ public class GhostPlayerWithColls extends EssentialPlayer {
 	private Label nameTag;
 
 	public GhostPlayerWithColls(double x, double y, int id, Spawn[] spawn, TeamEnum team,
-			CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS) {
-		super(x, y, id, spawn, team, collisionsHandler, image, game, currentFPS);
+			CollisionsHandler collisionsHandler, GameMode game, double currentFPS) {
+		super(x, y, id, spawn, team, collisionsHandler, ImageFactory.getPlayerImage(team), game, currentFPS);
 	}
 
 

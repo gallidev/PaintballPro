@@ -2,14 +2,12 @@ package integrationClient;
 
 import javafx.application.Platform;
 import physics.Flag;
+import physics.Powerup;
 import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 
 import java.util.ArrayList;
-
-import static gui.GUIManager.renderer;
 
 /**
  * Client-sided class which receives an action imposed by the server on the
@@ -23,7 +21,7 @@ public class ClientGameStateReceiver {
 	private static final boolean debug = false;
 	private ArrayList<EssentialPlayer> players;
 	private Flag flag;
-
+	private Powerup[] powerups;
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
@@ -32,8 +30,9 @@ public class ClientGameStateReceiver {
 	 * @param players The list of all players in the game.
 	 *
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Powerup[] powerups) {
 		this.players = players;
+		this.powerups = powerups;
 	}
 
 	/**
@@ -43,9 +42,10 @@ public class ClientGameStateReceiver {
 	 * @param players The list of all players in the game.
 	 * @param flag The flag of the capture the flag mode
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag, Powerup[] powerups) {
 		this.players = players;
 		this.flag = flag;
+		this.powerups = powerups;
 	}
 
 	/**
@@ -90,15 +90,15 @@ public class ClientGameStateReceiver {
 
 	public void powerupAction(int id, PowerupType type)
 	{
-		GhostPlayer player = getPlayerWithId(id);
+		EssentialPlayer player = getPlayerWithId(id);
 		switch(type)
 		{
 			case SHIELD:
-				renderer.getMap().getPowerups()[0].setVisible(false);
+				powerups[0].setVisible(false);
 				player.setShieldEffect(true);
 				break;
 			case SPEED:
-				renderer.getMap().getPowerups()[1].setVisible(false);
+				powerups[1].setVisible(false);
 				break;
 		}
 
@@ -107,30 +107,22 @@ public class ClientGameStateReceiver {
 	/**
 	 * Update a player's active bullets.
 	 * @param id The id of the player.
-	 * @param bullets String which contains the coordinates and the angle of the bullets fired by this player,
-	 * 				  according to the protocol.
 	 */
 
 	public void updateBullets(int id){
 		EssentialPlayer p = getPlayerWithId(id);
 
 		if(p != null &&  !(p instanceof ClientPlayer)){
-			Platform.runLater(() ->
-			{
-				p.shoot();
-			});
+			Platform.runLater(p::shoot);
 		}
 	}
 
 	public void updateFlag(int id){
 
 		EssentialPlayer player = getPlayerWithId(id);
-		player.setHasFlag(true);
-		flag.setVisible(false);
 
-		GhostPlayer player = getPlayerWithId(id);
 		Platform.runLater(() -> {
-			player.setFlagStatus(true);
+			player.setHasFlag(true);
 			flag.setVisible(false);
 		});
 
@@ -138,15 +130,9 @@ public class ClientGameStateReceiver {
 	}
 
 	public void lostFlag(int id){
-
 		EssentialPlayer player = getPlayerWithId(id);
-		player.setHasFlag(false);
-		flag.setVisible(true);
-		flag.relocate(player.getLayoutX(), player.getLayoutY());
-
-		GhostPlayer player = getPlayerWithId(id);
 		Platform.runLater(() -> {
-			player.setFlagStatus(false);
+			player.setHasFlag(false);
 			flag.setVisible(true);
 			flag.relocate(player.getLayoutX(), player.getLayoutY());
 		});
@@ -160,13 +146,11 @@ public class ClientGameStateReceiver {
 		flag.relocate(x, y);
 
 		EssentialPlayer player = getPlayerWithId(id);
-		player.setHasFlag(false);
-		GhostPlayer player = getPlayerWithId(id);
 
 		Platform.runLater(() -> {
 			flag.setVisible(true);
 			flag.relocate(x, y);
-			player.setFlagStatus(false);
+			player.setHasFlag(false);
 		});
 
 		System.out.println("Flag has been respawned");
@@ -191,7 +175,15 @@ public class ClientGameStateReceiver {
 		return null;
 	}
 
+	public Flag getFlag()
+	{
+		return flag;
+	}
 
+	public Powerup[] getPowerups()
+	{
+		return powerups;
+	}
 
 
 }

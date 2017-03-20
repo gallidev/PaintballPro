@@ -154,7 +154,7 @@ public class Renderer extends Scene
 	 * @param guiManager GUI manager that creates this object
 	 * @param flag       Flag object for Capture the Flag gamemode
 	 */
-	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager, Flag flag)
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
 	{
 		super(view, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
@@ -181,8 +181,10 @@ public class Renderer extends Scene
 
 		cPlayer.setInputHandler(inputHandler);
 
-		if(flag != null)
-			view.getChildren().add(flag);
+		if(map.getGameMode() == enums.GameMode.CAPTURETHEFLAG)
+			view.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
+
+		view.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
 
 		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
 		view.getChildren().add(hud);

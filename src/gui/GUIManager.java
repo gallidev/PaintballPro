@@ -16,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.client.Client;
-import physics.Flag;
 import rendering.Renderer;
 
 import java.util.ArrayList;
@@ -116,7 +115,7 @@ public class GUIManager {
                     break;
                 case EliminationMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    renderer = new Renderer("elimination", c.getReceiver(), this, null);
+                    renderer = new Renderer("elimination", c.getReceiver(), this);
                     Platform.runLater(() ->  s.setScene(renderer));
                     break;
                 case CTFSingle:
@@ -126,7 +125,7 @@ public class GUIManager {
                     break;
                 case CTFMulti:
                     audio.startMusic(audio.music.getRandomTrack());
-                    renderer = new Renderer("ctf", c.getReceiver(), this, (Flag) o[0]);
+                    renderer = new Renderer("ctf", c.getReceiver(), this);
                     Platform.runLater(() ->  s.setScene(renderer));
                     break;
                 case EndGame:
