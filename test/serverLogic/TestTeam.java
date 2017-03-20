@@ -16,7 +16,8 @@ import players.EssentialPlayer;
 import rendering.Map;
 
 /**
- * Tester for the Team class.
+ * Test class to test the team game logic.
+ * Classes tested - Team.java
  * @author Alexandra Paduraru
  *
  */
@@ -26,7 +27,6 @@ public class TestTeam {
 
 	/**
 	 * Initialises a new team.
-	 * @throws Exception
 	 */
 	@Before
 	public void setUp() {
@@ -70,6 +70,7 @@ public class TestTeam {
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		team.setMembers(players);
 		assertEquals(team.getMembersNo(), 0);
+		assertTrue(team.getColour()== TeamEnum.RED);
 	}
 	
 	@Test

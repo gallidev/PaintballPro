@@ -2,6 +2,7 @@ package integrationServer;
 
 import logic.GameMode;
 import players.EssentialPlayer;
+import players.UserPlayer;
 import serverLogic.Team;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class ServerGameSimulation {
 		       public void run() {
 					for(EssentialPlayer player : players)
 					{
+						UserPlayer.isTicked = false;
 						player.tick();
 					}
 			    	frames ++;

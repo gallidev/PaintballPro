@@ -436,6 +436,22 @@ public abstract class EssentialPlayer extends ImageView {
 	public void setShieldRemoved(boolean b){
 		shieldRemoved = b;
 	}
-
+	
+	public boolean getUp(){
+		return up;
+	}
+	
+	public boolean getDown(){
+		return down;
+	}
+	
+	public boolean getLeft(){
+		return left;
+	}
+	
+	public boolean getRight(){
+		return right;
+	}
+	
 }
 

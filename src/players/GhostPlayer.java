@@ -144,6 +144,7 @@ public class GhostPlayer extends ImageView {
 	public void setPingFromServer(long pingFromServer) {
 		this.pingFromServer = pingFromServer;
 	}
+	
 
 }
 
