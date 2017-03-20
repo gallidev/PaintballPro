@@ -189,7 +189,7 @@ public class ClientReceiver extends Thread {
 		if (clientTeam.equals("Red"))
 			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.RED, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
 		else
-			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.RED, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
+			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.BLUE, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
 
 		cPlayer.setNickname(myNickname);
 

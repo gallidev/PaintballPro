@@ -234,6 +234,11 @@ public class ServerGameStateSender {
 				sendShieldRemoved(p);
 				p.setShieldRemoved(false);
 			}
+			
+			if (p.getShieldRemoved()){
+				sendShieldRemoved(p);
+				p.setShieldRemoved(false);
+			}
 
 		}
 	}
@@ -284,8 +289,6 @@ public class ServerGameStateSender {
 		String toBeSent = "7:" + + players.get(0).getCollisionsHandler().getPlayerWithFlagId() + ":";
 
 		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 
@@ -307,8 +310,6 @@ public class ServerGameStateSender {
 		toBeSent += gameLoop.getGame().getRedTeam().getMembers().get(0).getCollisionsHandler().getFlag().getLayoutY();
 
 		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
-		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 
@@ -324,16 +325,12 @@ public class ServerGameStateSender {
 			players.get(0).getCollisionsHandler().setWallHit(false);
 
 			udpServer.sendToAll(toBeSent, lobbyId);
-			udpServer.sendToAll(toBeSent, lobbyId);
-			udpServer.sendToAll(toBeSent, lobbyId);
 		}
 
 	}
 
 
 	private void sendShieldRemoved(EssentialPlayer p){
-		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
-		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 
 	}

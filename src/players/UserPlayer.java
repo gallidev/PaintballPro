@@ -32,7 +32,7 @@ public class UserPlayer extends EssentialPlayer{
 		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated)
 		{
-			collisionsHandler.handlePowerUpCollision(this);
+			//collisionsHandler.handlePowerUpCollision(this);
 			lastX = getLayoutX();
 			lastY = getLayoutY();
 			lastAngle = angle;

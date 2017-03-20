@@ -464,7 +464,7 @@ public class UDPClient extends Thread {
 		long ClientTime = Long.parseLong(actions[2]);
 
 		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
-		PINGDELAY = (System.currentTimeMillis() - ClientTime);
+		PINGDELAY = (System.currentTimeMillis() - ClientTime) + 20;
 
 
 

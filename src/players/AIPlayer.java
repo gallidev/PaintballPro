@@ -49,7 +49,7 @@ public class AIPlayer extends EssentialPlayer{
 		collisionsHandler.handlePropWallCollision(this);
 		collisionsHandler.handleFlagCollision(this);
 		if(!eliminated){
-			collisionsHandler.handlePowerUpCollision(this);
+			//collisionsHandler.handlePowerUpCollision(this);
 			lastX = getLayoutX();
 			lastY = getLayoutY();
 			lastAngle = angle;
