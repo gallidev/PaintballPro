@@ -22,6 +22,8 @@ import java.util.HashMap;
  */
 public class UDPClient extends Thread {
 
+	public static double PINGDELAY = 0;
+
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testSendToAll = false;
@@ -156,7 +158,7 @@ public class UDPClient extends Thread {
 							   break;
 					case '2' : getWinnerAction(receivedPacket);
 							   break;
-					case '3' : //updateScoreAction(receivedPacket);
+					case '3' : updateScoreAction(receivedPacket);
 							   break;
 					case '4' : generateBullet(receivedPacket);
 							   break;
@@ -319,11 +321,12 @@ public class UDPClient extends Thread {
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
 		if (GUIManager.renderer!= null && GUIManager.renderer.getHud() != null){
+
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					GUIManager.renderer.getHud().setScore(TeamEnum.RED, redScore);
-					GUIManager.renderer.getHud().setScore(TeamEnum.BLUE, blueScore);
+					GUIManager.renderer.setRedScore(redScore);
+					GUIManager.renderer.setBlueScore(blueScore);
 				}
 			});
 		}
@@ -393,7 +396,7 @@ public class UDPClient extends Thread {
 				@Override
 				public void run() {
 					if (GUIManager.renderer.getHud() != null)
-						GUIManager.renderer.getHud().tick(Integer.parseInt(time));
+						GUIManager.renderer.setTimeRemaining(Integer.parseInt(time));
 				}
 			});
 		}
@@ -447,15 +450,14 @@ public class UDPClient extends Thread {
 
 	private void pingTimeUpdate(String receivedPacket) {
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
-		//System.out.println("Server ping packet : " + receivedPacket);
 		String[] actions = receivedPacket.split(":");
-//		int id = Integer.parseInt(actions[1]);
+
 		long ClientTime = Long.parseLong(actions[2]);
-//		long ServerTime = Long.parseLong(actions[3]);
 
-		//System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		PINGDELAY = (System.currentTimeMillis() - ClientTime);
 
-		//System.out.println("toServer ping : " + p.getPingToServer() + " fromServer ping: " + p.getPingFromServer());
+
 
 	}
 

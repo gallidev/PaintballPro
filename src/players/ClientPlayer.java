@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import networking.game.UDPClient;
 import physics.CollisionsHandler;
 import physics.InputHandler;
 import rendering.Spawn;
@@ -63,9 +64,11 @@ public class ClientPlayer extends EssentialPlayer {
 //			checkSpawn();
 //		}
 
-		updatePlayerBounds();
+
 		updatePosition();
 		updateShooting();
+
+		updatePlayerBounds();
 		updateAngle();
 		updateBullets();
 		//handlePowerUp();
@@ -125,6 +128,10 @@ public class ClientPlayer extends EssentialPlayer {
 		return ((Math.abs(x - getLayoutX()) + Math.abs(y - getLayoutY())) > limitDifferencePosition);
 	}
 
+	public void relocatePlayerWithTag(double x, double y)
+	{
+		relocate(x, y);
+	}
 
 	@Override
 	protected void updatePosition() {
@@ -178,6 +185,10 @@ public class ClientPlayer extends EssentialPlayer {
 	public void updateRotation(double angleRotation) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void updateGameSpeed(){
+		gameSpeed = (1000 + UDPClient.PINGDELAY) / 1000;
 	}
 
 }

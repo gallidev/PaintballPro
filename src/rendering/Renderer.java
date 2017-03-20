@@ -56,6 +56,11 @@ public class Renderer extends Scene
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
 
+	//attributes for multiplayer
+	int blueScore = 0;
+	int redScore = 0;
+	int timeRemaining = 0;
+
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
@@ -214,6 +219,10 @@ public class Renderer extends Scene
 					}
 					player.tick();
 				}
+
+				hud.tick(timeRemaining);
+				hud.setScore(TeamEnum.RED, redScore);
+				hud.setScore(TeamEnum.BLUE, blueScore);
 				updateView();
 			}
 		};
@@ -378,4 +387,18 @@ public class Renderer extends Scene
 		if(view.getChildren().contains(settingsMenu))
 			settingsMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
 	}
+
+
+	public void setBlueScore(int blueScore) {
+		this.blueScore = blueScore;
+	}
+
+	public void setRedScore(int redScore) {
+		this.redScore = redScore;
+	}
+
+	public void setTimeRemaining(int timeRemaining) {
+		this.timeRemaining = timeRemaining;
+	}
+
 }

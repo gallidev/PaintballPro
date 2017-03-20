@@ -269,6 +269,12 @@ public abstract class EssentialPlayer extends ImageView {
 		updateScore();
 	}
 
+	public void relocatePlayerWithTag(double x, double y)
+	{
+
+	}
+
+
 
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
@@ -474,6 +480,10 @@ public abstract class EssentialPlayer extends ImageView {
 
 	public boolean getRight(){
 		return right;
+	}
+
+	public void updateGameSpeed(){
+
 	}
 }
 

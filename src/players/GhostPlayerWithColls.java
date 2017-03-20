@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import audio.AudioManager;
 import enums.GameMode;
 import enums.TeamEnum;
+import integrationClient.ClientGameStateReceiver;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -12,6 +13,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
+import networking.game.UDPClient;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.Spawn;
@@ -80,6 +82,12 @@ public class GhostPlayerWithColls extends EssentialPlayer {
 
 	}
 
+	public void relocatePlayerWithTag(double x, double y)
+	{
+		relocate(x, y);
+		nameTag.relocate(x - 15, y - 32);
+	}
+
 	public String getNickname(){
 		return nickname;
 	}
@@ -96,6 +104,10 @@ public class GhostPlayerWithColls extends EssentialPlayer {
 	public Node getNameTag(){
 		return nameTag;
 
+	}
+
+	public void updateGameSpeed(){
+		gameSpeed += gameSpeed * (UDPClient.PINGDELAY/100.0);
 	}
 
 }

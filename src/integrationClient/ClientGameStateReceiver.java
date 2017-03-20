@@ -17,8 +17,6 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
-	public static int PINGDELAY = 0;
-
 	private ArrayList<EssentialPlayer> players;
 
 	private static final boolean debug = false;
@@ -76,7 +74,7 @@ public class ClientGameStateReceiver {
 		}else{
 			Platform.runLater(() ->
 			{
-				playerToBeUpdated.relocate(x, y);
+				playerToBeUpdated.relocatePlayerWithTag(x, y);
 				playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
 			});
@@ -134,6 +132,11 @@ public class ClientGameStateReceiver {
 
 	}
 
+	public void updateSpeedGame(){
+		for (EssentialPlayer p : players){
+			p.updateGameSpeed();
+		}
+	}
 
 	/**
 	 * Helper method to find the player with a specific id from the entire list of players in the game.
@@ -146,6 +149,7 @@ public class ClientGameStateReceiver {
 		}
 		return null;
 	}
+
 
 
 
