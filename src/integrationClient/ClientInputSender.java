@@ -21,7 +21,7 @@ public class ClientInputSender {
 	private ClientPlayer player;
 	private UDPClient udpClient;
 	private InputHandler handler;
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/* Dealing with sending the information */
 	private long delayMilliseconds = 17;
@@ -93,7 +93,7 @@ public class ClientInputSender {
 	 * (player goes up/down, left/right, mouse position changes) through the protocol.
 	 */
 	private void sendServer(){
-		//Protocol: "0:id:" + Up/Down/Left/Right/Shooting/Mouse, depending on the player's action
+		//Protocol: "0:id:" + Up/Down/Left/Right/Shooting + "Angle:<angle>", depending on the player's action
 
 		String toBeSent = "0:" + player.getPlayerId() + ":";
 		//did player move up?
@@ -123,13 +123,14 @@ public class ClientInputSender {
 	}
 
 
+	/**
+	 * Method to test network latency, by calculating the time a client message reaches the server. 
+	 */
 	private void sendCurrentTime(){
 		String toSend = "3:"  + player.getPlayerId() + ":";
 		if(debug) System.out.println("cliend Sending time: " + System.currentTimeMillis());
 		toSend +=  System.currentTimeMillis();
 		udpClient.sendMessage(toSend);
-
-
 	}
 
 
