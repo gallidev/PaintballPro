@@ -32,6 +32,8 @@ public class GhostPlayerWithColls extends EssentialPlayer {
 	@Override
 	public void tick() {
 
+		cleanBullets();
+
 		collisionsHandler.handlePropWallCollision(this);
 		updateBullets();
 		updatePlayerBounds();
@@ -80,6 +82,14 @@ public class GhostPlayerWithColls extends EssentialPlayer {
 	public void updateRotation(double angleRotation) {
 		// TODO Auto-generated method stub
 
+	}
+
+	void cleanBullets(){
+		if(firedBullets.size() > 0) {
+			if (!firedBullets.get(0).isActive()) {
+				firedBullets.remove(0);
+			}
+		}
 	}
 
 	public void relocatePlayerWithTag(double x, double y)

@@ -363,6 +363,10 @@ public abstract class EssentialPlayer extends ImageView {
 		return eliminated;
 	}
 
+	public void setEliminated(boolean eliminated){
+		this.eliminated = eliminated;
+	}
+
 	public Polygon getPolygonBounds() {
 		return bounds;
 	}

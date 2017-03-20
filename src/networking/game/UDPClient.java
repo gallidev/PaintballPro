@@ -301,11 +301,15 @@ public class UDPClient extends Thread {
 			if (actions[5].equals("false"))
 				visibility = false;
 
+			boolean eliminated = false;
+			if (actions[5].equals("true"))
+				visibility = true;
+
 //			if (visibility == false)
 //				System.out.println("I'm invisible " + id);
 
 			if(gameStateReceiver != null){
-				gameStateReceiver.updatePlayer(id, x, y, angle, visibility);
+				gameStateReceiver.updatePlayer(id, x, y, angle, visibility, eliminated);
 			}
 		}
 	}

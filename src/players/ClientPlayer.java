@@ -45,6 +45,8 @@ public class ClientPlayer extends EssentialPlayer {
 
 
 	public void tick(){
+		cleanBullets();
+
 		// handle the collisions with walls and props before moving the position
 		// of the player so to understand if he can move or not in a specific direction
 		collisionsHandler.handlePropWallCollision(this);
@@ -64,12 +66,14 @@ public class ClientPlayer extends EssentialPlayer {
 //			checkSpawn();
 //		}
 
-
-		updatePosition();
-		updateShooting();
+		if(!eliminated)
+		{
+			updatePosition();
+			updateShooting();
+			updateAngle();
+		}
 
 		updatePlayerBounds();
-		updateAngle();
 		updateBullets();
 		//handlePowerUp();
 
@@ -159,6 +163,13 @@ public class ClientPlayer extends EssentialPlayer {
 
 	}
 
+	void cleanBullets(){
+		if(firedBullets.size() > 0) {
+			if (!firedBullets.get(0).isActive()) {
+				firedBullets.remove(0);
+			}
+		}
+	}
 
 	@Override
 	public void updateScore() {

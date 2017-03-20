@@ -54,7 +54,7 @@ public class ClientGameStateReceiver {
 	 * @param angle The new angle of the player.
 	 * @param visible Whether or not the player is visible(i.e. it has been eliminated>
 	 */
-	public void updatePlayer(int id, double x, double y, double angle, boolean visible){
+	public void updatePlayer(int id, double x, double y, double angle, boolean visible, boolean eliminated){
 
 		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
@@ -69,6 +69,7 @@ public class ClientGameStateReceiver {
 				}
 				//playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
+				playerToBeUpdated.setEliminated(eliminated);
 			});
 
 		}else{
@@ -77,6 +78,7 @@ public class ClientGameStateReceiver {
 				playerToBeUpdated.relocatePlayerWithTag(x, y);
 				playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
+				playerToBeUpdated.setEliminated(eliminated);
 			});
 		}
 

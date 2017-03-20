@@ -176,7 +176,7 @@ public class ServerGameStateSender {
 	 * the current game.
 	 */
 	private void sendClient() {
-		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
+		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>:<eliminated>"
 
 		for(EssentialPlayer p : players){
 			String toBeSent = "1:" + p.getPlayerId();
@@ -185,6 +185,7 @@ public class ServerGameStateSender {
 			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngle();
 			toBeSent += ":" + p.isVisible();
+			toBeSent += ":" + p.isEliminated();
 
 			udpServer.sendToAll(toBeSent, lobbyId);
 

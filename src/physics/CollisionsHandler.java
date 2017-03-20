@@ -43,7 +43,7 @@ public class CollisionsHandler
 	private boolean speedPowerup = false;
 	private boolean shieldPowerup = false;
 	private int playerWithShieldID;
-	
+
 	public CollisionsHandler(Map map)
 	{
 		this.propsWalls = map.getRecProps();
@@ -272,6 +272,8 @@ public class CollisionsHandler
 			{
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
 				{
+
+					//System.out.println("Been shot ");
 					bullet.disable();
 					//check if the player has the shield power up
 					if(p.getShieldActive()){
@@ -313,7 +315,7 @@ public class CollisionsHandler
 	}
 
 	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
-		this.redTeam = redTeam;;
+		this.redTeam = redTeam;
 	}
 
 	public void setRedTeam(Team red) {

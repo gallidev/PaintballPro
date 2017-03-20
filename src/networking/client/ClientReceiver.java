@@ -182,6 +182,8 @@ public class ClientReceiver extends Thread {
 
 		CollisionsHandler collisionHandler = new CollisionsHandler(map);
 
+
+
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
@@ -231,6 +233,12 @@ public class ClientReceiver extends Thread {
 
 			}
 		}
+
+		ArrayList<EssentialPlayer> players = new ArrayList<EssentialPlayer>(myTeam);
+		players.addAll(enemies);
+		players.add(cPlayer);
+		collisionHandler.setPlayers(players);
+
 
 		// don't we need to add your player in myTeam? do we need these classes ?
 		teams.setEnemies(enemies);
