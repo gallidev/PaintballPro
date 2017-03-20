@@ -15,6 +15,7 @@ import players.GhostPlayer;
 /**
  * Class to test client representation of Team Tables -
  * a class to store friendly and enemy team members.
+ * Tests - TeamTable.java
  * 
  * @author Matthew Walters
  */
