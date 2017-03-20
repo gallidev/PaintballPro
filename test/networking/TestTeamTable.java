@@ -9,9 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.TeamEnum;
+import helpers.JavaFXTestHelper;
 import networking.client.TeamTable;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 import players.GhostPlayerWithColls;
 import rendering.Renderer;
 
@@ -28,6 +28,7 @@ public class TestTeamTable {
 
 	@Before
 	public void setUp() throws Exception {
+		JavaFXTestHelper.setupApplication();
 		table = new TeamTable();
 	}
 
