@@ -32,7 +32,7 @@ public class CollisionsHandler
 
 	private boolean flagCaptured = false;
 	private boolean flagDropped = false;
-	private boolean flagRespwaned = false;
+	private boolean flagRespawned = false;
 	private int playerWithFlagId;
 
 	private double hitWallX;
@@ -238,7 +238,7 @@ public class CollisionsHandler
 					else
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
 
-					flagRespwaned = true;
+					flagRespawned = true;
 					playerWithFlagId = p.getPlayerId();
 				}
 			}
@@ -370,11 +370,11 @@ public class CollisionsHandler
 	}
 
 	public boolean isFlagRespawned() {
-		return flagRespwaned;
+		return flagRespawned;
 	}
 
 	public void setRespawned(boolean b) {
-		this.flagRespwaned = b;
+		this.flagRespawned = b;
 	}
 
 	public double getHitWallX(){
@@ -404,7 +404,6 @@ public class CollisionsHandler
 	public void setSplashColour(TeamEnum splashColour) {
 		this.splashColour = splashColour;
 	}
-	
 
 	public Rectangle getSpawnAreaRed() {
 		return spawnAreaRed;

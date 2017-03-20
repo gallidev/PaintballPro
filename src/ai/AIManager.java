@@ -1,7 +1,5 @@
 package ai;
 
-import java.util.ArrayList;
-
 import enums.TeamEnum;
 import networking.server.Lobby;
 import physics.CollisionsHandler;
@@ -49,17 +47,6 @@ public class AIManager{
 		
 		Lobby.setMaxId(nextId);
 
-//		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
-//		for(int i = 0; i<yourTeam.size(); i++){
-//			yourTeam.get(i).setMyTeam(team);
-//		}
-	}
-
-	public void setOpponents(Team oppTeam){
-//		ArrayList<EssentialPlayer> yourTeam = team.getMembers();
-//		for(int i = 0; i < yourTeam.size(); i++){
-//			yourTeam.get(i).setOppTeam(oppTeam);
-//		}
 	}
 
 
