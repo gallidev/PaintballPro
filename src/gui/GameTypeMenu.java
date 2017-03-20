@@ -2,15 +2,8 @@ package gui;
 
 import enums.GameLocation;
 import enums.Menu;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 /**
  * Class for the game type picker screen
@@ -19,52 +12,35 @@ public class GameTypeMenu {
 	
 	/**
 	 * Return a game type menu scene for a given GUI manager
-	 * @param m GUI manager to use
+	 * @param guiManager GUI manager to use
 	 * @return game type menu scene
 	 */
-	public static Scene getScene(GUIManager m, GameLocation loc) {
+	public static Scene getScene(GUIManager guiManager, GameLocation loc) {
 
 		MenuOption[] empty = {};
 		GridPane mainGrid = MenuOptionSet.optionSetToGridPane(empty);
 
-		LoadingPane sp = new LoadingPane(mainGrid);
+		LoadingPane loadingPane = new LoadingPane(mainGrid);
 
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Team Match", true, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo(Menu.Lobby, "Elimination");
+		MenuOption[] set = {new MenuOption("Team Match", true, event -> {
+			if (loc == GameLocation.MultiplayerServer) {
+				guiManager.transitionTo(Menu.Lobby, "Elimination");
 				} else {
-					m.transitionTo(Menu.EliminationSingle);
+				loadingPane.startLoading();
+				new Thread(() -> guiManager.transitionTo(Menu.EliminationSingle)).start();
 				}
+			}), new MenuOption("Capture The Flag", true, event -> {
+			if (loc == GameLocation.MultiplayerServer) {
+				guiManager.transitionTo(Menu.Lobby, "CTF");
+			} else {
+				loadingPane.startLoading();
+				new Thread(() -> guiManager.transitionTo(Menu.CTFSingle)).start();
 			}
-		}), new MenuOption("Capture The Flag", true, new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
-				if (loc == GameLocation.MultiplayerServer) {
-					m.transitionTo(Menu.Lobby, "CTF");
-				} else {
-
-					sp.startLoading();
-
-					Thread t = new Thread(new Runnable() {
-						@Override
-						public void run() {
-
-							m.transitionTo(Menu.CTFSingle);
-
-						}
-					});
-					t.start();
-
-				}
-
-			}
-		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	if (loc == GameLocation.MultiplayerServer)
-		    		m.exitClient();
-		    	m.transitionTo(Menu.MainMenu);
-		    }
+		}), new MenuOption("Back", false, event -> {
+			if (loc == GameLocation.MultiplayerServer)
+				guiManager.exitClient();
+			guiManager.transitionTo(Menu.MainMenu);
 		})};
 		
 		// Turn the collection of button options into a GridPane to be displayed
@@ -72,11 +48,6 @@ public class GameTypeMenu {
 		mainGrid.add(grid, 0, 0);
 
 		// Create the scene and return it
-		m.addButtonHoverSounds(grid);
-
-		Scene s = new Scene(sp, m.width, m.height);
-		s.getStylesheets().add("styles/menu.css");
-		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
-		return s;
+		return guiManager.createScene(loadingPane);
 	}
 }

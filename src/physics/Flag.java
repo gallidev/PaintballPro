@@ -41,7 +41,6 @@ public class Flag extends ImageView
 
 	public void setLocations(GameObject[] locations){
 		this.locations = locations;
-		resetPosition();
 	}
 
 	void resetPosition()

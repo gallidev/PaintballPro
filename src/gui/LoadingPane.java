@@ -3,28 +3,26 @@ package gui;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-import java.util.ArrayList;
-
 /**
- * Created by jack on 16/03/2017.
+ * Class to switch between a loading screen and a given main GridPane
  */
 public class LoadingPane extends StackPane {
 
-    GridPane loadingGrid = new GridPane();
-    GridPane mainGrid;
+    private GridPane loadingGrid = new GridPane();
+    private GridPane mainGrid;
 
+    /**
+     * Create a loading pane
+     * @param mainGrid main view to display by default
+     */
     public LoadingPane(GridPane mainGrid) {
         this.mainGrid = mainGrid;
         getChildren().addAll(mainGrid);
-        createLoadingGrid();
-    }
 
-    private void createLoadingGrid() {
         loadingGrid.setAlignment(Pos.CENTER);
         loadingGrid.setHgap(10);
         loadingGrid.setVgap(10);
@@ -34,6 +32,9 @@ public class LoadingPane extends StackPane {
         loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);
     }
 
+    /**
+     * Method to display the loading view
+     */
     public void startLoading() {
         Platform.runLater(new Runnable() {
             @Override
@@ -44,6 +45,9 @@ public class LoadingPane extends StackPane {
         });
     }
 
+    /**
+     * Method to hide the loading view
+     */
     public void stopLoading() {
         Platform.runLater(new Runnable() {
             @Override

@@ -4,24 +4,29 @@ import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
- * Created by jack on 02/03/2017.
+ * Test for showing an Alert Box
  */
 public class TestAlertBox {
+
+    /**
+     * Test for showing an alert
+     * @throws Exception error in test case
+     */
     @Test
     public void showAlert() throws Exception {
         JavaFXTestHelper.setupApplication();
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                AlertBox.showAlert("Example Alert", "Press Ok");
-            }
+        Platform.runLater(() -> {
+            AlertBox ab = new AlertBox("Example Alert", "Testing - Press OK");
+            (new Thread(() -> {
+                Platform.runLater(() -> {
+                    ab.showAlert(false);
+                });
+            })).start();
         });
 
-        Thread.sleep(100);
+        Thread.sleep(3000);
 
     }
 

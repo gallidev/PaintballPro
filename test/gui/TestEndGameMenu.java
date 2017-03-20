@@ -10,9 +10,14 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by jack on 02/03/2017.
+ * Tests for the end game menu
  */
 public class TestEndGameMenu {
+
+    /**
+     * Test the end game menu
+     * @throws Exception test failed
+     */
     @Test
     public void getScene() throws Exception {
         JavaFXTestHelper.setupApplication();

@@ -85,5 +85,9 @@ public class ServerInputReceiver {
 	public void setPlayers(ArrayList<EssentialPlayer> players){
 		this.players = players;
 	}
+	
+	public ArrayList<EssentialPlayer> getPlayers(){
+		return players;
+	}
 
 }

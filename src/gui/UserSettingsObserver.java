@@ -1,5 +1,8 @@
 package gui;
 
+/**
+ * Interface for notifying observers of the user changing settings
+ */
 public interface UserSettingsObserver {
-	public void settingsChanged();
+	void settingsChanged();
 }

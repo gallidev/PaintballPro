@@ -3,12 +3,16 @@ package helpers;
 import javafx.embed.swing.JFXPanel;
 
 /**
- * Created by jack on 01/03/2017.
+ * Helper for JavaFX-based tests
  */
 public class JavaFXTestHelper {
+
+    /**
+     * Helper method to start the JavaFX Application thread
+     */
     public static void setupApplication() {
         try {
-            Thread t = new Thread(() -> new JFXPanel());
+            Thread t = new Thread(JFXPanel::new);
             t.start();
             t.join();
         } catch (InterruptedException e) {

@@ -17,30 +17,30 @@ public class MenuOptionSet {
 	 */
 	public static GridPane optionSetToGridPane(MenuOption[] opts) {
 		// Create a new grid pane
-		GridPane gp = new GridPane();
+		GridPane gridPane = new GridPane();
 				
 		// Setup the grid pane styling
-		gp.setAlignment(Pos.CENTER);
-		gp.setHgap(10);
-		gp.setVgap(10);
-		gp.setPadding(new Insets(25, 25, 25, 25));
+		gridPane.setAlignment(Pos.CENTER);
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
+		gridPane.setPadding(new Insets(25, 25, 25, 25));
 		
 		for (int i = 0; i < opts.length; i++) {
 			// Create the button, set the text and event handler,
 			// maximise the width of the button to all be the same,
 			// and add to the grid pane
-			Button btn = new Button();
-			btn.setText(opts[i].getName());
-			btn.setOnAction(opts[i].getHandler());
-			btn.setMaxWidth(Double.MAX_VALUE);
+			Button button = new Button();
+			button.setText(opts[i].getName());
+			button.setOnAction(opts[i].getHandler());
+			button.setMaxWidth(Double.MAX_VALUE);
 			if (opts[i].isPrimary()) {
-				btn.setId("primary");
+				button.setId("primary");
 			}
-			gp.add(btn, 0, i + 1);
+			gridPane.add(button, 0, i + 1);
 		}
 		
 		
 		// Return the grid pane
-		return gp;
+		return gridPane;
 	}
 }

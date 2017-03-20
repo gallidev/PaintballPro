@@ -134,8 +134,8 @@ public class Client {
 								udpReceiver.stopThread();
 								
 								if (!testing)
-									AlertBox.showAlert("Connection Failed",
-											"Something went wrong, please try again.");
+									(new AlertBox("Connection Failed",
+											"Something went wrong, please try again.")).showAlert();
 								exceptionCheck = 5;
 							}
 							System.out.println("All closed.");
@@ -150,16 +150,16 @@ public class Client {
 					server.close();
 					
 					if (!testing)
-						AlertBox.showAlert("Connection Failed",
-								"Cannot read from the server, please try again.");
+						(new AlertBox("Connection Failed",
+								"Cannot read from the server, please try again.")).showAlert();
 					exceptionCheck = 4;
 				}
 			}
 			// If server isn't running.
 			catch (IOException e) {
 				if (!testing)
-					AlertBox.showAlert("Connection Failed",
-							"Please check that the server is running, and the IP address is correct.");
+					(new AlertBox("Connection Failed",
+							"Please check that the server is running, and the IP address is correct.")).showAlert();
 				exceptionCheck = 2;
 			}
 		}
@@ -167,7 +167,7 @@ public class Client {
 		// separator so cannot be in a nickname).
 		else {
 			if (!testing)
-				AlertBox.showAlert("Username error", "Your username cannot contain ':' or '-' characters, please try again.");
+				(new AlertBox("Username error", "Your username cannot contain ':' or '-' characters, please try again.")).showAlert();
 			exceptionCheck = 1;
 		}
 	}

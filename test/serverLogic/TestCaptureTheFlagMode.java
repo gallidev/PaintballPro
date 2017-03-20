@@ -75,6 +75,12 @@ public class TestCaptureTheFlagMode {
 		assertFalse(game.whoWon().getColour() == TeamEnum.BLUE);
 		
 		game.getBlueTeam().incrementScore(7);
+		
+		game.whoWon();
+		game.getRedTeam().setScore(5);
+		System.out.println(game.getRemainingTime());
+		assertTrue(game.getRemainingTime() <=30);
+		assertTrue(game.getRemainingTime() >=1);
 	}
 	
 	@Test

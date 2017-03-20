@@ -1,7 +1,7 @@
 package enums;
 
 /**
- * Created by jack on 01/03/2017.
+ * Collection of menus available in the GUI
  */
 public enum Menu
 {

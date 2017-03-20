@@ -64,7 +64,7 @@ public class ClientPlayer extends EssentialPlayer {
 		updatePlayerBounds();
 		//updatePosition();
 		updateShooting();
-		//updateAngle();
+		updateAngle();
 		updateBullets();
 		//handlePowerUp();
 

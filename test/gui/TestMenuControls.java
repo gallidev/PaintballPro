@@ -11,9 +11,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by jack on 01/03/2017.
+ * Tests for the Menu Controls helper class
  */
 public class TestMenuControls {
+
+    /**
+     * Test for centering a node in a pane correctly
+     * @throws Exception test failed
+     */
     @Test
     public void centreInPane() throws Exception {
         JavaFXTestHelper.setupApplication();

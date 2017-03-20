@@ -1,9 +1,6 @@
 package gui;
 
-import enums.GameLocation;
 import enums.Menu;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,26 +15,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-import static java.lang.Thread.interrupted;
-import static java.lang.Thread.sleep;
-
 /**
- *
+ * Class containing the game's lobby menu
  */
 public class GameLobbyMenu {
 
-	public static Scene getScene(GUIManager m, ObservableList<GameLobbyRow> lobbyData) {
+	/**
+	 * Method to create the scene for the lobby menu
+	 * @param guiManager GUIManager for the game
+	 * @param lobbyData observable list of players in the lobby
+	 * @return scene for the lobby menu
+	 */
+	public static Scene getScene(GUIManager guiManager, ObservableList<GameLobbyRow> lobbyData) {
 
-		StackPane sp = new StackPane();
 		GridPane mainGrid = new GridPane();
-		GridPane loadingGrid = new GridPane();
-		loadingGrid.setAlignment(Pos.CENTER);
-		loadingGrid.setHgap(10);
-		loadingGrid.setVgap(10);
-		loadingGrid.setPadding(new Insets(25, 25, 25, 25));
-		ProgressIndicator spinner = new ProgressIndicator();
-		spinner.setProgress(-1);
-		loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);
+		LoadingPane loadingPane = new LoadingPane(mainGrid);
 
 		// Setup table
 		TableView table = new TableView();
@@ -57,20 +49,16 @@ public class GameLobbyMenu {
 		// Setup options area
 		Label timeLabel = new Label("Waiting for more players to join...");
 
-
-
 		// Lobby update checking
-		GameLobbyChecker checker = new GameLobbyChecker(m, timeLabel, sp, mainGrid, loadingGrid);
+		GameLobbyChecker checker = new GameLobbyChecker(guiManager, timeLabel, loadingPane);
 		Thread checkLobby = new Thread(checker);
 		checkLobby.start();
-
-
 
 		GridPane optionsSection = new GridPane();
 		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
-				m.getClient().getSender().sendMessage("SwitchTeam");
-				m.fetchLobbyUpdates();
+				guiManager.getClient().getSender().sendMessage("SwitchTeam");
+				guiManager.fetchLobbyUpdates();
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent event) {
@@ -81,8 +69,8 @@ public class GameLobbyMenu {
 					//
 				}
 				System.out.println(checkLobby.isAlive());
-				m.getClient().getSender().sendMessage("Exit:Game");
-				m.transitionTo(Menu.MainMenu);
+				guiManager.getClient().getSender().sendMessage("Exit:Game");
+				guiManager.transitionTo(Menu.MainMenu);
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);
@@ -98,12 +86,8 @@ public class GameLobbyMenu {
 		mainGrid.setPadding(new Insets(25, 25, 25, 25));
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
-		m.addButtonHoverSounds(mainGrid);
-		sp.getChildren().addAll(mainGrid);
-		Scene s = new Scene(sp, m.width, m.height);
-		s.getStylesheets().add("styles/menu.css");
-		s.getRoot().setStyle("-fx-background-image: url(styles/background.png); -fx-background-size: cover;");
-		return s;
+
+		return guiManager.createScene(loadingPane);
 	}
 	
 }

@@ -4,14 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.BindException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import gui.AlertBox;
-import gui.ServerView;
+import gui.ServerGUI;
 import javafx.application.Platform;
 import networking.game.UDPServer;
 import networking.shared.Message;
@@ -32,11 +31,11 @@ public class Server extends Thread {
 	
 	private int portNumber;
 	private InetAddress listenAddress;
-	private ServerView gui;
+	private ServerGUI gui;
 	private ServerExitListener exitListener;
 	private int testing = 0;
 	
-	public Server(int portNumber, String host, ServerView gui, int testing)
+	public Server(int portNumber, String host, ServerGUI gui, int testing)
 	{
 		this.testing = testing;
 		try {
@@ -46,7 +45,7 @@ public class Server extends Thread {
 		} catch (UnknownHostException e) {
 			if(testing == 0) 
 			{
-				AlertBox.showAlert("Connection Failed","Unknown host.");
+				(new AlertBox("Connection Failed","Unknown host.")).showAlert();
 				System.exit(1);
 			}
 			else
@@ -139,7 +138,7 @@ public class Server extends Thread {
 				} catch (IOException e) {
 					if(testing == 0) 
 					{
-						AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
+						(new AlertBox("Connection Failed","Couldn't listen on port "+portNumber)).showAlert();
 						System.exit(1);
 					}
 					else
@@ -158,8 +157,9 @@ public class Server extends Thread {
 				Platform.runLater(new Runnable() {
 		            @Override
 		            public void run() {
-		        		AlertBox.showAlert("Connection Failed","Couldn't listen on port "+portNumber);
-						System.exit(1);		            }
+						(new AlertBox("Connection Failed","Couldn't listen on port "+portNumber)).showAlert();
+						System.exit(1);
+		            }
 		        });
 		
 			}

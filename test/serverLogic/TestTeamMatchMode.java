@@ -7,7 +7,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tester for the TeamMatchMode logic simulation.
+ * Test class to test how the TeamMatchMode logic simulation behaves.
+ * Classes tested - TeamMatchMode.java
  * @author Alexandra Paduraru
  *
  */
@@ -39,7 +40,7 @@ public class TestTeamMatchMode {
 		assertTrue(game.getTimer().getTimeLeft() >= 170);  
 
 		Thread.sleep(100);   // 180500
-		assertTrue(game.isGameFinished());
+		assertFalse(game.isGameFinished());
 	}
 	
 	@Test
@@ -65,11 +66,11 @@ public class TestTeamMatchMode {
 		
 		game.getBlueTeam().incrementScore(7);
 		
-//		game.whoWon();
-//		game.getRedTeam().setScore(5);
-//		System.out.println(game.getTimer().getTimeLeft());
-//		assertTrue(game.getTimer().getTimeLeft() <=10);
-//		assertTrue(game.getTimer().getTimeLeft() >=1);
+		game.whoWon();
+		game.getRedTeam().setScore(5);
+		System.out.println(game.getTimer().getTimeLeft());
+		assertTrue(game.getTimer().getTimeLeft() <=30);
+		assertTrue(game.getTimer().getTimeLeft() >=1);
 		
 	}
 	

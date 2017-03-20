@@ -1,5 +1,6 @@
 package integrationClient;
 
+import javafx.application.Platform;
 import physics.Flag;
 import players.EssentialPlayer;
 import players.GhostPlayer;
@@ -16,8 +17,9 @@ import java.util.ArrayList;
 public class ClientGameStateReceiver {
 
 	private ArrayList<EssentialPlayer> players;
+
+	private static final boolean debug = false;
 	private Flag flag;
-	private boolean debug = false;
 
 
 	/**
@@ -55,12 +57,12 @@ public class ClientGameStateReceiver {
 
 		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
-		if(id == 1){
+		Platform.runLater(() ->
+		{
 			playerToBeUpdated.relocate(x, y);
 			playerToBeUpdated.setAngle(angle);
 			playerToBeUpdated.setVisible(visible);
-		}
-
+		});
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
@@ -70,9 +72,9 @@ public class ClientGameStateReceiver {
 	 * @param bullets String which contains the coordinates and the angle of the bullets fired by this player,
 	 * 				  according to the protocol.
 	 */
+
 	public void updateBullets(int id){
 		EssentialPlayer p = getPlayerWithId(id);
-
 		if(p!= null){
 			//p.shoot();
 		}

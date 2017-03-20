@@ -33,7 +33,7 @@ public class ServerGameStateSender {
 	private ScheduledExecutorService scheduler;
 
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 22;
+	private long delayMilliseconds = 25;
 
 	/**
 	 * Initialises a new Server game state sender with the server, players involved in the game and the id of the lobby
@@ -70,7 +70,7 @@ public class ServerGameStateSender {
 		    	   sendClient();
 		    	   sendBullets();
 
-		    	   sendHitWall();
+		    	   //sendHitWall();
 
 		    	   sendRemainingTime();
 
@@ -217,6 +217,22 @@ public class ServerGameStateSender {
 				sendBaseFlag();
 				p.getCollisionsHandler().setRespawned(false);
 			}
+
+			if (p.getCollisionsHandler().isSpeedPowerup()){
+				sendPowerupCaptured("speed", p.getPlayerId());
+				p.getCollisionsHandler().setSpeedPowerup(false);
+			}
+
+			if (p.getCollisionsHandler().isShieldPowerup()){
+				sendPowerupCaptured("shield", p.getPlayerId());
+				p.getCollisionsHandler().setShieldPowerup(false);
+			}
+
+			if (p.getShieldRemoved()){
+				sendShieldRemoved(p);
+				p.setShieldRemoved(false);
+			}
+
 		}
 	}
 
@@ -271,6 +287,17 @@ public class ServerGameStateSender {
 
 	}
 
+	private void sendPowerupCaptured(String s, int id){
+		String toBeSent = "";
+		switch(s){
+		case "speed" : toBeSent = "$:0:" + id;
+					   break;
+		case "shield": toBeSent = "$:1:" + id;
+						break;
+		}
+		udpServer.sendToAll(toBeSent, lobbyId);
+	}
+
 	private void sendBaseFlag(){
 		String toBeSent = "!:" + players.get(0).getCollisionsHandler().getPlayerWithFlagId() + ":";
 
@@ -301,6 +328,13 @@ public class ServerGameStateSender {
 
 	}
 
+
+	private void sendShieldRemoved(EssentialPlayer p){
+		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+
+	}
 
 	/*
 	 * Sets the game simulation.

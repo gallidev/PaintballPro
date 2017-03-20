@@ -98,7 +98,7 @@ public class Bullet extends Circle
 		active = false;
 	}
 
-	void disable(Rectangle collision)
+	public void disable(Rectangle collision)
 	{
 		active = false;
 		this.collision = collision;
