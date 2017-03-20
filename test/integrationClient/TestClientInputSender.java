@@ -15,26 +15,27 @@ import networking.server.LobbyTable;
 import physics.InputHandler;
 import players.ClientPlayer;
 import rendering.ImageFactory;
+import rendering.Renderer;
 
 public class TestClientInputSender {
-	
+
 	private UDPServer server;
 	private UDPClient client;
 	private InputHandler handler;
-	
+
 	private ClientInputSender inputSender;
 
 	@Before
 	public void setUp() throws Exception {
 		ClientTable table = new ClientTable();
 		LobbyTable lobby = new LobbyTable();
-		
+
 		handler = new InputHandler();
-		
+
 		server = new UDPServer(table, lobby, 0);
 		client = new UDPClient(1, "127.0.0.1", 19857, new GUIManager(), new TeamTable(), 9879, "TestClient");
-		
-		ClientPlayer p = new ClientPlayer(0, 0, 1, ImageFactory.getPlayerImage(TeamEnum.RED), null, null);
+
+		ClientPlayer p = new ClientPlayer(0, 0, 0, null, TeamEnum.RED, null, null, handler, null, null, Renderer.TARGET_FPS);
 		inputSender = new ClientInputSender(client, handler, p);
 	}
 
@@ -55,11 +56,11 @@ public class TestClientInputSender {
 //		assertTrue(client.testIntegration);
 //		System.out.println("done that");
 	}
-	
+
 //	@Test
 //	public void sendServerTest() {
-//		
-//		
+//
+//
 //	}
 
 }
