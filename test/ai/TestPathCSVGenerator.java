@@ -22,7 +22,7 @@ public class TestPathCSVGenerator {
      */
     @Before
     public void setUp() throws Exception {
-        //JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.setupApplication();
     }
 
     /**
@@ -56,7 +56,7 @@ public class TestPathCSVGenerator {
         thread.setDaemon(true);
         thread.start();
         try {
-            Thread.sleep(1000000);  // Leave enough time for generator to finish before interrupting JavaFX application
+            Thread.sleep(10000);  // Leave enough time for generator to finish before interrupting JavaFX application
         } catch(InterruptedException ex) {
             // We don't care if we wake up early.
         }
