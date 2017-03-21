@@ -21,7 +21,7 @@ public class DiscoveryClientListener {
 			client.join(10000); // Timeout after 10 seconds.
 		} catch (InterruptedException e) {
 			// Close Client Thread.
-			
+
 			return client.retVal;
 		}
 		return client.retVal;
@@ -29,15 +29,17 @@ public class DiscoveryClientListener {
 
 	/**
 	 * Test method to test finding a running server.
+	 * 
 	 * @return Test result - did it pass?
 	 */
 	public boolean test() {
-		DiscoveryServerAnnouncer annoc = new DiscoveryServerAnnouncer(25561);
+		DiscoveryServerAnnouncer annoc = new DiscoveryServerAnnouncer();
+		String ret;
 		annoc.start();
-		String ret = this.findServer();
+		ret = this.findServer();
 		annoc.m_running = false;
 		client.interrupt();
-		if(ret.split(":")[1].contains("25566"))
+		if (ret.split(":")[1].contains("25566"))
 			return true;
 		else
 			return false;

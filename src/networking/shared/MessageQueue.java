@@ -1,4 +1,5 @@
 package networking.shared;
+
 import java.util.concurrent.*;
 
 /**
@@ -9,14 +10,17 @@ import java.util.concurrent.*;
 public class MessageQueue {
 
 	private BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>();
+
 	/**
 	 * Inserts the specified message into this queue.
 	 * 
-	 * @param m Message to add to the queue.
+	 * @param m
+	 *            Message to add to the queue.
 	 */
 	public void offer(Message m) {
 		queue.offer(m);
 	}
+
 	/**
 	 * Retrieve messages from the queue.
 	 * 
@@ -28,7 +32,8 @@ public class MessageQueue {
 				return (queue.take());
 			} catch (InterruptedException e) {
 				// This can in principle be triggered by queue.take().
-				// We should do nothing here and try again until we succeed without interruption.
+				// We should do nothing here and try again until we succeed
+				// without interruption.
 			}
 		}
 	}

@@ -37,7 +37,7 @@ public class GameServer extends Application {
 		stage.show();
 		(new Thread(() -> {
 			int portNo = 25566;
-			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer(25561);
+			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer();
 			discovery.start();
 			server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 			server.start();
