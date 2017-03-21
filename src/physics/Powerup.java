@@ -56,9 +56,12 @@ public class Powerup extends ImageView
 	private void resetPosition()
 	{
 		indexLocation = (new Random()).nextInt(locations.length);
-		while(indexLocation == otherPowerUp.getIndexLocation()){
-			indexLocation = (new Random()).nextInt(locations.length);
+		if(otherPowerUp != null){
+			while(indexLocation == otherPowerUp.getIndexLocation()){
+				indexLocation = (new Random()).nextInt(locations.length);
+			}
 		}
+
 		relocate(locations[indexLocation].getX() * 64 + 16, locations[indexLocation].getY() * 64 + 16);
 		if(listener != null)
 			listener.onPowerupRespawn(type, indexLocation);
