@@ -43,11 +43,13 @@ public class Lobby {
 	Map map;
 	private int id;
 	public boolean inGameStatus;
+	
 	// Game information
 	private int GameType;
 	private int MaxPlayers;
 	private ServerGame currentSessionGame;
 	private Thread timer;
+	
 	// Team information
 	private int currPlayerBlueNum;
 	private int currPlayerRedNum;
@@ -299,6 +301,8 @@ public class Lobby {
 	 * @param team Team representation.
 	 * @param teamNum Team number.
 	 * @return Team class.
+	 * 
+	 * @author Alexandra Paduraru and Matthew Walters
 	 */
 	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team(teamNum == 1 ? TeamEnum.BLUE : TeamEnum.RED);
@@ -335,6 +339,12 @@ public class Lobby {
 		return newTeam;
 	}
 
+	/**
+	 * Method used to add nicknames to the AI players in multiplayer. The names are read from an external file
+	 * in the res folder.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
 	private void setPlayerNames(){
 		File names = new File("res/names.txt");
 		Scanner readNames;
@@ -356,6 +366,8 @@ public class Lobby {
 		}
 
 	}
+	
+	/*Methods used to start the game*/
 
 	/**
 	 * A timer, accessed by the client for game countdown.
@@ -393,33 +405,9 @@ public class Lobby {
 		}
 
 	}
-
+	
 	/**
-	 * Return winner of a game.
-	 * @return Winner team enum of a game.
-	 */
-	public TeamEnum getWinner() {
-		return currentSessionGame.getGame().whoWon().getColour();
-	}
-
-	/**
-	 * Return red converted team.
-	 * @return Red Team object.
-	 */
-	public serverLogic.Team getRedTeam() {
-		return red;
-	}
-
-	/**
-	 * Return blue converted team.
-	 * @return Blue Team object.
-	 */
-	public Team getBlueTeam() {
-		return blue;
-	}
-
-	/**
-	 * Creates all the necessary information to start a new game.
+	 * Creates all the necessary information to start a new game, such as players, teams, collision handling.
 	 * @param receiver A server receiver used to send the start game information to the clients.
 	 * @param udpServer An UDP server used after the game starts.
 	 * @param gameMode The game mode to be played : 1 for Team Match Mode and 2 for CTF
@@ -493,6 +481,9 @@ public class Lobby {
 	 * Starts the game simulation on the server in a given game mode.
 	 * @param udpServer The UDP server used to send in-game information.
 	 * @param gameMode The game mode that is going to be played.
+	 * 
+	 * @author Alexandra Paduraru
+	 * @author Filippo Galli
 	 */
 	public void startGameLoop(UDPServer udpServer, int gameMode){
 
@@ -516,6 +507,8 @@ public class Lobby {
 	 * Computes the maximum ID assigned to a user player in the game.
 	 * This method is used to assign ID to AI players filling up the teams.
 	 * @return The maximum id of a user player.
+	 * 
+	 * @author Alexandra Paduraru
 	 */
 	private int getMaxId(){
 		int id = -1;
@@ -529,6 +522,34 @@ public class Lobby {
 
 		return id;
 	}
+
+	//Getters and setters
+	
+	/**
+	 * Return winner of a game.
+	 * @return Winner team enum of a game.
+	 */
+	public TeamEnum getWinner() {
+		return currentSessionGame.getGame().whoWon().getColour();
+	}
+
+	/**
+	 * Return red converted team.
+	 * @return Red Team object.
+	 */
+	public serverLogic.Team getRedTeam() {
+		return red;
+	}
+
+	/**
+	 * Return blue converted team.
+	 * @return Blue Team object.
+	 */
+	public Team getBlueTeam() {
+		return blue;
+	}
+
+	
 
 	/**
 	 * Sets the current maximum id of a user player.

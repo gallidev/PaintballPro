@@ -1,18 +1,19 @@
 package serverLogic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import enums.GameMode;
 import enums.TeamEnum;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import helpers.JavaFXTestHelper;
+import physics.CollisionsHandler;
 import players.EssentialPlayer;
+import players.UserPlayer;
+import rendering.ImageFactory;
 import rendering.Map;
 
 /**
@@ -24,6 +25,8 @@ import rendering.Map;
 public class TestTeam {
 	
 	private Team team;
+	private EssentialPlayer p;
+	private Map map;
 
 	/**
 	 * Initialises a new team.
@@ -32,6 +35,9 @@ public class TestTeam {
 	public void setUp() {
 		team = new Team(TeamEnum.RED);
 		
+		JavaFXTestHelper.setupApplication();
+		map = Map.loadRaw("ctf");
+		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
 	}
 
 	/* Testers for all the game logic functionality for teams */
@@ -61,9 +67,24 @@ public class TestTeam {
 	}
 	
 	@Test
-	public void addMember(){
-		//Map map = Map.loadRaw("ctf");
+	public void addMemberTest(){
+		
+		team.addMember(p);
+		
+		assertTrue(team.getMembers().get(0) == p);
 	}
+	
+	@Test
+	public void containsMemberTest(){
+		
+		team.addMember(p);
+		EssentialPlayer p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+
+		assertTrue(team.containsPlayer(p));
+		assertFalse(team.containsPlayer(p1));
+
+	}
+	
 	
 	@Test
 	public void setMembersTest(){
@@ -71,6 +92,12 @@ public class TestTeam {
 		team.setMembers(players);
 		assertEquals(team.getMembersNo(), 0);
 		assertTrue(team.getColour()== TeamEnum.RED);
+		
+		players.add(p);
+		team.setMembers(players);
+		assertTrue(team.getMembers().get(0) == p);
+		assertTrue(team.getMembersNo() == 1);
+		assertTrue(team.getColour() == TeamEnum.RED);
 	}
 	
 	@Test

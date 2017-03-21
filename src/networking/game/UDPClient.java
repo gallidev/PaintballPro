@@ -166,48 +166,35 @@ public class UDPClient extends Thread
 				switch(receivedPacket.charAt(0))
 				{
 
-					case '1':
-						updatePlayerAction(receivedPacket);
-						break;
-					case '2':
-						getWinnerAction(receivedPacket);
-						break;
-					case '3':
-						updateScoreAction(receivedPacket);
-						break;
-					case '4':
-						generateBullet(receivedPacket);
-						break;
-					case '6':
-						getRemainingTime(receivedPacket);
-						break;
-					case '7':
-						lostFlagAction(receivedPacket);
-						break;
-					case '8':
-						capturedFlagAction(receivedPacket);
-						break;
-					case '!':
-						baseFlagAction(receivedPacket);
-						break;
-					case 'T':
-						pingTimeUpdate(receivedPacket);
-						break;
-					case '@':
-						hitWallAction(receivedPacket);
-						break;
-					case '#':
-						eliminatedPlayerAction(receivedPacket);
-						break;
-					case '$':
-						powerUpAction(receivedPacket);
-						break;
-					case 'P':
-						powerUpRespawn(receivedPacket);
-						break;
-					case '%':
-						shieldRemovedAction(receivedPacket);
-						break;
+					case '1': updatePlayerAction(receivedPacket);
+							  break;
+					case '2': getWinnerAction(receivedPacket);
+							  break;
+					case '3': updateScoreAction(receivedPacket);
+							  break;
+					case '4': generateBullet(receivedPacket);
+							  break;
+					case '6': getRemainingTime(receivedPacket);
+							  break;
+					case '7': lostFlagAction(receivedPacket);
+							  break;
+					case '8': capturedFlagAction(receivedPacket);
+							  break;
+					case '!': baseFlagAction(receivedPacket);
+							  break;
+					case 'T': pingTimeUpdate(receivedPacket);
+							  break;
+//					case '@': hitWallAction(receivedPacket);
+//							  break;
+					case '#': eliminatedPlayerAction(receivedPacket);
+							  break;
+					case '$': powerUpAction(receivedPacket);
+							  break;
+					case 'P': powerUpRespawn(receivedPacket);
+							  break;
+					case '%': shieldRemovedAction(receivedPacket);
+							  break;
+					default : break;
 				}
 
 			}
@@ -223,42 +210,7 @@ public class UDPClient extends Thread
 		System.out.println("Closing UDP Client");
 	}
 
-	private void powerUpRespawn(String receivedPacket)
-	{
-		String[] message = receivedPacket.split(":");
-		PowerupType type = (message[1].equals("0") ? PowerupType.SHIELD : PowerupType.SPEED);
-		gameStateReceiver.powerUpRespawn(type, Integer.parseInt(message[2]));
-	}
-
-	//use this to switch back to the normal player image
-	private void shieldRemovedAction(String receivedPacket)
-	{
-		int id = Integer.parseInt(receivedPacket.split(":")[1]);
-		gameStateReceiver.shieldRemovedAction(id);
-
-		//System.out.println("player with id " + id + " does not have shield anymore" );
-
-	}
-
-	//use this to remove powerups from maps and change to the shield player image
-	private void powerUpAction(String receivedPacket)
-	{
-		int id = Integer.parseInt(receivedPacket.split(":")[2]);
-
-		switch(receivedPacket.split(":")[1])
-		{
-			case "0":
-				gameStateReceiver.powerupAction(id, PowerupType.SHIELD);
-				System.out.println("Player " + id + " took shield powerup");
-				break;
-			case "1":
-				gameStateReceiver.powerupAction(id, PowerupType.SPEED);
-				System.out.println("Player" + id + " took speed powerup");
-				break;
-		}
-
-
-	}
+	
 
 	private void getWinnerAction(String text)
 	{
@@ -344,9 +296,6 @@ public class UDPClient extends Thread
 			if(actions[6].equals("true"))
 				eliminated = true;
 
-//			if (visibility == false)
-//				System.out.println("I'm invisible " + id);
-
 			if(gameStateReceiver != null)
 			{
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility, eliminated);
@@ -425,14 +374,16 @@ public class UDPClient extends Thread
 		}
 	}
 
+	/**
+	 * Computes a player's bullets client-side, without the need for the server to send the client that information.
+	 * @param text Contains the id of the player whose bullets are updated, according to the protocol.
+	 * @author Fillipo Galli
+	 */
 	public void generateBullet(String text)
 	{
 		// Protocol message: 4:id:idBullet:x:y:...
 
 		int id = Integer.parseInt(text.split(":")[1]);
-
-		//get all the bullets
-		String[] data = text.split(":");
 
 		if(gameStateReceiver != null)
 		{
@@ -440,6 +391,11 @@ public class UDPClient extends Thread
 		}
 	}
 
+	/**
+	 * Method to retrieve the game remaining time sent from the server.
+	 * @param sentence The protocol message containing the number of seconds left in the game.
+	 * @author Alexandra Paduraru
+	 */
 	private void getRemainingTime(String sentence)
 	{
 
@@ -460,6 +416,11 @@ public class UDPClient extends Thread
 		}
 	}
 
+	/**
+	 * Method to retrieve the information from the server when a flag has been captured by a player.
+	 * @param text The protocol message containing the player's id.
+	 * @author Alexandra Paduraru
+	 */
 	private void capturedFlagAction(String text)
 	{
 		//Protocol : 8:<id>
@@ -474,6 +435,11 @@ public class UDPClient extends Thread
 
 	}
 
+	/**
+	 * Method to retrieve the information from the server when a flag has been lost by a player.
+	 * @param text The protocol message containing the player's id.
+	 * @author Alexandra Paduraru
+	 */
 	private void lostFlagAction(String text)
 	{
 		//Protocol : 9:<id>
@@ -488,6 +454,11 @@ public class UDPClient extends Thread
 
 	}
 
+	/**
+	 * Method to retrieve the information from the server when a flag has been brought back to a team's base base.
+	 * @param text The protocol message containing the player's id.
+	 * @author Alexandra Paduraru
+	 */
 	private void baseFlagAction(String text)
 	{
 		//Protocol : !:<id>
@@ -503,16 +474,6 @@ public class UDPClient extends Thread
 		System.out.println("flag rebased");
 	}
 
-	private void hitWallAction(String text)
-	{
-		//Protocol: "@:<x>:<y>"
-
-		double x = Double.parseDouble(text.split(":")[1]);
-		double y = Double.parseDouble(text.split(":")[2]);
-		String colour = text.split(":")[3];
-
-	}
-
 	private void pingTimeUpdate(String receivedPacket)
 	{
 		//Protocol: T:id:SentfromCLientTime:ReceivedAtServerTime
@@ -525,6 +486,53 @@ public class UDPClient extends Thread
 
 
 	}
+	
+	/**
+	 * Method to retrieve the information from the server when a powerup needs to be respawned after it has been picked up previously.
+	 * @param text The protocol message containing the powerup type: 0 for shield and 1 for speed.
+	 * @author Alexandra Paduraru
+	 */
+	private void powerUpRespawn(String receivedPacket)
+	{
+		String[] message = receivedPacket.split(":");
+		PowerupType type = (message[1].equals("0") ? PowerupType.SHIELD : PowerupType.SPEED);
+		gameStateReceiver.powerUpRespawn(type, Integer.parseInt(message[2]));
+	}
+
+	/**
+	 * Method to retrieve the information from the server when a shiled powerup has been lost by a player.
+	 * @param text The protocol message containing the player's id.
+	 * @author Alexandra Paduraru
+	 */
+	private void shieldRemovedAction(String receivedPacket)
+	{
+		int id = Integer.parseInt(receivedPacket.split(":")[1]);
+		gameStateReceiver.shieldRemovedAction(id);
+	}
+
+	/**
+	 * Method to retrieve the information from the server when a powerup has been picked.
+	 * @param text The protocol message containing the player's id, as well as powerup type: 0 for shield and 1 for speed.
+	 * @author Alexandra Paduraru
+	 */
+	private void powerUpAction(String receivedPacket)
+	{
+		int id = Integer.parseInt(receivedPacket.split(":")[2]);
+
+		switch(receivedPacket.split(":")[1])
+		{
+			case "0":
+				gameStateReceiver.powerupAction(id, PowerupType.SHIELD);
+				System.out.println("Player " + id + " took shield powerup");
+				break;
+			case "1":
+				gameStateReceiver.powerupAction(id, PowerupType.SPEED);
+				System.out.println("Player" + id + " took speed powerup");
+				break;
+		}
+
+
+	}
 
 	/**
 	 * Retrieves a player with a specific id from the current game.
@@ -533,7 +541,6 @@ public class UDPClient extends Thread
 	 * @return The player with the given id.
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-	@Deprecated
 	private EssentialPlayer getPlayerWithID(int id)
 	{
 		// Check if the Player is in my team
@@ -563,6 +570,10 @@ public class UDPClient extends Thread
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 
+	/**
+	 * Method to retrieve the information from the server when aplayer has been eliminated.
+	 * @param text The protocol message containing the player's id.
+	 */
 	private void eliminatedPlayerAction(String text)
 	{
 		int id = Integer.parseInt(text.split(":")[1]);
@@ -580,9 +591,6 @@ public class UDPClient extends Thread
 			guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float) 1.0);
 			lastPlayedEliminatedSound.put(id, System.currentTimeMillis());
 		}
-
-
-		//System.out.println("Player " + id + " eliminated");
 	}
 
 	public boolean isActive()
