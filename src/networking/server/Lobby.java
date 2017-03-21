@@ -509,6 +509,7 @@ public class Lobby {
 		map.getPowerups()[1].setListener(stateSender);
 		collissionsHandler.setListener(stateSender);
 		stateSender.startSending();
+		inGameStatus = true;
 	}
 
 	/**

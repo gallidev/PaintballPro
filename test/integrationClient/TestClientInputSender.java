@@ -62,5 +62,29 @@ public class TestClientInputSender {
 //
 //
 //	}
-
+//
+//	@Test
+//	public void startSendingTest() {
+//		System.out.println("incepe");
+//		fail();
+////		handler.setUp(true);
+////		handler.setDown(false);
+////		handler.setLeft(true);
+////		handler.setRight(true);
+////		handler.setShoot(true);
+////		System.out.println("da");
+////
+////		//"0:1:Up:Left:Right:Shoot:2:3:0:0"
+////		//inputSender.startSending();
+////		//Thread.sleep(100);
+////		assertTrue(client.testIntegration);
+////		System.out.println("done that");
+//	}
+//	
+////	@Test
+////	public void sendServerTest() {
+////		
+////		
+////	}
+//
 }

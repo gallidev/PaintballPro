@@ -31,7 +31,7 @@ public class UDPClient extends Thread
 	public boolean connected = false;
 	public boolean testSendToAll = false;
 	public boolean testIntegration = false;
-	private boolean debug = false;
+	private boolean debug = true;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;

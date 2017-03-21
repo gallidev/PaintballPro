@@ -1,4 +1,5 @@
 package integrationServer;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,13 @@ import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 
+/**
+ * Test class to test the input receiver on the server, which receives
+ * information from all clients regarding player locations.
+ * Class tested- {@link ServerInputReceiver}
+ * @author Alexandra Paduraru
+ *
+ */
 public class TestServerInputReceiver {
 
 	private ServerInputReceiver inputReceiver;
@@ -64,8 +72,4 @@ public class TestServerInputReceiver {
 		assertEquals(inputReceiver2.getPlayers(), players);
 
 	}
-
-
-
-
 }

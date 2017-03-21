@@ -10,7 +10,7 @@ import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
 /**
- * Testing class for the GameMode abstract class.
+ * Test class for the GameMode abstract class.
  * @author Alexandra Paduraru
  *
  */

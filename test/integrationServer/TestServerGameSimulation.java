@@ -18,6 +18,12 @@ import rendering.Map;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
+/**
+ * Test class to test the game simulation running on the server in multiplayer.
+ * Class tested - {@link ServerGameSimulation}
+ * @author Alexandra Paduraru
+ *
+ */
 public class TestServerGameSimulation {
 
 	private Team red;

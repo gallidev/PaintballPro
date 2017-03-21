@@ -12,7 +12,7 @@ import enums.TeamEnum;
 import logic.GameMode;
 
 /**
- * Tester class for the CaptureTheFlagGameMode.
+ * Test class for the CaptureTheFlagGameMode logic.
  * @author Alexandra Paduraru
  *
  */

@@ -17,7 +17,7 @@ import rendering.Map;
 
 /**
  * Test class to test the team game logic.
- * Classes tested - Team.java
+ * Class tested - Team.java
  * @author Alexandra Paduraru
  *
  */

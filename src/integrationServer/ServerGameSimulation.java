@@ -53,6 +53,9 @@ public class ServerGameSimulation {
 		}
 	}
 
+	/**
+	 * Starts the simulation. Method to be called after the lobby time finishes.
+	 */
 	public void stopGameLoop(){
 		running = false;
 		try {
@@ -77,7 +80,7 @@ public class ServerGameSimulation {
 			     }
 			  };
 
-			  game.start();
+			game.start();
             loop.start();
 
 
@@ -159,6 +162,10 @@ public class ServerGameSimulation {
 
 	               now = System.nanoTime();
 	            }
+	            
+	            if (game.isGameFinished()){
+		        	stopGameLoop();
+		        }
 	         }
 	      }
 	   }

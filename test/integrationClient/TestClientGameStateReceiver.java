@@ -10,6 +10,7 @@ import org.junit.Test;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
+import physics.CollisionsHandler;
 import physics.Flag;
 import players.EssentialPlayer;
 import players.GhostPlayer;
@@ -17,6 +18,12 @@ import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Renderer;
 
+/**
+ * Test class to test if the in-game information received from the server is correct.\
+ * Class tested - {@link ClientGameStateReceiver}
+ * @author Alexandra Paduraru
+ *
+ */
 public class TestClientGameStateReceiver {
 
 	private ArrayList<EssentialPlayer> players;
@@ -55,19 +62,27 @@ public class TestClientGameStateReceiver {
 	@Test
 	public void updateBulletsTest() throws InterruptedException {
 
+		gameStateReceiver.updateBullets(1);
+		assertTrue(p.hasShot());
+		
 //		String bullets = "0:2:3:1:4:5";
-//		gameStateReceiver.updateBullets(1);
+//		gameStateReceiver.updateBullets(1, bullets.split(":"));
 //		Thread.sleep(1000);
-//
-//		GhostBullet firedBullet1 = p.getFiredBullets().get(0);
-//		assertEquals(firedBullet1.getX(), 2.0, 0.2);
-//		assertEquals(firedBullet1.getY(), 3.0, 0.2);
-//		assertEquals(firedBullet1.getBulletId(), 0);
-//
+//		
 //		GhostBullet firedBullet2 = p.getFiredBullets().get(1);
 //		assertEquals(firedBullet2.getX(), 4.0, 0.2);
 //		assertEquals(firedBullet2.getY(), 5.0, 0.2);
 //		assertEquals(firedBullet2.getBulletId(), 1);
+//		
+//		
+//		String newBullets = "0:7:8";
+//		gameStateReceiver.updateBullets(1, newBullets.split(":"));
+//		System.out.println(p.getFiredBullets());
+//
+//		GhostBullet firedBullet3 = p.getFiredBullets().get(0);
+//		assertEquals(firedBullet3.getX(), 7.0, 0.2);
+//		assertEquals(firedBullet3.getY(), 8.0, 0.2);
+		
 //
 //
 //		String newBullets = "0:7:8";
@@ -106,5 +121,14 @@ public class TestClientGameStateReceiver {
 //		assertEquals(p.getX(), 2.0, 0.2);
 //		assertEquals(p.getY(), 3.0, 0.2);
 	}
+	
+//	@Test
+//	public void lostFlagTest() {
+//
+//	}
+//	
+//	@Test
+//	public void respawnFlagTest() {
+//	}
 
 }
