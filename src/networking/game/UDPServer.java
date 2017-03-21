@@ -100,13 +100,15 @@ public class UDPServer extends Thread{
 					ipFrom = ipFrom +":"+receivePacket.getPort();
 					sentence = sentence.trim();
 
+					/* In-game actions */
+					
 					switch(sentence.charAt(0)){
 					case '0' : playerInputChanged(sentence);
 							   break;
 					case '2' : getWinner(sentence);
 							   break;
 					case '3' : sendBackTime(sentence);
-							break;
+							   break;
 					default: break;
 
 					}
@@ -231,18 +233,18 @@ public class UDPServer extends Thread{
 			String act = actions[i];
 			switch(act){
 			case "Up"    : up = true;
-			break;
+						   break;
 			case "Down"  : down = true;
-			break;
+						   break;
 			case "Left"  : left = true;
-			break;
+						   break;
 			case "Right" : right = true;
-			break;
+						   break;
 			case "Angle" : angle = Double.parseDouble(actions[i+1]);
-			i ++;
-			break;
+						   i ++;
+						   break;
 			case "Shoot" : shoot = true;
-			break;
+						   break;
 			default		 : break;
 			}
 		}
@@ -261,9 +263,7 @@ public class UDPServer extends Thread{
 	public void getWinner(String text){
 		String winner = text.split(":")[1];
 
-		System.out.println("The winner is : " + winner);
-
-		//dp stuff here tp update gui
+		if (debug) System.out.println("The winner is : " + winner);
 	}
 
 
@@ -281,30 +281,6 @@ public class UDPServer extends Thread{
 
 
 	/**
-	 * Updates a team's score based on the information got from a client. Helps
-	 * the server keep track of each team's score(the teams are stored in the
-	 * Lobby).
-	 *
-	 * @param text The protocol message for updating a team's score.
-	 *
-	 * @author Alexandra Paduraru and Matthew Walters
-	 */
-//	public void newScoreAction(String text, String ip)
-//	{
-//		// Protocol : "Scored:<Team>"
-//		String teamColour = text.split(":")[1];
-//		Lobby lobby = lobbyTab.getLobby(clients.getPlayer(clients.getID(ip)).getAllocatedLobby());
-//		if (teamColour.equals("Red"))
-//			lobby.getRedTeam().incrementScore(1);
-//		else
-//			lobby.getBlueTeam().incrementScore(1);
-//
-//		// debugging code
-//		if(debug) System.out.println("Red team score: " + lobby.getRedTeam().getScore());
-//		if(debug) System.out.println("Blue team score: " + lobby.getBlueTeam().getScore());
-//	}
-
-	/**
 	 * We reset status of some objects storing game-specific information.
 	 * @param ip IP of a particular client to remove.
 	 */
@@ -314,39 +290,6 @@ public class UDPServer extends Thread{
 		myPlayer.setAllocatedLobby(-1);
 	}
 
-	/**
-	 * We represent a move being made by a player.
-	 * @param lobby Lobby that the player is in.
-	 * @param text Text to parse movement information.
-	 *
-	 * @author Alexandra Paduraru and Matthew Walters
-	 */
-	//	private void makeMove(Lobby lobby, String text)
-	//	{
-	//		//extract the id of the server player with a new location
-	//		String[] parsedMsg = text.split(":");
-	//		int id = Integer.parseInt(parsedMsg[2]);
-	//		double x = Double.parseDouble(parsedMsg[3]);
-	//		double y = Double.parseDouble(parsedMsg[4]);
-	//		double angle = Double.parseDouble(parsedMsg[5]);
-	//
-	//		//get that server player from the lobby
-	//		EssentialPlayer currentPlayer = null;
-	//		for(EssentialPlayer p : lobby.getRedTeam().getMembers())
-	//			if( id == p.getPlayerId())
-	//				currentPlayer = p;
-	//
-	//		if (currentPlayer == null){
-	//			for(EssentialPlayer p : lobby.getBlueTeam().getMembers())
-	//				if( id == p.getPlayerId())
-	//					currentPlayer = p;
-	//		}
-	//		//update its location
-	//		currentPlayer.setLayoutX(x);
-	//		currentPlayer.setLayoutY(y);
-	//		currentPlayer.setAngle(angle);
-	//	}
-	//
 	/* Getters and setters below */
 
 	/**

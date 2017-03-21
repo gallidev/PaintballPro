@@ -80,12 +80,7 @@ public class ServerReceiver extends Thread {
 					if (debug) System.out.println("Server single player = " + singlePlayer);
 					
 					if (text.contains("Play:Mode:"))
-						if (singlePlayer){
-							playModeSingleAction(text);
-							sendToAll("Single");
-						}
-						else
-							playModeAction(text);
+						playModeAction(text);
 
 					// When user attempts to switch teams, try to switch.
 					else if (text.contains("SwitchTeam"))
@@ -114,13 +109,6 @@ public class ServerReceiver extends Thread {
 					else if (text.contains("SendToAll:"))
 						sendToAll(text);
 
-
-					//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
-					//							NEW INTEGRATION BELOW
-//					switch(text.charAt(0)){
-//					case '0' : playerInputChanged(text);
-//					}
-
 				} else // if the client wants to exit the system.
 				{
 					exitSystem();
@@ -134,71 +122,6 @@ public class ServerReceiver extends Thread {
 		}
 	}
 
-
-
-	//*===================== !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!========================================
-	//							NEW INTEGRATION BELOW
-	
-	private void playModeSingleAction(String text) {
-		int gameMode = Integer.parseInt(text.substring(10));
-		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
-		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
-
-		if (debug) System.out.println("Added player to lobby...");
-		if (debug) System.out.println(lobby.getCurrPlayerTotal());
-		
-		lobby.switchGameStatus();
-		lobby.playGame(this, udpReceiver, gameMode);
-		lobby.startGameLoop(udpReceiver, gameMode);
-	}
-	
-	
-//	public void playerInputChanged(String text){
-//		//Protocol: "O:Up:Down:Left:Right:Shooting:Mouse:<mX>:<mY>:<id>"
-//		String[] actions = text.split(":");
-//		boolean up = false;
-//		boolean down = false;
-//		boolean left = false;
-//		boolean right = false;
-//		boolean shoot = false;
-//		double mX = 0;
-//		double mY = 0;
-//
-//		for(int i = 0; i < actions.length - 1; i++){
-//			String act = actions[i];
-//			switch(act){
-//				case "Up"    : up = true;
-//							   break;
-//				case "Down"  : down = true;
-//							   break;
-//				case "Left"  : left = true;
-//							   break;
-//				case "Right" : right = true;
-//				   			   break;
-//				case "Mouse" : mX = Double.parseDouble(actions[i+1]);
-//							   mY = Double.parseDouble(actions[i+2]);
-//							   i = i + 3;
-//							   break;
-//				default		 : break;
-//			}
-//		}
-//
-//		int id = Integer.parseInt(actions[actions.length - 1]);
-//
-//		if(debug) System.out.println(inputReceiver == null);
-//		if(inputReceiver != null){
-//			inputReceiver.updatePlayer(id, up, down, left, right, shoot, mX, mY);
-//		}
-//
-//	}
-
-//	public void setInputReceiver(ArrayList<ServerMinimumPlayer> players){
-//		inputReceiver.setPlayers(players);
-//		if (debug)	System.out.println("Input receiver set");
-//	}
-
-
-	//===================OLD INTEGRATION===============================================
 
 	/*
 	 * Different actions performed depending on the messages received from
@@ -268,33 +191,6 @@ public class ServerReceiver extends Thread {
 			queue.offer(new Message(text));
 		}
 
-		//Given a move, the server player's location needs to be updated
-//
-//		if (text.contains("Move")){
-//			//extract the id of the server player with a new location
-//			String[] parsedMsg = text.split(":");
-//			int id = Integer.parseInt(parsedMsg[2]);
-//			double x = Double.parseDouble(parsedMsg[3]);
-//			double y = Double.parseDouble(parsedMsg[4]);
-//			double angle = Double.parseDouble(parsedMsg[5]);
-//
-//			//get that server player from the lobby
-//			ServerPlayer currentPlayer = null;
-//			for(ServerPlayer p : lobby.getRedTeam().getMembers())
-//				if( id == p.getPlayerId())
-//					currentPlayer = p;
-//
-//			if (currentPlayer == null){
-//				for(ServerPlayer p : lobby.getBlueTeam().getMembers())
-//					if( id == p.getPlayerId())
-//						currentPlayer = p;
-//			}
-//			//update its location
-//			currentPlayer.setX(x);
-//			currentPlayer.setY(y);
-//			currentPlayer.setAngle(angle);
-
-//		}
 	}
 
 	/**
