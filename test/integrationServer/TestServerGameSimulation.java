@@ -38,13 +38,8 @@ public class TestServerGameSimulation {
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-<<<<<<< HEAD
-		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION, 30);		
-		
-=======
 		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
->>>>>>> 188b57133ad92887e8a3d7dd994520bfc5da7760
 		red.addMember(p);
 
 		game = new TeamMatchMode(red, blue);

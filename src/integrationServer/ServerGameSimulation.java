@@ -67,7 +67,7 @@ public class ServerGameSimulation {
 
 		ScheduledExecutorService scheduler =
 			     Executors.newScheduledThreadPool(1);
-		Runnable game = new Runnable() {
+		Runnable gameloop = new Runnable() {
 		       public void run() {
 					for(EssentialPlayer player : players)
 					{
@@ -75,12 +75,18 @@ public class ServerGameSimulation {
 						player.tick();
 					}
 			    	frames ++;
-
+			    	
+			    	if (game.isGameFinished()){
+			    		scheduler.shutdown();
+			    		stopGameLoop();
+			    		System.out.println("game finished");
+			    	}
+			    	
 		       }
 		     };
 
 		ScheduledFuture<?> gameHandle =
-				scheduler.scheduleAtFixedRate(game, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
+				scheduler.scheduleAtFixedRate(gameloop, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
 
 //		Runnable frameCounter = new Runnable() {
 //		       public void run() {
