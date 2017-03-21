@@ -46,6 +46,8 @@ public class GameLobbyMenu {
 		blueColumn.prefWidthProperty().bind(table.widthProperty().divide(2));
 		table.getColumns().addAll(redColumn, blueColumn);
 		table.setItems(lobbyData);
+		table.setFixedCellSize(30.0);
+		table.setPrefHeight(4.0 * table.getFixedCellSize() + 30.0);
 
 		// Setup options area
 		Label timeLabel = new Label("Waiting for more players to join...");
