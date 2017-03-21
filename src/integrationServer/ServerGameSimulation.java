@@ -80,7 +80,7 @@ public class ServerGameSimulation {
 			     }
 			  };
 
-			  game.start();
+			game.start();
             loop.start();
 
 
@@ -162,6 +162,10 @@ public class ServerGameSimulation {
 
 	               now = System.nanoTime();
 	            }
+	            
+	            if (game.isGameFinished()){
+		        	stopGameLoop();
+		        }
 	         }
 	      }
 	   }
