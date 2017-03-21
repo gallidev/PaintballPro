@@ -70,7 +70,6 @@ public class CollisionsHandler
 			if(Math.abs(propX - p.getLayoutX()) > 72 || Math.abs(propY - p.getLayoutY()) > 72)
 				continue;
 
-
 			//System.out.println("collsionsss maybee");
 			//it returns a path with the collision with walls
 			//System.out.println("bound player " + p.getPlayerId() + " : " + p.getPolygonBounds().toString());
