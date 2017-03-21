@@ -10,6 +10,7 @@ import org.junit.Test;
 import enums.GameMode;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
+import integrationServer.ServerGameSimulation;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
@@ -23,7 +24,7 @@ import rendering.Map;
  *
  */
 public class TestTeam {
-	
+
 	private Team team;
 	private EssentialPlayer p;
 	private Map map;
@@ -34,7 +35,7 @@ public class TestTeam {
 	@Before
 	public void setUp() {
 		team = new Team(TeamEnum.RED);
-		
+
 		JavaFXTestHelper.setupApplication();
 		map = Map.loadRaw("ctf");
 		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
@@ -42,81 +43,81 @@ public class TestTeam {
 
 	/* Testers for all the game logic functionality for teams */
 
-	
+
 	@Test
 	public void incrementScoreTest() {
 		assertEquals(team.getScore(),  0);
-		
+
 		team.incrementScore();
 		assertEquals(team.getScore(),  1);
 
 		team.incrementScore(5);
 		assertEquals(team.getScore(),  6);
 	}
-	
-	
+
+
 	@Test
 	public void getMembersNoTest() {
 		assertEquals(team.getMembersNo(), 0);
 	}
-	
+
 	@Test
 	public void getScoreTest() {
 		team.setScore(6);
 		assertEquals(team.getScore(), 6);
 	}
-	
+
 	@Test
 	public void addMemberTest(){
-		
+
 		team.addMember(p);
-		
+
 		assertTrue(team.getMembers().get(0) == p);
 	}
-	
+
 	@Test
 	public void containsMemberTest(){
-		
+
 		team.addMember(p);
-		EssentialPlayer p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+		EssentialPlayer p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
 		assertTrue(team.containsPlayer(p));
 		assertFalse(team.containsPlayer(p1));
 
 	}
-	
-	
+
+
 	@Test
 	public void setMembersTest(){
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		team.setMembers(players);
 		assertEquals(team.getMembersNo(), 0);
 		assertTrue(team.getColour()== TeamEnum.RED);
-		
+
 		players.add(p);
 		team.setMembers(players);
 		assertTrue(team.getMembers().get(0) == p);
 		assertTrue(team.getMembersNo() == 1);
 		assertTrue(team.getColour() == TeamEnum.RED);
 	}
-	
+
 	@Test
 	public void setScoreTest() {
 		team.setScore(10);
-		assertEquals(team.getScore(),  10);	
+		assertEquals(team.getScore(),  10);
 	}
-		
+
 	@Test
 	public void colourTest() {
 		assertTrue(team.getColour() == TeamEnum.RED);
 		team.setColour(TeamEnum.BLUE);
 		assertTrue(team.getColour() == TeamEnum.BLUE);
 	}
-	
+
 	@Test
 	public void getMembersTest() {
 		assertTrue(team.getMembers().isEmpty());
 	}
-		
+
 
 }

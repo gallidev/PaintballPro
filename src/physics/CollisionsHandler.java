@@ -1,7 +1,7 @@
 package physics;
 
 import enums.TeamEnum;
-import integrationServer.CollisionHandlerListener;
+import integrationServer.CollisionsHandlerListener;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -13,6 +13,11 @@ import serverLogic.Team;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author gallifilippo
+ *
+ */
 public class CollisionsHandler
 {
 	private static final boolean debug = true;
@@ -28,7 +33,7 @@ public class CollisionsHandler
 	private Team red;
 	private Team blue;
 
-	private CollisionHandlerListener listener;
+	private CollisionsHandlerListener listener;
 
 	public CollisionsHandler(Map map)
 	{
@@ -154,7 +159,7 @@ public class CollisionsHandler
 				break;
 			}
 			default:
-				System.out.println("the player does not have a team");
+				//System.out.println("the player does not have a team");
 				break;
 		}
 
@@ -290,25 +295,9 @@ public class CollisionsHandler
     return avg_d;
   }
 
-	public ArrayList<EssentialPlayer> getRedTeam() {
-		return redTeam;
-	}
-
-	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
-		this.redTeam = redTeam;
-	}
-
 	public void setRedTeam(Team red) {
 		this.red = red;
 		redTeam = red.getMembers();
-	}
-
-	public ArrayList<EssentialPlayer> getBlueTeam() {
-		return blueTeam;
-	}
-
-	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
-		this.blueTeam = blueTeam;
 	}
 
 	public void setBlueTeam(Team blue) {
@@ -331,21 +320,13 @@ public class CollisionsHandler
 		}
 	}
 
-	public void setListener(CollisionHandlerListener listener)
+	public void setListener(CollisionsHandlerListener listener)
 	{
 		this.listener = listener;
 	}
 
 	public Flag getFlag(){
 		return flag;
-	}
-
-	public Rectangle getSpawnAreaRed() {
-		return spawnAreaRed;
-	}
-
-	public void setSpawnAreaRed(Rectangle spawnAreaRed) {
-		this.spawnAreaRed = spawnAreaRed;
 	}
 
 	public Powerup getSpeedPowerup(){
