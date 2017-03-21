@@ -2,7 +2,7 @@ package integrationServer;
 
 import physics.PowerupType;
 
-public interface CollisionHandlerListener
+public interface CollisionsHandlerListener
 {
 	void onFlagCaptured(int player);
 	void onFlagDropped(int player);

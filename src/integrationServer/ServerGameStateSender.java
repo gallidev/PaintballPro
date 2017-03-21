@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author Filippo Galli
  *
  */
-public class ServerGameStateSender implements CollisionHandlerListener {
+public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/* Dealing with sending the information */
 	private static final long delayMilliseconds = 25;
