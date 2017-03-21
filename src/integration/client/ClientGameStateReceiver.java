@@ -1,4 +1,4 @@
-package integrationClient;
+package integration.client;
 
 import javafx.application.Platform;
 import physics.Flag;

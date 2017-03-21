@@ -1,6 +1,5 @@
 package networking.game;
 
-import integrationServer.ServerInputReceiver;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
 import players.ServerBasicPlayer;
@@ -8,6 +7,8 @@ import players.ServerBasicPlayer;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
+import integration.server.ServerInputReceiver;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -18,7 +19,7 @@ import java.net.InetAddress;
 public class UDPServer extends Thread{
 
 	public boolean m_running = true;
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientTable clients;
 	private LobbyTable lobbyTab;
 	private DatagramSocket serverSocket;

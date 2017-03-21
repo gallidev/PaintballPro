@@ -1,4 +1,5 @@
-package serverLogic;
+package logic.server;
+
 
 import logic.GameMode;
 import logic.RoundTimer;

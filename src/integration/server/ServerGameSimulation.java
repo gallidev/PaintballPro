@@ -1,15 +1,10 @@
-package integrationServer;
-
-import logic.GameMode;
-import players.EssentialPlayer;
-import players.UserPlayer;
-import serverLogic.Team;
+package integration.server;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+
+import logic.GameMode;
+import logic.server.Team;
+import players.EssentialPlayer;
 
 /**
  * Class that represents a simulation of the enitre game logic, running on the server.

@@ -4,16 +4,15 @@ import java.util.ArrayList;
 
 import enums.TeamEnum;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import logic.server.Team;
 import networking.server.ServerReceiver;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-import serverLogic.Team;
 
 /**
  * Class that creates the scene for a new game.

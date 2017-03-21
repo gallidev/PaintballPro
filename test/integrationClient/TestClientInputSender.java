@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import enums.TeamEnum;
 import gui.GUIManager;
+import integration.client.ClientInputSender;
 import networking.client.TeamTable;
 import networking.game.UDPClient;
 import networking.game.UDPServer;

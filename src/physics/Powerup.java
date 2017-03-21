@@ -1,6 +1,5 @@
 package physics;
 
-import integrationServer.CollisionHandlerListener;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -8,6 +7,8 @@ import rendering.GameObject;
 import rendering.ImageFactory;
 
 import java.util.Random;
+
+import integration.server.CollisionHandlerListener;
 
 public class Powerup extends ImageView
 {

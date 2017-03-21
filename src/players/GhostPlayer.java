@@ -5,11 +5,11 @@ import enums.TeamEnum;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import logic.server.Team;
 import networking.game.UDPClient;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Spawn;
-import serverLogic.Team;
 
 public class GhostPlayer extends EssentialPlayer {
 

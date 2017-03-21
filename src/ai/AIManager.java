@@ -1,13 +1,13 @@
 package ai;
 
 import enums.TeamEnum;
-import integrationServer.ServerGameSimulation;
+import integration.server.ServerGameSimulation;
+import logic.server.Team;
 import networking.server.Lobby;
 import physics.CollisionsHandler;
 import players.AIPlayer;
 import players.EssentialPlayer;
 import rendering.Map;
-import serverLogic.Team;
 
 public class AIManager{
 

@@ -1,7 +1,6 @@
 package physics;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
@@ -9,18 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.TeamEnum;
-import gui.GUIManager;
 import helpers.JavaFXTestHelper;
-import integrationServer.ServerGameSimulation;
-import javafx.scene.shape.Rectangle;
+import integration.server.ServerGameSimulation;
 import logic.GameMode;
-import players.ClientPlayer;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-import rendering.Renderer;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
 
 public class TestCollisionsHandler {
 

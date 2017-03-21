@@ -6,10 +6,10 @@ import ai.BehaviourManager;
 import ai.HashMapGen;
 import enums.GameMode;
 import enums.TeamEnum;
+import logic.server.Team;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
-import serverLogic.Team;
 
 public class AIPlayer extends EssentialPlayer{
 

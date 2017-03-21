@@ -1,6 +1,8 @@
 package serverLogic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -10,6 +12,7 @@ import org.junit.Test;
 import enums.GameMode;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
+import logic.server.Team;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;

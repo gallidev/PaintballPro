@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
+import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
 import physics.CollisionsHandler;
 import physics.Flag;

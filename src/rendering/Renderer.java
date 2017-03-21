@@ -1,8 +1,15 @@
 package rendering;
 
+import static players.EssentialPlayer.PLAYER_HEAD_X;
+import static players.EssentialPlayer.PLAYER_HEAD_Y;
+
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Random;
+
 import enums.TeamEnum;
 import gui.GUIManager;
-import integrationClient.ClientInputSender;
+import integration.client.ClientInputSender;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -16,21 +23,22 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.GameMode;
+import logic.server.CaptureTheFlagMode;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 import networking.client.ClientReceiver;
-import physics.*;
+import physics.Bullet;
+import physics.CollisionsHandler;
+import physics.Flag;
+import physics.InputHandler;
+import physics.KeyPressListener;
+import physics.KeyReleaseListener;
+import physics.MouseListener;
+import physics.Powerup;
+import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.OfflinePlayer;
-import serverLogic.CaptureTheFlagMode;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
-
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Random;
-
-import static players.EssentialPlayer.PLAYER_HEAD_X;
-import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.

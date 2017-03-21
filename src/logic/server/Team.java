@@ -1,7 +1,6 @@
-package serverLogic;
+package logic.server;
 
 import enums.TeamEnum;
-import oldCode.players.ServerPlayer;
 import players.EssentialPlayer;
 
 import java.util.ArrayList;

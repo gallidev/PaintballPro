@@ -1,5 +1,7 @@
 package players;
 
+import java.util.Random;
+
 import audio.AudioManager;
 import enums.GameMode;
 import enums.TeamEnum;
@@ -8,13 +10,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import logic.server.Team;
 import networking.game.UDPClient;
 import physics.CollisionsHandler;
 import physics.InputHandler;
 import rendering.Spawn;
-import serverLogic.Team;
-
-import java.util.Random;
 
 public class ClientPlayer extends EssentialPlayer {
 

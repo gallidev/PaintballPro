@@ -3,7 +3,7 @@ package networking.client;
 import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
-import integrationClient.ClientGameStateReceiver;
+import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.CollisionsHandler;
@@ -110,6 +110,18 @@ public class ClientReceiver extends Thread {
 					else if (text.contains("Single")){
 						singlePlayer = true;
 						if (debug) System.out.println("Single player: " + singlePlayer);
+					}else if (text.contains("StartGame"))
+						startGameAction(text);
+					else if (text.contains("EndGame")) {
+						if(debug) System.out.println("Game has ended for player with ID " + clientID);
+						// Get data about scores, and pass into transition method
+						int someScore = 0;
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								m.transitionTo(Menu.EndGame, someScore);
+							}
+						});
 					}
 
 					//Game actions

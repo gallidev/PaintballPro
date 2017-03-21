@@ -1,7 +1,7 @@
 package networking.game;
 
 import gui.GUIManager;
-import integrationClient.ClientGameStateReceiver;
+import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
 import physics.PowerupType;
@@ -31,7 +31,7 @@ public class UDPClient extends Thread
 	public boolean connected = false;
 	public boolean testSendToAll = false;
 	public boolean testIntegration = false;
-	private boolean debug = true;
+	private boolean debug = false;
 	private int clientID;
 	private String nickname;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -430,7 +430,7 @@ public class UDPClient extends Thread
 		{
 			gameStateReceiver.updateFlag(id);
 
-			System.out.println("flag captured");
+			if (debug) System.out.println("flag captured");
 		}
 
 	}
@@ -450,7 +450,7 @@ public class UDPClient extends Thread
 			gameStateReceiver.lostFlag(id);
 		}
 
-		System.out.println("flag lost");
+		if (debug) System.out.println("flag lost");
 
 	}
 
@@ -471,7 +471,7 @@ public class UDPClient extends Thread
 		{
 			gameStateReceiver.respawnFlag(id, x, y);
 		}
-		System.out.println("flag rebased");
+		if (debug) System.out.println("flag rebased");
 	}
 
 	private void pingTimeUpdate(String receivedPacket)

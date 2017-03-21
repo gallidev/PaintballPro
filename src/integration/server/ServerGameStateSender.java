@@ -1,15 +1,15 @@
-package integrationServer;
-
-import enums.TeamEnum;
-import networking.game.UDPServer;
-import physics.PowerupType;
-import players.EssentialPlayer;
-import serverLogic.Team;
+package integration.server;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import enums.TeamEnum;
+import logic.server.Team;
+import networking.game.UDPServer;
+import physics.PowerupType;
+import players.EssentialPlayer;
 
 /**
  * Sends user inputs(client-sided) to the server.
