@@ -132,8 +132,8 @@ public class Client {
 										udpReceiver.stopThread();
 										
 										if (!testing)
-											(new AlertBox("Connection Failed",
-													"Something went wrong, please try again.")).showAlert();
+											(new AlertBox("Communication Failed",
+													"Paintball Pro could not talk to the server. Ensure the server is running and try again.")).showAlert();
 										exceptionCheck = 5;
 									}
 									System.out.println("All closed.");
@@ -158,7 +158,7 @@ public class Client {
 							server.close();
 							if (!testing)
 								(new AlertBox("Username Error",
-										"Your username is already in use, please try again.")).showAlert();
+										"Your username is already used by another player. Please choose another username.")).showAlert();
 							if(exceptionCheck == 0)
 								exceptionCheck = 6;
 						}
@@ -171,7 +171,7 @@ public class Client {
 					
 					if (!testing && exceptionCheck == 0)
 						(new AlertBox("Connection Failed",
-								"Cannot read from the server, please try again.")).showAlert();
+								"Paintball Pro could not talk to the server. Ensure the server is running and try again.")).showAlert();
 					if(exceptionCheck == 0)
 						exceptionCheck = 4;
 				}
@@ -180,7 +180,7 @@ public class Client {
 			catch (IOException e) {
 				if (!testing && exceptionCheck == 0)
 					(new AlertBox("Connection Failed",
-							"Please check that the server is running, and the IP address is correct.")).showAlert();
+							"Paintball Pro could not talk to the server. Ensure the server is running and try again.")).showAlert();
 				if(exceptionCheck == 0)
 					exceptionCheck = 2;
 			}
@@ -189,7 +189,7 @@ public class Client {
 		// separator so cannot be in a nickname).
 		else {
 			if (!testing && exceptionCheck == 0)
-				(new AlertBox("Username error", "Your username cannot contain ':' or '-' characters, please try again.")).showAlert();
+				(new AlertBox("Username error", "Your username cannot contain ':' or '-' characters. Please choose another username.")).showAlert();
 			if(exceptionCheck == 0)
 				exceptionCheck = 1;
 		}

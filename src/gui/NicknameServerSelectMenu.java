@@ -119,7 +119,7 @@ public class NicknameServerSelectMenu {
 					if (ipPort.equals("")) {
 						// Could not find a LAN server
 						Platform.runLater(() -> {
-							(new AlertBox("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.")).showAlert();
+							(new AlertBox("No LAN server", "Could not find any local servers. Please try again or enter the server IP address manually.")).showAlert();
 							loadingPane.stopLoading();
 						});
 					} else {
@@ -132,7 +132,7 @@ public class NicknameServerSelectMenu {
 							else if (error == 6)
 								loadingPane.stopLoading();
 							else {
-								(new AlertBox("No LAN server", "Cannot find any LAN servers running. Please try again or enter a server IP manually.")).showAlert();
+								(new AlertBox("No LAN server", "Could not find any local servers. Please try again or enter the server IP address manually.")).showAlert();
 								loadingPane.stopLoading();
 							}
 						});
