@@ -1,11 +1,14 @@
 package audio;
 
 import javafx.scene.media.Media;
+
 import java.io.File;
 import java.util.Random;
 
 /**
  * Class containing sound effects for the game
+ *
+ * @author Jack Hughes
  */
 public class SFXResources {
 	// Paintball and click sounds from http://www.freesfx.co.uk
@@ -25,6 +28,7 @@ public class SFXResources {
 
 	/**
 	 * Method to get a random paintball sound
+	 *
 	 * @return media object containing the paintball sound
 	 */
 	public Media getRandomPaintball() {

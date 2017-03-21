@@ -1,11 +1,14 @@
 package audio;
 
 import javafx.scene.media.Media;
+
 import java.io.File;
 import java.util.Random;
 
 /**
  * Class containing music resources for the game
+ *
+ * @author Jack Hughes
  */
 public class MusicResources {
 	// Track1 from http://www.freesound.org/people/Headphaze/sounds/177101/ (Creative Commons v3.0)
@@ -20,6 +23,7 @@ public class MusicResources {
 
 	/**
 	 * Method to get a random track to play
+	 *
 	 * @return media object containing the track
 	 */
 	public Media getRandomTrack() {
