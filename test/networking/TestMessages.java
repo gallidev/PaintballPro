@@ -28,6 +28,8 @@ public class TestMessages {
 
 	@After
 	public void tearDown() throws Exception {
+		message = null;
+		queue = null;
 	}
 
 	//-----------

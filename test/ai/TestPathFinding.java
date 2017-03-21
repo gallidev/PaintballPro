@@ -92,13 +92,13 @@ public class TestPathFinding {
     }
 
     @Test
-    public void elimPath1Test() {
+    public void ElimPathTest1() {
         Path newPath = elimPathfinder.getPath(1,6,3,6);
         assertTrue(newPath.equals(elimPath1));
     }
 
     @Test
-    public void elimPath2Test() {
+    public void ElimPathTest2() {
         Path newPath = elimPathfinder.getPath(22,10,11,9);
         assertTrue(newPath.equals(elimPath2));
     }
@@ -107,7 +107,7 @@ public class TestPathFinding {
      * Goal node is not reachable
      */
     @Test
-    public void elimEmptyPath1Test() {
+    public void ElimEmptyTest1() {
         Path newPath = elimPathfinder.getPath(2, 6, 1, 1);
         assertTrue(newPath.getLength() == 0);
     }
@@ -116,19 +116,19 @@ public class TestPathFinding {
      * Start node is not reachable
      */
     @Test
-    public void elimEmptyPath2Test() {
+    public void ElimEmptyTest2() {
         Path newPath = elimPathfinder.getPath(1, 1, 22, 10);
         assertTrue(newPath.getLength() == 0);
     }
 
     @Test
-    public void ctfPath1Test() {
+    public void CtfPathTest1() {
         Path newPath = ctfPathfinder.getPath(1,6,4,6);
         assertTrue(newPath.equals(ctfPath1));
     }
 
     @Test
-    public void ctfPath2Test() {
+    public void CtfPathTest2() {
         Path newPath = ctfPathfinder.getPath(1,6,10,3);
         assertTrue(newPath.equals(ctfPath2));
     }
@@ -137,7 +137,7 @@ public class TestPathFinding {
      * Goal node is not reachable
      */
     @Test
-    public void ctfEmptyPath1Test() {
+    public void CtfEmptyTest1() {
         Path newPath = ctfPathfinder.getPath(10,3, 1, 1);
         assertTrue(newPath.getLength() == 0);
     }
@@ -146,13 +146,13 @@ public class TestPathFinding {
      * Start node is not reachable
      */
     @Test
-    public void ctfEmptyPath2Test() {
+    public void CtfEmptyTest2() {
         Path newPath = ctfPathfinder.getPath(1,1,4,6);
         assertTrue(newPath.getLength() == 0);
     }
 
     @Test
-    public void testElimNodeGrid(){
+    public void NodeGridTest(){
         Node[][] grid = elimPathfinder.getNodeGrid();
         assertTrue(grid[1][1] == null);
         assertTrue(grid[22][10].equals(new Node(22, 10)));

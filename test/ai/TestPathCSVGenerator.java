@@ -37,7 +37,7 @@ public class TestPathCSVGenerator {
      * Test that a JavaFX application launches.
      */
     @Test
-    public void testMain() {
+    public void TestLaunch() {
         // Wrapper thread.
         Thread thread = new Thread() {
             @Override

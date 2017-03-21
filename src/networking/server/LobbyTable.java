@@ -67,7 +67,7 @@ public class LobbyTable {
 		boolean addedToGame = false;
 		int lobbyAllocated = 0;
 		for (Lobby lobby : lobbyList.values()) {
-			if (lobby.getGameType() == gameMode && !lobby.isMaxPlayersReached()) {
+			if (lobby.getGameType() == gameMode && !lobby.isMaxPlayersReached() && !lobby.inGameStatus) {
 				lobby.addPlayer(player, 0); // 0 indicated add at next available place.
 				lobbyAllocated = lobby.getID();
 				addedToGame = true;
