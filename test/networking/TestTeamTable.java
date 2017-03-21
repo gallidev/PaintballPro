@@ -34,6 +34,7 @@ public class TestTeamTable {
 
 	@After
 	public void tearDown() throws Exception {
+		table = null;
 	}
 
 	@Test

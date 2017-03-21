@@ -26,7 +26,7 @@ public class TestServerClient {
 
 	@After
 	public void tearDown() throws Exception {
-		
+		server = null;
 	}
 	
 	@Test

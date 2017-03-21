@@ -26,6 +26,7 @@ public class TestClientTable {
 
 	@After
 	public void tearDown() throws Exception {
+		table = null;
 	}
 
 	@Test

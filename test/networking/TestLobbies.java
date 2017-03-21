@@ -32,6 +32,9 @@ public class TestLobbies {
 
 	@After
 	public void tearDown() throws Exception {
+		lobby = null;
+		lobbytable = null;
+		player = null;
 	}
 
 	// -----------
