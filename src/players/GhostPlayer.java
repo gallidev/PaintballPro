@@ -1,143 +1,93 @@
 package players;
 
-import audio.AudioManager;
+import enums.GameMode;
 import enums.TeamEnum;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
-import physics.Bullet;
+import networking.game.UDPClient;
+import physics.CollisionsHandler;
 import rendering.ImageFactory;
+import rendering.Spawn;
+import serverLogic.Team;
 
-import java.util.ArrayList;
-/**
- *  The player, represented by an ImageView
- */
-public class GhostPlayer extends ImageView {
+public class GhostPlayer extends EssentialPlayer {
 
-	public static final double playerHeadX = 12.5, playerHeadY = 47.5;
-	private static final double targetFPS = 60;
-	private ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
-	private Rotate rotation;
-	private int playerId;
-	private TeamEnum team;
-	private AudioManager audio;
-	private String nickname;
 	private Label nameTag;
-	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
-	private double gameSpeed;
 
-	public GhostPlayer(double x, double y, int playerId, Image image, AudioManager audio, TeamEnum team, double currentFPS) {
-		super(image);
-		setLayoutX(x);
-		setLayoutY(y);
-		setEffect(shadow);
-
-		this.playerId = playerId;
-		this.audio = audio;
-		rotation = new Rotate(Math.toDegrees(0), 0, 0, 0, Rotate.Z_AXIS);
-	    getTransforms().add(rotation);
-		rotation.setPivotX(playerHeadX);
-		rotation.setPivotY(playerHeadY);
-		this.team = team;
-
-		this.gameSpeed = targetFPS/currentFPS;
+	public GhostPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
+			CollisionsHandler collisionsHandler, GameMode game, double currentFPS) {
+		super(x, y, id, spawn, team, collisionsHandler, ImageFactory.getPlayerImage(team), game, currentFPS);
 	}
 
-	public void tick(){
-//		collisionsHandler.handlePropWallCollision(this);
-//		collisionsHandler.handleFlagCollision(this);
-//		if(!eliminated)
-//		{
-//			collisionsHandler.handlePowerUpCollision(this);
-//			lastX = getLayoutX();
-//			lastY = getLayoutY();
-//			lastAngle = angle;
-//			updatePosition();
-//			updateShooting();
-//			//updateAngle();
-//		}
-//		else
-//		{
-//			checkSpawn();
-//		}
-//
-//		updatePlayerBounds();
-//		updateBullets();
-//		handlePowerUp();
-//
-//		if(!invincible)
-//		{
-//			collisionsHandler.handleBulletCollision(this);
-//		}
-//		else
-//		{
-//			checkInvincibility();
-//		}
+
+	@Override
+	public void tick() {
+
+		cleanBullets();
+
+		collisionsHandler.handlePropWallCollision(this);
+		updateBullets();
+		updatePlayerBounds();
+		updateAngle();
+
+		collisionsHandler.handleBulletCollision(this);
 
 	}
 
-	public void beenShot() {
-		audio.playSFX(audio.sfx.splat, (float) 1.0);
-		setVisible(false);
+	@Override
+	protected void updatePosition() {
+		// TODO Auto-generated method stub
+
 	}
 
-	public ArrayList<Bullet> getBullets() {
-		return firedBullets;
+	@Override
+	protected void updateShooting() {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void generateBullet(int bulletId, double x, double y, double angle){
-		Bullet bullet = new Bullet(bulletId, x, y, angle, team, gameSpeed);
-		this.firedBullets.add(bullet);
+	@Override
+	protected void updateAngle() {
+		this.rotation.setAngle(Math.toDegrees(angle));
 	}
 
-	//Updates the location of the bullets
-	void updateBullets(){
-		for(Bullet firedBullet : firedBullets)
-			firedBullet.moveInDirection();
+	@Override
+	public void updateScore() {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void setRotationAngle(double angle) {
-		this.rotation.setAngle(angle);
+	@Override
+	public void setMyTeam(Team team) {
+		// TODO Auto-generated method stub
+
 	}
 
-	public AudioManager getAudio() {
-		return audio;
+	@Override
+	public void setOppTeam(Team team) {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void setAudio(AudioManager audio){
-		this.audio = audio;
+	@Override
+	public void updateRotation(double angleRotation) {
+		// TODO Auto-generated method stub
+
 	}
 
-	public int getPlayerId(){
-		return this.playerId;
+	void cleanBullets(){
+		if(firedBullets.size() > 0) {
+			if (!firedBullets.get(0).isActive()) {
+				firedBullets.remove(0);
+			}
+		}
 	}
 
-	public void relocatePlayer(double x, double y)
+	public void relocatePlayerWithTag(double x, double y)
 	{
 		relocate(x, y);
 		nameTag.relocate(x - 15, y - 32);
-	}
-
-	public void setFlagStatus(boolean status)
-	{
-		if(status)
-		{
-			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
-			setImage(ImageFactory.getPlayerFlagImage(team));
-		}
-		else
-		{
-			shadow.setColor(Color.BLACK);
-			setImage(ImageFactory.getPlayerImage(team));
-		}
-	}
-
-	public TeamEnum getTeam(){
-		return team;
 	}
 
 	public String getNickname(){
@@ -153,10 +103,13 @@ public class GhostPlayer extends ImageView {
 		nameTag.relocate(getLayoutX() - 15, getLayoutX() - 32);
 	}
 
-	public Label getNameTag()
-	{
+	public Node getNameTag(){
 		return nameTag;
+
+	}
+
+	public void updateGameSpeed(){
+		gameSpeed += gameSpeed * (UDPClient.PINGDELAY/100.0);
 	}
 
 }
-

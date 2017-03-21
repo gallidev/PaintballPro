@@ -16,6 +16,8 @@ public class Powerup extends ImageView
 	private int duration = 15000; //Respawn 15 seconds after being taken
 	private GameObject[] locations;
 	private CollisionHandlerListener listener;
+	private int indexLocation;
+	private Powerup otherPowerUp;
 
 	public Powerup(PowerupType type, GameObject[] locations)
 	{
@@ -53,10 +55,13 @@ public class Powerup extends ImageView
 
 	private void resetPosition()
 	{
-		int randomLocation = (new Random()).nextInt(locations.length);
-		relocate(locations[randomLocation].getX() * 64 + 16, locations[randomLocation].getY() * 64 + 16);
+		indexLocation = (new Random()).nextInt(locations.length);
+		while(indexLocation == otherPowerUp.getIndexLocation()){
+			indexLocation = (new Random()).nextInt(locations.length);
+		}
+		relocate(locations[indexLocation].getX() * 64 + 16, locations[indexLocation].getY() * 64 + 16);
 		if(listener != null)
-			listener.onPowerupRespawn(type, randomLocation);
+			listener.onPowerupRespawn(type, indexLocation);
 	}
 
 	public void resetPosition(int index)
@@ -78,5 +83,14 @@ public class Powerup extends ImageView
 		        duration
 		);
 
+	}
+
+	public int getIndexLocation(){
+		return this.indexLocation;
+	}
+
+	public void setOtherPowerUp( Powerup otherPowerUp){
+		this.otherPowerUp = otherPowerUp;
+		resetPosition();
 	}
 }

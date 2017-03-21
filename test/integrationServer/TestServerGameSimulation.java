@@ -48,7 +48,7 @@ public class TestServerGameSimulation {
 
 	@Test
 	public void startExecutionTestest() throws InterruptedException{
-		gameSimulation.startExecution();
+		gameSimulation.runGameLoop();
 		Thread.sleep(1000);
 		assertTrue(game.getRemainingTime() <= 17900);
 

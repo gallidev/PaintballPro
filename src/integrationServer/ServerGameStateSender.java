@@ -89,13 +89,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 
 	}
 
-//	protected void sendEliminatedPlayers() {
-//		for(EssentialPlayer p : players){
-//			if (p.isEliminated())
-//				udpServer.sendToAll("#:" + p.getPlayerId(), lobbyId);
-//		}
-//	}
-
 	/**
 	 * Stops the server from sending information when the game finishes.
 	 */
@@ -122,24 +115,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 	 */
 	protected void sendBullets() {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
-
-//		for(EssentialPlayer p : players){
-//
-//				String toBeSent = "4:" + p.getPlayerId();
-//
-//				boolean haveBullets = false;
-//				for(Bullet bullet : p.getBullets())
-//				{
-//					if(bullet.isActive())
-//					{
-//						haveBullets = true;
-//						toBeSent += ":" + bullet.getBulletId() + ":" + bullet.getX() + ":" + bullet.getY() ;
-//					}
-//				}
-//				//System.out.println("Bullet msg sent from server " + toBeSent);
-//				if (haveBullets)
-//					udpServer.sendToAll(toBeSent, lobbyId);
-//		}
 
 		for(EssentialPlayer p : players){
 
@@ -213,24 +188,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 		}
 
 	}
-
-//	public void sendHitWall(){
-//
-//		if(players.get(0).getCollisionsHandler().isWallHit()){
-//			String toBeSent = "@:";
-//
-//			toBeSent += players.get(0).getCollisionsHandler().getHitWallX() + ":";
-//			toBeSent += players.get(0).getCollisionsHandler().getHitWallY() + ":";
-//			toBeSent += (players.get(0).getCollisionsHandler().getSplashColour() == TeamEnum.RED ? "Red" : "Blue" ) + ":";
-//
-//			players.get(0).getCollisionsHandler().setWallHit(false);
-//
-//			udpServer.sendToAll(toBeSent, lobbyId);
-////			udpServer.sendToAll(toBeSent, lobbyId);
-////			udpServer.sendToAll(toBeSent, lobbyId);
-//		}
-//
-//	}
 
 
 	private void sendShieldRemoved(EssentialPlayer p){

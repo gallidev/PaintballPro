@@ -62,6 +62,6 @@ public class GeneratePaths extends Application {
 
         writer.flush();
         writer.close();
-        System.exit(0);
+        //System.exit(0);
     }
 }
