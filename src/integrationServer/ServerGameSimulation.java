@@ -20,11 +20,9 @@ public class ServerGameSimulation {
 
     public static final double GAME_HERTZ = 40.0;
 
-	private static final long delayMilliseconds = 17;
 	private Team redTeam;
 	private Team blueTeam;
 	private GameMode game;
-	private int frames = 0;
 
 	ArrayList<EssentialPlayer> players;
 
@@ -55,47 +53,6 @@ public class ServerGameSimulation {
 		}
 	}
 
-	/**
-	 * Starts the simulation. Method to be called after the lobby time finishes.
-	 */
-	public void startExecution(){
-		players = new ArrayList<>();
-		players.addAll(redTeam.getMembers());
-		players.addAll(blueTeam.getMembers());
-
-		game.start();
-
-		ScheduledExecutorService scheduler =
-			     Executors.newScheduledThreadPool(1);
-		Runnable game = new Runnable() {
-		       public void run() {
-					for(EssentialPlayer player : players)
-					{
-						UserPlayer.isTicked = false;
-						player.tick();
-					}
-			    	frames ++;
-
-		       }
-		     };
-
-		ScheduledFuture<?> gameHandle =
-				scheduler.scheduleAtFixedRate(game, 0, delayMilliseconds, TimeUnit.MILLISECONDS);
-
-//		Runnable frameCounter = new Runnable() {
-//		       public void run() {
-//		    	   if (debug) System.out.println("server frames " + frames);
-//		    	   frames = 0;
-//
-//		       }
-//		     };
-//
-//		ScheduledFuture<?> frameCounterHandle =
-//				scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
-
-	}
-
-
 	public void stopGameLoop(){
 		running = false;
 		try {
@@ -119,7 +76,6 @@ public class ServerGameSimulation {
 			        gameLoop();
 			     }
 			  };
-			  //loop.setPriority(Thread.MAX_PRIORITY);
 
 			  game.start();
             loop.start();

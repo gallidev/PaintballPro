@@ -368,6 +368,22 @@ public abstract class EssentialPlayer extends ImageView {
 		this.collRight = collRight;
 	}
 
+	public boolean getCollUp() {
+		return collUp;
+	}
+
+	public boolean getCollDown() {
+		return collDown;
+	}
+
+	public boolean getCollLeft() {
+		return collLeft;
+	}
+
+	public boolean getCollRight() {
+		return collRight;
+	}
+
 	public TeamEnum getColour(){
 		return team;
 	}

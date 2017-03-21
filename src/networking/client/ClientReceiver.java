@@ -12,7 +12,7 @@ import physics.Powerup;
 import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
-import players.GhostPlayerWithColls;
+import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
@@ -201,14 +201,14 @@ public class ClientReceiver extends Thread {
 			String nickname = data[i+2];
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red")){
-					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
 							TeamEnum.RED, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
 				}
 				else{
-					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
 							TeamEnum.BLUE, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
@@ -217,7 +217,7 @@ public class ClientReceiver extends Thread {
 
 			} else {
 				if (clientTeam.equals("Red")){
-					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
 							TeamEnum.BLUE, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
@@ -225,7 +225,7 @@ public class ClientReceiver extends Thread {
 
 				}
 				else{
-					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
+					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
 							TeamEnum.RED, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);

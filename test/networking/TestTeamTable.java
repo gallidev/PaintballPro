@@ -12,7 +12,7 @@ import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import networking.client.TeamTable;
 import players.EssentialPlayer;
-import players.GhostPlayerWithColls;
+import players.GhostPlayer;
 import rendering.Renderer;
 
 /**
@@ -44,8 +44,8 @@ public class TestTeamTable {
 	@Test
 	public void testMyTeam() {
 		ArrayList<EssentialPlayer> team = new ArrayList<EssentialPlayer>();
-		team.add(new GhostPlayerWithColls(0, 0, 1, null, TeamEnum.BLUE, null, null, Renderer.TARGET_FPS));
-		team.add(new GhostPlayerWithColls(0, 0, 2, null, TeamEnum.BLUE, null, null, Renderer.TARGET_FPS));
+		team.add(new GhostPlayer(0, 0, 1, null, TeamEnum.BLUE, null, null, Renderer.TARGET_FPS));
+		team.add(new GhostPlayer(0, 0, 2, null, TeamEnum.BLUE, null, null, Renderer.TARGET_FPS));
 		table.setMyTeam(team);
 		ArrayList<EssentialPlayer> test = table.getMyTeam();
 		assertEquals(test.get(1).getPlayerId(),2);
@@ -55,8 +55,8 @@ public class TestTeamTable {
 	@Test
 	public void testEnemies() {
 		ArrayList<EssentialPlayer> team = new ArrayList<EssentialPlayer>();
-		team.add(new GhostPlayerWithColls(0, 0, 3, null, TeamEnum.RED, null, null, Renderer.TARGET_FPS));
-		team.add(new GhostPlayerWithColls(0, 0, 4, null, TeamEnum.RED, null, null, Renderer.TARGET_FPS));
+		team.add(new GhostPlayer(0, 0, 3, null, TeamEnum.RED, null, null, Renderer.TARGET_FPS));
+		team.add(new GhostPlayer(0, 0, 4, null, TeamEnum.RED, null, null, Renderer.TARGET_FPS));
 		table.setEnemies(team);
 		ArrayList<EssentialPlayer> test = table.getEnemies();
 		assertEquals(test.get(1).getPlayerId(),4);

@@ -11,10 +11,9 @@ import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import physics.Flag;
-import physics.GhostBullet;
 import players.EssentialPlayer;
 import players.GhostPlayer;
-import players.GhostPlayerWithColls;
+import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Renderer;
 
@@ -28,7 +27,7 @@ public class TestClientGameStateReceiver {
 	@Before
 	public void setUp() throws Exception {
 		players = new ArrayList<>();
-		p = new GhostPlayerWithColls(0, 0, 1, null, TeamEnum.RED, null, null, Renderer.TARGET_FPS);
+		p = new GhostPlayer(0, 0, 1, null, TeamEnum.RED, null, null, Renderer.TARGET_FPS);
 
 		players.add(p);
 
