@@ -1,8 +1,11 @@
 package physics;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -42,7 +45,7 @@ public class TestCollisionsHandler {
 		blue = new Team(TeamEnum.BLUE);
 
 		JavaFXTestHelper.setupApplication();
-		map = Map.loadRaw("elimination");
+		map = Map.loadRaw("ctf");
 		collisionsHandler = new CollisionsHandler(map);
 
 
@@ -51,7 +54,10 @@ public class TestCollisionsHandler {
 		player2 = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y, 2 * 64, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), enums.GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
 		red.addMember(player1);
-		red.addMember(player2);
+		blue.addMember(player2);
+
+		player1.setOppTeam(blue);
+		player2.setOppTeam(red);
 
 		game = new TeamMatchMode(red, blue);
 		gameSimulation = new ServerGameSimulation(game);
@@ -63,8 +69,7 @@ public class TestCollisionsHandler {
 	@After
 	public void tearDown()
 	{
-
-		gameSimulation.stopGameLoop();
+		//gameSimulation.stopGameLoop();
 	}
 
 	@Test
@@ -108,11 +113,164 @@ public class TestCollisionsHandler {
 		assertFalse(player1.getCollLeft());
 		assertTrue(player1.getCollRight());
 
+		gameSimulation.stopGameLoop();
 	}
 
 	@Test
 	public void testHandleBulletCollisions()
 	{
+
+		gameSimulation.runGameLoop();
+
+		player1.setAngle(1.5708);
+		player2.setAngle(1.5708);
+
+		player2.relocate(player1.getLayoutX()+80, player1.getLayoutY());
+
+		player1.setShoot(true);
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(player2.isEliminated());
+
+		gameSimulation.stopGameLoop();
+	}
+
+	@Test
+	public void testhandleFlagCollision()
+	{
+
+		gameSimulation.runGameLoop();
+		//catch the flag first
+
+		player1.relocate(collisionsHandler.getFlag().getLayoutX()+80, collisionsHandler.getFlag().getLayoutY());
+
+		player1.setLeft(true);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(player1.hasFlag());
+
+		//test when the player loses the flag and the other one catches it
+		player1.relocate(collisionsHandler.getFlag().getLayoutX()+80, collisionsHandler.getFlag().getLayoutY());
+
+		player1.setLeft(true);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(player1.hasFlag());
+
+		player1.setLeft(false);
+
+		player2.setAngle(-1.5708);
+
+		player2.relocate(player1.getLayoutX()+90, player1.getLayoutY());
+
+		player2.setShoot(true);
+		player2.setLeft(true);
+
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertFalse(player1.hasFlag());
+		assertTrue(player2.hasFlag());
+
+		//test when the player brings the flag back to his base
+		player2.relocate(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertFalse(player2.hasFlag());
+		gameSimulation.stopGameLoop();
+	}
+
+	@Test
+	public void testHandlePowerUpCollision()
+	{
+
+		gameSimulation.runGameLoop();
+
+		player1.setAngle(1.5708);
+
+		player1.relocate(collisionsHandler.getShieldPowerup().getLayoutX()+80, collisionsHandler.getShieldPowerup().getLayoutY());
+
+		player1.setLeft(true);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertFalse(collisionsHandler.getShieldPowerup().isVisible());
+
+		player1.relocate(collisionsHandler.getSpeedPowerup().getLayoutX()-80, collisionsHandler.getSpeedPowerup().getLayoutY());
+
+		player1.setLeft(false);
+		player1.setRight(true);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		assertFalse(collisionsHandler.getSpeedPowerup().isVisible());
+
+		gameSimulation.stopGameLoop();
+	}
+
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetMeanAngle()
+	{
+
+		ArrayList<Double> angles = new ArrayList<>();
+
+		angles.add( 90.0);
+		angles.add( 180.0);
+		angles.add( 220.0);
+
+		Method method = null;
+		try {
+			method = CollisionsHandler.class.getDeclaredMethod("getMeanAngle", List.class);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		method.setAccessible(true);
+		double result = 0;
+		try {
+			result = (double) method.invoke(collisionsHandler, angles);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertEquals(168.5, result, 0.1);
 
 
 	}
