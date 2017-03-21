@@ -6,8 +6,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tester class for the timer used as a countdown in all game modes.
- * 
+ * Test class for the timer used as a countdown in all game modes.
+ * Class tested - {@link RoundTimer}
  * @author Alexandra Paduraru
  *
  */

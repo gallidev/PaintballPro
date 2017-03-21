@@ -18,6 +18,12 @@ import rendering.Map;
 import serverLogic.Team;
 import serverLogic.TeamMatchMode;
 
+/**
+ * Test class to test the game simulation running on the server in multiplayer.
+ * Class tested - {@link ServerGameSimulation}
+ * @author Alexandra Paduraru
+ *
+ */
 public class TestServerGameSimulation {
 	
 	private Team red;
@@ -32,7 +38,7 @@ public class TestServerGameSimulation {
 		
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION);		
+		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION, 30);		
 		
 		red.addMember(p);
 		

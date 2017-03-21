@@ -10,23 +10,35 @@ import org.junit.Test;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
+import physics.CollisionsHandler;
 import physics.Flag;
 import physics.GhostBullet;
+import players.EssentialPlayer;
 import players.GhostPlayer;
+import players.UserPlayer;
 import rendering.ImageFactory;
+import rendering.Map;
 
+/**
+ * Test class to test if the in-game information received from the server is correct.\
+ * Class tested - {@link ClientGameStateReceiver}
+ * @author Alexandra Paduraru
+ *
+ */
 public class TestClientGameStateReceiver {
 
-	private ArrayList<GhostPlayer> players;
+	private ArrayList<EssentialPlayer> players;
 	private ClientGameStateReceiver gameStateReceiver;
-	private GhostPlayer p;
+	private EssentialPlayer p;
 	private ClientGameStateReceiver gameStateReceiver2;
 	
 	@Before
 	public void setUp() throws Exception {
 		players = new ArrayList<>();
-		p = new GhostPlayer(0, 0, 1, null, null, TeamEnum.RED);
-		
+
+		JavaFXTestHelper.setupApplication();
+		Map map = Map.loadRaw("elimination");
+		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION, 30);
 		players.add(p);
 		
 		gameStateReceiver = new ClientGameStateReceiver(players);
@@ -53,56 +65,41 @@ public class TestClientGameStateReceiver {
 	@Test
 	public void updateBulletsTest() throws InterruptedException {
 
-		String bullets = "0:2:3:1:4:5";
-		gameStateReceiver.updateBullets(1, bullets.split(":"));
-		Thread.sleep(1000);
+		gameStateReceiver.updateBullets(1);
+		assertTrue(p.hasShot());
 		
-		GhostBullet firedBullet1 = p.getFiredBullets().get(0);
-		assertEquals(firedBullet1.getX(), 2.0, 0.2);
-		assertEquals(firedBullet1.getY(), 3.0, 0.2);
-		assertEquals(firedBullet1.getBulletId(), 0);
-		
-		GhostBullet firedBullet2 = p.getFiredBullets().get(1);
-		assertEquals(firedBullet2.getX(), 4.0, 0.2);
-		assertEquals(firedBullet2.getY(), 5.0, 0.2);
-		assertEquals(firedBullet2.getBulletId(), 1);
-		
-		
-		String newBullets = "0:7:8";
-		gameStateReceiver.updateBullets(1, newBullets.split(":"));
-		System.out.println(p.getFiredBullets());
-
-		GhostBullet firedBullet3 = p.getFiredBullets().get(0);
-		assertEquals(firedBullet3.getX(), 7.0, 0.2);
-		assertEquals(firedBullet3.getY(), 8.0, 0.2);
-		
-	}
-	
-	@Test
-	public void lostFlagTest() {
-//		GhostPlayer player = getPlayerWithId(id);
-//		player.setFlagStatus(true);
-//		flag.setVisible(false);
+//		String bullets = "0:2:3:1:4:5";
+//		gameStateReceiver.updateBullets(1, bullets.split(":"));
+//		Thread.sleep(1000);
 //		
-//		System.out.println("Player " + id + " captured the flag");
+//		GhostBullet firedBullet1 = p.getFiredBullets().get(0);
+//		assertEquals(firedBullet1.getX(), 2.0, 0.2);
+//		assertEquals(firedBullet1.getY(), 3.0, 0.2);
+//		assertEquals(firedBullet1.getBulletId(), 0);
 //		
-//		gameStateReceiver.lostFlag(1);
-//		assertTrue(flag.);
-	}
-	
-	@Test
-	public void respawnFlagTest() {
-		//fail("Not yet implemented");
-//		flag.setVisible(true);
-//		flag.relocate(x, y);
+//		GhostBullet firedBullet2 = p.getFiredBullets().get(1);
+//		assertEquals(firedBullet2.getX(), 4.0, 0.2);
+//		assertEquals(firedBullet2.getY(), 5.0, 0.2);
+//		assertEquals(firedBullet2.getBulletId(), 1);
+//		
+//		
+//		String newBullets = "0:7:8";
+//		gameStateReceiver.updateBullets(1, newBullets.split(":"));
+//		System.out.println(p.getFiredBullets());
 //
-//		GhostPlayer player = getPlayerWithId(id);
-//		player.setFlagStatus(false);
-//		System.out.println("Flag has been respawned");
+//		GhostBullet firedBullet3 = p.getFiredBullets().get(0);
+//		assertEquals(firedBullet3.getX(), 7.0, 0.2);
+//		assertEquals(firedBullet3.getY(), 8.0, 0.2);
 		
-		gameStateReceiver2.respawnFlag(1, 2, 3);
-//		assertEquals(p.getX(), 2.0, 0.2);
-//		assertEquals(p.getY(), 3.0, 0.2);
 	}
+	
+//	@Test
+//	public void lostFlagTest() {
+//
+//	}
+//	
+//	@Test
+//	public void respawnFlagTest() {
+//	}
 
 }
