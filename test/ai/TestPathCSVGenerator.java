@@ -56,7 +56,7 @@ public class TestPathCSVGenerator {
         thread.setDaemon(true);
         thread.start();
         try {
-            Thread.sleep(10000);  // Leave enough time for generator to finish before interrupting JavaFX application
+            Thread.sleep(15000);  // Leave enough time for generator to finish before interrupting JavaFX application
         } catch(InterruptedException ex) {
             // We don't care if we wake up early.
         }
