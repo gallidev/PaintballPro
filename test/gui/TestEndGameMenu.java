@@ -27,7 +27,7 @@ public class TestEndGameMenu {
         m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Continue", s.getRoot()).fire();
         Thread.sleep(2000);
-        assertTrue(m.currentMenu == Menu.MultiplayerGameType);
+        assertTrue(m.currentMenu == Menu.SingleplayerGameType);
     }
 
 }
