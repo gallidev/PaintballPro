@@ -10,10 +10,6 @@ import java.io.FileWriter;
 
 public class GeneratePaths extends Application {
 
-    public static void main(String[] args) throws Exception{
-        launch();
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Map map = Map.loadRaw("elimination") ;
