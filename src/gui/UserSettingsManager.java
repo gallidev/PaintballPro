@@ -3,16 +3,20 @@ package gui;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
 /**
  * Helper methods for loading and saving user settings
+ *
+ * @author Jack Hughes
  */
 public class UserSettingsManager {
-	
+
 	/**
 	 * Load the user's settings from disk
+	 *
 	 * @return user's settings
 	 */
 	public static UserSettings loadSettings() {
@@ -20,9 +24,10 @@ public class UserSettingsManager {
 		// This will prevent infinite loops from occurring
 		return loadSettings(0);
 	}
-	
+
 	/**
 	 * Load the user's settings from disk
+	 *
 	 * @param i counter to avoid an infinite loop (call with 0)
 	 * @return user's settings
 	 */
@@ -51,12 +56,13 @@ public class UserSettingsManager {
 				System.exit(1);
 				return null;
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Save the user's settings to disk
+	 *
 	 * @param s settings to save
 	 */
 	public static void saveSettings(UserSettings s) {

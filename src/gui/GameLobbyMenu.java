@@ -8,22 +8,23 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 /**
  * Class containing the game's lobby menu
+ *
+ * @author Jack Hughes
  */
 public class GameLobbyMenu {
 
 	/**
 	 * Method to create the scene for the lobby menu
+	 *
 	 * @param guiManager GUIManager for the game
-	 * @param lobbyData observable list of players in the lobby
+	 * @param lobbyData  observable list of players in the lobby
 	 * @return scene for the lobby menu
 	 */
 	public static Scene getScene(GUIManager guiManager, ObservableList<GameLobbyRow> lobbyData) {
@@ -56,12 +57,14 @@ public class GameLobbyMenu {
 
 		GridPane optionsSection = new GridPane();
 		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
+			@Override
+			public void handle(ActionEvent event) {
 				guiManager.getClient().getSender().sendMessage("SwitchTeam");
 				guiManager.fetchLobbyUpdates();
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
+			@Override
+			public void handle(ActionEvent event) {
 				checker.threadRunning = false;
 				try {
 					checkLobby.join();
@@ -89,5 +92,5 @@ public class GameLobbyMenu {
 
 		return guiManager.createScene(loadingPane);
 	}
-	
+
 }

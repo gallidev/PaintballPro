@@ -7,11 +7,14 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Class containing helper methods for configuring menu controls
+ *
+ * @author Jack Hughes
  */
 public class MenuControls {
-	
+
 	/**
 	 * Method to centre a node in a GridPane cell
+	 *
 	 * @param n node to centre
 	 * @return GridPane that should be placed where the node needs to be
 	 */
@@ -21,7 +24,8 @@ public class MenuControls {
 
 	/**
 	 * Method to centre a node in a GridPane cell
-	 * @param node node to centre
+	 *
+	 * @param node    node to centre
 	 * @param padding padding for pane
 	 * @return GridPane that should be placed where the node needs to be
 	 */
@@ -39,5 +43,5 @@ public class MenuControls {
 		// Return the grid pane
 		return gridPane;
 	}
-	
+
 }

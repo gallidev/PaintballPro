@@ -12,11 +12,14 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Class containing the Main Menu scene
+ *
+ * @author Jack Hughes
  */
 public class MainMenu {
 
 	/**
 	 * Return a main menu scene for a given GUI manager
+	 *
 	 * @param guiManager GUI manager to use
 	 * @return main menu scene
 	 */
@@ -26,13 +29,13 @@ public class MainMenu {
 		iv.setId("logo");
 		iv.setPreserveRatio(true);
 		iv.setFitWidth(400);
-		
+
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Single Player", true, (event) -> guiManager.transitionTo(Menu.SingleplayerGameType)),
 				new MenuOption("Multiplayer", true, (event) -> guiManager.transitionTo(Menu.NicknameServerConnection)),
 				new MenuOption("Settings", false, (event) -> guiManager.transitionTo(Menu.Settings)),
-				new MenuOption("Help", false, (event) -> guiManager.transitionTo(Menu.Help) )};
-		
+				new MenuOption("Help", false, (event) -> guiManager.transitionTo(Menu.Help))};
+
 		// Turn the collection of button options into a GridPane to be displayed
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
 		GridPane view = new GridPane();

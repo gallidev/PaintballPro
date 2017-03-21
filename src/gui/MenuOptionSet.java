@@ -7,24 +7,27 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Helper class for working with a collection of menu options
+ *
+ * @author Jack Hughes
  */
 public class MenuOptionSet {
-	
+
 	/**
 	 * Helper method to turn a collection of menu options into a single grid pane
+	 *
 	 * @param opts array of menu options
 	 * @return grid pane
 	 */
 	public static GridPane optionSetToGridPane(MenuOption[] opts) {
 		// Create a new grid pane
 		GridPane gridPane = new GridPane();
-				
+
 		// Setup the grid pane styling
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
 		gridPane.setPadding(new Insets(25, 25, 25, 25));
-		
+
 		for (int i = 0; i < opts.length; i++) {
 			// Create the button, set the text and event handler,
 			// maximise the width of the button to all be the same,
@@ -38,8 +41,8 @@ public class MenuOptionSet {
 			}
 			gridPane.add(button, 0, i + 1);
 		}
-		
-		
+
+
 		// Return the grid pane
 		return gridPane;
 	}
