@@ -25,6 +25,7 @@ public class TestServerBasicPlayer {
 
 	@After
 	public void tearDown() throws Exception {
+		player = null;
 	}
 
 	@Test

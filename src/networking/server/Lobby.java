@@ -42,7 +42,7 @@ public class Lobby {
 	//required for all players
 	Map map;
 	private int id;
-	private boolean inGameStatus;
+	public boolean inGameStatus;
 	// Game information
 	private int GameType;
 	private int MaxPlayers;
