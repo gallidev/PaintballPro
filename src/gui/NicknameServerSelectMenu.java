@@ -32,7 +32,7 @@ public class NicknameServerSelectMenu {
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
-		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 		LoadingPane loadingPane = new LoadingPane(mainGrid);
 
 		Label titleLabel = new Label("Multiplayer");
@@ -42,7 +42,7 @@ public class NicknameServerSelectMenu {
 		topGrid.setAlignment(Pos.CENTER);
 		topGrid.setHgap(10);
 		topGrid.setVgap(10);
-		topGrid.setPadding(new Insets(25, 25, 25, 25));
+		topGrid.setPadding(MenuControls.scaleByResolution(25));
 
 		// Create the username label and text field
 		Label usernameLabel = new Label("Username");
@@ -55,7 +55,7 @@ public class NicknameServerSelectMenu {
 		selectionGrid.setAlignment(Pos.CENTER);
 		selectionGrid.setHgap(10);
 		selectionGrid.setVgap(10);
-		selectionGrid.setPadding(new Insets(25, 25, 25, 25));
+		selectionGrid.setPadding(MenuControls.scaleByResolution(25));
 
 		// Create the toggle group
 		final ToggleGroup group = new ToggleGroup();

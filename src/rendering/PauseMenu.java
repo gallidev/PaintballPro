@@ -51,15 +51,12 @@ class PauseMenu extends SubScene {
 		gridPane.add(MenuControls.centreInPane(title), 0, 1);
 
 		MenuOption[] set = {new MenuOption("Resume", true, (event) -> {
-			System.out.println("ActionEvent: " + event);
 			GUIManager.renderer.togglePauseMenu();
 		}), new MenuOption("Settings", true, (event) -> {
-			System.out.println("ActionEvent: " + event);
 			GUIManager.renderer.toggleSettingsMenu();
 		}), new MenuOption("Back to Main Menu", false, (event) -> {
 			guiManager.exitClient();
 			guiManager.transitionTo(Menu.MainMenu);
-			System.out.println("ActionEvent: " + event);
 		})};
 
 		GridPane buttonSet = MenuOptionSet.optionSetToGridPane(set);

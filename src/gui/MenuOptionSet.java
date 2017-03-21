@@ -26,7 +26,7 @@ public class MenuOptionSet {
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
-		gridPane.setPadding(new Insets(25, 25, 25, 25));
+		gridPane.setPadding(MenuControls.scaleByResolution(25));
 
 		for (int i = 0; i < opts.length; i++) {
 			// Create the button, set the text and event handler,

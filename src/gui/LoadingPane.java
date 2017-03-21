@@ -29,7 +29,7 @@ public class LoadingPane extends StackPane {
 		loadingGrid.setAlignment(Pos.CENTER);
 		loadingGrid.setHgap(10);
 		loadingGrid.setVgap(10);
-		loadingGrid.setPadding(new Insets(25, 25, 25, 25));
+		loadingGrid.setPadding(MenuControls.scaleByResolution(25));
 		ProgressIndicator spinner = new ProgressIndicator();
 		spinner.setProgress(-1);
 		loadingGrid.add(MenuControls.centreInPane(spinner), 0, 0);

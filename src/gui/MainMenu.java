@@ -43,7 +43,7 @@ public class MainMenu {
 		view.setAlignment(Pos.CENTER);
 		view.setHgap(10);
 		view.setVgap(10);
-		view.setPadding(new Insets(25, 25, 25, 25));
+		view.setPadding(MenuControls.scaleByResolution(25));
 
 		view.add(iv, 0, 0);
 		view.add(grid, 0, 1);

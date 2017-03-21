@@ -33,7 +33,7 @@ public class HelpMenu {
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
-		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 
 		WebView webView = new WebView();
 		String url = HelpMenu.class.getResource("/help.html").toExternalForm();

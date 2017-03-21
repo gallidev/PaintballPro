@@ -19,7 +19,7 @@ public class MenuControls {
 	 * @return GridPane that should be placed where the node needs to be
 	 */
 	public static GridPane centreInPane(Node n) {
-		return centreInPane(n, new Insets(5));
+		return centreInPane(n, MenuControls.scaleByResolution(5));
 	}
 
 	/**
@@ -42,6 +42,22 @@ public class MenuControls {
 		gridPane.add(node, 0, 0);
 		// Return the grid pane
 		return gridPane;
+	}
+
+	/**
+	 * Method to scale padding using the user's chosen resolution
+	 * @param padding padding for the default resolution
+	 * @return insets for the scaled resolution padding
+	 */
+	public static Insets scaleByResolution(int padding) {
+		int defaultWidth = Integer.parseInt(UserSettings.possibleResolutions[2].split("x")[0]);
+		int chosenWidth = Integer.parseInt(GUIManager.getUserSettings().getResolution().split("x")[0]);
+		double scaledPadding = (double)padding * (((double)chosenWidth - (double)defaultWidth) / (double)defaultWidth);
+		if (scaledPadding < 0)
+			scaledPadding = 0;
+		if (scaledPadding > (padding * 2))
+			scaledPadding = padding * 2;
+		return new Insets(scaledPadding);
 	}
 
 }

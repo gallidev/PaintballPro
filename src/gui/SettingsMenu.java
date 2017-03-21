@@ -37,7 +37,7 @@ public class SettingsMenu {
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
-		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 
 		Label titleLabel = new Label("Settings");
 		titleLabel.setStyle("-fx-font-size: 26px;");
@@ -47,7 +47,7 @@ public class SettingsMenu {
 		optGrid.setAlignment(Pos.CENTER);
 		optGrid.setHgap(10);
 		optGrid.setVgap(10);
-		optGrid.setPadding(new Insets(25, 25, 25, 25));
+		optGrid.setPadding(MenuControls.scaleByResolution(25));
 
 		// Create the music label and slider
 		Label musicLabel = new Label("Music Volume");
@@ -134,6 +134,8 @@ public class SettingsMenu {
 			guiManager.height = Double.parseDouble(resolution[1]);
 			guiManager.getStage().setHeight(guiManager.height);
 			guiManager.getStage().centerOnScreen();
+			mainGrid.setPadding(MenuControls.scaleByResolution(25));
+			optGrid.setPadding(MenuControls.scaleByResolution(25));
 		});
 
 

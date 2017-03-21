@@ -72,7 +72,7 @@ public class EndGameMenu {
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
-		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 		mainGrid.add(endPane, 0, 0);
 		mainGrid.add(gameStatusPane, 0, 1);
 		mainGrid.add(scorePane, 0, 2);
