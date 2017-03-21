@@ -2,9 +2,10 @@ package integrationClient;
 
 import javafx.application.Platform;
 import physics.Flag;
+import physics.Powerup;
+import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 
 import java.util.ArrayList;
 
@@ -17,11 +18,10 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
-	private ArrayList<EssentialPlayer> players;
-
 	private static final boolean debug = false;
+	private ArrayList<EssentialPlayer> players;
 	private Flag flag;
-
+	private Powerup[] powerups;
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
@@ -30,8 +30,9 @@ public class ClientGameStateReceiver {
 	 * @param players The list of all players in the game.
 	 *
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Powerup[] powerups) {
 		this.players = players;
+		this.powerups = powerups;
 	}
 
 	/**
@@ -41,9 +42,10 @@ public class ClientGameStateReceiver {
 	 * @param players The list of all players in the game.
 	 * @param flag The flag of the capture the flag mode
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag, Powerup[] powerups) {
 		this.players = players;
 		this.flag = flag;
+		this.powerups = powerups;
 	}
 
 	/**
@@ -54,7 +56,7 @@ public class ClientGameStateReceiver {
 	 * @param angle The new angle of the player.
 	 * @param visible Whether or not the player is visible(i.e. it has been eliminated>
 	 */
-	public void updatePlayer(int id, double x, double y, double angle, boolean visible){
+	public void updatePlayer(int id, double x, double y, double angle, boolean visible, boolean eliminated){
 
 		EssentialPlayer playerToBeUpdated = getPlayerWithId(id);
 		//System.out.println("angle :" + angle);
@@ -69,6 +71,7 @@ public class ClientGameStateReceiver {
 				}
 				//playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
+				playerToBeUpdated.setEliminated(eliminated);
 			});
 
 		}else{
@@ -77,6 +80,7 @@ public class ClientGameStateReceiver {
 				playerToBeUpdated.relocatePlayerWithTag(x, y);
 				playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
+				playerToBeUpdated.setEliminated(eliminated);
 			});
 		}
 
@@ -84,39 +88,76 @@ public class ClientGameStateReceiver {
 		if (debug) System.out.println("updated player with id : " + id);
 	}
 
+	public void powerupAction(int id, PowerupType type)
+	{
+		EssentialPlayer player = getPlayerWithId(id);
+		switch(type)
+		{
+			case SHIELD:
+				powerups[0].setVisible(false);
+				player.giveShield();
+				break;
+			case SPEED:
+				powerups[1].setVisible(false);
+				player.giveSpeed();
+				break;
+		}
+
+	}
+
+	public void powerUpRespawn(PowerupType type, int location)
+	{
+		switch(type)
+		{
+			case SHIELD:
+				powerups[0].resetPosition(location);
+				powerups[0].setVisible(true);
+				break;
+			case SPEED:
+				powerups[1].resetPosition(location);
+				powerups[1].setVisible(true);
+				break;
+		}
+	}
+
+	public void shieldRemovedAction(int id)
+	{
+		EssentialPlayer player = getPlayerWithId(id);
+		player.setShieldEffect(false);
+	}
+
 	/**
 	 * Update a player's active bullets.
 	 * @param id The id of the player.
-	 * @param bullets String which contains the coordinates and the angle of the bullets fired by this player,
-	 * 				  according to the protocol.
 	 */
 
 	public void updateBullets(int id){
 		EssentialPlayer p = getPlayerWithId(id);
 
 		if(p != null &&  !(p instanceof ClientPlayer)){
-			Platform.runLater(() ->
-			{
-				p.shoot();
-			});
+			Platform.runLater(p::shoot);
 		}
 	}
 
 	public void updateFlag(int id){
 
 		EssentialPlayer player = getPlayerWithId(id);
-		player.setHasFlag(true);
-		flag.setVisible(false);
+
+		Platform.runLater(() -> {
+			player.setHasFlag(true);
+			flag.setVisible(false);
+		});
 
 		System.out.println("Player " + id + " captured the flag");
 	}
 
 	public void lostFlag(int id){
-
 		EssentialPlayer player = getPlayerWithId(id);
-		player.setHasFlag(false);
-		flag.setVisible(true);
-		flag.relocate(player.getLayoutX(), player.getLayoutY());
+		Platform.runLater(() -> {
+			player.setHasFlag(false);
+			flag.setVisible(true);
+			flag.relocate(player.getLayoutX(), player.getLayoutY());
+		});
 
 		System.out.println("Player " + id + " lost the flag");
 
@@ -127,7 +168,13 @@ public class ClientGameStateReceiver {
 		flag.relocate(x, y);
 
 		EssentialPlayer player = getPlayerWithId(id);
-		player.setHasFlag(false);
+
+		Platform.runLater(() -> {
+			flag.setVisible(true);
+			flag.relocate(x, y);
+			player.setHasFlag(false);
+		});
+
 		System.out.println("Flag has been respawned");
 
 	}
@@ -150,7 +197,13 @@ public class ClientGameStateReceiver {
 		return null;
 	}
 
+	public Flag getFlag()
+	{
+		return flag;
+	}
 
-
-
+	public Powerup[] getPowerups()
+	{
+		return powerups;
+	}
 }

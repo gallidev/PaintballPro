@@ -8,22 +8,23 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 /**
  * Class containing the game's lobby menu
+ *
+ * @author Jack Hughes
  */
 public class GameLobbyMenu {
 
 	/**
 	 * Method to create the scene for the lobby menu
+	 *
 	 * @param guiManager GUIManager for the game
-	 * @param lobbyData observable list of players in the lobby
+	 * @param lobbyData  observable list of players in the lobby
 	 * @return scene for the lobby menu
 	 */
 	public static Scene getScene(GUIManager guiManager, ObservableList<GameLobbyRow> lobbyData) {
@@ -45,6 +46,8 @@ public class GameLobbyMenu {
 		blueColumn.prefWidthProperty().bind(table.widthProperty().divide(2));
 		table.getColumns().addAll(redColumn, blueColumn);
 		table.setItems(lobbyData);
+		table.setFixedCellSize(30.0);
+		table.setPrefHeight(4.0 * table.getFixedCellSize() + 30.0);
 
 		// Setup options area
 		Label timeLabel = new Label("Waiting for more players to join...");
@@ -56,12 +59,14 @@ public class GameLobbyMenu {
 
 		GridPane optionsSection = new GridPane();
 		MenuOption[] set = {new MenuOption("Change Team", false, new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
+			@Override
+			public void handle(ActionEvent event) {
 				guiManager.getClient().getSender().sendMessage("SwitchTeam");
 				guiManager.fetchLobbyUpdates();
 			}
 		}), new MenuOption("Back", false, new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
+			@Override
+			public void handle(ActionEvent event) {
 				checker.threadRunning = false;
 				try {
 					checkLobby.join();
@@ -83,11 +88,11 @@ public class GameLobbyMenu {
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
-		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 		mainGrid.add(table, 0, 0);
 		mainGrid.add(optionsSection, 0, 1);
 
 		return guiManager.createScene(loadingPane);
 	}
-	
+
 }

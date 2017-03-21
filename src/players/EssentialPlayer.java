@@ -1,11 +1,9 @@
 package players;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,19 +16,37 @@ import rendering.ImageFactory;
 import rendering.Spawn;
 import serverLogic.Team;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *  The player, represented by an ImageView
  */
 public abstract class EssentialPlayer extends ImageView {
 
-	private static final double targetFPS = 60.0;
 	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
+	private static final double targetFPS = 60.0;
 	protected long SHOOT_DELAY = 450;
 	protected long SPAWN_DELAY = 2000;
 	protected Rotate rotation, boundRotation;
 	protected int id;
 	protected TeamEnum team;
 	protected CollisionsHandler collisionsHandler;
+	protected GameMode gameMode;
+	protected double movementSpeed = 2.5;
+	protected double gameSpeed;
+	//===================Power-up stats=======================
+	//Base movement speed = 2.5
+	//Power up movement speed = 4
+	//Speed lasts 10 seconds
+	protected boolean speedActive = false;
+	protected long speedTimer;
+	protected long speedDuration = 10000;
+	protected boolean speedTimerActive = false;
+	//If shield is true, player is able to take an extra shot
+	protected boolean shieldActive = false;
+	protected String nickname;
+	protected boolean scoreChanged = false;
 	boolean up, down, left, right, shoot, eliminated, invincible;
 	boolean collUp, collDown, collLeft, collRight;
 	boolean hasShot;
@@ -43,28 +59,9 @@ public abstract class EssentialPlayer extends ImageView {
 	private Spawn[] spawn;
 	private Polygon bounds = new Polygon();
 	private boolean hasFlag;
-	protected GameMode gameMode;
-	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
-	protected double movementSpeed = 2.5;
-	protected double gameSpeed;
-
-
-	//===================Power-up stats=======================
-	//Base movement speed = 2.5
-	//Power up movement speed = 4
-	//Speed lasts 10 seconds
-	protected boolean speedActive = false;
-	protected long speedTimer;
-	protected long speedDuration = 10000;
-	protected boolean speedTimerActive = false;
-	//If shield is true, player is able to take an extra shot
-	protected boolean shieldActive = false;
-	private boolean shieldRemoved = false;
 	//========================================================
-
-	protected String nickname;
-
-	protected boolean scoreChanged = false;
+	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
+	private boolean shieldRemoved = false;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -295,22 +292,6 @@ public abstract class EssentialPlayer extends ImageView {
 		return rotation.getAngle();
 	}
 
-	public synchronized void setUp(boolean up){
-		this.up = up;
-	}
-
-	public synchronized void setDown(boolean down){
-		this.down = down;
-	}
-
-	public synchronized void setLeft(boolean left){
-		this.left = left;
-	}
-
-	public synchronized void setRight(boolean right){
-		this.right = right;
-	}
-
 	public synchronized void setShoot(boolean shoot){
 		this.shoot = shoot;
 	}
@@ -363,6 +344,10 @@ public abstract class EssentialPlayer extends ImageView {
 		return eliminated;
 	}
 
+	public void setEliminated(boolean eliminated){
+		this.eliminated = eliminated;
+	}
+
 	public Polygon getPolygonBounds() {
 		return bounds;
 	}
@@ -370,12 +355,15 @@ public abstract class EssentialPlayer extends ImageView {
 	public void setCollUp(boolean collUp) {
 		this.collUp = collUp;
 	}
+
 	public void setCollDown(boolean collDown) {
 		this.collDown = collDown;
 	}
+
 	public void setCollLeft(boolean collLeft) {
 		this.collLeft = collLeft;
 	}
+
 	public void setCollRight(boolean collRight) {
 		this.collRight = collRight;
 	}
@@ -385,7 +373,9 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	public abstract void setMyTeam(Team team);
+
 	public abstract void setOppTeam(Team team);
+
 	public abstract void tick();
 
 	public String getNickname(){
@@ -400,34 +390,36 @@ public abstract class EssentialPlayer extends ImageView {
 		return collisionsHandler;
 	}
 
-	public void setScoreChanged(boolean b){
-		scoreChanged  = b;
-	}
-
 	public boolean getScoreChanged(){
 		return scoreChanged;
 	}
 
+	public void setScoreChanged(boolean b){
+		scoreChanged  = b;
+	}
+
 	private void speedUp(){
-		this.movementSpeed = 4;
+		this.movementSpeed = 4 * gameSpeed;
 	}
 
 	private void speedDown(){
-		this.movementSpeed = 2.5;
+		this.movementSpeed = 2.5 * gameSpeed;
+	}
+
+	public boolean getShieldActive(){
+		return this.shieldActive;
 	}
 
 	public void giveShield(){
 		this.shieldActive = true;
+		setShieldEffect(true);
 	}
 
 	public void removeShield(){
 		this.shieldActive = false;
 		shieldRemoved = true;
 		collisionsHandler.getShieldPowerup().setTaken(false);
-	}
-
-	public boolean getShieldActive(){
-		return this.shieldActive;
+		setShieldEffect(false);
 	}
 
 	public void giveSpeed(){
@@ -441,10 +433,6 @@ public abstract class EssentialPlayer extends ImageView {
 		collisionsHandler.getSpeedPowerup().setTaken(false);
 	}
 
-	public boolean getSpeedActive(){
-		return this.speedActive;
-	}
-
 	public abstract void updateRotation(double angleRotation);
 
 	public Node getNameTag() {
@@ -454,6 +442,7 @@ public abstract class EssentialPlayer extends ImageView {
 	public boolean hasShot(){
 		return hasShot;
 	}
+
 	public void setHasShot(boolean shot){
 		this.hasShot = shot;
 	}
@@ -470,20 +459,45 @@ public abstract class EssentialPlayer extends ImageView {
 		return up;
 	}
 
+	public synchronized void setUp(boolean up){
+		this.up = up;
+	}
+
 	public boolean getDown(){
 		return down;
+	}
+
+	public synchronized void setDown(boolean down){
+		this.down = down;
 	}
 
 	public boolean getLeft(){
 		return left;
 	}
 
+	public synchronized void setLeft(boolean left){
+		this.left = left;
+	}
+
 	public boolean getRight(){
 		return right;
 	}
 
+	public synchronized void setRight(boolean right){
+		this.right = right;
+	}
+
 	public void updateGameSpeed(){
 
+	}
+
+	public void setShieldEffect(boolean b)
+	{
+		shadow.setInput(b ? new ColorAdjust(0, 0, 0.25, 0) : null);
+		if(b)
+			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
+		else if(!hasFlag)
+				shadow.setColor(Color.BLACK);
 	}
 }
 

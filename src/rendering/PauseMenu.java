@@ -15,20 +15,24 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Class containing the game pause menu
+ *
+ * @author Jack Hughes
  */
-class PauseMenu extends SubScene
-{
+class PauseMenu extends SubScene {
+
 	static GridPane gridPane = new GridPane();
 	boolean opened = false;
 
 	/**
 	 * Create a new pause menu
+	 *
 	 * @param guiManager GUIManager for the game
 	 */
-	PauseMenu(GUIManager guiManager)
-	{
-		super(gridPane, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+	PauseMenu(GUIManager guiManager) {
+		super(gridPane, guiManager.width, guiManager.height);
 		gridPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
+		setScaleX(1024 / guiManager.width);
+		setScaleY(576 / guiManager.height);
 
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setHgap(10);
@@ -47,15 +51,12 @@ class PauseMenu extends SubScene
 		gridPane.add(MenuControls.centreInPane(title), 0, 1);
 
 		MenuOption[] set = {new MenuOption("Resume", true, (event) -> {
-				System.out.println("ActionEvent: " + event);
-				GUIManager.renderer.togglePauseMenu();
+			GUIManager.renderer.togglePauseMenu();
 		}), new MenuOption("Settings", true, (event) -> {
-				System.out.println("ActionEvent: " + event);
-				GUIManager.renderer.toggleSettingsMenu();
+			GUIManager.renderer.toggleSettingsMenu();
 		}), new MenuOption("Back to Main Menu", false, (event) -> {
-				guiManager.exitClient();
-				guiManager.transitionTo(Menu.MainMenu);
-				System.out.println("ActionEvent: " + event);
+			guiManager.exitClient();
+			guiManager.transitionTo(Menu.MainMenu);
 		})};
 
 		GridPane buttonSet = MenuOptionSet.optionSetToGridPane(set);

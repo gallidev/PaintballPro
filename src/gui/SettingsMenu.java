@@ -1,53 +1,57 @@
 package gui;
 
 import enums.Menu;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 
 /**
  * Class to create a scene for the settings menu
+ *
+ * @author Jack Hughes
  */
 public class SettingsMenu {
 
 	/**
 	 * Create and return a settings menu scene for a given GUI manager
+	 *
 	 * @param guiManager GUI manager to use
 	 * @return scene for the settings menu
 	 */
 	public static Scene getScene(GUIManager guiManager) {
 		// Obtain the user's settings
 		UserSettings s = GUIManager.getUserSettings();
-		
+
 		// Create the main grid (to contain the options grid, and the apply/cancel buttons)
 		GridPane mainGrid = new GridPane();
 		mainGrid.setAlignment(Pos.CENTER);
 		mainGrid.setHgap(10);
 		mainGrid.setVgap(10);
-		mainGrid.setPadding(new Insets(25, 25, 25, 25));
+		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 
 		Label titleLabel = new Label("Settings");
 		titleLabel.setStyle("-fx-font-size: 26px;");
-		
+
 		// Create the option grid (grid to contain all possible options)
 		GridPane optGrid = new GridPane();
 		optGrid.setAlignment(Pos.CENTER);
 		optGrid.setHgap(10);
 		optGrid.setVgap(10);
-		optGrid.setPadding(new Insets(25, 25, 25, 25));
-		
+		optGrid.setPadding(MenuControls.scaleByResolution(25));
+
 		// Create the music label and slider
 		Label musicLabel = new Label("Music Volume");
-		
+
 		Slider musicSlider = new Slider();
 		musicSlider.setMin(0);
 		musicSlider.setMax(100);
@@ -64,10 +68,10 @@ public class SettingsMenu {
 				guiManager.notifySettingsObservers();
 			}
 		});
-		
+
 		// Create the sound FX label and slider
 		Label sfxLabel = new Label("SFX Volume");
-		
+
 		Slider sfxSlider = new Slider();
 		sfxSlider.setMin(0);
 		sfxSlider.setMax(100);
@@ -84,10 +88,10 @@ public class SettingsMenu {
 				guiManager.notifySettingsObservers();
 			}
 		});
-		
+
 		// Create the shading option label and checkbox
 		Label shadingLabel = new Label("Use shading (default on)");
-		
+
 		CheckBox shadingCheckbox = new CheckBox();
 		shadingCheckbox.setSelected(s.getShading());
 		shadingCheckbox.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
@@ -123,14 +127,18 @@ public class SettingsMenu {
 			resolutionComboBox.getSelectionModel().select("1024x576");
 		}
 		resolutionComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-				s.setResolution(newValue);
-				String[] resolution = newValue.split("x");
-				guiManager.getStage().setWidth(Double.parseDouble(resolution[0]));
-				guiManager.getStage().setHeight(Double.parseDouble(resolution[1]));
-				guiManager.getStage().centerOnScreen();
+			s.setResolution(newValue);
+			String[] resolution = newValue.split("x");
+			guiManager.width = Double.parseDouble(resolution[0]);
+			guiManager.getStage().setWidth(guiManager.width);
+			guiManager.height = Double.parseDouble(resolution[1]);
+			guiManager.getStage().setHeight(guiManager.height);
+			guiManager.getStage().centerOnScreen();
+			mainGrid.setPadding(MenuControls.scaleByResolution(25));
+			optGrid.setPadding(MenuControls.scaleByResolution(25));
 		});
 
-		
+
 		// Add all of the options to the options grid
 		optGrid.add(musicLabel, 0, 0);
 		optGrid.add(musicSlider, 1, 0);
@@ -143,19 +151,20 @@ public class SettingsMenu {
 
 		// Create a array of options for the cancel and apply buttons
 		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent event) {
-		    	// Transition back to the main menu
+			@Override
+			public void handle(ActionEvent event) {
+				// Transition back to the main menu
 				guiManager.transitionTo(Menu.MainMenu);
-		    }     
+			}
 		})};
 		// Turn the array into a grid pane
 		GridPane buttonGrid = MenuOptionSet.optionSetToGridPane(set);
-		
+
 		// Add the options grid and the button grid to the main grid
 		mainGrid.add(MenuControls.centreInPane(titleLabel), 0, 0);
 		mainGrid.add(optGrid, 0, 1);
 		mainGrid.add(buttonGrid, 0, 2);
-		
+
 		// Create a new scene using the main grid
 		return guiManager.createScene(mainGrid);
 	}

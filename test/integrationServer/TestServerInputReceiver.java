@@ -38,8 +38,12 @@ public class TestServerInputReceiver {
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
+<<<<<<< HEAD
 		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+=======
+		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+>>>>>>> 188b57133ad92887e8a3d7dd994520bfc5da7760
 
 		players.add(p);
 
@@ -73,5 +77,11 @@ public class TestServerInputReceiver {
 		assertEquals(inputReceiver2.getPlayers(), players);
 
 	}
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 188b57133ad92887e8a3d7dd994520bfc5da7760
 
 }

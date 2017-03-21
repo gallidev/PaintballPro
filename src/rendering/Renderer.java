@@ -20,7 +20,6 @@ import networking.client.ClientReceiver;
 import physics.*;
 import players.ClientPlayer;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 import players.OfflinePlayer;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
@@ -47,6 +46,11 @@ public class Renderer extends Scene
 
 	ClientPlayer cPlayer;
 	OfflinePlayer player;
+
+	//attributes for multiplayer
+	int blueScore = 0;
+	int redScore = 0;
+	int timeRemaining = 0;
 	private PauseMenu pauseMenu;
 	private PauseSettingsMenu settingsMenu;
 	private HeadUpDisplay hud;
@@ -56,11 +60,6 @@ public class Renderer extends Scene
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
 
-	//attributes for multiplayer
-	int blueScore = 0;
-	int redScore = 0;
-	int timeRemaining = 0;
-
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *
@@ -69,7 +68,7 @@ public class Renderer extends Scene
 	 */
 	public Renderer(String mapName, GUIManager guiManager)
 	{
-		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		super(view, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 		singlePlayer = true;
@@ -80,7 +79,7 @@ public class Renderer extends Scene
 			view.getChildren().add(map.flag);
 		}
 
-		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
+		map.powerups = new Powerup[]{new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
 		};
 		view.getChildren().addAll(map.powerups);
 
@@ -137,7 +136,7 @@ public class Renderer extends Scene
 				}
 				hud.tick(gameLoop.getRemainingTime());
 				if(gameLoop.getRemainingTime() == 0)
-					hud.setWinner(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
+					hud.endGame(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
 
 				hud.setScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
 				hud.setScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
@@ -154,11 +153,10 @@ public class Renderer extends Scene
 	 * @param mapName    Name of the selected map
 	 * @param receiver   Client receiver for communication with the game server
 	 * @param guiManager GUI manager that creates this object
-	 * @param flag       Flag object for Capture the Flag gamemode
 	 */
-	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager, Flag flag)
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
 	{
-		super(view, guiManager.getStage().getWidth(), guiManager.getStage().getHeight());
+		super(view, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 
@@ -183,8 +181,10 @@ public class Renderer extends Scene
 
 		cPlayer.setInputHandler(inputHandler);
 
-		if(flag != null)
-			view.getChildren().add(flag);
+		if(map.getGameMode() == enums.GameMode.CAPTURETHEFLAG)
+			view.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
+
+		view.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
 
 		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
 		view.getChildren().add(hud);
@@ -330,7 +330,7 @@ public class Renderer extends Scene
 		view.getChildren().add(paintIndex, imageView);
 	}
 
-	public void generateSpray(double x, double y, String colour)
+	void generateSpray(double x, double y, String colour)
 	{
 		Rectangle collision = null;
 		for(Rectangle rec : map.getRecWalls())
@@ -357,7 +357,9 @@ public class Renderer extends Scene
 			Bullet pellet = new Bullet(0, x, y, 0, colour.equals("red") ? TeamEnum.RED : TeamEnum.BLUE, Renderer.TARGET_FPS);
 			pellet.disable(collision);
 			generateSpray(pellet);
+			return;
 		}
+		throw new NoSuchElementException("Could not generate spray. Invalid collision given!");
 	}
 
 	private void init(String mapName)
@@ -378,26 +380,33 @@ public class Renderer extends Scene
 	{
 		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
 
-		view.setLayoutX(((getWidth() / 2) - PLAYER_HEAD_X - playerLayoutX) * view.getScaleX());
-		view.setLayoutY(((getHeight() / 2) - PLAYER_HEAD_Y - playerLayoutY) * view.getScaleY());
-		hud.relocate((playerLayoutX + PLAYER_HEAD_X - getWidth() / 2) * hud.getScaleX(), (playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2) * hud.getScaleY());
+		double viewPositionX = (getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * view.getScaleX(),
+				viewPositionY = (getHeight() / 2 - playerLayoutY - PLAYER_HEAD_Y) * view.getScaleY(),
+				subScenePositionX = (playerLayoutX + PLAYER_HEAD_X - (getWidth() / 2)),
+				subScenePositionY = (playerLayoutY + PLAYER_HEAD_Y - (getHeight() / 2));
+
+		view.relocate(viewPositionX, viewPositionY);
+		hud.relocate(subScenePositionX, subScenePositionY);
 
 		if(view.getChildren().contains(pauseMenu))
-			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+			pauseMenu.relocate(subScenePositionX, subScenePositionY);
 		if(view.getChildren().contains(settingsMenu))
-			settingsMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+			settingsMenu.relocate(subScenePositionX, subScenePositionY);
 	}
 
 
-	public void setBlueScore(int blueScore) {
+	public void setBlueScore(int blueScore)
+	{
 		this.blueScore = blueScore;
 	}
 
-	public void setRedScore(int redScore) {
+	public void setRedScore(int redScore)
+	{
 		this.redScore = redScore;
 	}
 
-	public void setTimeRemaining(int timeRemaining) {
+	public void setTimeRemaining(int timeRemaining)
+	{
 		this.timeRemaining = timeRemaining;
 	}
 

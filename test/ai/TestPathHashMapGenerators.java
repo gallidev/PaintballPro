@@ -47,13 +47,13 @@ public class TestPathHashMapGenerators {
     }
 
     @Test
-    public void elimPathsGenerated() {
+    public void ElimPathsGenerated() {
         HashMap<PointPairs, ArrayList<Point2D>> pathMap = elimPathGen.getPathMap();
         assertTrue(!pathMap.isEmpty());
     }
 
     @Test
-    public void ctfPathsGenerated() {
+    public void CtfPathsGenerated() {
         HashMap<PointPairs, ArrayList<Point2D>> pathMap = ctfPathGen.getPathMap();
         assertTrue(!pathMap.isEmpty());
     }

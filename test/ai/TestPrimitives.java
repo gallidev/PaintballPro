@@ -45,7 +45,7 @@ public class TestPrimitives {
     }
 
     @Test
-    public void propNodeCoords() {
+    public void PropNodeTest() {
         assertTrue(pn.x == 4 && pn.y == 8);
         pn.x = 9;
         pn.y = 10;
@@ -53,12 +53,12 @@ public class TestPrimitives {
     }
 
     @Test
-    public void NodeCoords() {
+    public void NodeCoordinateTest() {
         assertTrue(n.x == 9 && n.y == 3);
     }
 
     @Test
-    public void NodeHeuristics() {
+    public void NodeHeuristicsTest() {
         assertTrue(n.heuristicCost == 0 && n.finalCost == 9999999);
         n.heuristicCost = 5;
         n.finalCost = 100;
@@ -68,13 +68,13 @@ public class TestPrimitives {
     }
 
     @Test
-    public void NodePrinting() {
+    public void NodeStringTest() {
         String str = "(9, 3)";
         assertTrue(n.toString().equals(str));
     }
 
     @Test
-    public void NodeEquality(){
+    public void NodeEqualityTest(){
         Node newNode = new Node(9, 3);
         assertTrue(n.equals(newNode));
 
@@ -85,19 +85,19 @@ public class TestPrimitives {
     }
 
     @Test
-    public void NodeHash(){
+    public void NodeHashTest(){
         assertTrue(n.hashCode() == 27);
     }
 
     @Test
-    public void emptyPath() {
+    public void EmptyPathTest() {
         assertTrue(p.getLength() == 0);
         assertTrue(p.toString().equals("[]"));
         assertTrue(!p.contains(n));
     }
 
     @Test
-    public void nonEmptyPath(){
+    public void NonEmptyPathTest(){
         p.appendNode(n);
         assertTrue(p.getNode(0).equals(n));
         assertTrue(p.getX(0) == 9 && p.getY(0) == 3);
@@ -111,7 +111,7 @@ public class TestPrimitives {
     }
 
     @Test
-    public void PathEquality(){
+    public void PathEqualityTest(){
         assertTrue(!p.equals(n));
         p.appendNode(n);
         Path newPath = new Path();
@@ -120,7 +120,7 @@ public class TestPrimitives {
     }
 
     @Test
-    public void PointPairEquality(){
+    public void PointPairEqualityTest(){
         PointPairs pp1 = new PointPairs(1,1,5,5);
         PointPairs pp2 = new PointPairs(18,4,9,5);
         PointPairs pp3 = new PointPairs(1,1,5,5);
@@ -131,7 +131,7 @@ public class TestPrimitives {
     }
 
     @Test
-    public void comparatorTest(){
+    public void ComparatorTest(){
         CostComparator cc = new CostComparator();
 
         Node n1 = new Node(1,4);

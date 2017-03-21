@@ -8,9 +8,10 @@ import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.CollisionsHandler;
 import physics.Flag;
+import physics.Powerup;
+import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
-import players.GhostPlayer;
 import players.GhostPlayerWithColls;
 import rendering.ImageFactory;
 import rendering.Map;
@@ -39,6 +40,7 @@ public class ClientReceiver extends Thread {
 	private ArrayList<EssentialPlayer> enemies;
 	private UDPClient udpClient;
 	private TeamTable teams;
+	private ClientGameStateReceiver clientGameStateReceiver;
 	private boolean singlePlayer;
 	private boolean debug = false;
 
@@ -182,12 +184,14 @@ public class ClientReceiver extends Thread {
 
 		CollisionsHandler collisionHandler = new CollisionsHandler(map);
 
+
+
 		// add myself to my team
 		// create my client
 		if (clientTeam.equals("Red"))
 			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.RED, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
 		else
-			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.RED, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
+			cPlayer = new ClientPlayer( map.getSpawns()[clientID - 1].x * 64, map.getSpawns()[clientID - 1].y * 64, clientID, map.getSpawns(),TeamEnum.BLUE, m, collisionHandler, null, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
 
 		cPlayer.setNickname(myNickname);
 
@@ -198,14 +202,14 @@ public class ClientReceiver extends Thread {
 			if (data[i + 1].equals(clientTeam)) {
 				if (clientTeam.equals("Red")){
 					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
-							TeamEnum.RED, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
+							TeamEnum.RED, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
 				}
 				else{
 					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
-							TeamEnum.BLUE, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
+							TeamEnum.BLUE, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -214,7 +218,7 @@ public class ClientReceiver extends Thread {
 			} else {
 				if (clientTeam.equals("Red")){
 					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
-							TeamEnum.BLUE, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
+							TeamEnum.BLUE, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -222,7 +226,7 @@ public class ClientReceiver extends Thread {
 				}
 				else{
 					GhostPlayerWithColls p = new GhostPlayerWithColls(map.getSpawns()[myTeam.size()].x * 64, map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(),
-							TeamEnum.RED, collisionHandler, ImageFactory.getPlayerImage(TeamEnum.RED), null, Renderer.TARGET_FPS);
+							TeamEnum.RED, collisionHandler, null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
 					System.out.println("Created player with nickname " + p.getNickname());
@@ -232,6 +236,12 @@ public class ClientReceiver extends Thread {
 			}
 		}
 
+		ArrayList<EssentialPlayer> players = new ArrayList<EssentialPlayer>(myTeam);
+		players.addAll(enemies);
+		players.add(cPlayer);
+		collisionHandler.setPlayers(players);
+
+
 		// don't we need to add your player in myTeam? do we need these classes ?
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
@@ -239,16 +249,19 @@ public class ClientReceiver extends Thread {
 		//Flag flag = new Flag(map.getFlagLocations());
 
 		Flag flag = new Flag();
-		ClientGameStateReceiver gameStateReceiver;
+
+		Powerup[] powerups = new Powerup[2];
+		powerups[0] = new Powerup(PowerupType.SHIELD, map.getPowerupLocations());
+		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
 
 		if(gameMode == 1){
-			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers());
+			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), powerups);
 		}else {
 			flag.setLocations(map.getFlagLocations());
-			gameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), flag);
+			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), flag, powerups);
 		}
 
-		udpClient.setGameStateReceiver(gameStateReceiver);
+		udpClient.setGameStateReceiver(clientGameStateReceiver);
 
 		// for debugging
 		if(debug) System.out.println("game has started for player with ID " + clientID);
@@ -387,6 +400,11 @@ public class ClientReceiver extends Thread {
 
 	public UDPClient getUdpClient(){
 		return udpClient;
+	}
+
+	public ClientGameStateReceiver getClientGameStateReceiver()
+	{
+		return clientGameStateReceiver;
 	}
 	/**
 	 * Return all the players that are not in this Player's team.

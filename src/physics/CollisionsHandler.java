@@ -1,11 +1,7 @@
 package physics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.sun.javafx.scene.traversal.Hueristic2D;
-
 import enums.TeamEnum;
+import integrationServer.CollisionHandlerListener;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -14,10 +10,12 @@ import rendering.Map;
 import serverLogic.CaptureTheFlagMode;
 import serverLogic.Team;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CollisionsHandler
 {
-
-	private boolean debug = true;
+	private static final boolean debug = true;
 
 	private ArrayList<Rectangle> propsWalls;
 	private Rectangle spawnAreaRed;
@@ -30,20 +28,18 @@ public class CollisionsHandler
 	private Team red;
 	private Team blue;
 
-	private boolean flagCaptured = false;
-	private boolean flagDropped = false;
-	private boolean flagRespawned = false;
-	private int playerWithFlagId;
+//	private boolean flagCaptured = false;
+//	private boolean flagDropped = false;
+//	private boolean flagRespawned = false;
+//	private int playerWithFlagId;
+//
+//	private boolean speedPowerup = false;
+//	private boolean shieldPowerup = false;
+//	private int playerWithShieldID;
+//	private int playerWithSpeedID;
 
-	private double hitWallX;
-	private double hitWallY;
-	private TeamEnum splashColour;
-	private boolean hasHitWall = false;
+	private CollisionHandlerListener listener;
 
-	private boolean speedPowerup = false;
-	private boolean shieldPowerup = false;
-	private int playerWithShieldID;
-	
 	public CollisionsHandler(Map map)
 	{
 		this.propsWalls = map.getRecProps();
@@ -76,11 +72,6 @@ public class CollisionsHandler
 			{
 				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
 					bullet.disable(propWall);
-
-					hitWallX = propX;
-					hitWallY = propY;
-					splashColour = bullet.getColour();
-					hasHitWall = true;
 				}
 
 			}
@@ -193,8 +184,8 @@ public class CollisionsHandler
 				flag.setVisible(false);
 				p.setHasFlag(true);
 
-				flagCaptured = true;
-				playerWithFlagId = p.getPlayerId();
+				if(listener != null)
+					listener.onFlagCaptured(p.getPlayerId());
 
 			}
 			//check if the player got shot so leave the flag in the player position
@@ -204,16 +195,14 @@ public class CollisionsHandler
 				flag.setLayoutY(p.getLayoutY());
 				flag.setCaptured(false);
 				flag.setVisible(true);
+				if(listener != null)
+					listener.onFlagDropped(p.getPlayerId());
 				p.setHasFlag(false);
 
 				if (red.containsPlayer(p))
 					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
 				else
 					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
-
-				flagDropped = true;
-				playerWithFlagId = p.getPlayerId();
-
 
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
@@ -237,9 +226,8 @@ public class CollisionsHandler
 						red.incrementScore(CaptureTheFlagMode.flagScore);
 					else
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
-
-					flagRespawned = true;
-					playerWithFlagId = p.getPlayerId();
+					if(listener != null)
+						listener.onFlagRespawned(p.getPlayerId());
 				}
 			}
 		}
@@ -254,11 +242,12 @@ public class CollisionsHandler
 					powerups[i].took();
 					if (powerups[i].getType() == PowerupType.SHIELD) {
 						p.giveShield();
-						shieldPowerup = true;
-						playerWithShieldID = p.getPlayerId();
+						if(listener != null)
+							listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
 					} else if (powerups[i].getType() == PowerupType.SPEED) {
 						p.giveSpeed();
-						speedPowerup = true;
+						if(listener != null)
+							listener.onPowerupAction(PowerupType.SPEED, p.getPlayerId());
 					}
 				}
 			}
@@ -272,11 +261,15 @@ public class CollisionsHandler
 			{
 				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
 				{
+
+					//System.out.println("Been shot ");
 					bullet.disable();
 					//check if the player has the shield power up
 					if(p.getShieldActive()){
 						//shield absorbs a bullet
 						p.removeShield();
+						if(listener != null)
+							listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
 					} else {
 						//if the player has no shield, the player is eliminated
 						p.beenShot();
@@ -313,7 +306,7 @@ public class CollisionsHandler
 	}
 
 	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
-		this.redTeam = redTeam;;
+		this.redTeam = redTeam;
 	}
 
 	public void setRedTeam(Team red) {
@@ -349,60 +342,13 @@ public class CollisionsHandler
 		}
 	}
 
+	public void setListener(CollisionHandlerListener listener)
+	{
+		this.listener = listener;
+	}
+
 	public Flag getFlag(){
 		return flag;
-	}
-
-	public boolean isFlagCaptured() {
-		return flagCaptured;
-	}
-
-	public void setFlagCaptured(boolean flagCaptured) {
-		this.flagCaptured = flagCaptured;
-	}
-
-	public boolean isFlagDropped() {
-		return flagDropped;
-	}
-
-	public void setFlagDropped(boolean flagDropped) {
-		this.flagDropped = flagDropped;
-	}
-
-	public boolean isFlagRespawned() {
-		return flagRespawned;
-	}
-
-	public void setRespawned(boolean b) {
-		this.flagRespawned = b;
-	}
-
-	public double getHitWallX(){
-		return hitWallX;
-	}
-
-	public double getHitWallY(){
-		return hitWallY;
-	}
-
-	public TeamEnum getSplashColour(){
-		return splashColour;
-	}
-
-	public int getPlayerWithFlagId(){
-		return playerWithFlagId;
-	}
-
-	public void setWallHit(boolean b){
-		hasHitWall = b;
-	}
-
-	public boolean isWallHit(){
-		return hasHitWall;
-	}
-
-	public void setSplashColour(TeamEnum splashColour) {
-		this.splashColour = splashColour;
 	}
 
 	public Rectangle getSpawnAreaRed() {
@@ -414,41 +360,35 @@ public class CollisionsHandler
 	}
 
 	public Powerup getSpeedPowerup(){
-		for(Powerup powerup: powerups){
-			if(powerup.getType() == PowerupType.SPEED) return powerup;
-		}
-		return null;
+		return powerups[1];
 	}
 
 	public Powerup getShieldPowerup(){
-		for(Powerup powerup: powerups){
-			if(powerup.getType() == PowerupType.SHIELD) return powerup;
-		}
-		return null;
+		return powerups[0];
 	}
 
-	public boolean isSpeedPowerup() {
-		return speedPowerup;
-	}
-
-	public void setSpeedPowerup(boolean speedPowerup) {
-		this.speedPowerup = speedPowerup;
-	}
-
-	public boolean isShieldPowerup() {
-		return shieldPowerup;
-	}
-
-	public void setShieldPowerup(boolean shieldPowerup) {
-		this.shieldPowerup = shieldPowerup;
-	}
-
-	public int getPlayerWithShieldID() {
-		return playerWithShieldID;
-	}
-
-	public void setPlayerWithShieldID(int playerWithShieldID) {
-		this.playerWithShieldID = playerWithShieldID;
-	}
+//	public boolean isSpeedPowerup() {
+//		return speedPowerup;
+//	}
+//
+//	public void setSpeedPowerup(boolean speedPowerup) {
+//		this.speedPowerup = speedPowerup;
+//	}
+//
+//	public boolean isShieldPowerup() {
+//		return shieldPowerup;
+//	}
+//
+//	public void setShieldPowerup(boolean shieldPowerup) {
+//		this.shieldPowerup = shieldPowerup;
+//	}
+//
+//	public int getPlayerWithShieldID() {
+//		return playerWithShieldID;
+//	}
+//
+//	public void setPlayerWithShieldID(int playerWithShieldID) {
+//		this.playerWithShieldID = playerWithShieldID;
+//	}
 
 }

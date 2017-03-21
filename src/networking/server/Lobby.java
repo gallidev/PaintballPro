@@ -505,6 +505,9 @@ public class Lobby {
 		gameloop.runGameLoop();
 		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
 		stateSender.setGameLoop(gameloop);
+		map.getPowerups()[0].setListener(stateSender);
+		map.getPowerups()[1].setListener(stateSender);
+		collissionsHandler.setListener(stateSender);
 		stateSender.startSending();
 	}
 

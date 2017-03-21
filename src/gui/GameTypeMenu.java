@@ -8,11 +8,14 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Class for the game type picker screen
+ *
+ * @author Jack Hughes
  */
 public class GameTypeMenu {
-	
+
 	/**
 	 * Return a game type menu scene for a given GUI manager
+	 *
 	 * @param guiManager GUI manager to use
 	 * @return game type menu scene
 	 */
@@ -30,11 +33,11 @@ public class GameTypeMenu {
 		MenuOption[] set = {new MenuOption("Team Match", true, event -> {
 			if (loc == GameLocation.MultiplayerServer) {
 				guiManager.transitionTo(Menu.Lobby, "Elimination");
-				} else {
+			} else {
 				loadingPane.startLoading();
 				new Thread(() -> guiManager.transitionTo(Menu.EliminationSingle)).start();
-				}
-			}), new MenuOption("Capture The Flag", true, event -> {
+			}
+		}), new MenuOption("Capture The Flag", true, event -> {
 			if (loc == GameLocation.MultiplayerServer) {
 				guiManager.transitionTo(Menu.Lobby, "CTF");
 			} else {
@@ -46,7 +49,7 @@ public class GameTypeMenu {
 				guiManager.exitClient();
 			guiManager.transitionTo(Menu.MainMenu);
 		})};
-		
+
 		// Turn the collection of button options into a GridPane to be displayed
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);
 		mainGrid.add(MenuControls.centreInPane(titleLabel), 0, 0);
