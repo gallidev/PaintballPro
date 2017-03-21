@@ -274,7 +274,7 @@ public class UDPClient extends Thread
 			public void run()
 			{
 				if(renderer != null)
-					renderer.getHud().setWinner(Integer.parseInt(redScore), Integer.parseInt(blueScore));
+					renderer.getHud().endGame(Integer.parseInt(redScore), Integer.parseInt(blueScore));
 			}
 		});
 		active = false;

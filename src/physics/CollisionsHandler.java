@@ -184,7 +184,8 @@ public class CollisionsHandler
 				flag.setVisible(false);
 				p.setHasFlag(true);
 
-				listener.onFlagCaptured(p.getPlayerId());
+				if(listener != null)
+					listener.onFlagCaptured(p.getPlayerId());
 
 			}
 			//check if the player got shot so leave the flag in the player position
@@ -194,7 +195,8 @@ public class CollisionsHandler
 				flag.setLayoutY(p.getLayoutY());
 				flag.setCaptured(false);
 				flag.setVisible(true);
-				listener.onFlagDropped(p.getPlayerId());
+				if(listener != null)
+					listener.onFlagDropped(p.getPlayerId());
 				p.setHasFlag(false);
 
 				if (red.containsPlayer(p))
@@ -224,8 +226,8 @@ public class CollisionsHandler
 						red.incrementScore(CaptureTheFlagMode.flagScore);
 					else
 						blue.incrementScore(CaptureTheFlagMode.flagScore);
-
-					listener.onFlagRespawned(p.getPlayerId());
+					if(listener != null)
+						listener.onFlagRespawned(p.getPlayerId());
 				}
 			}
 		}
@@ -240,10 +242,12 @@ public class CollisionsHandler
 					powerups[i].took();
 					if (powerups[i].getType() == PowerupType.SHIELD) {
 						p.giveShield();
-						listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
+						if(listener != null)
+							listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
 					} else if (powerups[i].getType() == PowerupType.SPEED) {
 						p.giveSpeed();
-						listener.onPowerupAction(PowerupType.SPEED, p.getPlayerId());
+						if(listener != null)
+							listener.onPowerupAction(PowerupType.SPEED, p.getPlayerId());
 					}
 				}
 			}
@@ -301,26 +305,26 @@ public class CollisionsHandler
 		return redTeam;
 	}
 
+	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
+		this.redTeam = redTeam;
+	}
+
 	public void setRedTeam(Team red) {
 		this.red = red;
 		redTeam = red.getMembers();
-	}
-
-	public void setRedTeam(ArrayList<EssentialPlayer> redTeam) {
-		this.redTeam = redTeam;
 	}
 
 	public ArrayList<EssentialPlayer> getBlueTeam() {
 		return blueTeam;
 	}
 
+	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
+		this.blueTeam = blueTeam;
+	}
+
 	public void setBlueTeam(Team blue) {
 		this.blue = blue;
 		blueTeam = blue.getMembers();
-	}
-
-	public void setBlueTeam(ArrayList<EssentialPlayer> blueTeam) {
-		this.blueTeam = blueTeam;
 	}
 
 	public void setPlayers(ArrayList<EssentialPlayer> players){

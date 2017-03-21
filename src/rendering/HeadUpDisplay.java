@@ -26,6 +26,8 @@ public class HeadUpDisplay extends SubScene
 		this.guiManager = guiManager;
 		view.setStyle("-fx-background-color: transparent");
 		view.getStylesheets().add("styles/menu.css");
+		setScaleX(1024 / guiManager.width);
+		setScaleY(576 / guiManager.height);
 
 		Circle redTeam = new Circle(view.getWidth() / 64, Color.RED),
 				blueTeam = new Circle(view.getWidth() / 64, Color.BLUE);
@@ -66,8 +68,9 @@ public class HeadUpDisplay extends SubScene
 		timer.setText(String.format("%02d:%02d", minutes, seconds));
 
 	}
-	
-	public void setWinner(int red, int blue){
+
+	public void endGame(int red, int blue)
+	{
 		guiManager.transitionTo(Menu.EndGame, red + "," + blue, (GUIManager.renderer.cPlayer == null ? GUIManager.renderer.player.getTeam() : GUIManager.renderer.cPlayer.getTeam()));
 
 	}

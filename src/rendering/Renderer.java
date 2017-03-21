@@ -46,6 +46,7 @@ public class Renderer extends Scene
 
 	ClientPlayer cPlayer;
 	OfflinePlayer player;
+
 	//attributes for multiplayer
 	int blueScore = 0;
 	int redScore = 0;
@@ -78,7 +79,7 @@ public class Renderer extends Scene
 			view.getChildren().add(map.flag);
 		}
 
-		map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
+		map.powerups = new Powerup[]{new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
 		};
 		view.getChildren().addAll(map.powerups);
 
@@ -135,7 +136,7 @@ public class Renderer extends Scene
 				}
 				hud.tick(gameLoop.getRemainingTime());
 				if(gameLoop.getRemainingTime() == 0)
-					hud.setWinner(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
+					hud.endGame(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
 
 				hud.setScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
 				hud.setScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
@@ -152,7 +153,6 @@ public class Renderer extends Scene
 	 * @param mapName    Name of the selected map
 	 * @param receiver   Client receiver for communication with the game server
 	 * @param guiManager GUI manager that creates this object
-	 * @param flag       Flag object for Capture the Flag gamemode
 	 */
 	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
 	{
@@ -330,7 +330,7 @@ public class Renderer extends Scene
 		view.getChildren().add(paintIndex, imageView);
 	}
 
-	public void generateSpray(double x, double y, String colour)
+	void generateSpray(double x, double y, String colour)
 	{
 		Rectangle collision = null;
 		for(Rectangle rec : map.getRecWalls())
@@ -380,25 +380,33 @@ public class Renderer extends Scene
 	{
 		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
 
-		view.relocate((getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * view.getScaleX(), (getHeight() / 2 - playerLayoutY - PLAYER_HEAD_Y) * view.getScaleY());
-		hud.relocate(playerLayoutX + PLAYER_HEAD_X - (getWidth() / 2), playerLayoutY + PLAYER_HEAD_Y - (getHeight() / 2));
+		double viewPositionX = (getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * view.getScaleX(),
+				viewPositionY = (getHeight() / 2 - playerLayoutY - PLAYER_HEAD_Y) * view.getScaleY(),
+				subScenePositionX = (playerLayoutX + PLAYER_HEAD_X - (getWidth() / 2)),
+				subScenePositionY = (playerLayoutY + PLAYER_HEAD_Y - (getHeight() / 2));
+
+		view.relocate(viewPositionX, viewPositionY);
+		hud.relocate(subScenePositionX, subScenePositionY);
 
 		if(view.getChildren().contains(pauseMenu))
-			pauseMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+			pauseMenu.relocate(subScenePositionX, subScenePositionY);
 		if(view.getChildren().contains(settingsMenu))
-			settingsMenu.relocate(playerLayoutX + PLAYER_HEAD_X - getWidth() / 2, playerLayoutY + PLAYER_HEAD_Y - getHeight() / 2);
+			settingsMenu.relocate(subScenePositionX, subScenePositionY);
 	}
 
 
-	public void setBlueScore(int blueScore) {
+	public void setBlueScore(int blueScore)
+	{
 		this.blueScore = blueScore;
 	}
 
-	public void setRedScore(int redScore) {
+	public void setRedScore(int redScore)
+	{
 		this.redScore = redScore;
 	}
 
-	public void setTimeRemaining(int timeRemaining) {
+	public void setTimeRemaining(int timeRemaining)
+	{
 		this.timeRemaining = timeRemaining;
 	}
 
