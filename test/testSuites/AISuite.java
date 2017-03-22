@@ -1,12 +1,8 @@
 package testSuites;
 
-import ai.TestPathCSVGenerator;
+import ai.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import ai.TestPathHashMapGenerators;
-import ai.TestPathFinding;
-import ai.TestPrimitives;
 
 @RunWith(Suite.class)
 
@@ -14,7 +10,10 @@ import ai.TestPrimitives;
         TestPathHashMapGenerators.class,
         TestPathFinding.class,
         TestPrimitives.class,
-        TestPathCSVGenerator.class
+        TestPathCSVGenerator.class,
+        TestAIManager.class,
+        TestCTFBehaviour.class,
+        TestEliminationBehaviour.class
 })
 
 /**
