@@ -2,15 +2,16 @@ package testSuites;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import rendering.MapTest;
-import rendering.RendererTest;
+import rendering.TestMap;
+import rendering.TestRendererMultiplayer;
+import rendering.TestRendererSingleplayer;
 
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-        MapTest.class,
-        RendererTest.class
+        TestMap.class,
+        TestRendererSingleplayer.class,
+		TestRendererMultiplayer.class
 })
 
 /**
