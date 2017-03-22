@@ -287,7 +287,7 @@ public class UDPClient extends Thread {
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
-	private void updatePlayerAction(String text) {
+	public void updatePlayerAction(String text) {
 		// Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if (debug)
 			System.out.println(text);
@@ -433,7 +433,7 @@ public class UDPClient extends Thread {
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void capturedFlagAction(String text) {
+	public void capturedFlagAction(String text) {
 		// Protocol : 8:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
 
@@ -453,7 +453,7 @@ public class UDPClient extends Thread {
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void lostFlagAction(String text) {
+	public void lostFlagAction(String text) {
 		// Protocol : 9:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
 
@@ -473,7 +473,7 @@ public class UDPClient extends Thread {
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void baseFlagAction(String text) {
+	public void baseFlagAction(String text) {
 		// Protocol : !:<id>
 
 		int id = Integer.parseInt(text.split(":")[1]);
@@ -520,7 +520,7 @@ public class UDPClient extends Thread {
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void shieldRemovedAction(String receivedPacket) {
+	public void shieldRemovedAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
 		gameStateReceiver.shieldRemovedAction(id);
 	}
@@ -534,7 +534,7 @@ public class UDPClient extends Thread {
 	 *            powerup type: 0 for shield and 1 for speed.
 	 * @author Alexandra Paduraru
 	 */
-	private void powerUpAction(String receivedPacket) {
+	public void powerUpAction(String receivedPacket) {
 		int id = Integer.parseInt(receivedPacket.split(":")[2]);
 
 		switch (receivedPacket.split(":")[1]) {

@@ -12,11 +12,8 @@ import org.junit.Test;
 import enums.GameMode;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
-<<<<<<< HEAD
+import integration.server.ServerGameSimulation;
 import logic.server.Team;
-=======
-import integrationServer.ServerGameSimulation;
->>>>>>> 17995cbebf9c3ebd5095cd829779babf4e8b3c96
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;

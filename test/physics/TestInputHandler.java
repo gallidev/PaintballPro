@@ -1,30 +1,16 @@
 package physics;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
-import integrationServer.CollisionsHandlerListener;
-import integrationServer.ServerGameSimulation;
-import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import logic.GameMode;
-import players.EssentialPlayer;
-import players.UserPlayer;
-import rendering.ImageFactory;
-import rendering.Map;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
 
 public class TestInputHandler {
 

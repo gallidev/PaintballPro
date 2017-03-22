@@ -1,16 +1,13 @@
 package physics;
 
-<<<<<<< HEAD
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-=======
-import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
->>>>>>> 17995cbebf9c3ebd5095cd829779babf4e8b3c96
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,20 +15,12 @@ import org.junit.Test;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
-<<<<<<< HEAD
 import integration.server.ServerGameSimulation;
+import integrationServer.CollisionsHandlerListener;
 import logic.GameMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
-=======
-import integrationServer.CollisionsHandlerListener;
-import integrationServer.ServerGameSimulation;
-import integrationServer.ServerGameStateSender;
-import javafx.scene.shape.Rectangle;
-import logic.GameMode;
-import players.ClientPlayer;
 import players.EssentialPlayer;
->>>>>>> 17995cbebf9c3ebd5095cd829779babf4e8b3c96
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
