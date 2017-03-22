@@ -271,21 +271,22 @@ public class ClientReceiver extends Thread {
 		}
 
 		// changing the scene
-		Platform.runLater(() -> {
-			if (!singlePlayer) {
-				if (gameMode == 1) {
-					guiManager.transitionTo(Menu.EliminationMulti);
+		if(guiManager.getClient() != null)
+			Platform.runLater(() -> {
+				if (!singlePlayer) {
+					if (gameMode == 1) {
+						guiManager.transitionTo(Menu.EliminationMulti);
+					} else {
+						guiManager.transitionTo(Menu.CTFMulti, flag);
+					}
 				} else {
-					guiManager.transitionTo(Menu.CTFMulti, flag);
+					if (gameMode == 1) {
+						guiManager.transitionTo(Menu.EliminationSingle);
+					} else {
+						guiManager.transitionTo(Menu.CTFSingle);
+					}
 				}
-			} else {
-				if (gameMode == 1) {
-					guiManager.transitionTo(Menu.EliminationSingle);
-				} else {
-					guiManager.transitionTo(Menu.CTFSingle);
-				}
-			}
-		});
+			});
 	}
 
 	/* Getters and setters */
