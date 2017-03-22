@@ -50,6 +50,14 @@ public class AIManager{
 		System.out.println("new max id AI = " + nextId);
 	}
 
+	public int getNextId(){
+		return getNextId();
+	}
+
+	public Team getTeam(){
+		return team;
+	}
+
 
 
 }
