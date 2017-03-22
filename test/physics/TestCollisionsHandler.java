@@ -1,6 +1,8 @@
 package physics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,21 +14,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.TeamEnum;
-import gui.GUIManager;
 import helpers.JavaFXTestHelper;
+import integration.server.ServerGameSimulation;
 import integrationServer.CollisionsHandlerListener;
-import integrationServer.ServerGameSimulation;
-import integrationServer.ServerGameStateSender;
-import javafx.scene.shape.Rectangle;
 import logic.GameMode;
-import players.ClientPlayer;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-import rendering.Renderer;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
 
 public class TestCollisionsHandler {
 
@@ -81,8 +78,7 @@ public class TestCollisionsHandler {
 
 		collisionsHandler.setPlayers(players);
 
-
-		collisionsHandler.setListener(new CollisionsHandlerListener(){
+		CollisionsHandlerListener listener = new CollisionsHandlerListener(){
 
 			@Override
 			public void onFlagCaptured(int player) {
@@ -104,9 +100,12 @@ public class TestCollisionsHandler {
 			public void onPowerupRespawn(PowerupType type, int location) {
 
 			}
+		};
+		collisionsHandler.setListener(listener);
 
-		}
-		);
+		map.getPowerups()[0].setListener(listener);
+		map.getPowerups()[1].setListener(listener);
+
 	}
 
 	@After

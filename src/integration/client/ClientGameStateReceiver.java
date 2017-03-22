@@ -1,4 +1,4 @@
-package integrationClient;
+package integration.client;
 
 import javafx.application.Platform;
 import physics.Flag;
@@ -22,6 +22,7 @@ public class ClientGameStateReceiver {
 	private ArrayList<EssentialPlayer> players;
 	private Flag flag;
 	private Powerup[] powerups;
+	public boolean integrationTest;
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
@@ -140,7 +141,6 @@ public class ClientGameStateReceiver {
 	}
 
 	public void updateFlag(int id){
-
 		EssentialPlayer player = getPlayerWithId(id);
 
 		Platform.runLater(() -> {

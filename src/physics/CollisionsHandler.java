@@ -1,17 +1,17 @@
 package physics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import enums.TeamEnum;
 import integrationServer.CollisionsHandlerListener;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import logic.server.CaptureTheFlagMode;
+import logic.server.Team;
 import players.EssentialPlayer;
 import rendering.Map;
-import serverLogic.CaptureTheFlagMode;
-import serverLogic.Team;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

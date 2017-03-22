@@ -9,6 +9,8 @@ import rendering.ImageFactory;
 
 import java.util.Random;
 
+import integration.server.CollisionHandlerListener;
+
 public class Powerup extends ImageView
 {
 	private boolean taken = false;
@@ -41,11 +43,6 @@ public class Powerup extends ImageView
 	public PowerupType getType()
 	{
 		return type;
-	}
-
-	public void setType(PowerupType type)
-	{
-		this.type = type;
 	}
 
 	public void setListener(CollisionsHandlerListener listener)

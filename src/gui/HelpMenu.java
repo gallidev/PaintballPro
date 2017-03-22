@@ -1,6 +1,7 @@
 package gui;
 
 import enums.Menu;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -35,9 +36,12 @@ public class HelpMenu {
 		mainGrid.setVgap(10);
 		mainGrid.setPadding(MenuControls.scaleByResolution(25));
 
-		WebView webView = new WebView();
-		String url = HelpMenu.class.getResource("/help.html").toExternalForm();
-		webView.getEngine().load(url);
+		Platform.runLater(() -> {
+			WebView webView = new WebView();
+			webView.getEngine().load(HelpMenu.class.getResource("/help.html").toExternalForm());
+			mainGrid.add(webView, 0, 0);
+		});
+
 
 		// Create a array of options for the cancel and apply buttons
 		MenuOption[] set = {new MenuOption("Back", true, new EventHandler<ActionEvent>() {
@@ -51,7 +55,6 @@ public class HelpMenu {
 		GridPane buttonGrid = MenuOptionSet.optionSetToGridPane(set);
 
 		// Add the options grid and the button grid to the main grid
-		mainGrid.add(webView, 0, 0);
 		mainGrid.add(buttonGrid, 0, 1);
 
 		// Create a new scene using the main grid

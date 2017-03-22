@@ -9,14 +9,15 @@ import org.junit.Test;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
+import integration.server.ServerGameSimulation;
 import logic.GameMode;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
 
 /**
  * Test class to test the game simulation running on the server in multiplayer.
@@ -59,6 +60,7 @@ public class TestServerGameSimulation {
 		for (EssentialPlayer p : players)
 			assertTrue(((UserPlayer) p).isTicked);
 
+		gameSimulation.stopGameLoop();
 	}
 
 	@Test

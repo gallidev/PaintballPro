@@ -5,9 +5,9 @@ import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.scene.image.Image;
+import logic.server.Team;
 import physics.CollisionsHandler;
 import rendering.Spawn;
-import serverLogic.Team;
 /**
  *  The player, represented by an ImageView
  */

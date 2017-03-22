@@ -1,13 +1,13 @@
 package logic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import enums.TeamEnum;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 
 /**
  * Test class for the GameMode abstract class.

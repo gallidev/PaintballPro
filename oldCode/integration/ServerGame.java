@@ -1,17 +1,17 @@
-package networking.interfaces;
+package oldCode.integration;
 
+
+import java.util.ArrayList;
 
 import enums.TeamEnum;
 import logic.GameMode;
+import logic.server.CaptureTheFlagMode;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 import networking.game.UDPServer;
 import oldCode.logic.EscortMode;
 import oldCode.logic.KingOfTheHillMode;
 import players.EssentialPlayer;
-import serverLogic.CaptureTheFlagMode;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
-
-import java.util.ArrayList;
 
 /**
  * Server side integration to play a game in a specific game mode. Will be
@@ -34,7 +34,7 @@ public class ServerGame {
 	 * @param game
 	 *            The game mode that will be started.
 	 */
-	public ServerGame(int gameMode, serverLogic.Team red, serverLogic.Team blue, UDPServer receiver, int lobbyID) {
+	public ServerGame(int gameMode, Team red, Team blue, UDPServer receiver, int lobbyID) {
 		this.lobbyID = lobbyID;
 		switch (gameMode) {
 		case 1:

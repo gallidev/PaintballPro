@@ -13,12 +13,12 @@ import gui.GUIManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
+import logic.server.Team;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import physics.InputHandler;
 import rendering.ImageFactory;
 import rendering.Map;
-import serverLogic.Team;
 
 /**
  * The player, represented by an ImageView that should be running

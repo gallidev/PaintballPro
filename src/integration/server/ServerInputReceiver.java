@@ -1,4 +1,4 @@
-package integrationServer;
+package integration.server;
 
 import java.util.ArrayList;
 

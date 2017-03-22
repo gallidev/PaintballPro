@@ -1,5 +1,8 @@
 package players;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import enums.GameMode;
 import enums.TeamEnum;
 import javafx.scene.Node;
@@ -10,14 +13,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
+import logic.server.Team;
 import physics.Bullet;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Spawn;
-import serverLogic.Team;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *  The player, represented by an ImageView
@@ -514,6 +514,13 @@ public abstract class EssentialPlayer extends ImageView {
 			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
 		else if(!hasFlag)
 				shadow.setColor(Color.BLACK);
+		
+		if (!b)
+			shieldRemoved = true;
+	}
+	
+	public boolean isSpeedActive(){
+		return speedActive;
 	}
 }
 

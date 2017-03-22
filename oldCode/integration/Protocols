@@ -1,0 +1,48 @@
+Networking Protocols
+--------------------
+We work using strings between the client and the server. This document outlines the protocols for particular events that may occur during the game.
+--------------------
+
+---------------------------------------	|-------------------------------------	|-------------------------------------
+				ACTION					|				PROTOCOL				|					NOTES
+---------------------------------------	|-------------------------------------	|-------------------------------------
+				IN-GAME					|/////////////////////////////////////	|/////////////////////////////////////
+---------------------------------------	|-------------------------------------	|-------------------------------------
+New co-ordinates when a player moves.	|SendToAll:Move:id:<x>:<y>:<angle>
+Angle of player changes.				|
+Player gets shot.						|SendToAll:Eliminated:id
+Bullets firing.							|SendToAll:Bullet:<id>:<team>:<x>:<y>:<angle>
+Client Player moves.					|SendToServer:Move:id:<x>:<y>:<angle>
+Client Player shoots.					|SendToServer:Shot:id:<x>:<y>:<angle>:<team>
+---------------------------------------	|-------------------------------------	|
+				GAME STATUS				|/////////////////////////////////////	|
+---------------------------------------	|-------------------------------------	|
+Win/Loose a game.						|
+Change in game points.					|Scored:<team colour which gains poins> | Assumes that only one point is scored at a time.  
+Game duration.							|
+---------------------------------------	|-------------------------------------	|
+			CLIENT ACTIONS				|/////////////////////////////////////	|
+----------------------------------------|-------------------------------------	|
+Join a lobby for a particular game.		|Play:Mode:<game mode>					 1 = TM, 2 = KoTH, 3 = CTF, 4 = ESC
+Switch teams.							|SwitchTeam								 Changes from Red->Blue or Blue->Red
+Set username							|Set:Username:<username>
+---------------------------------------	|-------------------------------------	|
+			CLIENT REQUESTS				|/////////////////////////////////////	|
+----------------------------------------|-------------------------------------	|
+Get Red team lobby usernames.			|Get:Red
+Get Blue team lobby usernames.			|Get:Blue
+Get username.							|Get:Username
+Exit system								|Exit:Client
+Exit game								|Exit:Game
+Lobby pre-game timer status				|Get:LobbyTimer
+---------------------------------------	|-------------------------------------	|
+			SERVER ACTIONS				|/////////////////////////////////////	|
+----------------------------------------|-------------------------------------	|
+Send to all clients in the game.		|SendToAll:<message>
+Start a new game						|StartGame			
+Current game session has ended			|EndGame:<WinningTeam>					| eg. EndGame:Red	
+Tell all clients a client is in lobby	|PlayerConnected
+
+Return team nicknames                 	|Ret:<team>:<user>-<user>-<user>
+Game starting in 10 secs, max reached	|TimerStart
+Remaining lobby timer					|LTime:<seconds>

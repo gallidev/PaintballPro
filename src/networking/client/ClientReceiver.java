@@ -3,7 +3,7 @@ package networking.client;
 import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
-import integrationClient.ClientGameStateReceiver;
+import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.CollisionsHandler;
@@ -31,7 +31,7 @@ import java.util.Arrays;
  * @author Matthew Walters
  */
 public class ClientReceiver extends Thread {
-	
+
 	private ArrayList<EssentialPlayer> myTeam;
 	private ArrayList<EssentialPlayer> enemies;
 	private boolean debug = false;
@@ -126,7 +126,7 @@ public class ClientReceiver extends Thread {
 
 				} else // if the client wants to exit the system.
 				{
-					if (debug) 
+					if (debug)
 						System.out.println("Exiting now.");
 					return;
 				}
@@ -143,7 +143,7 @@ public class ClientReceiver extends Thread {
 	 * contains the information about all the other players.
 	 *
 	 * This method also starts the renderer and updates the GUI manager.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing all the start game
 	 *            information.
@@ -154,7 +154,7 @@ public class ClientReceiver extends Thread {
 	public void startGameAction(String text) {
 		// get all the relevant data from the message :
 		// 2:<gameMode>:2:Red:1:Red:
-		
+
 		// Declarations
 		String[] data = text.split(":");
 		int gameMode = Integer.parseInt(data[1]);
@@ -162,17 +162,17 @@ public class ClientReceiver extends Thread {
 		String clientTeam = data[3];
 		Map map = null;
 		clientID = Integer.parseInt(data[2]);
-		
+
 		if (gameMode == 1)
 			map = Map.loadRaw("elimination");
 		else
 			map = Map.loadRaw("ctf");
-		
+
 		CollisionsHandler collisionHandler = new CollisionsHandler(map);
 		ArrayList<EssentialPlayer> players = new ArrayList<EssentialPlayer>(myTeam);
 		Flag flag = new Flag();
 		Powerup[] powerups = new Powerup[2];
-		
+
 		if (debug)
 			System.out.println("Start game info : ");
 		if (debug)
@@ -193,20 +193,20 @@ public class ClientReceiver extends Thread {
 
 		// extract the other members
 		for (int i = 5; i < data.length - 2; i = i + 3) {
-			
+
 			int id = Integer.parseInt(data[i]);
 			String nickname = data[i + 2];
-			
+
 			if (data[i + 1].equals(clientTeam)) {
-				
+
 				if (clientTeam.equals("Red")) {
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64,
 							map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(), TeamEnum.RED, collisionHandler,
 							null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
-					
-					if (debug) 
+
+					if (debug)
 						System.out.println("Created player with nickname " + p.getNickname());
 				} else {
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64,
@@ -214,8 +214,8 @@ public class ClientReceiver extends Thread {
 							null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					myTeam.add(p);
-					
-					if (debug) 
+
+					if (debug)
 						System.out.println("Created player with nickname " + p.getNickname());
 				}
 
@@ -226,8 +226,8 @@ public class ClientReceiver extends Thread {
 							null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
-					
-					if (debug) 
+
+					if (debug)
 						System.out.println("Created player with nickname " + p.getNickname());
 
 				} else {
@@ -236,8 +236,8 @@ public class ClientReceiver extends Thread {
 							null, Renderer.TARGET_FPS);
 					p.setNickname(nickname);
 					enemies.add(p);
-					
-					if(debug) 
+
+					if(debug)
 						System.out.println("Created player with nickname " + p.getNickname());
 				}
 			}
@@ -249,7 +249,7 @@ public class ClientReceiver extends Thread {
 
 		teams.setEnemies(enemies);
 		teams.setMyTeam(myTeam);
-		
+
 		powerups[0] = new Powerup(PowerupType.SHIELD, map.getPowerupLocations());
 		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
 
@@ -272,7 +272,7 @@ public class ClientReceiver extends Thread {
 			System.out.println("game mode is " + gameMode);
 			System.out.println("single player = " + singlePlayer);
 		}
-		
+
 		// changing the scene
 		Platform.runLater(() -> {
 			if (!singlePlayer) {
@@ -316,7 +316,7 @@ public class ClientReceiver extends Thread {
 
 	/**
 	 * Return client sender object.
-	 * 
+	 *
 	 * @return Sender thread.
 	 */
 	public ClientSender getSender() {

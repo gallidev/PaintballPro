@@ -1,4 +1,4 @@
-package serverLogic;
+package logic.server;
 
 import logic.GameMode;
 import logic.RoundTimer;
@@ -12,7 +12,7 @@ import logic.RoundTimer;
  */
 public class TeamMatchMode extends GameMode {
 
-	private static final int gameTime = 10; // in seconds
+	private static final int gameTime = 180; // in seconds
 	private RoundTimer timer;
 	//debugging
 	private boolean debug = false;

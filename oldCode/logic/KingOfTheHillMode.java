@@ -1,7 +1,7 @@
 package oldCode.logic;
 
 import logic.GameMode;
-import serverLogic.Team;
+import logic.server.Team;
 
 public class KingOfTheHillMode extends GameMode {
 

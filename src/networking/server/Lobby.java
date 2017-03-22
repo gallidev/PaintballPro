@@ -1,15 +1,24 @@
 package networking.server;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import ai.AIManager;
 import ai.HashMapGen;
 import enums.TeamEnum;
-import integrationServer.ServerGameSimulation;
-import integrationServer.ServerGameStateSender;
-import integrationServer.ServerInputReceiver;
+import integration.server.ServerGameSimulation;
+import integration.server.ServerGameStateSender;
+import integration.server.ServerInputReceiver;
 import javafx.scene.image.Image;
 import logic.RoundTimer;
+import logic.server.CaptureTheFlagMode;
+import logic.server.Team;
+import logic.server.TeamMatchMode;
 import networking.game.UDPServer;
-import networking.interfaces.ServerGame;
 import physics.CollisionsHandler;
 import players.AIPlayer;
 import players.EssentialPlayer;
@@ -17,16 +26,6 @@ import players.ServerBasicPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-import serverLogic.CaptureTheFlagMode;
-import serverLogic.Team;
-import serverLogic.TeamMatchMode;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Class to represent a lobby.
@@ -47,7 +46,6 @@ public class Lobby {
 	private Map map;
 	
 	// Game information
-	private ServerGame currentSessionGame;
 	private int gameType;
 	private int maxPlayers;
 	private Thread timer;
@@ -483,6 +481,7 @@ public class Lobby {
 		
 		redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
 		redAIM.createPlayers();
+
 		blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
 		blueAIM.createPlayers();
 
@@ -594,16 +593,16 @@ public class Lobby {
 	 * 
 	 * @return Winner team enum of a game.
 	 */
-	public TeamEnum getWinner() {
-		return currentSessionGame.getGame().whoWon().getColour();
-	}
+//	public TeamEnum getWinner() {
+//		return currentSessionGame.getGame().whoWon().getColour();
+//	}
 
 	/**
 	 * Return red converted team.
 	 * 
 	 * @return Red Team object.
 	 */
-	public serverLogic.Team getRedTeam() {
+	public Team getRedTeam() {
 		return red;
 	}
 

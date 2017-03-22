@@ -1,15 +1,16 @@
-package integrationServer;
-
-import enums.TeamEnum;
-import networking.game.UDPServer;
-import physics.PowerupType;
-import players.EssentialPlayer;
-import serverLogic.Team;
+package integration.server;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import enums.TeamEnum;
+import integrationServer.CollisionsHandlerListener;
+import logic.server.Team;
+import networking.game.UDPServer;
+import physics.PowerupType;
+import players.EssentialPlayer;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -206,7 +207,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	}
 
 
-	@Override
 	public void onFlagCaptured(int player)
 	{
 		String toBeSent = "8:" + player + ":";
@@ -214,7 +214,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		updateScore();
 	}
 
-	@Override
 	public void onFlagDropped(int player)
 	{
 		String toBeSent = "7:" + + player + ":";
@@ -222,7 +221,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		updateScore();
 	}
 
-	@Override
 	public void onFlagRespawned(int player)
 	{
 		String toBeSent = "!:" + player + ":";
@@ -234,7 +232,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		updateScore();
 	}
 
-	@Override
 	public void onPowerupAction(PowerupType type, int player)
 	{
 		String toBeSent = "";
@@ -248,7 +245,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
-	@Override
 	public void onPowerupRespawn(PowerupType type, int location)
 	{
 		String toBeSent = "";
