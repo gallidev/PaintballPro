@@ -61,7 +61,7 @@ public class TestUDP {
 		client2.testNetworking = true;
 		
 		client1.start();
-		client2.start();
+		client2.start(); 
 		
 		server.sendToAll("TestSendToAll", "127.0.0.1:25568");
 		Thread.sleep(500); 
@@ -73,8 +73,8 @@ public class TestUDP {
 		assertTrue(client1.testSendToAll);
 		assertTrue(client2.testSendToAll);
 		
-		client1.stopThread();
-		client2.stopThread();
+		client1.active = false;
+		client2.active = false;
 		server.m_running = false;
 		server.interrupt();
 	}

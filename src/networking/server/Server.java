@@ -180,7 +180,9 @@ public class Server extends Thread {
 					}
 					isRunning = false;
 					udpServer.interrupt();
-					System.exit(1);
+					
+					if(testing == 0)
+						System.exit(1);
 				}
 			}
 			udpServer.interrupt();
@@ -209,7 +211,8 @@ public class Server extends Thread {
 					}
 				}
 			}
-			System.exit(1);
+			if(testing == 0)
+				System.exit(1);
 		}
 	}
 

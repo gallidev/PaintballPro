@@ -126,7 +126,7 @@ public class Client {
 										if (debug)
 											System.out.println("Server closed.");
 										
-										udpReceiver.stopThread();
+										udpReceiver.active = false;
 										udpReceiver.join(500);
 										
 										if(debug)
@@ -139,7 +139,7 @@ public class Client {
 										// Close threads smoothly.
 										clientReceiver.interrupt();
 										toServer.close();
-										udpReceiver.stopThread();
+										udpReceiver.active = false;
 
 										if (!testing)
 											(new AlertBox("Communication Failed",
