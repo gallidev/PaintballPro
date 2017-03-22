@@ -63,7 +63,7 @@ public class TestUDP {
 		client1.start();
 		client2.start(); 
 		
-		server.sendToAll("TestSendToAll", "127.0.0.1:25568");
+		server.sendToAll("TestSendToAll", "127.0.0.1:"+client1.port);
 		Thread.sleep(500); 
 		
 		assertNotNull(server);

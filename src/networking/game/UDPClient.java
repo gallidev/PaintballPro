@@ -41,6 +41,7 @@ public class UDPClient extends Thread {
 	public boolean testIntegration = false;
 	public boolean testSendToAll = false;
 	public boolean testNetworking = false;
+	public int port;
 	public static double PINGDELAY = 0;
 
 	/**
@@ -64,7 +65,7 @@ public class UDPClient extends Thread {
 	public UDPClient(int clientID, String udpServIP, int udpServPort, GUIManager guiManager, TeamTable teams,
 			int portNum, String nickname) {
 
-		int port = portNum;
+		port = portNum;
 		this.clientID = clientID;
 		this.teams = teams;
 		this.nickname = nickname;
@@ -311,7 +312,7 @@ public class UDPClient extends Thread {
 				visibility = false;
 
 			boolean eliminated = false;
-			if(actions[6].equals("true"))
+			if(actions[5].equals("true"))
 				eliminated = true;
 
 			if (gameStateReceiver != null) {

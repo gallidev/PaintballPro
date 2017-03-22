@@ -69,7 +69,6 @@ public class TestClientIntegration {
 		
 		client.setGameStateReceiver(gameStateReceiver);
 		Thread.sleep(1000);
-
 	}
 	
 	@After
