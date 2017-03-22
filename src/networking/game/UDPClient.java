@@ -308,12 +308,15 @@ public class UDPClient extends Thread {
 			double angle = Double.parseDouble(actions[4]);
 
 			boolean visibility = true;
-			if (actions[5].equals("false"))
+			if (actions[5].equals("false")){
 				visibility = false;
+			}
 
 			boolean eliminated = false;
-			if(actions[5].equals("true"))
+			if(actions[6].equals("true")){
 				eliminated = true;
+			}
+
 
 			if (gameStateReceiver != null) {
 				gameStateReceiver.updatePlayer(id, x, y, angle, visibility, eliminated);
