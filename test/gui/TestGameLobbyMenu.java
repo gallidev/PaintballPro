@@ -52,6 +52,12 @@ public class TestGameLobbyMenu {
         Thread.sleep(1000);
 
         g.setTimeLeft(4);
+
+        Thread.sleep(1000);
+
+        g.setTimeLeft(1);
+
+        Thread.sleep(1000);
     }
 
 }

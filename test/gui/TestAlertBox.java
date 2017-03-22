@@ -24,7 +24,7 @@ public class TestAlertBox {
         JavaFXTestHelper.setupApplication();
 
         Platform.runLater(() -> {
-            AlertBox ab = new AlertBox("Example Alert", "Testing - Press OK");
+            AlertBox ab = new AlertBox("Example Alert", "Testing - This will automatically hide");
             ab.showAlert(false);
         });
 
