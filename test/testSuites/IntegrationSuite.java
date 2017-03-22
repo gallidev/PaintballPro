@@ -13,6 +13,7 @@ import integrationServer.TestServerIntegration;
 
 @Suite.SuiteClasses({
 	TestClientInputSender.class,
+	TestClientIntegration.class,
 	TestServerInputReceiver.class,
 	TestServerGameSimulation.class,
 	TestServerIntegration.class,
