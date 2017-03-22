@@ -61,36 +61,12 @@ public class Bullet extends Circle
 
 	//Getters and setters for the coordinates
 
-	public double getX(){
-		return this.x;
-	}
-
-	public void setX(double x){
-		this.x = x;
-	}
-
-	public double getY(){
-		return this.y;
-	}
-
-	public void setY(double y){
-		this.y = y;
-	}
-
 	public boolean isActive(){
 		return this.active;
 	}
 
 	public void setActive(boolean b){
 		this.active = b;
-	}
-
-	public int getBulletId(){
-		return this.id;
-	}
-
-	public void setBulletId(int id){
-		this.id = id;
 	}
 
 	public void disable()
@@ -102,11 +78,6 @@ public class Bullet extends Circle
 	{
 		active = false;
 		this.collision = collision;
-	}
-
-	public double getAngle()
-	{
-		return this.angle;
 	}
 
 	public Rectangle getCollision()

@@ -43,11 +43,6 @@ public class Powerup extends ImageView
 		return type;
 	}
 
-	public void setType(PowerupType type)
-	{
-		this.type = type;
-	}
-
 	public void setListener(CollisionsHandlerListener listener)
 	{
 		this.listener = listener;

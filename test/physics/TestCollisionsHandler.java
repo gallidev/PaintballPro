@@ -81,8 +81,7 @@ public class TestCollisionsHandler {
 
 		collisionsHandler.setPlayers(players);
 
-
-		collisionsHandler.setListener(new CollisionsHandlerListener(){
+		CollisionsHandlerListener listener = new CollisionsHandlerListener(){
 
 			@Override
 			public void onFlagCaptured(int player) {
@@ -104,9 +103,12 @@ public class TestCollisionsHandler {
 			public void onPowerupRespawn(PowerupType type, int location) {
 
 			}
+		};
+		collisionsHandler.setListener(listener);
 
-		}
-		);
+		map.getPowerups()[0].setListener(listener);
+		map.getPowerups()[1].setListener(listener);
+
 	}
 
 	@After
