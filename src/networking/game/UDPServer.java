@@ -20,7 +20,7 @@ public class UDPServer extends Thread {
 
 	public boolean m_running = true;
 	public String winnerTest;
-	
+
 	private boolean debug = true;
 	private ClientTable clients;
 	private DatagramSocket serverSocket;
@@ -158,7 +158,7 @@ public class UDPServer extends Thread {
 		} finally {
 			if (debug)
 				System.out.println("Closing Server");
-			serverSocket.close(); 
+			serverSocket.close();
 		}
 	}
 

@@ -50,13 +50,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 		scheduler = Executors.newScheduledThreadPool(1);
 
-		Executors.newSingleThreadScheduledExecutor(r ->
-		{
-		    Thread t = Executors.defaultThreadFactory().newThread(r);
-		    t.setPriority(Thread.MIN_PRIORITY);
-		    return t;
-		});
-
 		Runnable sender = () ->
 		{
 			sendClient();
@@ -116,18 +109,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	 */
 	public void onShotBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
-
-//		for(EssentialPlayer p : players){
-//
-//			String toBeSent = "4:" + p.getPlayerId();
-//
-//			if(p.hasShot()){
-//				p.setHasShot(false);
-//				toBeSent += ":shot";
-//				udpServer.sendToAll(toBeSent, lobbyId);
-//			}
-//
-//		}
 
 		String toBeSent = "4:" + playerId;
 		toBeSent += ":" + bulletId;
