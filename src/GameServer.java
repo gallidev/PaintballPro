@@ -29,7 +29,12 @@ public class GameServer extends Application {
 		stage.setTitle("Paintball Pro Server");
 		stage.setOnCloseRequest((event) -> {
 			if (server != null)
-				server.getExitListener().stopServer();
+				try {
+					server.serverSocket.close();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 			if (discovery != null)
 				discovery.interrupt();
 			System.exit(0);

@@ -66,7 +66,7 @@ public class Client {
 				sender = new ClientSender(msgQueue, toServer, nickname);
 				
 				clientID = 0; // Set temporary client ID.
-				String text = "";
+				String text = ""; 
 
 				// Run them in parallel, first one started here:
 				sender.start();

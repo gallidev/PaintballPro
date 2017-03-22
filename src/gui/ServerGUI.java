@@ -48,7 +48,7 @@ public class ServerGUI extends Scene {
 		iv.setId("logo");
 		iv.setPreserveRatio(true);
 		iv.setFitWidth(200);
-		view.add(iv, 0, 0);
+		view.add(iv, 0, 0); 
 
 		view.add(new Label("Running on " + IPAddress.getLAN()), 0, 1);
 
@@ -60,7 +60,13 @@ public class ServerGUI extends Scene {
 		Button exitButton = new Button("Exit");
 		exitButton.setOnAction((event) -> {
 			if (server != null) {
-				server.getExitListener().stopServer();
+				//server.getExitListener().stopServer();
+				try {
+					server.serverSocket.close();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if (discovery != null) {
 				discovery.interrupt();

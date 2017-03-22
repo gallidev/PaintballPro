@@ -24,7 +24,7 @@ public class UDPServer extends Thread {
 	private boolean debug = true;
 	private ClientTable clients;
 	private DatagramSocket serverSocket;
-	private int sIP;
+	private int serverPort;
 	private LobbyTable lobbyTab;
 	private ServerInputReceiver inputReceiver;
 
@@ -35,13 +35,13 @@ public class UDPServer extends Thread {
 	 *            Table storing all necessary client information.
 	 * @param lobby
 	 *            Table storing all necessary lobby information.
-	 * @param sIP
+	 * @param serverPort
 	 *            Server IP Address.
 	 */
-	public UDPServer(ClientTable clientTable, LobbyTable lobby, int sIP) {
+	public UDPServer(ClientTable clientTable, LobbyTable lobby, int serverPort) {
 		clients = clientTable;
 		this.lobbyTab = lobby;
-		this.sIP = sIP;
+		this.serverPort = serverPort;
 	}
 
 	/**
@@ -52,9 +52,9 @@ public class UDPServer extends Thread {
 		try {
 			if (debug)
 				System.out.println("Starting server");
-
-			serverSocket = new DatagramSocket(sIP);
-
+			System.out.println("Opening socket on port:"+serverPort);
+			serverSocket = new DatagramSocket(serverPort);
+			System.out.println("Opened successfully");
 			if (debug)
 				System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:"
 						+ serverSocket.getInetAddress());
@@ -108,6 +108,7 @@ public class UDPServer extends Thread {
 
 					clients.addNewIP(ipAdd, clientID);
 					clients.addUDPQueue(ipAdd);
+					System.out.println(">>>>Added:"+ipAdd);
 
 					sendData = new byte[1024];
 					sendData = "Successfully Connected".getBytes();
@@ -157,7 +158,7 @@ public class UDPServer extends Thread {
 		} finally {
 			if (debug)
 				System.out.println("Closing Server");
-			serverSocket.close();
+			serverSocket.close(); 
 		}
 	}
 
@@ -209,7 +210,7 @@ public class UDPServer extends Thread {
 	 */
 	public void sendToAll(String toBeSent, String ip) {
 		if (debug) {
-			System.out.println("Trying to get lobby id");
+			System.out.println("Trying to get lobby id with ip:"+ip);
 			System.out.println("client id is:" + clients.getID(ip));
 		}
 

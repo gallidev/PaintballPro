@@ -2,6 +2,16 @@ package networking;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,17 +96,5 @@ public class TestServerClient {
 	public void testBadUsername2() {
 		Client client3 = new Client("test:5", 9854, "127.0.0.1", new GUIManager(), 9884, true);
 		assertEquals(client3.exceptionCheck,1);
-	}
-	
-	@Test
-	public void testSameUsername() throws InterruptedException {
-		Server server1 = new Server(9858, "127.0.0.1", null, 1);
-		server1.start();
-		Client client4 = new Client("test3", 9858, "127.0.0.1", new GUIManager(), 9884, true);
-		Client client5 = new Client("test3", 9858, "127.0.0.1", new GUIManager(), 9885, true);
-		assertEquals(client4.exceptionCheck,0);
-		assertEquals(client5.exceptionCheck,6);
-		server1.isRunning = false;
-		server1.interrupt();
 	}
 }

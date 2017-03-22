@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import gui.AlertBox;
 import gui.ServerGUI;
@@ -28,12 +29,13 @@ public class Server extends Thread {
 
 	public boolean isRunning = true;
 	public int exceptionCheck = 0;
+	public ServerSocket serverSocket;
 
+	private ArrayList<Socket> sockets;
 	private boolean debug = false;
 	private InetAddress listenAddress;
 	private int portNumber;	
 	private int testing = 0;
-	private ServerExitListener exitListener;
 	private ServerGUI gui;
 	
 	public Server(int portNumber, String host, ServerGUI gui, int testing) {
@@ -44,7 +46,7 @@ public class Server extends Thread {
 			this.gui = gui;
 		} catch (UnknownHostException e) {
 			if (testing == 0) {
-				(new AlertBox("Connection Failed", "Unknown host.")).showAlert();
+				(new AlertBox("Connection Failed", "Unknown host.")).showAlert(); 
 				System.exit(1);
 			} else
 				exceptionCheck = 1;
@@ -61,7 +63,8 @@ public class Server extends Thread {
 		// Create a new lobby instance.
 		LobbyTable gameLobbies = new LobbyTable();
 		// Open a server socket:
-		ServerSocket serverSocket = null;
+		serverSocket = null;
+		sockets = new ArrayList<Socket>();
 
 		// We must try because it may fail with a checked exception:
 		try {
@@ -81,16 +84,7 @@ public class Server extends Thread {
 				try {
 					// We loop for-ever, as servers usually do, we can exit by
 					// typing Exit into command line though.
-
-					// Server input stream.
-					BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-					// Creates a thread which looks for messages of a certain
-					// format
-					// and acts accordingly if they match.
-					exitListener = new ServerExitListener(input);
-					exitListener.start();
-
-					while (!isInterrupted() && exitListener.isAlive()) {
+					while (!isInterrupted()) {
 
 						if (testing == 2)
 							throw new IOException();
@@ -104,7 +98,7 @@ public class Server extends Thread {
 						// Listen to the socket, accepting connections from new
 						// clients:
 						socket = serverSocket.accept();
-						exitListener.addSocket(socket);
+						sockets.add(socket);
 						
 						// This is so that we can use readLine():
 						fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -112,7 +106,7 @@ public class Server extends Thread {
 						// We ask the client what its name is:
 						clientName = fromClient.readLine();
 						toClient = new PrintStream(socket.getOutputStream());
-
+ 
 						usernameAvailable = clientTable.checkUsernameAvailable(clientName);
 
 						if (usernameAvailable) {
@@ -168,12 +162,25 @@ public class Server extends Thread {
 					// Catch some possible errors - IO.
 				} catch (IOException e) {
 					if (testing == 0) {
-						(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
-						System.exit(1);
+						//(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
 					} else {
-						System.out.println("3 Couldn't listen on port " + portNumber);
+						//System.out.println("3 Couldn't listen on port " + portNumber);
 						exceptionCheck = 3;
 					}
+					
+					for (int i = 0; i < sockets.size(); i++) {
+						// If socket isn't already closed, close.
+						if (!sockets.get(i).isClosed()) {
+							try {
+								sockets.get(i).close();
+							} catch (IOException f) {
+								(new AlertBox("Error", "There was an error while closing the client.")).showAlert();
+							}
+						}
+					}
+					isRunning = false;
+					udpServer.interrupt();
+					System.exit(1);
 				}
 			}
 			udpServer.interrupt();
@@ -185,14 +192,24 @@ public class Server extends Thread {
 					@Override
 					public void run() {
 						(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
-						System.exit(1);
 					}
 				});
-
 			} else {
-				System.out.println("2 Couldn't listen on port " + portNumber);
+				//System.out.println("2 Couldn't listen on port " + portNumber);
 				exceptionCheck = 2;
 			}
+			
+			for (int i = 0; i < sockets.size(); i++) {
+				// If socket isn't already closed, close.
+				if (!sockets.get(i).isClosed()) {
+					try {
+						sockets.get(i).close();
+					} catch (IOException f) {
+						(new AlertBox("Error", "There was an error while closing the client.")).showAlert();
+					}
+				}
+			}
+			System.exit(1);
 		}
 	}
 
@@ -213,13 +230,5 @@ public class Server extends Thread {
 	 */
 	public void setSinglePlayer(boolean setSinglePlayer) {
 		singlePlayer = setSinglePlayer;
-	}
-
-	/**
-	 * Get the Exit Listener thread running from the Server.
-	 * @return Server Exit Listener thread.
-	 */
-	public ServerExitListener getExitListener() {
-		return exitListener;
 	}
 }

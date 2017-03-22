@@ -40,6 +40,7 @@ public class UDPClient extends Thread {
 	public boolean connected = false;
 	public boolean testIntegration = false;
 	public boolean testSendToAll = false;
+	public boolean testNetworking = false;
 	public static double PINGDELAY = 0;
 
 	/**
@@ -217,7 +218,8 @@ public class UDPClient extends Thread {
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
-			Platform.runLater(e::printStackTrace);
+			if(!testIntegration && !testNetworking)
+				Platform.runLater(e::printStackTrace);
 			if (debug)
 				System.out.println("Closing Client.");
 			if (clientSocket.isConnected())
