@@ -13,18 +13,18 @@ import java.net.Socket;
  */
 public class ServerExitListener extends Thread {
 
-	private BufferedReader myClient;
 	private ArrayList<Socket> sockets;
+	private BufferedReader myClient;
 
 	/**
 	 * Constructs the class, assigning passed variables and creating a new array
 	 * to store sockets.
 	 * 
-	 * @param c
+	 * @param clientReader
 	 *            Reader of string input on the command line of Server.
 	 */
-	public ServerExitListener(BufferedReader c) {
-		myClient = c;
+	public ServerExitListener(BufferedReader clientReader) {
+		myClient = clientReader;
 		sockets = new ArrayList<Socket>();
 	}
 

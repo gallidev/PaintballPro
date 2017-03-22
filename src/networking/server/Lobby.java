@@ -39,56 +39,59 @@ public class Lobby {
 	// Lobby information
 	private static final int lobbyTime = 10;
 	private static int maxId;
-	//required for all players
-	Map map;
+	
+	// Required for all players
 	private int id;
+	private Map map;
 	public boolean inGameStatus;
 	
 	// Game information
-	private int GameType;
-	private int MaxPlayers;
 	private ServerGame currentSessionGame;
+	private int gameType;
+	private int maxPlayers;
 	private Thread timer;
-	
+
 	// Team information
-	private int currPlayerBlueNum;
-	private int currPlayerRedNum;
-	private ConcurrentMap<Integer, ServerBasicPlayer> blueTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
-	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
-	private Team red;
-	private Team blue;
 	private ArrayList<EssentialPlayer> players;
 	private boolean debug = false;
-	private CollisionsHandler collissionsHandler;
-
 	private boolean testEnv = false;
-
+	private CollisionsHandler collissionsHandler;
+	private ConcurrentMap<Integer, ServerBasicPlayer> blueTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
+	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
+	private int currPlayerBlueNum;
+	private int currPlayerRedNum;
+	private Team red;
+	private Team blue;
+	
 	/**
 	 * Sets passed variables and initialises some defaults.
-	 * @param myid ID of lobby.
-	 * @param PassedGameType Game mode that the lobby is used for.
-	 * @param testEnv Flag to determine whether this class is under test.
+	 * 
+	 * @param myid
+	 *            ID of lobby.
+	 * @param PassedGameType
+	 *            Game mode that the lobby is used for.
+	 * @param testEnv
+	 *            Flag to determine whether this class is under test.
 	 */
 	public Lobby(int myid, int PassedGameType, boolean testEnv) {
 
 		inGameStatus = false;
-		GameType = PassedGameType;
-		MaxPlayers = 8;
+		gameType = PassedGameType;
+		maxPlayers = 8;
 		currPlayerBlueNum = 0;
 		currPlayerRedNum = 0;
 		id = myid;
 		players = new ArrayList<>();
 		this.testEnv = testEnv;
 
-		if(!testEnv)
-		{
-			//setting up the map
+		if (!testEnv) {
+			// setting up the map
 			if (PassedGameType == 1)
 				map = Map.loadRaw("elimination");
 			else
 				map = Map.loadRaw("ctf");
 
-			//setting up the collision handler
+			// setting up the collision handler
 			collissionsHandler = new CollisionsHandler(map);
 			red = new Team(TeamEnum.RED);
 			blue = new Team(TeamEnum.BLUE);
@@ -97,6 +100,7 @@ public class Lobby {
 
 	/**
 	 * Retrieve the lobby id.
+	 * 
 	 * @return Lobby id.
 	 */
 	public int getID() {
@@ -105,6 +109,7 @@ public class Lobby {
 
 	/**
 	 * Get the game status of the current lobby
+	 * 
 	 * @return True if in game, False if not in game.
 	 */
 	public boolean getInGameStatus() {
@@ -120,22 +125,25 @@ public class Lobby {
 
 	/**
 	 * Retrieve game mode type.
+	 * 
 	 * @return Integer representing the game type.
 	 */
 	public int getGameType() {
-		return GameType;
+		return gameType;
 	}
 
 	/**
 	 * Returns whether or not max players have been reached.
+	 * 
 	 * @return True if max players reached, False otherwise.
 	 */
 	public boolean isMaxPlayersReached() {
-		return getCurrPlayerTotal() == MaxPlayers;
+		return getCurrPlayerTotal() == maxPlayers;
 	}
 
 	/**
 	 * Retrieves the current number of players in the lobby.
+	 * 
 	 * @return Total number of players in the lobby currently.
 	 */
 	public int getCurrPlayerTotal() {
@@ -144,15 +152,20 @@ public class Lobby {
 
 	/**
 	 * Add a player to a team - red of blue.
-	 * @param playerToAdd Player object to add to a team.
-	 * @param specific Is there a team we should try to allocate to? 0 = random, 1 = blue, 2 = red
+	 * 
+	 * @param playerToAdd
+	 *            Player object to add to a team.
+	 * @param specific
+	 *            Is there a team we should try to allocate to? 0 = random, 1 =
+	 *            blue, 2 = red
 	 */
 	public void addPlayer(ServerBasicPlayer playerToAdd, int specific) {
 		// Add player to teams - alternate teams unless specified (when a client
 		// requests to switch teams).
 		// We check in LobbyTable if max players is reached.
 		int totPlayers = getCurrPlayerTotal();
-		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (MaxPlayers / 2))) {
+		
+		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (maxPlayers / 2))) {
 			redTeam.put(currPlayerRedNum, playerToAdd);
 			currPlayerRedNum++;
 		} else {
@@ -163,12 +176,15 @@ public class Lobby {
 
 	/**
 	 * Remove player from a team and re-order other team members as appropriate.
-	 * @param playerToRemove Player obejct to remove from the team.
+	 * 
+	 * @param playerToRemove
+	 *            Player obejct to remove from the team.
 	 */
 	public void removePlayer(ServerBasicPlayer playerToRemove) {
 
 		boolean removed = false;
 		int counter = 0;
+		
 		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
 			 * We look through until we find the player we are looking for, we
@@ -179,7 +195,7 @@ public class Lobby {
 				blueTeam.remove(counter);
 				currPlayerBlueNum--;
 				removed = true;
-				for (int i = (counter + 1); i < (MaxPlayers / 2); i++) {
+				for (int i = (counter + 1); i < (maxPlayers / 2); i++) {
 					if (blueTeam.containsKey(i)) {
 						blueTeam.replace(i - 1, blueTeam.get(i));
 						blueTeam.remove(i);
@@ -199,7 +215,7 @@ public class Lobby {
 				if (player.getID() == playerToRemove.getID()) {
 					redTeam.remove(counter);
 					currPlayerRedNum--;
-					for (int i = (counter + 1); i < (MaxPlayers / 2); i++) {
+					for (int i = (counter + 1); i < (maxPlayers / 2); i++) {
 						if (redTeam.containsKey(i)) {
 							redTeam.replace(i - 1, redTeam.get(i));
 							redTeam.remove(i);
@@ -213,12 +229,18 @@ public class Lobby {
 
 	/**
 	 * Switch a player's team.
-	 * @param playerToSwitch Player object to switch.
-	 * @param receiver Server Receiver used to retrieve/send messages between clients
+	 * 
+	 * @param playerToSwitch
+	 *            Player object to switch.
+	 * @param receiver
+	 *            Server Receiver used to retrieve/send messages between clients
 	 */
 	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
 
 		boolean switched = false;
+		String redMems;
+		String blueMems;
+		
 		for (ServerBasicPlayer player : blueTeam.values()) {
 			/*
 			 * We look through until we find the player we are looking for, we
@@ -226,7 +248,7 @@ public class Lobby {
 			 * other team.
 			 */
 			if (player.getID() == playerToSwitch.getID()) {
-				if (currPlayerRedNum < (MaxPlayers / 2)) {
+				if (currPlayerRedNum < (maxPlayers / 2)) {
 					removePlayer(playerToSwitch);
 					addPlayer(playerToSwitch, 2);
 					switched = true;
@@ -242,7 +264,7 @@ public class Lobby {
 				 * the other team.
 				 */
 				if (player.getID() == playerToSwitch.getID()) {
-					if (currPlayerBlueNum < (MaxPlayers / 2)) {
+					if (currPlayerBlueNum < (maxPlayers / 2)) {
 						removePlayer(playerToSwitch);
 						addPlayer(playerToSwitch, 1);
 						switched = true;
@@ -251,10 +273,9 @@ public class Lobby {
 				}
 			}
 		}
-		String redMems = "Ret:Red:" + getTeam(2);
-		String blueMems = "Ret:Blue:" + getTeam(1);
-		if(!testEnv)
-		{
+		redMems = "Ret:Red:" + getTeam(2);
+		blueMems = "Ret:Blue:" + getTeam(1);
+		if (!testEnv) {
 			receiver.sendToAll(redMems);
 			receiver.sendToAll(blueMems);
 		}
@@ -262,8 +283,10 @@ public class Lobby {
 
 	/**
 	 * Retrieve a particular team.
-	 * @param teamNum Number of team to return - 1=blue, 2=red.
-	 * @return  String representation of team.
+	 * 
+	 * @param teamNum
+	 *            Number of team to return - 1=blue, 2=red.
+	 * @return String representation of team.
 	 */
 	public String getTeam(int teamNum) {
 		String retStr = "";
@@ -284,22 +307,30 @@ public class Lobby {
 
 	/**
 	 * Retrieve an array of player object.
+	 * 
 	 * @return Array of ServerBasicPlayer objects.
 	 */
 	public ServerBasicPlayer[] getPlayers() {
 		ArrayList<ServerBasicPlayer> playArr = new ArrayList<>();
+		ServerBasicPlayer[] playArrReturn;
+		
 		playArr.addAll(blueTeam.values());
 		playArr.addAll(redTeam.values());
-		ServerBasicPlayer[] playArrReturn = new ServerBasicPlayer[playArr.size()];
+		playArrReturn = new ServerBasicPlayer[playArr.size()];
 		playArr.toArray(playArrReturn);
+		
 		return playArrReturn;
 	}
 
 	/**
 	 * Convert teams from Lobby structures to in-game Structures.
-	 * @param receiver Server receiver to retrieve messages sent to the server.
-	 * @param team Team representation.
-	 * @param teamNum Team number.
+	 * 
+	 * @param receiver
+	 *            Server receiver to retrieve messages sent to the server.
+	 * @param team
+	 *            Team representation.
+	 * @param teamNum
+	 *            Team number.
 	 * @return Team class.
 	 * 
 	 * @author Alexandra Paduraru and Matthew Walters
@@ -316,21 +347,23 @@ public class Lobby {
 
 			int spawnLoc = 0;
 
-			if (newTeam.getColour() == TeamEnum.RED){
+			if (newTeam.getColour() == TeamEnum.RED) {
 				spawnLoc = newTeam.getMembersNo();
 				newTeam.setColour(TeamEnum.RED);
-			}
-			else{
+			} else {
 				spawnLoc = newTeam.getMembersNo() + 4;
 				newTeam.setColour(TeamEnum.BLUE);
 			}
 
-			if (teamNum == 1){
-				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.BLUE, collissionsHandler, imagePlayer, map.getGameMode(), ServerGameSimulation.GAME_HERTZ);
+			if (teamNum == 1) {
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId,
+						map.getSpawns(), TeamEnum.BLUE, collissionsHandler, imagePlayer, map.getGameMode(),
+						ServerGameSimulation.GAME_HERTZ);
 				player.setNickname(origPlayer.getUsername());
-			}
-			else{
-				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId, map.getSpawns(),  TeamEnum.RED, collissionsHandler, imagePlayer, map.getGameMode(), ServerGameSimulation.GAME_HERTZ);
+			} else {
+				player = new UserPlayer(map.getSpawns()[spawnLoc].x * 64, map.getSpawns()[spawnLoc].y * 64, serverId,
+						map.getSpawns(), TeamEnum.RED, collissionsHandler, imagePlayer, map.getGameMode(),
+						ServerGameSimulation.GAME_HERTZ);
 				player.setNickname(origPlayer.getUsername());
 			}
 
@@ -340,22 +373,22 @@ public class Lobby {
 	}
 
 	/**
-	 * Method used to add nicknames to the AI players in multiplayer. The names are read from an external file
-	 * in the res folder.
+	 * Method used to add nicknames to the AI players in multiplayer. The names
+	 * are read from an external file in the res folder.
 	 * 
 	 * @author Alexandra Paduraru
 	 */
-	private void setPlayerNames(){
+	private void setPlayerNames() {
 		File names = new File("res/names.txt");
 		Scanner readNames;
 		try {
 			readNames = new Scanner(names);
-			for (EssentialPlayer p : red.getMembers()){
+			for (EssentialPlayer p : red.getMembers()) {
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());
 			}
 
-			for (EssentialPlayer p : blue.getMembers()){
+			for (EssentialPlayer p : blue.getMembers()) {
 				if (p instanceof AIPlayer)
 					p.setNickname(readNames.nextLine());
 			}
@@ -366,18 +399,25 @@ public class Lobby {
 		}
 
 	}
-	
-	/*Methods used to start the game*/
+
+	/* Methods used to start the game */
 
 	/**
 	 * A timer, accessed by the client for game countdown.
-	 * @param receiver TCP Server Receiver used to retrieve/send messages between clients.
-	 * @param udpServer UDP Server Receiver used to retrieve/send messages between clients in game.
-	 * @param gameMode Mode of the game : 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
+	 * 
+	 * @param receiver
+	 *            TCP Server Receiver used to retrieve/send messages between
+	 *            clients.
+	 * @param udpServer
+	 *            UDP Server Receiver used to retrieve/send messages between
+	 *            clients in game.
+	 * @param gameMode
+	 *            Mode of the game : 1 = Team Match, 2 = KoTH, 3 = CTF, 4 =
+	 *            Escort
 	 *
 	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
-		if (timer == null){
+		if (timer == null) {
 			timer = new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -397,7 +437,7 @@ public class Lobby {
 
 						}
 					}
-					playGame(receiver,udpServer, gameMode);
+					playGame(receiver, udpServer, gameMode);
 					startGameLoop(udpServer, gameMode);
 				}
 			});
@@ -405,38 +445,51 @@ public class Lobby {
 		}
 
 	}
-	
+
 	/**
-	 * Creates all the necessary information to start a new game, such as players, teams, collision handling.
-	 * @param receiver A server receiver used to send the start game information to the clients.
-	 * @param udpServer An UDP server used after the game starts.
-	 * @param gameMode The game mode to be played : 1 for Team Match Mode and 2 for CTF
+	 * Creates all the necessary information to start a new game, such as
+	 * players, teams, collision handling.
+	 * 
+	 * @param receiver
+	 *            A server receiver used to send the start game information to
+	 *            the clients.
+	 * @param udpServer
+	 *            An UDP server used after the game starts.
+	 * @param gameMode
+	 *            The game mode to be played : 1 for Team Match Mode and 2 for
+	 *            CTF
 	 *
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
-	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode){
+	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
 		red = convertTeam(receiver, redTeam, 2);
 		blue = convertTeam(receiver, blueTeam, 1);
 
-		if (debug) System.out.println("Lobby game mode: " + gameMode);
-		System.out.println("Red user players: " + red.getMembersNo());
+		if (debug)
+		{
+			System.out.println("Lobby game mode: " + gameMode);
+			System.out.println("Red user players: " + red.getMembersNo());
+		}
 
 		HashMapGen hashMaps = new HashMapGen(map);
-		//filling the game with AI players
+		
+		// filling the game with AI players
 		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
-		redAIM.createPlayers();
-
 		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
+		
+		ServerInputReceiver inputReceiver;
+		
+		redAIM.createPlayers();
 		blueAIM.createPlayers();
 
-		//setting team players and enemies
-		for(EssentialPlayer p : red.getMembers()){
+		// setting team players and enemies
+		for (EssentialPlayer p : red.getMembers()) {
 			p.setOppTeam(blue);
 			p.setMyTeam(red);
 		}
 
-		for(EssentialPlayer p : blue.getMembers()){
+		for (EssentialPlayer p : blue.getMembers()) {
 			p.setOppTeam(red);
 			p.setMyTeam(blue);
 		}
@@ -449,14 +502,14 @@ public class Lobby {
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
 
-		if(debug){
+		if (debug) {
 			System.out.println("Players are: ");
-			for(EssentialPlayer p : players){
+			for (EssentialPlayer p : players) {
 				System.out.print(p.getPlayerId() + " ");
 			}
 		}
 
-		ServerInputReceiver inputReceiver = new ServerInputReceiver(players);
+		inputReceiver = new ServerInputReceiver(players);
 
 		udpServer.setInputReceiver(inputReceiver);
 
@@ -464,14 +517,16 @@ public class Lobby {
 			String toBeSent = "2:" + gameMode + ":";
 
 			// the current player's info
-			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"+ p.getNickname() + ":";
+			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":" + p.getNickname()
+					+ ":";
 
 			// adding to the string the information about all the other players
 			for (EssentialPlayer aux : players)
 				if (aux.getPlayerId() != p.getPlayerId())
-					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"  + aux.getNickname() + ":";
+					toBeSent += aux.getPlayerId() + ":" + (aux.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":"
+							+ aux.getNickname() + ":";
 
-			if (p instanceof UserPlayer){
+			if (p instanceof UserPlayer) {
 				receiver.sendToSpec(p.getPlayerId(), toBeSent);
 			}
 		}
@@ -479,22 +534,27 @@ public class Lobby {
 
 	/**
 	 * Starts the game simulation on the server in a given game mode.
-	 * @param udpServer The UDP server used to send in-game information.
-	 * @param gameMode The game mode that is going to be played.
+	 * 
+	 * @param udpServer
+	 *            The UDP server used to send in-game information.
+	 * @param gameMode
+	 *            The game mode that is going to be played.
 	 * 
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
-	public void startGameLoop(UDPServer udpServer, int gameMode){
+	public void startGameLoop(UDPServer udpServer, int gameMode) {
 
 		ServerGameSimulation gameloop = null;
+		ServerGameStateSender stateSender ;
+		
 		if (gameMode == 1)
-			gameloop = new ServerGameSimulation( new TeamMatchMode(red, blue));
+			gameloop = new ServerGameSimulation(new TeamMatchMode(red, blue));
 		else
-			gameloop = new ServerGameSimulation( new CaptureTheFlagMode(red, blue));
+			gameloop = new ServerGameSimulation(new CaptureTheFlagMode(red, blue));
 
 		gameloop.runGameLoop();
-		ServerGameStateSender stateSender = new ServerGameStateSender(udpServer, players, id);
+		stateSender = new ServerGameStateSender(udpServer, players, id);
 		stateSender.setGameLoop(gameloop);
 		map.getPowerups()[0].setListener(stateSender);
 		map.getPowerups()[1].setListener(stateSender);
@@ -504,29 +564,31 @@ public class Lobby {
 	}
 
 	/**
-	 * Computes the maximum ID assigned to a user player in the game.
-	 * This method is used to assign ID to AI players filling up the teams.
+	 * Computes the maximum ID assigned to a user player in the game. This
+	 * method is used to assign ID to AI players filling up the teams.
+	 * 
 	 * @return The maximum id of a user player.
 	 * 
 	 * @author Alexandra Paduraru
 	 */
-	private int getMaxId(){
+	private int getMaxId() {
 		int id = -1;
-		for(EssentialPlayer p: red.getMembers())
-			if (p.getPlayerId() > id )
+		for (EssentialPlayer p : red.getMembers())
+			if (p.getPlayerId() > id)
 				id = p.getPlayerId();
 
-		for(EssentialPlayer p: blue.getMembers())
-			if (p.getPlayerId() > id )
+		for (EssentialPlayer p : blue.getMembers())
+			if (p.getPlayerId() > id)
 				id = p.getPlayerId();
 
 		return id;
 	}
 
-	//Getters and setters
-	
+	// Getters and setters
+
 	/**
 	 * Return winner of a game.
+	 * 
 	 * @return Winner team enum of a game.
 	 */
 	public TeamEnum getWinner() {
@@ -535,6 +597,7 @@ public class Lobby {
 
 	/**
 	 * Return red converted team.
+	 * 
 	 * @return Red Team object.
 	 */
 	public serverLogic.Team getRedTeam() {
@@ -543,28 +606,29 @@ public class Lobby {
 
 	/**
 	 * Return blue converted team.
+	 * 
 	 * @return Blue Team object.
 	 */
 	public Team getBlueTeam() {
 		return blue;
 	}
 
-	
-
 	/**
 	 * Sets the current maximum id of a user player.
-	 * @param newMax The new maximum id.
+	 * 
+	 * @param newMax
+	 *            The new maximum id.
 	 */
-	public static void setMaxId(int newMax){
+	public static void setMaxId(int newMax) {
 		maxId = newMax;
 	}
 
 	/**
 	 * Get maximum number of players that the Lobby will allow.
+	 * 
 	 * @return Max player value.
 	 */
-	public int getMaxPlayers(){
-		return MaxPlayers;
+	public int getMaxPlayers() {
+		return maxPlayers;
 	}
-
 }

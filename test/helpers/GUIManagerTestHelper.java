@@ -5,7 +5,9 @@ import gui.GUIManager;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
@@ -71,6 +73,23 @@ public class GUIManagerTestHelper extends GUIManager {
                 return b;
         }
         throw new RuntimeException("Could not find " + text + " in " + root.toString());
+    }
+
+    /**
+     * Helper method to find all radio buttons in a given parent node
+     * @param root parent node to search from
+     * @return array of radio buttons
+     */
+    public static ArrayList<RadioButton> navigateParentForRadioButtons(Parent root) {
+        ArrayList<RadioButton> returnArr = new ArrayList<>();
+        for (Node n : root.getChildrenUnmodifiable()) {
+            if (n instanceof RadioButton) {
+                returnArr.add((RadioButton)n);
+            } else if (n instanceof Parent) {
+                returnArr.addAll(navigateParentForRadioButtons((Parent)n));
+            }
+        }
+        return returnArr;
     }
 
     /**

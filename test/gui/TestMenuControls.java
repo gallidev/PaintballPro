@@ -28,10 +28,10 @@ public class TestMenuControls {
 
         assertTrue(p.getHgap() == 10);
         assertTrue(p.getVgap() == 10);
-        assertTrue(p.getPadding().getTop() == 5);
-        assertTrue(p.getPadding().getBottom() == 5);
-        assertTrue(p.getPadding().getLeft() == 5);
-        assertTrue(p.getPadding().getRight() == 5);
+        assertTrue(p.getPadding().getTop() == MenuControls.scaleByResolution(5).getTop());
+        assertTrue(p.getPadding().getBottom() == MenuControls.scaleByResolution(5).getBottom());
+        assertTrue(p.getPadding().getLeft() == MenuControls.scaleByResolution(5).getLeft());
+        assertTrue(p.getPadding().getRight() == MenuControls.scaleByResolution(5).getRight());
         assertTrue(p.getChildren().get(0) == b);
     }
 

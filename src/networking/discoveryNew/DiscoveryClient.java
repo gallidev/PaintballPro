@@ -27,9 +27,13 @@ public class DiscoveryClient extends Thread {
 		try {
 			// Open a random port to send the package
 			DatagramSocket clientSocket = new DatagramSocket();
-			clientSocket.setBroadcast(true);
-
 			byte[] sendData = "discover_server".getBytes();
+			Enumeration<NetworkInterface> interfaces;
+			byte[] receivedMessage;
+			DatagramPacket receivePacket;
+			String message;
+			
+			clientSocket.setBroadcast(true);
 
 			// Try multicast ip first.
 			try {
@@ -40,7 +44,8 @@ public class DiscoveryClient extends Thread {
 			}
 
 			// Broadcast the message over all the network interfaces
-			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			interfaces = NetworkInterface.getNetworkInterfaces();
+			
 			while (interfaces.hasMoreElements()) {
 				NetworkInterface networkInterface = interfaces.nextElement();
 
@@ -58,7 +63,6 @@ public class DiscoveryClient extends Thread {
 					try {
 						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 25561);
 						clientSocket.send(sendPacket);
-						System.out.println("::: " + broadcast.toString());
 					} catch (Exception e) {
 					}
 				}
@@ -66,15 +70,16 @@ public class DiscoveryClient extends Thread {
 
 			try {
 				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
-						InetAddress.getByName(networking.discovery.IPAddress.getLAN()), 25561);
+						InetAddress.getByName(networking.discoveryNew.IPAddress.getLAN()), 25561);
 				clientSocket.send(sendPacket);
 				System.out.println("::: " + InetAddress.getByName("127.0.0.1").toString());
 			} catch (Exception e) {
 			}
 
 			// Wait for a response from the Server.
-			byte[] receivedMessage = new byte[240];
-			DatagramPacket receivePacket = new DatagramPacket(receivedMessage, receivedMessage.length);
+			receivedMessage = new byte[240];
+			receivePacket = new DatagramPacket(receivedMessage, receivedMessage.length);
+			
 			while (true) {
 				clientSocket.receive(receivePacket);
 				System.out.println("Received a packet from server.");
@@ -83,7 +88,7 @@ public class DiscoveryClient extends Thread {
 			}
 
 			// Check if the message is correct
-			String message = new String(receivePacket.getData()).trim();
+			message = new String(receivePacket.getData()).trim();
 			if (message.equals("discover_response")) {
 				clientSocket.close();
 				return receivePacket.getAddress().getHostAddress() + ":25566";
