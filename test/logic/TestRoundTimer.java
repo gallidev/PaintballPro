@@ -1,9 +1,9 @@
 package logic;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 
 /**
  * Test class for the timer used as a countdown in all game modes.
@@ -13,70 +13,82 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestRoundTimer {
 
+	int noInterval = 0;
+	int smallInterval = 2;
+	int gameInterval = 4;
+	
+	RoundTimer noTimer;
+	RoundTimer smallTimer;
+	RoundTimer gameTimer;
+	
 	/**
-	 * Creates three timers with different lasting times: one with 0
-	 * seconds(extreme case), one with 5 seconds(small case) and what with the
-	 * actual game time.
+	 * Set up 3 timers, one which should not run at all, two small timers of differentl length for testing.
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		noTimer = new RoundTimer(noInterval);
+		smallTimer = new RoundTimer(smallInterval);
+		gameTimer = new RoundTimer(gameInterval);
+	}
+	
+	/**
+	 * Method that tests if timers run for as long as they have been declared.
 	 * 
-	 * Then all methods from the RoundTimer class are tested in order to ensure
-	 * that the timer is reliable.
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void test() throws InterruptedException{
-		int noInterval = 0;
-		int smallInterval = 2;
-		int gameInterval = 4;
-
-		RoundTimer noTimer = new RoundTimer(noInterval);
-		RoundTimer smallTimer = new RoundTimer(smallInterval);
-		RoundTimer gameTimer = new RoundTimer(gameInterval);
-		
+	public void gameTimingsTest() throws InterruptedException{
 		// testing startTimer: only two timers start and the third one is tested
 		// to ensure that its time is not running
 		noTimer.startTimer();
 		smallTimer.startTimer();
 
-		// testing isTimeElapsed and startTimer
 		assertTrue(noTimer.isTimeElapsed());
 		assertFalse(smallTimer.isTimeElapsed());
 		assertFalse(gameTimer.isTimeElapsed());
-
-		// getTimeLeft
-		assertTrue(smallTimer.getTimeLeft() <= 2);
-		assertTrue(gameTimer.getTimeLeft() <= 4);
-		assertTrue(noTimer.getTimeLeft() == 0);
-
-//		try {
-			Thread.sleep(2500);
-			assertTrue(noTimer.isTimeElapsed());
-			assertTrue(smallTimer.isTimeElapsed());
-			assertFalse(gameTimer.isTimeElapsed());
-//		} catch (InterruptedException e) {
-//			System.exit(1);
-//		}
-
-		// testing the timer with the actual game time
-		System.out.println(gameTimer.getTimeLeft());
-
+		
 		gameTimer.startTimer();
 
-//		try {
-			Thread.sleep(4500);
-			assertTrue(noTimer.isTimeElapsed());
-			assertTrue(smallTimer.isTimeElapsed());
-			assertTrue(gameTimer.isTimeElapsed());
-//		} catch (InterruptedException e) {
-//			System.out.println("Thread couldn't sleep.");
-//			System.exit(1);
-//		}
 
+		Thread.sleep(4500);
+		assertTrue(noTimer.isTimeElapsed());
+		assertTrue(smallTimer.isTimeElapsed());
+		assertTrue(gameTimer.isTimeElapsed());
+		
 		assertTrue(smallTimer.getTimeLeft() == 0);
 		assertTrue(gameTimer.getTimeLeft() == 0);
 		assertTrue(noTimer.getTimeLeft() <= 0);
 		
-		//setTimeLeft
+	}
+	
+	/**
+	 * Method that tests if timers return the correct remaining time.
+	 * @throws InterruptedException
+	 */
+	@Test
+	public void getTimeLeftTest() throws InterruptedException{
+		assertTrue(smallTimer.getTimeLeft() <= 2);
+		assertTrue(gameTimer.getTimeLeft() <= 4);
+		assertTrue(noTimer.getTimeLeft() == 0);
+		
+		Thread.sleep(2500);
+		assertTrue(noTimer.isTimeElapsed());
+		assertTrue(smallTimer.isTimeElapsed());
+		assertFalse(gameTimer.isTimeElapsed());
+	}
+	
+	/**
+	 * Method to test if the remaining time is changed correctly using the corresponding set method.
+	 */
+	public void setTimeLeftTest(){
+		assertTrue(smallTimer.getTimeLeft() == 0);
+		assertTrue(gameTimer.getTimeLeft() == 0);
+		assertTrue(noTimer.getTimeLeft() <= 0);
+		
 		smallTimer.setTimeLeft(10);
 		assertTrue(smallTimer.getTimeLeft() == 10);
-
+		
 	}
+	
 }

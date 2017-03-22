@@ -25,8 +25,9 @@ import rendering.Map;
 
 /**
  * Test class to tests the server-sided integration: messages received by the
- * clients.
+ * clients. 
  * Classes tested {@link UDPServer}
+ * 
  * @author Alexandra Paduraru
  *
  */
@@ -36,49 +37,53 @@ public class TestServerIntegration {
 	private ServerInputReceiver inputReceiver;
 	private EssentialPlayer player;
 
-
 	@Before
 	public void setUp() throws Exception {
 		ClientTable clientTable = new ClientTable();
 		LobbyTable lobby = new LobbyTable();
-		
+
 		server = new UDPServer(clientTable, lobby, 19877);
 		inputReceiver = new ServerInputReceiver();
-		
+
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-		player = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
-		
+		player = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+				ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		players.add(player);
 		inputReceiver.setPlayers(players);
-		
+
 		server.setInputReceiver(inputReceiver);
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		server.m_running = false;
 		server.interrupt();
 	}
 
+	/**
+	 * Method to test that the player is updated correctly on the client-side
+	 * when a server sends a new move.
+	 */
 	@Test
 	public void playerInputChangedTest() {
 		String input = "0:1:Up:Left:Shoot:Angle:30";
-		
+
 		assertNotNull(server);
 		server.playerInputChanged(input);
-		
+
 		assertFalse(player.getRight());
 		assertFalse(player.getDown());
 		assertTrue(player.getUp());
 		assertTrue(player.getLeft());
 		assertTrue(player.isShooting());
 		assertTrue(player.getAngle() == 30.0);
-		
+
 		input = "0:1:Right:Down";
 		server.playerInputChanged(input);
-		
+
 		assertTrue(player.getRight());
 		assertTrue(player.getDown());
 		assertFalse(player.getUp());
@@ -86,12 +91,15 @@ public class TestServerIntegration {
 		assertFalse(player.isShooting());
 	}
 
+	/**
+	 * Method to check that the winning team is sent correctly to the cliennt.
+	 */
 	@Test
 	public void getWinnerTest() {
 		String input = "2:Red";
-		
+
 		server.getWinner(input);
-		
+
 		assertTrue("Red".equals(server.winnerTest));
 	}
 

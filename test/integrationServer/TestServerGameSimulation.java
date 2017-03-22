@@ -22,6 +22,7 @@ import rendering.Map;
 /**
  * Test class to test the game simulation running on the server in multiplayer.
  * Class tested - {@link ServerGameSimulation}
+ * 
  * @author Alexandra Paduraru
  *
  */
@@ -39,7 +40,9 @@ public class TestServerGameSimulation {
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+				ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION,
+				ServerGameSimulation.GAME_HERTZ);
 
 		red.addMember(p);
 
@@ -47,8 +50,14 @@ public class TestServerGameSimulation {
 		gameSimulation = new ServerGameSimulation(game);
 	}
 
+	/**
+	 * Method to test that the simulation ticks the player continuously during
+	 * the game.
+	 * 
+	 * @throws InterruptedException
+	 */
 	@Test
-	public void startExecutionTestest() throws InterruptedException{
+	public void startExecutionTest() throws InterruptedException {
 		gameSimulation.runGameLoop();
 		Thread.sleep(1000);
 		assertTrue(game.getRemainingTime() <= 17900);
@@ -63,11 +72,12 @@ public class TestServerGameSimulation {
 		gameSimulation.stopGameLoop();
 	}
 
+	/**
+	 * Method to test that the correct game mode is being played.
+	 */
 	@Test
-	public void getGameTestest(){
+	public void getGameTest() {
 		assertTrue(gameSimulation.getGame() instanceof TeamMatchMode);
 	}
-
-
 
 }

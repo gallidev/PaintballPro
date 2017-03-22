@@ -21,8 +21,8 @@ import rendering.ImageFactory;
 import rendering.Map;
 
 /**
- * Test class to test the team game logic.
- * Class tested - Team.java
+ * Test class to test the team game logic. Class tested {@link Team}
+ * 
  * @author Alexandra Paduraru
  *
  */
@@ -41,61 +41,76 @@ public class TestTeam {
 
 		JavaFXTestHelper.setupApplication();
 		map = Map.loadRaw("ctf");
-		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
 	}
 
-	/* Testers for all the game logic functionality for teams */
-
-
+	/**
+	 * Method to test if the score is incremented correctly.
+	 */
 	@Test
 	public void incrementScoreTest() {
-		assertEquals(team.getScore(),  0);
+		assertEquals(team.getScore(), 0);
 
 		team.incrementScore();
-		assertEquals(team.getScore(),  1);
+		assertEquals(team.getScore(), 1);
 
 		team.incrementScore(5);
-		assertEquals(team.getScore(),  6);
+		assertEquals(team.getScore(), 6);
 	}
 
-
+	/**
+	 * Method to test that the team has the correct players.
+	 */
 	@Test
 	public void getMembersNoTest() {
 		assertEquals(team.getMembersNo(), 0);
 	}
 
+	/**
+	 * Method to test if the score is correct.
+	 */
 	@Test
 	public void getScoreTest() {
 		team.setScore(6);
 		assertEquals(team.getScore(), 6);
 	}
 
+	/**
+	 * Method to test if a member is added to the team.
+	 */
 	@Test
-	public void addMemberTest(){
+	public void addMemberTest() {
 
 		team.addMember(p);
 
 		assertTrue(team.getMembers().get(0) == p);
 	}
 
+	/**
+	 * Method to test if the reliability of the containsPlayer method.
+	 */
 	@Test
-	public void containsMemberTest(){
+	public void containsMemberTest() {
 
 		team.addMember(p);
-		EssentialPlayer p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+		EssentialPlayer p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
 		assertTrue(team.containsPlayer(p));
 		assertFalse(team.containsPlayer(p1));
 
 	}
 
-
+	/**
+	 * Method to test if the memebrs are assigned correctly.
+	 */
 	@Test
-	public void setMembersTest(){
+	public void setMembersTest() {
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		team.setMembers(players);
 		assertEquals(team.getMembersNo(), 0);
-		assertTrue(team.getColour()== TeamEnum.RED);
+		assertTrue(team.getColour() == TeamEnum.RED);
 
 		players.add(p);
 		team.setMembers(players);
@@ -104,12 +119,18 @@ public class TestTeam {
 		assertTrue(team.getColour() == TeamEnum.RED);
 	}
 
+	/**
+	 * Method to test if the score is set correctly.
+	 */
 	@Test
 	public void setScoreTest() {
 		team.setScore(10);
-		assertEquals(team.getScore(),  10);
+		assertEquals(team.getScore(), 10);
 	}
 
+	/**
+	 * Method to test if the team has the correct colour.
+	 */
 	@Test
 	public void colourTest() {
 		assertTrue(team.getColour() == TeamEnum.RED);
@@ -117,10 +138,12 @@ public class TestTeam {
 		assertTrue(team.getColour() == TeamEnum.BLUE);
 	}
 
+	/**
+	 * Method to test if the right members.
+	 */
 	@Test
 	public void getMembersTest() {
 		assertTrue(team.getMembers().isEmpty());
 	}
-
 
 }

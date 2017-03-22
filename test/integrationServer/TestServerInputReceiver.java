@@ -20,8 +20,9 @@ import rendering.Map;
 
 /**
  * Test class to test the input receiver on the server, which receives
- * information from all clients regarding player locations.
- * Class tested- {@link ServerInputReceiver}
+ * information from all clients regarding player locations. Class tested-
+ * {@link ServerInputReceiver}, {@link EssentialPlayer}
+ * 
  * @author Alexandra Paduraru
  *
  */
@@ -39,13 +40,17 @@ public class TestServerInputReceiver {
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+				ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
 		players.add(p);
 
 		inputReceiver2 = new ServerInputReceiver(players);
 	}
 
+	/**
+	 * Method to check that the player is updated correctly.
+	 */
 	@Test
 	public void updatePlayerTest() {
 		inputReceiver.setPlayers(players);
@@ -60,6 +65,9 @@ public class TestServerInputReceiver {
 
 	}
 
+	/**
+	 * Method to check that the players are assigned correctly.
+	 */
 	@Test
 	public void setPlayersTest() {
 		inputReceiver.setPlayers(players);
@@ -68,6 +76,9 @@ public class TestServerInputReceiver {
 
 	}
 
+	/**
+	 * Method to check that the players are correct.
+	 */
 	@Test
 	public void getPlayersTest() {
 		assertEquals(inputReceiver2.getPlayers(), players);
