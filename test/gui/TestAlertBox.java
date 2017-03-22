@@ -22,7 +22,6 @@ public class TestAlertBox {
         Platform.runLater(() -> {
             AlertBox ab = new AlertBox("Example Alert", "Testing - Press OK");
             ab.showAlert(false);
-            ab.dismiss();
         });
 
         JavaFXTestHelper.waitForPlatform();
