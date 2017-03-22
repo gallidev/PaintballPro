@@ -9,17 +9,12 @@ import rendering.ImageFactory;
 
 import java.util.Random;
 
-import integration.server.CollisionHandlerListener;
-
 public class Powerup extends ImageView
 {
-	private boolean taken = false;
+	private static final int duration = 15000; //Respawn 15 seconds after being taken
 	private PowerupType type;
-	private int duration = 15000; //Respawn 15 seconds after being taken
 	private GameObject[] locations;
 	private CollisionsHandlerListener listener;
-	private int indexLocation;
-	private Powerup otherPowerUp;
 
 	public Powerup(PowerupType type, GameObject[] locations)
 	{
@@ -28,16 +23,6 @@ public class Powerup extends ImageView
 		this.type = type;
 		this.locations = locations;
 		resetPosition();
-	}
-
-	public boolean isTaken()
-	{
-		return taken;
-	}
-
-	public void setTaken(boolean b)
-	{
-		taken = b;
 	}
 
 	public PowerupType getType()
@@ -52,12 +37,7 @@ public class Powerup extends ImageView
 
 	private void resetPosition()
 	{
-		indexLocation = (new Random()).nextInt(locations.length);
-		if(otherPowerUp != null){
-			while(indexLocation == otherPowerUp.getIndexLocation()){
-				indexLocation = (new Random()).nextInt(locations.length);
-			}
-		}
+		int indexLocation = (new Random()).nextInt(locations.length);
 
 		relocate(locations[indexLocation].getX() * 64 + 16, locations[indexLocation].getY() * 64 + 16);
 		if(listener != null)
@@ -69,28 +49,18 @@ public class Powerup extends ImageView
 		relocate(locations[index].getX() * 64 + 16, locations[index].getY() * 64 + 16);
 	}
 
-	void took() {
+	void take() {
 		setVisible(false);
 		new java.util.Timer().schedule(
 		        new java.util.TimerTask() {
 		            @Override
 		            public void run() {
 		            	setVisible(true);
-		            	setTaken(false);
 		                resetPosition();
 		            }
 		        },
 		        duration
 		);
 
-	}
-
-	public int getIndexLocation(){
-		return this.indexLocation;
-	}
-
-	public void setOtherPowerUp( Powerup otherPowerUp){
-		this.otherPowerUp = otherPowerUp;
-		resetPosition();
 	}
 }

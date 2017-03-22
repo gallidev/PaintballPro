@@ -1,13 +1,5 @@
 package integrationClient;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -19,6 +11,9 @@ import networking.game.UDPClient;
 import networking.game.UDPServer;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import physics.Flag;
 import physics.Powerup;
@@ -26,10 +21,13 @@ import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
-import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 public class TestClientIntegration {
 
@@ -223,7 +221,7 @@ public class TestClientIntegration {
 	public void shieldRemovedTest() {
 		String input = "%:1";
 		client.shieldRemovedAction(input);
-		assertTrue(player.getShieldRemoved());
+		assertTrue(player.getShieldPopped());
 	}
 
 }

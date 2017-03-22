@@ -1,8 +1,5 @@
 package physics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import enums.TeamEnum;
 import integrationServer.CollisionsHandlerListener;
 import javafx.scene.shape.Path;
@@ -13,6 +10,9 @@ import logic.server.Team;
 import players.EssentialPlayer;
 import rendering.Map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author gallifilippo
@@ -20,7 +20,7 @@ import rendering.Map;
  */
 public class CollisionsHandler
 {
-	private static final boolean debug = true;
+	private static final boolean debug = false;
 
 	private ArrayList<Rectangle> propsWalls;
 	private Rectangle spawnAreaRed;
@@ -229,17 +229,22 @@ public class CollisionsHandler
 
 	public void handlePowerUpCollision(EssentialPlayer p){
 
-		for(int i = 0; i < powerups.length; i ++){
-			if(p.getPolygonBounds().getBoundsInParent().intersects(powerups[i].getBoundsInParent())){
-				if(!powerups[i].isTaken()) {
-					powerups[i].setTaken(true);
-					powerups[i].took();
-					if (powerups[i].getType() == PowerupType.SHIELD) {
-						p.giveShield();
+		for(Powerup powerup : powerups)
+		{
+			if(p.getPolygonBounds().getBoundsInParent().intersects(powerup.getBoundsInParent()))
+			{
+				if(powerup.isVisible())
+				{
+					powerup.take();
+					if(powerup.getType() == PowerupType.SHIELD)
+					{
+						p.setShield(true);
 						if(listener != null)
 							listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
-					} else if (powerups[i].getType() == PowerupType.SPEED) {
-						p.giveSpeed();
+					}
+					else if(powerup.getType() == PowerupType.SPEED)
+					{
+						p.setSpeed(true);
 						if(listener != null)
 							listener.onPowerupAction(PowerupType.SPEED, p.getPlayerId());
 					}
@@ -264,7 +269,7 @@ public class CollisionsHandler
 					//check if the player has the shield power up
 					if(p.getShieldActive()){
 						//shield absorbs a bullet
-						p.removeShield();
+						p.setShield(false);
 						if(listener != null)
 							listener.onPowerupAction(PowerupType.SHIELD, p.getPlayerId());
 					} else {
