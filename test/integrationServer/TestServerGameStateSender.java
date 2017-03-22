@@ -25,6 +25,7 @@ import networking.server.ClientTable;
 import networking.server.LobbyTable;
 import physics.CollisionsHandler;
 import physics.InputHandler;
+import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;
@@ -36,7 +37,8 @@ import rendering.Renderer;
 public class TestServerGameStateSender {
 
 	private UDPServer server;
-	private UDPClient client;
+	private UDPClient client1;
+	private UDPClient client2;
 	private InputHandler handler;
 	private UserPlayer userPlayer1;
 	private UserPlayer userPlayer2;
@@ -46,23 +48,27 @@ public class TestServerGameStateSender {
 	private ServerGameStateSender serverGameStateSender;
 
 	private ClientInputSender inputSender;
+	private ClientTable table;
+	private LobbyTable lobby;
+
+	private ServerGameSimulation gameSimulation;
 
 	@Before
 	public void setUp() throws Exception {
-		ClientTable table = new ClientTable();
-		LobbyTable lobby = new LobbyTable();
 
-//		int clientId = table.add("Filippo");
-//		table.addNewIP("127.0.0.1", clientId);
-//
+		table = new ClientTable();
 
-		handler = new InputHandler();
+		lobby = new LobbyTable();
+		lobby.testEnv = true;
 
-		server = new UDPServer(table, lobby, 19877);
+		int id = table.add("test");
 
-//		lobby.addPlayerToLobby(table.getPlayer(clientId), 1, null, server);
+		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 
+		server = new UDPServer(table, lobby, 19878);
 		server.start();
+		Thread.sleep(500);
+
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("ctf");
@@ -81,44 +87,82 @@ public class TestServerGameStateSender {
 		playersForServer.add(userPlayer1);
 		playersForServer.add(userPlayer2);
 
+
 		ch.setPlayers(playersForServer);
 
-		//lobbyId should be 1
+		Team red = new Team(TeamEnum.RED);
+		Team blue = new Team(TeamEnum.BLUE);
+		red.addMember(userPlayer1);
+		blue.addMember(userPlayer2);
+		TeamMatchMode game = new TeamMatchMode(red, blue);
+
+		gameSimulation = new ServerGameSimulation(game);
+
+
 		serverGameStateSender = new ServerGameStateSender(server, playersForServer, 1);
+		serverGameStateSender.setGameLoop(gameSimulation);
 
-		client = new UDPClient(1, "127.0.0.1", 19877,null, null, 25567, "test");
-		client.start();
+		client1 = new UDPClient(id, "127.0.0.1", 19878,null, null, 25568, "test");
 
-		//inputSender = new ClientInputSender(client, handler, player);
+		id = table.add("test2");
+		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
+		lobby.switchTeams(table.getPlayer(id), null);
+
+		client2 = new UDPClient(id, "127.0.0.1", 19878,null, null, 25569, "test");
+
+		client1.testNetworking = true;
+		client2.testNetworking = true;
+
+		client1.start();
+		client2.start();
+
+		server.sendToAll("TestSendToAll", "127.0.0.1:"+client1.port);
+
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		client.stopThread();
+		client1.stopThread();
+		client2.stopThread();
 		server.m_running = false;
 		server.interrupt();
-		client.active = false;
+		client1.active = false;
+		client2.active = false;
 	}
 
+//	@Test
+//	public void startSendingTest() throws InterruptedException {
+//
+//		serverGameStateSender.startSending();
+//
+//		Thread.sleep(1000);
+//
+//		serverGameStateSender.stopSending();
+//
+//	}
+
 	@Test
-	public void startSendingTest() throws InterruptedException {
+	public void testSendingEverything() throws InterruptedException {
+
+		gameSimulation.runGameLoop();
 
 		serverGameStateSender.startSending();
 
-		Thread.sleep(1000);
-
-		serverGameStateSender.stopSending();
-
-	}
-
-	@Test
-	public void testSendingBullet() throws InterruptedException {
-
 		serverGameStateSender.onShotBullet(1, 1, 0, 0, 1.35);
+		serverGameStateSender.onBulletKills(1, 1);
+		serverGameStateSender.onFlagCaptured(1);
+		serverGameStateSender.onFlagDropped(1);
+		serverGameStateSender.onFlagRespawned(1);
+		serverGameStateSender.onPowerupAction(PowerupType.SHIELD, 2);
+		serverGameStateSender.onPowerupAction(PowerupType.SPEED, 1);
+		serverGameStateSender.onPowerupRespawn(PowerupType.SPEED, 1);
 
-		Thread.sleep(1000);
+
+		Thread.sleep(5000);
 
 		serverGameStateSender.stopSending();
+		gameSimulation.stopGameLoop();
 
 	}
 
