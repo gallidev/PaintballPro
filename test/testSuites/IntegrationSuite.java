@@ -14,6 +14,7 @@ import integrationServer.TestServerIntegration;
 @Suite.SuiteClasses({
 	TestClientIntegration.class,
 	TestClientInputSender.class,
+	TestClientIntegration.class,
 	TestServerInputReceiver.class,
 	TestServerGameSimulation.class,
 	TestServerIntegration.class,
