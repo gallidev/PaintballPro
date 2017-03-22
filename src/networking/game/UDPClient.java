@@ -25,7 +25,7 @@ import static gui.GUIManager.renderer;
 public class UDPClient extends Thread {
 
 	private boolean active = true;
-	private boolean debug = true;
+	private boolean debug = false;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
 	private GUIManager guiManager;
@@ -35,13 +35,13 @@ public class UDPClient extends Thread {
 	private InetAddress IPAddress;
 	private String nickname;
 	private TeamTable teams;
-	
+
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testIntegration = false;
 	public boolean testSendToAll = false;
 	public static double PINGDELAY = 0;
-	
+
 	/**
 	 * We establish a connection with the UDP server... we tell it we are
 	 * connecting for the first time so that it stores our information
@@ -62,7 +62,7 @@ public class UDPClient extends Thread {
 	 */
 	public UDPClient(int clientID, String udpServIP, int udpServPort, GUIManager guiManager, TeamTable teams,
 			int portNum, String nickname) {
-		
+
 		int port = portNum;
 		this.clientID = clientID;
 		this.teams = teams;
@@ -101,7 +101,7 @@ public class UDPClient extends Thread {
 					System.out.println("IPAddress is:" + IPAddress.getHostAddress());
 
 				String sentence = "Connect:" + clientID;
-				
+
 				byte[] receiveData;
 				DatagramPacket receivePacket;
 				String sentSentence;
@@ -305,7 +305,7 @@ public class UDPClient extends Thread {
 				visibility = false;
 
 			boolean eliminated = false;
-			if(actions[5].equals("true"))
+			if(actions[6].equals("true"))
 				eliminated = true;
 
 			if (gameStateReceiver != null) {
@@ -334,7 +334,7 @@ public class UDPClient extends Thread {
 				public void run() {
 					GUIManager.renderer.setRedScore(redScore);
 					GUIManager.renderer.setBlueScore(blueScore);
-					
+
 				}
 			});
 		}
@@ -384,7 +384,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Computes a player's bullets client-side, without the need for the server
 	 * to send the client that information.
-	 * 
+	 *
 	 * @param text
 	 *            Contains the id of the player whose bullets are updated,
 	 *            according to the protocol.
@@ -402,7 +402,7 @@ public class UDPClient extends Thread {
 
 	/**
 	 * Method to retrieve the game remaining time sent from the server.
-	 * 
+	 *
 	 * @param sentence
 	 *            The protocol message containing the number of seconds left in
 	 *            the game.
@@ -428,7 +428,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when a flag has been
 	 * captured by a player.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
@@ -448,7 +448,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when a flag has been
 	 * lost by a player.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
@@ -468,7 +468,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when a flag has been
 	 * brought back to a team's base base.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
@@ -500,7 +500,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when a powerup needs
 	 * to be respawned after it has been picked up previously.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the powerup type: 0 for shield
 	 *            and 1 for speed.
@@ -515,7 +515,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when a shiled powerup
 	 * has been lost by a player.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
@@ -528,7 +528,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when a powerup has
 	 * been picked.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the player's id, as well as
 	 *            powerup type: 0 for shield and 1 for speed.
@@ -568,7 +568,7 @@ public class UDPClient extends Thread {
 	/**
 	 * Method to retrieve the information from the server when aplayer has been
 	 * eliminated.
-	 * 
+	 *
 	 * @param text
 	 *            The protocol message containing the player's id.
 	 */
