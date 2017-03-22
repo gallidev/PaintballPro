@@ -203,9 +203,9 @@ public class UDPClient extends Thread {
 					break;
 				// case '@': hitWallAction(receivedPacket);
 				// break;
-				case '#':
-					eliminatedPlayerAction(receivedPacket);
-					break;
+//				case '#':
+//					eliminatedPlayerAction(receivedPacket);
+//					break;
 				case '$':
 					powerUpAction(receivedPacket);
 					break;
@@ -353,40 +353,6 @@ public class UDPClient extends Thread {
 		if(debug) System.out.println("Blue score: " + blueScore);
 	}
 
-	/**
-	 * Receives all the player's active bullets and updates them accordingly on
-	 * the client side, using the client game state receiver.
-	 *
-	 * @param text
-	 *            The protocol message containg the active bullets and the id of
-	 *            the player.
-	 * @author Alexandra Paduraru
-	 * @author Filippo Galli
-	 */
-	public void updateBulletAction(String text) {
-		// Protocol message: 4:id:idBullet:x:y:...
-
-		// get all the bullets
-		String[] data = text.split(":");
-
-		if (bulletDebug) {
-			System.out.print("Received bullets: ");
-
-			System.out.print("Received bullets: ");
-
-			for (int i = 0; i < data.length; i++) {
-				if (data[i].isEmpty())
-					System.out.print("EMPTY ");
-				else
-					System.out.print(data[i] + " ");
-			}
-
-		}
-
-		if (gameStateReceiver != null) {
-			// gameStateReceiver.updateBullets(id, bullets);
-		}
-	}
 
 	/**
 	 * Computes a player's bullets client-side, without the need for the server
@@ -413,7 +379,7 @@ public class UDPClient extends Thread {
 		}
 	}
 
-	private void destroyBullet(String text) {
+	public void destroyBullet(String text) {
 
 		String[] actions = text.split(":");
 		int playerId = Integer.parseInt(actions[1]);
@@ -532,7 +498,7 @@ public class UDPClient extends Thread {
 	 *            and 1 for speed.
 	 * @author Alexandra Paduraru
 	 */
-	private void powerUpRespawn(String receivedPacket) {
+	public void powerUpRespawn(String receivedPacket) {
 		String[] message = receivedPacket.split(":");
 		PowerupType type = (message[1].equals("0") ? PowerupType.SHIELD : PowerupType.SPEED);
 		gameStateReceiver.powerUpRespawn(type, Integer.parseInt(message[2]));
@@ -591,29 +557,8 @@ public class UDPClient extends Thread {
 		gameStateReceiver.getPlayerWithId(clientID).setNickname(nickname);
 	}
 
-	/**
-	 * Method to retrieve the information from the server when aplayer has been
-	 * eliminated.
-	 *
-	 * @param text
-	 *            The protocol message containing the player's id.
-	 */
-	private void eliminatedPlayerAction(String text) {
-		int id = Integer.parseInt(text.split(":")[1]);
-
-		if (lastPlayedEliminatedSound.containsKey(id)) {
-			if (lastPlayedEliminatedSound.get(id) + 3000 < System.currentTimeMillis()) {
-				guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float) 1.0);
-				lastPlayedEliminatedSound.put(id, System.currentTimeMillis());
-			}
-		} else {
-			guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float) 1.0);
-			lastPlayedEliminatedSound.put(id, System.currentTimeMillis());
-		}
-	}
-
 	public boolean isActive() {
 		return active;
 	}
-	
+
 }

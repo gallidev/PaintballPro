@@ -128,18 +128,6 @@ public class ClientGameStateReceiver {
 		player.setShieldEffect(false);
 	}
 
-	/**
-	 * Update a player's active bullets.
-	 * @param id The id of the player.
-	 */
-
-	public void updateBullets(int id){
-		EssentialPlayer p = getPlayerWithId(id);
-
-		if(p != null &&  !(p instanceof ClientPlayer)){
-			Platform.runLater(p::shoot);
-		}
-	}
 
 	public void generateBullet(int playerId, int bulletId, double originX, double originY, double angle){
 		EssentialPlayer p = getPlayerWithId(playerId);
@@ -154,14 +142,17 @@ public class ClientGameStateReceiver {
 	public void destroyBullet(int playerId, int bulletId) {
 		EssentialPlayer p = getPlayerWithId(playerId);
 
-		Bullet b = getBulletWithId(p, bulletId);
-		if(b != null){
-			Platform.runLater(() -> {
-				System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
-				b.setVisible(false);
-				b.setActive(false);
-			});
+		if(p!=null){
+			Bullet b = getBulletWithId(p, bulletId);
+			if(b != null){
+				Platform.runLater(() -> {
+					System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
+					b.setVisible(false);
+					b.setActive(false);
+				});
+			}
 		}
+
 
 	}
 
@@ -204,11 +195,6 @@ public class ClientGameStateReceiver {
 
 	}
 
-	public void updateSpeedGame(){
-		for (EssentialPlayer p : players){
-			p.updateGameSpeed();
-		}
-	}
 
 	/**
 	 * Helper method to find the player with a specific id from the entire list of players in the game.
