@@ -1,12 +1,5 @@
 package rendering;
 
-import static players.EssentialPlayer.PLAYER_HEAD_X;
-import static players.EssentialPlayer.PLAYER_HEAD_Y;
-
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Random;
-
 import enums.TeamEnum;
 import gui.GUIManager;
 import integration.client.ClientInputSender;
@@ -27,18 +20,17 @@ import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
 import networking.client.ClientReceiver;
-import physics.Bullet;
-import physics.CollisionsHandler;
-import physics.Flag;
-import physics.InputHandler;
-import physics.KeyPressListener;
-import physics.KeyReleaseListener;
-import physics.MouseListener;
-import physics.Powerup;
-import physics.PowerupType;
+import physics.*;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.OfflinePlayer;
+
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Random;
+
+import static players.EssentialPlayer.PLAYER_HEAD_X;
+import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 /**
  * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.
@@ -47,7 +39,6 @@ import players.OfflinePlayer;
  */
 public class Renderer extends Scene
 {
-
 	public static double TARGET_FPS = 60.0;
 
 	static Pane view = new Pane();
@@ -56,9 +47,9 @@ public class Renderer extends Scene
 	OfflinePlayer player;
 
 	//attributes for multiplayer
-	int blueScore = 0;
-	int redScore = 0;
-	int timeRemaining = 0;
+	private int blueScore, redScore;
+	private int timeRemaining = 0;
+
 	private PauseMenu pauseMenu;
 	private PauseSettingsMenu settingsMenu;
 	private HeadUpDisplay hud;
@@ -89,8 +80,6 @@ public class Renderer extends Scene
 
 		map.powerups = new Powerup[]{new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
 		};
-		map.powerups[0].setOtherPowerUp(map.powerups[1]);
-		map.powerups[1].setOtherPowerUp(map.powerups[0]);
 		view.getChildren().addAll(map.powerups);
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);

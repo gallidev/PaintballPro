@@ -20,10 +20,10 @@ import java.util.ArrayList;
 public class ClientGameStateReceiver {
 
 	private static final boolean debug = false;
+	public boolean integrationTest;
 	private ArrayList<EssentialPlayer> players;
 	private Flag flag;
 	private Powerup[] powerups;
-	public boolean integrationTest;
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
@@ -97,11 +97,11 @@ public class ClientGameStateReceiver {
 		{
 			case SHIELD:
 				powerups[0].setVisible(false);
-				player.giveShield();
+				player.setShield(true);
 				break;
 			case SPEED:
 				powerups[1].setVisible(false);
-				player.giveSpeed();
+				player.setSpeed(true);
 				break;
 		}
 

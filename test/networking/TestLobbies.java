@@ -91,21 +91,6 @@ public class TestLobbies {
 		assertEquals(lobby.getTeam(2),"USER1");
 		assertEquals(lobby.getTeam(1),"");
 	}
-	
-//	@Test
-//	public void testGetRedTeam() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetBlueTeam() {
-//		fail("Not yet implemented");
-//	}
-//	
-//	@Test
-//	public void testSwitchTeam() {
-//		fail("Not yet implemented");
-//	}
 
 	@Test
 	public void testGetPlayers() {
@@ -122,21 +107,6 @@ public class TestLobbies {
 		assertEquals(lobby.getPlayers().length,0);
 		assertEquals(lobby.getCurrPlayerTotal(),0);
 	}
-
-//	@Test
-//	public void testPlayGame() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testTimerStart() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetWinner() {
-//		fail("Not yet implemented");
-//	}
 	
 	// ---------------
 	// LobbyTable Tests

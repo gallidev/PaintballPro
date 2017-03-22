@@ -50,13 +50,6 @@ public class TestClientTable {
 	}
 
 	@Test
-	public void testGetUDPQueueWithIP() {
-		table.addUDPQueue("127.0.0.1");
-		MessageQueue m = table.getUDPQueueWithIP("127.0.0.1");
-		assertNotNull(m);
-	}
-
-	@Test
 	public void testAddNewIP() {
 		table.addNewIP("127.0.0.1", 1);
 		assertEquals(table.getID("127.0.0.1"),1);

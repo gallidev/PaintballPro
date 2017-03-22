@@ -3,7 +3,6 @@ package gui;
 import enums.Menu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -129,10 +128,10 @@ public class SettingsMenu {
 		resolutionComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			s.setResolution(newValue);
 			String[] resolution = newValue.split("x");
-			guiManager.width = Double.parseDouble(resolution[0]);
-			guiManager.getStage().setWidth(guiManager.width);
-			guiManager.height = Double.parseDouble(resolution[1]);
-			guiManager.getStage().setHeight(guiManager.height);
+			guiManager.getStage().setWidth(Double.parseDouble(resolution[0]));
+			guiManager.width = guiManager.getStage().getWidth();
+			guiManager.getStage().setHeight(Double.parseDouble(resolution[1]));
+			guiManager.height = guiManager.getStage().getHeight();
 			guiManager.getStage().centerOnScreen();
 			mainGrid.setPadding(MenuControls.scaleByResolution(25));
 			optGrid.setPadding(MenuControls.scaleByResolution(25));

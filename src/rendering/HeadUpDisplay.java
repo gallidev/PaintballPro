@@ -4,7 +4,6 @@ import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -49,13 +48,13 @@ public class HeadUpDisplay extends SubScene
 		statusBar.setPrefHeight(view.getHeight() / 8);
 		statusBar.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75)");
 		statusBar.setAlignment(Pos.CENTER);
-		statusBar.setCache(true);
-		statusBar.setCacheHint(CacheHint.SCALE);
+		//statusBar.setCache(true);
+		//statusBar.setCacheHint(CacheHint.SCALE);
 
 		view.setBottom(statusBar);
 	}
 
-	public void setScore(TeamEnum team, int score)
+	void setScore(TeamEnum team, int score)
 	{
 		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(score));
 	}

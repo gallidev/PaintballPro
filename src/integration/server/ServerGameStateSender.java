@@ -1,16 +1,16 @@
 package integration.server;
 
-import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import enums.TeamEnum;
 import integrationServer.CollisionsHandlerListener;
 import logic.server.Team;
 import networking.game.UDPServer;
 import physics.PowerupType;
 import players.EssentialPlayer;
+
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -49,13 +49,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	public void startSending(){
 
 		scheduler = Executors.newScheduledThreadPool(1);
-
-		Executors.newSingleThreadScheduledExecutor(r ->
-		{
-		    Thread t = Executors.defaultThreadFactory().newThread(r);
-		    t.setPriority(Thread.MIN_PRIORITY);
-		    return t;
-		});
 
 		Runnable sender = () ->
 		{
@@ -117,18 +110,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	public void onShotBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
-//		for(EssentialPlayer p : players){
-//
-//			String toBeSent = "4:" + p.getPlayerId();
-//
-//			if(p.hasShot()){
-//				p.setHasShot(false);
-//				toBeSent += ":shot";
-//				udpServer.sendToAll(toBeSent, lobbyId);
-//			}
-//
-//		}
-
 		String toBeSent = "4:" + playerId;
 		toBeSent += ":" + bulletId;
 		toBeSent += ":" + originX;
@@ -173,9 +154,9 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 				p.setScoreChanged(false);
 			}
 
-			if (p.getShieldRemoved()){
+			if (p.getShieldPopped()){
 				sendShieldRemoved(p);
-				p.setShieldRemoved(false);
+				p.setShieldPopped(false);
 			}
 
 		}
