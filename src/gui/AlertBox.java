@@ -39,4 +39,11 @@ public class AlertBox {
 			alert.show();
 	}
 
+	/**
+	 * Dismiss the alert
+	 */
+	public void dismiss() {
+		if (alert != null) alert.close();
+	}
+
 }
