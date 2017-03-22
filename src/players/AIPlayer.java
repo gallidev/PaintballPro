@@ -162,4 +162,8 @@ public class AIPlayer extends EssentialPlayer{
 //		return this.collisionsHandler;
 //	}
 
+	public BehaviourManager getBehaviourManager(){
+		return bManager;
+	}
+
 }
