@@ -1,16 +1,16 @@
 package integration.server;
 
-import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import enums.TeamEnum;
 import integrationServer.CollisionsHandlerListener;
 import logic.server.Team;
 import networking.game.UDPServer;
 import physics.PowerupType;
 import players.EssentialPlayer;
+
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -154,9 +154,9 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 				p.setScoreChanged(false);
 			}
 
-			if (p.getShieldRemoved()){
+			if (p.getShieldPopped()){
 				sendShieldRemoved(p);
-				p.setShieldRemoved(false);
+				p.setShieldPopped(false);
 			}
 
 		}

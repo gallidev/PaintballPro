@@ -1,18 +1,5 @@
 package physics;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import integration.server.ServerGameSimulation;
@@ -20,10 +7,20 @@ import integrationServer.CollisionsHandlerListener;
 import logic.GameMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class TestCollisionsHandler {
 
@@ -377,7 +374,7 @@ public class TestCollisionsHandler {
 			e.printStackTrace();
 		}
 
-		assertTrue(collisionsHandler.getShieldPowerup().isTaken());
+		assertTrue(collisionsHandler.getShieldPowerup().isVisible());
 
 		player1.setAngle(1.5708);
 		player2.setAngle(1.5708);
@@ -409,7 +406,7 @@ public class TestCollisionsHandler {
 			e.printStackTrace();
 		}
 
-		assertTrue(collisionsHandler.getSpeedPowerup().isTaken());
+		assertTrue(collisionsHandler.getSpeedPowerup().isVisible());
 
 		gameSimulation.stopGameLoop();
 	}

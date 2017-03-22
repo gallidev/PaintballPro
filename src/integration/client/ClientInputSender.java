@@ -1,13 +1,13 @@
 package integration.client;
 
+import networking.game.UDPClient;
+import physics.InputHandler;
+import players.ClientPlayer;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import networking.game.UDPClient;
-import physics.InputHandler;
-import players.ClientPlayer;
 
 /**
  * Sends user inputs(client-sided) to the server.
@@ -18,13 +18,12 @@ import players.ClientPlayer;
  */
 public class ClientInputSender {
 
+	private static final boolean debug = false;
 	private ClientPlayer player;
 	private UDPClient udpClient;
 	private InputHandler handler;
-	private boolean debug = true;
-
 	/* Dealing with sending the information */
-	private long delayMilliseconds = 25;
+	private long delayMilliseconds = 17;
 	private int times = 0;
 
 	/**
