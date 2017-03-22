@@ -13,17 +13,22 @@ import networking.shared.MessageQueue;
  * @author Matthew Walters
  */
 public class ClientSender extends Thread {
-
+	
 	private MessageQueue queue;
 	private PrintStream server;
-	public boolean m_running = true;
 	private String clientNickname;
-
+	
+	public boolean m_running = true;
+	
 	/**
 	 * Constructor of client sender thread. We set global variables passed in.
-	 * @param queue Message queue for client.
-	 * @param serverStream Stream to server.
-	 * @param nickname Nickname of client.
+	 * 
+	 * @param queue
+	 *            Message queue for client.
+	 * @param serverStream
+	 *            Stream to server.
+	 * @param nickname
+	 *            Nickname of client.
 	 */
 	public ClientSender(MessageQueue queue, PrintStream serverStream, String nickname) {
 		this.queue = queue;
@@ -33,7 +38,9 @@ public class ClientSender extends Thread {
 
 	/**
 	 * Places a message to send to the server.
-	 * @param text Message to send to the server.
+	 * 
+	 * @param text
+	 *            Message to send to the server.
 	 */
 	public void sendMessage(String text) {
 		queue.offer(new Message(text));
@@ -51,19 +58,19 @@ public class ClientSender extends Thread {
 			String text = msg.getText();
 			// Print to the client stream.
 			server.println(text);
-			if(text.contains("Exit:Client"))
-			{
+			if (text.contains("Exit:Client")) {
 				break;
 			}
 		}
 		// If stopped, return.
-		//server.close();
+		// server.close();
 		System.out.println("Stopping ClientSender");
 		return;
 	}
 
 	/**
 	 * We return the message queue of the client.
+	 * 
 	 * @return Client's message queue.
 	 */
 	public MessageQueue getQueue() {

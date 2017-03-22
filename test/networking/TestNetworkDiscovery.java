@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import networking.discovery.DiscoveryClientListener;
+import networking.discoveryNew.DiscoveryClientListener;
 
 /**
  * Test class to test Network Discovery.

@@ -12,7 +12,8 @@ public class Message {
 	/**
 	 * Set message text to be sent to the client.
 	 * 
-	 * @param text The text of the message.
+	 * @param text
+	 *            The text of the message.
 	 */
 	public Message(String text) {
 		this.text = text;

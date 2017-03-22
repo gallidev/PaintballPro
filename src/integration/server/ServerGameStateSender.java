@@ -18,7 +18,7 @@ import players.EssentialPlayer;
  * @author Filippo Galli
  *
  */
-public class ServerGameStateSender implements CollisionHandlerListener {
+public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/* Dealing with sending the information */
 	private static final long delayMilliseconds = 25;
@@ -206,7 +206,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 	}
 
 
-	@Override
 	public void onFlagCaptured(int player)
 	{
 		String toBeSent = "8:" + player + ":";
@@ -214,7 +213,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 		updateScore();
 	}
 
-	@Override
 	public void onFlagDropped(int player)
 	{
 		String toBeSent = "7:" + + player + ":";
@@ -222,7 +220,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 		updateScore();
 	}
 
-	@Override
 	public void onFlagRespawned(int player)
 	{
 		String toBeSent = "!:" + player + ":";
@@ -234,7 +231,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 		updateScore();
 	}
 
-	@Override
 	public void onPowerupAction(PowerupType type, int player)
 	{
 		String toBeSent = "";
@@ -248,7 +244,6 @@ public class ServerGameStateSender implements CollisionHandlerListener {
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
 
-	@Override
 	public void onPowerupRespawn(PowerupType type, int location)
 	{
 		String toBeSent = "";

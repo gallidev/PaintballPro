@@ -64,6 +64,7 @@ public class UserPlayer extends EssentialPlayer{
 
 	protected void updatePosition()
 	{
+		//System.out.println("position :" + getLayoutX() + " " + getLayoutY());
 		if(up && !collUp){
 			setLayoutY(getLayoutY() - movementSpeed);
 		}else if(!up && collUp){

@@ -1,5 +1,6 @@
 package physics;
 
+import integrationServer.CollisionsHandlerListener;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ public class Powerup extends ImageView
 	private PowerupType type;
 	private int duration = 15000; //Respawn 15 seconds after being taken
 	private GameObject[] locations;
-	private CollisionHandlerListener listener;
+	private CollisionsHandlerListener listener;
 	private int indexLocation;
 	private Powerup otherPowerUp;
 
@@ -44,12 +45,7 @@ public class Powerup extends ImageView
 		return type;
 	}
 
-	public void setType(PowerupType type)
-	{
-		this.type = type;
-	}
-
-	public void setListener(CollisionHandlerListener listener)
+	public void setListener(CollisionsHandlerListener listener)
 	{
 		this.listener = listener;
 	}
