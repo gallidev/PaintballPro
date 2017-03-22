@@ -1,6 +1,5 @@
 package gui;
 
-import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -14,17 +13,24 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by jack on 22/03/2017.
+ * Tests for establishing a server connection from GUI Manager
+ *
+ * @author Jack Hughes
  */
 public class TestGUIConnection {
 
-	Thread serverThread;
-	GUIManager guiManager;
-	ServerGUI serverGUI;
+	private Thread serverThread;
+	private GUIManager guiManager;
+	private ServerGUI serverGUI;
 
+	/**
+	 * Setup the JavaFX application
+	 * @throws Exception test failed
+	 */
 	@Before
 	public void setUp() throws Exception {
 		JavaFXTestHelper.setupApplication();
+		JavaFXTestHelper.waitForPlatform();
 		serverThread = new Thread(() -> {
 			int portNo = 25566;
 			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer();
@@ -40,9 +46,13 @@ public class TestGUIConnection {
 		Platform.runLater(() -> {
 			guiManager.setStage(new Stage());
 		});
-		Thread.sleep(3000);
+		JavaFXTestHelper.waitForPlatform();
 	}
 
+	/**
+	 * Test a successful and unsuccessful connection
+	 * @throws Exception test failed
+	 */
 	@Test
 	public void testConnection() throws Exception {
 		guiManager.setIpAddress(IPAddress.getLAN());
@@ -52,6 +62,10 @@ public class TestGUIConnection {
 		assertTrue(guiManager.establishConnection() != 0);
 	}
 
+	/**
+	 * Remove created fields
+	 * @throws Exception test failed
+	 */
 	@After
 	public void tearDown() throws Exception {
 		if (serverThread != null)

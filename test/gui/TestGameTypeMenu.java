@@ -12,6 +12,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the Game Type menu
+ *
+ * @author Jack Hughes
  */
 public class TestGameTypeMenu {
 
@@ -22,6 +24,7 @@ public class TestGameTypeMenu {
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.waitForPlatform();
     }
 
     /**

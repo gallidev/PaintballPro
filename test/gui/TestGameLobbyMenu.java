@@ -13,6 +13,8 @@ import static org.junit.Assert.*;
 
 /**
  * Tests for the game lobby menu
+ *
+ * @author Jack Hughes
  */
 public class TestGameLobbyMenu {
 
@@ -23,6 +25,7 @@ public class TestGameLobbyMenu {
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.waitForPlatform();
     }
 
     /**

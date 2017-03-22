@@ -33,6 +33,7 @@ public class TestNicknameServerSelectMenu {
 	@Before
 	public void setUp() throws Exception {
 		JavaFXTestHelper.setupApplication();
+		JavaFXTestHelper.waitForPlatform();
 	}
 
 	/**

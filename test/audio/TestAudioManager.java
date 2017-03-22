@@ -13,6 +13,8 @@ import javafx.scene.media.MediaPlayer;
 
 /**
  * Tests for AudioManager
+ *
+ * @author Jack Hughes
  */
 public class TestAudioManager {
 

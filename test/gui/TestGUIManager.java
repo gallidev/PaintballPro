@@ -24,6 +24,7 @@ public class TestGUIManager {
 	@Before
 	public void setUp() throws Exception {
 		JavaFXTestHelper.setupApplication();
+		JavaFXTestHelper.waitForPlatform();
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class TestGUIManager {
 			guiManager.transitionTo(Menu.EndGame, "0,0", TeamEnum.BLUE);
 			guiManager.transitionTo(Menu.MainMenu);
 		});
-		Thread.sleep(10000);
+		JavaFXTestHelper.waitForPlatform();
 	}
 
 }

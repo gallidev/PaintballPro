@@ -144,7 +144,7 @@ public class Client {
 										if (!testing)
 											(new AlertBox("Communication Failed",
 													"Paintball Pro could not talk to the server. Ensure the server is running and try again."))
-															.showAlert();
+															.showAlert(true);
 										exceptionCheck = 5;
 									}
 									if (debug) 
@@ -173,7 +173,7 @@ public class Client {
 							if (!testing)
 								(new AlertBox("Username Error",
 										"Your username is already used by another player. Please choose another username."))
-												.showAlert();
+												.showAlert(true);
 							
 							if (exceptionCheck == 0)
 								exceptionCheck = 6;
@@ -188,7 +188,7 @@ public class Client {
 					if (!testing && exceptionCheck == 0)
 						(new AlertBox("Connection Failed",
 								"Paintball Pro could not talk to the server. Ensure the server is running and try again."))
-										.showAlert();
+										.showAlert(true);
 					
 					if (exceptionCheck == 0)
 						exceptionCheck = 4;
@@ -199,7 +199,7 @@ public class Client {
 				if (!testing && exceptionCheck == 0)
 					(new AlertBox("Connection Failed",
 							"Paintball Pro could not talk to the server. Ensure the server is running and try again."))
-									.showAlert();
+									.showAlert(true);
 				
 				if (exceptionCheck == 0)
 					exceptionCheck = 2;
@@ -212,7 +212,7 @@ public class Client {
 			if (!testing && exceptionCheck == 0)
 				(new AlertBox("Username error",
 						"Your username cannot contain ':' or '-' characters. Please choose another username."))
-								.showAlert();
+								.showAlert(true);
 			
 			if (exceptionCheck == 0)
 				exceptionCheck = 1;
