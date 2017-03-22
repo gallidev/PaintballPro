@@ -1,7 +1,11 @@
 package gui;
 
+import com.sun.javafx.stage.StageHelper;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
+import javafx.stage.Stage;
 import org.junit.Test;
 
 /**
