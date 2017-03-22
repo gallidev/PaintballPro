@@ -17,17 +17,16 @@ import players.ServerBasicPlayer;
  */
 public class UDPServer extends Thread {
 
-	private boolean debug = false;
+
+	public boolean m_running = true;
+	public String winnerTest;
+	
+	private boolean debug = true;
 	private ClientTable clients;
 	private DatagramSocket serverSocket;
 	private int sIP;
-
-	public String winnerTest;
-
 	private LobbyTable lobbyTab;
 	private ServerInputReceiver inputReceiver;
-
-	public boolean m_running = true;
 
 	/**
 	 * Constructor, sets global variables to those passed for the UDP Server.

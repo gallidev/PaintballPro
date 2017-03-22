@@ -12,9 +12,9 @@ import java.net.InetAddress;
  */
 public class DiscoveryServerAnnouncer extends Thread {
 
-	private DatagramSocket socket;
-	
 	public boolean m_running = true;
+
+	private DatagramSocket socket;
 
 	/**
 	 * Create a new announcer

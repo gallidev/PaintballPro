@@ -18,6 +18,8 @@ import networking.shared.MessageQueue;
  */
 public class Client {
 
+	public int exceptionCheck = 0;
+	
 	private boolean debug = false;
 	private BufferedReader fromServer = null;
 	private ClientReceiver clientReceiver;
@@ -26,8 +28,6 @@ public class Client {
 	private PrintStream toServer = null;
 	private Socket server = null;
 	private String nickname;
-	
-	public int exceptionCheck = 0;
 	
 	/**
 	 * Sets up Client, starts up threads and connects to the server, retrieving

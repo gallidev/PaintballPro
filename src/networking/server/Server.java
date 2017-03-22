@@ -23,41 +23,39 @@ import networking.shared.MessageQueue;
  * @author Matthew Walters
  */
 public class Server extends Thread {
-	
+
 	static boolean singlePlayer;
-	
+
 	public boolean isRunning = true;
 	public int exceptionCheck = 0;
-	
-	private int portNumber;
+
+	private boolean debug = false;
 	private InetAddress listenAddress;
-	private ServerGUI gui;
-	private ServerExitListener exitListener;
+	private int portNumber;	
 	private int testing = 0;
+	private ServerExitListener exitListener;
+	private ServerGUI gui;
 	
-	public Server(int portNumber, String host, ServerGUI gui, int testing)
-	{
+	public Server(int portNumber, String host, ServerGUI gui, int testing) {
 		this.testing = testing;
 		try {
 			this.portNumber = portNumber;
 			this.listenAddress = InetAddress.getByName(host);
 			this.gui = gui;
 		} catch (UnknownHostException e) {
-			if(testing == 0) 
-			{
-				(new AlertBox("Connection Failed","Unknown host.")).showAlert();
+			if (testing == 0) {
+				(new AlertBox("Connection Failed", "Unknown host.")).showAlert();
 				System.exit(1);
-			}
-			else
+			} else
 				exceptionCheck = 1;
 		}
 	}
-	
+
 	/**
 	 * Main implementation method, handles connecting clients.
 	 */
 	public void run() {
-		
+
 		// This will be shared by the server threads:
 		ClientTable clientTable = new ClientTable();
 		// Create a new lobby instance.
@@ -67,121 +65,137 @@ public class Server extends Thread {
 
 		// We must try because it may fail with a checked exception:
 		try {
-			
-			System.out.println("Running server on:"+listenAddress.getHostAddress()+" on port:"+portNumber);
-			
+
+			if(debug)
+				System.out.println("Running server on:" + listenAddress.getHostAddress() + " on port:" + portNumber);
+
 			// Open server socket
 			serverSocket = new ServerSocket(portNumber, 1, listenAddress);
-			
+
 			// We start a new UDP server receiver to receive all UDP messages.
 			UDPServer udpServer = null;
-			udpServer = new UDPServer(clientTable, gameLobbies,19857);
+			udpServer = new UDPServer(clientTable, gameLobbies, 19857);
 			udpServer.start();
 
 			while (isRunning) {
 				try {
 					// We loop for-ever, as servers usually do, we can exit by
 					// typing Exit into command line though.
-					
+
 					// Server input stream.
 					BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-					// Creates a thread which looks for messages of a certain format
+					// Creates a thread which looks for messages of a certain
+					// format
 					// and acts accordingly if they match.
 					exitListener = new ServerExitListener(input);
 					exitListener.start();
 
 					while (!isInterrupted() && exitListener.isAlive()) {
-						
-						if(testing == 2)
+
+						if (testing == 2)
 							throw new IOException();
+						
+						Socket socket;
+						BufferedReader fromClient;
+						String clientName;
+						PrintStream toClient;
+						boolean usernameAvailable;
 						
 						// Listen to the socket, accepting connections from new
 						// clients:
-						Socket socket = serverSocket.accept();
+						socket = serverSocket.accept();
 						exitListener.addSocket(socket);
-						// This is so that we can use readLine():
-						BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-						// We ask the client what its name is:
-						String clientName = fromClient.readLine();
-						PrintStream toClient = new PrintStream(socket.getOutputStream());
 						
-						boolean usernameAvailable = clientTable.checkUsernameAvailable(clientName);
-						if(usernameAvailable)
-						{
+						// This is so that we can use readLine():
+						fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						
+						// We ask the client what its name is:
+						clientName = fromClient.readLine();
+						toClient = new PrintStream(socket.getOutputStream());
+
+						usernameAvailable = clientTable.checkUsernameAvailable(clientName);
+
+						if (usernameAvailable) {
+							
 							String text = "";
 							int clientID;
+							ServerSender sender;
+							ServerReceiver receiver;
+							Message msg;
+							MessageQueue recipientsQueue;
 
 							// For debugging:
-							if(testing == 0) gui.addMessage(clientName + " connected");
+							if (testing == 0)
+								gui.addMessage(clientName + " connected");
 
-							// We add the client to the table. Returns a unique client
+							// We add the client to the table. Returns a unique
+							// client
 							// id
 							clientID = clientTable.add(clientName);
-							// We create and start a new thread to write to the client:
-							ServerSender sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket, clientName, clientID);
+							
+							// We create and start a new thread to write to the
+							// client:
+							sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket,
+									clientName, clientID);
 							sender.start();
 
-							// We create and start a new thread to read from the client:
-							ServerReceiver reciever = new ServerReceiver(clientID, fromClient, clientTable, sender, gameLobbies, udpServer, singlePlayer);
-							reciever.start();
+							// We create and start a new thread to read from the
+							// client:
+							receiver = new ServerReceiver(clientID, fromClient, clientTable, sender,
+									gameLobbies, udpServer, singlePlayer);
+							receiver.start();
 
 							// For debugging
 							text = "UserID is:" + clientID;
-							if(testing == 0) gui.addMessage(text);
+							if (testing == 0)
+								gui.addMessage(text);
 
 							if (singlePlayer)
 								singlePlayerIntegration();
 
-							// Sends a message to the client detailing their unique user id.
-							Message msg = new Message(text);
-							MessageQueue recipientsQueue = clientTable.getQueue(clientID);
+							// Sends a message to the client detailing their
+							// unique user id.
+							msg = new Message(text);
+							recipientsQueue = clientTable.getQueue(clientID);
 							recipientsQueue.offer(msg);
-						}
-						else
-						{
+						} else {
 							toClient.write("UsernameInUse".getBytes());
 							toClient.close();
 							fromClient.close();
 						}
 					}
 					udpServer.interrupt();
-				// Catch some possible errors - IO.
+					// Catch some possible errors - IO.
 				} catch (IOException e) {
-					if(testing == 0) 
-					{
-						(new AlertBox("Connection Failed","Couldn't listen on port "+portNumber)).showAlert();
+					if (testing == 0) {
+						(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
 						System.exit(1);
-					}
-					else
-					{
-						System.out.println("3 Couldn't listen on port "+portNumber);
+					} else {
+						System.out.println("3 Couldn't listen on port " + portNumber);
 						exceptionCheck = 3;
 					}
 				}
 			}
 			udpServer.interrupt();
-			
+
 		} catch (IOException e) {
-			//e.printStackTrace();
-			if(testing == 0) 
-			{
+			// e.printStackTrace();
+			if (testing == 0) {
 				Platform.runLater(new Runnable() {
-		            @Override
-		            public void run() {
-						(new AlertBox("Connection Failed","Couldn't listen on port "+portNumber)).showAlert();
+					@Override
+					public void run() {
+						(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
 						System.exit(1);
-		            }
-		        });
-		
-			}
-			else
-			{
-				System.out.println("2 Couldn't listen on port "+portNumber);
+					}
+				});
+
+			} else {
+				System.out.println("2 Couldn't listen on port " + portNumber);
 				exceptionCheck = 2;
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to start a game in the single player mode. ie The Server is local
 	 * 
@@ -190,11 +204,21 @@ public class Server extends Thread {
 	private static void singlePlayerIntegration() {
 		System.out.println("Local server starts game ... ");
 	}
-	
-	public  void setSinglePlayer(boolean b){
-		singlePlayer = b;
+
+	/**
+	 * Are we in Single Player mode?
+	 * @param setSinglePlayer Whether or not we are in Single Player mode.
+	 * 
+	 * @author Alexandra Paduraru
+	 */
+	public void setSinglePlayer(boolean setSinglePlayer) {
+		singlePlayer = setSinglePlayer;
 	}
 
+	/**
+	 * Get the Exit Listener thread running from the Server.
+	 * @return Server Exit Listener thread.
+	 */
 	public ServerExitListener getExitListener() {
 		return exitListener;
 	}

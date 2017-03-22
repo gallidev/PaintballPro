@@ -24,7 +24,6 @@ import static gui.GUIManager.renderer;
  */
 public class UDPClient extends Thread {
 
-	private boolean active = true;
 	private boolean debug = false;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
@@ -36,6 +35,7 @@ public class UDPClient extends Thread {
 	private String nickname;
 	private TeamTable teams;
 
+	public boolean active = true;
 	public boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testIntegration = false;
@@ -612,4 +612,5 @@ public class UDPClient extends Thread {
 	public boolean isActive() {
 		return active;
 	}
+	
 }

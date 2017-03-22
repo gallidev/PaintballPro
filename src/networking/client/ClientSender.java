@@ -14,11 +14,11 @@ import networking.shared.MessageQueue;
  */
 public class ClientSender extends Thread {
 	
+	public boolean m_running = true;
+	
 	private MessageQueue queue;
 	private PrintStream server;
 	private String clientNickname;
-	
-	public boolean m_running = true;
 	
 	/**
 	 * Constructor of client sender thread. We set global variables passed in.

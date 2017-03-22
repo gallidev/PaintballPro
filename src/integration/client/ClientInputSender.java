@@ -64,6 +64,9 @@ public class ClientInputSender {
 	       public void run() {
 
 	    	   sendCurrentTime();
+	    	   
+	    	   if (!udpClient.isActive())
+	    		   scheduler.shutdown();
 
 	    	   if (!udpClient.isActive())
 	    		   scheduler.shutdown();
