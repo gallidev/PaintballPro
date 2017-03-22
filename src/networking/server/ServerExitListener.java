@@ -1,6 +1,9 @@
 package networking.server;
 
 import java.util.ArrayList;
+
+import gui.AlertBox;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
@@ -42,17 +45,19 @@ public class ServerExitListener extends Thread {
 				}
 				// If typed input does not match expected
 				else {
-					System.out.println("Unrecognised command... type 'Exit' to stop the Server and connected Clients.");
+					(new AlertBox("Unrecognised Command",
+							"You attempted an unrecognised command, please press the Exit button or type Exit in the terminal."))
+									.showAlert();
 				}
 				// Give other things a chance to run.
 				try {
 					sleep(1000);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					//
 				}
 			}
 		} catch (IOException e) {
-			System.err.println("Something went wrong with the client " + e.getMessage());
+			(new AlertBox("Error", "There was an error with the server.")).showAlert();
 		}
 	}
 
@@ -77,7 +82,7 @@ public class ServerExitListener extends Thread {
 				try {
 					sockets.get(i).close();
 				} catch (IOException e) {
-					System.err.println("Something went wrong with the client " + e.getMessage());
+					(new AlertBox("Error", "There was an error while closing the client.")).showAlert();
 				}
 			}
 
@@ -88,7 +93,7 @@ public class ServerExitListener extends Thread {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("All clients disconnected. Exiting now.");
+		(new AlertBox("Notification", "All clients were disconnected safely, closing nowa.")).showAlert();
 		// Exit.
 		System.exit(0);
 	}

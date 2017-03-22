@@ -16,21 +16,26 @@ import networking.shared.MessageQueue;
  */
 public class ServerSender extends Thread {
 
+	private boolean m_running = true;
+	private int clientID;
 	private MessageQueue queue;
 	private PrintStream client;
-	private boolean m_running = true;
 	private Socket socket;
-	private int clientID;
 	private String clientName;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
 	 * 
-	 * @param queue Message queue for a client.
-	 * @param clientStream Stream to print out to the client.
-	 * @param socket Socket to the client.
-	 * @param clientName Name of the client.
-	 * @param ClientID ID of the client.
+	 * @param queue
+	 *            Message queue for a client.
+	 * @param clientStream
+	 *            Stream to print out to the client.
+	 * @param socket
+	 *            Socket to the client.
+	 * @param clientName
+	 *            Name of the client.
+	 * @param ClientID
+	 *            ID of the client.
 	 */
 	public ServerSender(MessageQueue queue, PrintStream clientStream, Socket socket, String clientName, int ClientID) {
 		this.queue = queue;

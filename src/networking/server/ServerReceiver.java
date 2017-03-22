@@ -9,7 +9,6 @@ import networking.shared.MessageQueue;
 
 import players.ServerBasicPlayer;
 
-
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.
 /**
@@ -20,27 +19,34 @@ import players.ServerBasicPlayer;
  */
 public class ServerReceiver extends Thread {
 
-	private int myClientsID;
-	private BufferedReader myClient;
-	private ClientTable clientTable;
-	private ServerSender sender;
-	private LobbyTable gameLobby;
-	private MessageQueue myMsgQueue;
-	private Lobby lobby;
-	private UDPServer udpReceiver;
 	private boolean singlePlayer;
 	private boolean debug = false;
+	private BufferedReader myClient;
+	private ClientTable clientTable;
+	private int myClientsID;
+	private Lobby lobby;
+	private LobbyTable gameLobby;
+	private MessageQueue myMsgQueue;
+	private ServerSender sender;
+	private UDPServer udpReceiver;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
 	 *
-	 * @param clientID The ID of the client.
-	 * @param reader Input stream reader for data.
-	 * @param table Table storing client information.
-	 * @param sender Sender class for sending messages to the client.
-	 * @param passedGameLobby Table storing all lobby information.
-	 * @param udpReceiver UDP Server sender/receiver.
-	 * @param single Are we playing in Single Player mode?
+	 * @param clientID
+	 *            The ID of the client.
+	 * @param reader
+	 *            Input stream reader for data.
+	 * @param table
+	 *            Table storing client information.
+	 * @param sender
+	 *            Sender class for sending messages to the client.
+	 * @param passedGameLobby
+	 *            Table storing all lobby information.
+	 * @param udpReceiver
+	 *            UDP Server sender/receiver.
+	 * @param single
+	 *            Are we playing in Single Player mode?
 	 */
 	public ServerReceiver(int clientID, BufferedReader reader, ClientTable table, ServerSender sender,
 			LobbyTable passedGameLobby, UDPServer udpReceiver, boolean single) {
@@ -65,20 +71,22 @@ public class ServerReceiver extends Thread {
 				String text = myClient.readLine();
 
 				// for debugging
-				if (debug) System.out.println("ServerReceiver got : " + text);
+				if (debug)
+					System.out.println("ServerReceiver got : " + text);
 
 				// If text isn't null and does not read "Exit:Client" do...
 				if (text != null && text.compareTo("Exit:Client") != 0) {
 
-					// 	  Protocols
+					// Protocols
 					// ---------------- //
 
 					// UI Client Actions.
 					// ------------------
 					// When user specifies a game mode to play, add them to a
 					// lobby.
-					if (debug) System.out.println("Server single player = " + singlePlayer);
-					
+					if (debug)
+						System.out.println("Server single player = " + singlePlayer);
+
 					if (text.contains("Play:Mode:"))
 						playModeAction(text);
 
@@ -92,7 +100,6 @@ public class ServerReceiver extends Thread {
 					// Get usernames of people currently in red team of lobby.
 					else if (text.contains("Get:Red"))
 						getRedTeamAction();
-
 
 					// Get usernames of people currently in blue team of lobby.
 					else if (text.contains("Get:Blue"))
@@ -122,7 +129,6 @@ public class ServerReceiver extends Thread {
 		}
 	}
 
-
 	/*
 	 * Different actions performed depending on the messages received from
 	 * clients.
@@ -147,6 +153,7 @@ public class ServerReceiver extends Thread {
 
 	/**
 	 * Retrieve members of Red team.
+	 * 
 	 * @param text
 	 */
 	private void getRedTeamAction() {
@@ -156,20 +163,23 @@ public class ServerReceiver extends Thread {
 	}
 
 	/**
-	 * Initialise playing a game, setting game status and starting a timer in the lobby.
-	 * @param text Text passed to server, parsed for input.
+	 * Initialise playing a game, setting game status and starting a timer in
+	 * the lobby.
+	 * 
+	 * @param text
+	 *            Text passed to server, parsed for input.
 	 */
 	private void playModeAction(String text) {
-		
-		int gameMode = Integer.parseInt(text.substring(10));
+		int gameMode;
+		int curTotal;
+		gameMode = Integer.parseInt(text.substring(10));
 		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
-		int curTotal = lobby.getCurrPlayerTotal();
+		curTotal = lobby.getCurrPlayerTotal();
 		// lobby.timerStart(this);
 		lobby.timerStart(this, udpReceiver, gameMode);
 		if (curTotal == lobby.getMaxPlayers()) {
 			lobby.switchGameStatus();
-			
 		}
 	}
 
@@ -177,15 +187,19 @@ public class ServerReceiver extends Thread {
 
 	/**
 	 * Send a message to all clients in a given game.
-	 * @param text Message to send to all clients.
+	 * 
+	 * @param text
+	 *            Message to send to all clients.
 	 */
 	public void sendToAll(String text) {
 		// System.out.println("Sending to all: " + text);
 
-		//extract the lobby which contains only the players that should receive the message
+		// extract the lobby which contains only the players that should receive
+		// the message
 		Lobby currentLobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 
 		ServerBasicPlayer[] gamePlayers = currentLobby.getPlayers();
+		
 		for (ServerBasicPlayer player : gamePlayers) {
 			MessageQueue queue = clientTable.getQueue(player.getID());
 			queue.offer(new Message(text));
@@ -195,11 +209,15 @@ public class ServerReceiver extends Thread {
 
 	/**
 	 * Send a message to a particular client.
-	 * @param id ID of client to send message to.
-	 * @param text Message to send to client.
+	 * 
+	 * @param id
+	 *            ID of client to send message to.
+	 * @param text
+	 *            Message to send to client.
 	 */
 	public void sendToSpec(int id, String text) {
-		if (debug) System.out.println("Sending msg to id: " + id);
+		if (debug)
+			System.out.println("Sending msg to id: " + id);
 		MessageQueue queue = clientTable.getQueue(id);
 		queue.offer(new Message(text));
 	}
@@ -218,13 +236,14 @@ public class ServerReceiver extends Thread {
 	 * Method to exit system smoothly.
 	 */
 	private void exitSystem() {
-		// Send exit message to the client.
-		myMsgQueue.offer(new Message("Exit:Client"));
 
 		// Remove client from any game lobbies.
 		ServerBasicPlayer myPlayer = clientTable.getPlayer(myClientsID);
+
+		// Send exit message to the client.
+		myMsgQueue.offer(new Message("Exit:Client"));
 		
-		if(myPlayer.getAllocatedLobby() != -1)
+		if (myPlayer.getAllocatedLobby() != -1)
 			gameLobby.removePlayer(myPlayer);
 
 		// Remove client from client table data as they are exiting the system.
