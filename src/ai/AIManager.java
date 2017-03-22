@@ -47,7 +47,7 @@ public class AIManager{
 		}
 
 		Lobby.setMaxId(nextId);
-
+		System.out.println("new max id AI = " + nextId);
 	}
 
 

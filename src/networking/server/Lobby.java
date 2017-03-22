@@ -473,13 +473,16 @@ public class Lobby {
 		HashMapGen hashMaps = new HashMapGen(map);
 		
 		// filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
-		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
+		AIManager redAIM;
+		AIManager blueAIM;
 		
-		ServerInputReceiver inputReceiver;
-		
+		redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
 		redAIM.createPlayers();
+		
+		blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
 		blueAIM.createPlayers();
+
+		ServerInputReceiver inputReceiver;
 
 		// setting team players and enemies
 		for (EssentialPlayer p : red.getMembers()) {

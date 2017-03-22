@@ -313,7 +313,6 @@ public class UDPServer extends Thread {
 				break;
 			}
 		}
-		System.out.println(inputReceiver);
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, angle);
 	}
 
