@@ -19,16 +19,16 @@ import players.ServerBasicPlayer;
  */
 public class ServerReceiver extends Thread {
 
-	private int myClientsID;
-	private BufferedReader myClient;
-	private ClientTable clientTable;
-	private ServerSender sender;
-	private LobbyTable gameLobby;
-	private MessageQueue myMsgQueue;
-	private Lobby lobby;
-	private UDPServer udpReceiver;
 	private boolean singlePlayer;
 	private boolean debug = false;
+	private BufferedReader myClient;
+	private ClientTable clientTable;
+	private int myClientsID;
+	private Lobby lobby;
+	private LobbyTable gameLobby;
+	private MessageQueue myMsgQueue;
+	private ServerSender sender;
+	private UDPServer udpReceiver;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -170,16 +170,16 @@ public class ServerReceiver extends Thread {
 	 *            Text passed to server, parsed for input.
 	 */
 	private void playModeAction(String text) {
-
-		int gameMode = Integer.parseInt(text.substring(10));
+		int gameMode;
+		int curTotal;
+		gameMode = Integer.parseInt(text.substring(10));
 		gameLobby.addPlayerToLobby(clientTable.getPlayer(myClientsID), gameMode, this, udpReceiver);
 		lobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
-		int curTotal = lobby.getCurrPlayerTotal();
+		curTotal = lobby.getCurrPlayerTotal();
 		// lobby.timerStart(this);
 		lobby.timerStart(this, udpReceiver, gameMode);
 		if (curTotal == lobby.getMaxPlayers()) {
 			lobby.switchGameStatus();
-
 		}
 	}
 
@@ -199,6 +199,7 @@ public class ServerReceiver extends Thread {
 		Lobby currentLobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
 
 		ServerBasicPlayer[] gamePlayers = currentLobby.getPlayers();
+		
 		for (ServerBasicPlayer player : gamePlayers) {
 			MessageQueue queue = clientTable.getQueue(player.getID());
 			queue.offer(new Message(text));
@@ -235,12 +236,13 @@ public class ServerReceiver extends Thread {
 	 * Method to exit system smoothly.
 	 */
 	private void exitSystem() {
-		// Send exit message to the client.
-		myMsgQueue.offer(new Message("Exit:Client"));
 
 		// Remove client from any game lobbies.
 		ServerBasicPlayer myPlayer = clientTable.getPlayer(myClientsID);
 
+		// Send exit message to the client.
+		myMsgQueue.offer(new Message("Exit:Client"));
+		
 		if (myPlayer.getAllocatedLobby() != -1)
 			gameLobby.removePlayer(myPlayer);
 
