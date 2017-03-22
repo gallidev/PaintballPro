@@ -1,13 +1,13 @@
 package networking.game;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-
 import integration.server.ServerInputReceiver;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
 import players.ServerBasicPlayer;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -20,8 +20,8 @@ public class UDPServer extends Thread {
 
 	public boolean m_running = true;
 	public String winnerTest;
-
-	private boolean debug = true;
+	
+	private boolean debug = false;
 	private ClientTable clients;
 	private DatagramSocket serverSocket;
 	private int serverPort;
