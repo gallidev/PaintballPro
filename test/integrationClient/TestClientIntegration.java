@@ -99,7 +99,7 @@ public class TestClientIntegration {
 	}
 
 	public void updatePlayerTest() throws InterruptedException {
-		String input = "1:1:2:3:30:true";
+		String input = "1:1:2:3:30:true:false";
 		client.updatePlayerAction(input);
 
 		assertNotNull(gameStateReceiver);
@@ -108,12 +108,12 @@ public class TestClientIntegration {
 		assertEquals(player.getLayoutY(), 3.0, 0.5);
 		assertTrue(player.isVisible());
 
-		input = "1:1:2:3:30:false";
+		input = "1:1:2:3:30:false:true";
 		client.updatePlayerAction(input);
 		Thread.sleep(1000);
 		assertFalse(player.isVisible());
 
-		input = "1:2:220:300:30:false";
+		input = "1:2:220:300:30:false:false";
 		client.updatePlayerAction(input);
 		Thread.sleep(1000);
 		assertFalse(cPlayer.isVisible());
