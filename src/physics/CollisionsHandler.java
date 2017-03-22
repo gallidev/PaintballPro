@@ -258,6 +258,9 @@ public class CollisionsHandler
 
 					//System.out.println("Been shot ");
 					bullet.disable();
+					if(listener != null){
+						listener.onBulletKills(enemy.getPlayerId(), bullet.getBulletId());
+					}
 					//check if the player has the shield power up
 					if(p.getShieldActive()){
 						//shield absorbs a bullet

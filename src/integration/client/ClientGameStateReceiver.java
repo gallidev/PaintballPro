@@ -1,6 +1,7 @@
 package integration.client;
 
 import javafx.application.Platform;
+import physics.Bullet;
 import physics.Flag;
 import physics.Powerup;
 import physics.PowerupType;
@@ -140,6 +141,30 @@ public class ClientGameStateReceiver {
 		}
 	}
 
+	public void generateBullet(int playerId, int bulletId, double originX, double originY, double angle){
+		EssentialPlayer p = getPlayerWithId(playerId);
+
+		if(p != null){
+			Platform.runLater(() -> {
+				p.generateBullet(bulletId, originX, originY, angle);
+			});
+		}
+	}
+
+	public void destroyBullet(int playerId, int bulletId) {
+		EssentialPlayer p = getPlayerWithId(playerId);
+
+		Bullet b = getBulletWithId(p, bulletId);
+		if(b != null){
+			Platform.runLater(() -> {
+				System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
+				b.setVisible(false);
+				b.setActive(false);
+			});
+		}
+
+	}
+
 	public void updateFlag(int id){
 		EssentialPlayer player = getPlayerWithId(id);
 
@@ -197,6 +222,14 @@ public class ClientGameStateReceiver {
 		return null;
 	}
 
+	public Bullet getBulletWithId(EssentialPlayer p, int id){
+		for (Bullet b : p.getBullets()){
+			if (b.getBulletId() == id)
+				return b;
+		}
+		return null;
+	}
+
 	public Flag getFlag()
 	{
 		return flag;
@@ -206,4 +239,5 @@ public class ClientGameStateReceiver {
 	{
 		return powerups;
 	}
+
 }

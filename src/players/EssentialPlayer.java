@@ -5,6 +5,7 @@ import java.util.List;
 
 import enums.GameMode;
 import enums.TeamEnum;
+import integrationServer.CollisionsHandlerListener;
 import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
@@ -62,6 +63,8 @@ public abstract class EssentialPlayer extends ImageView {
 	//========================================================
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 	private boolean shieldRemoved = false;
+
+	private CollisionsHandlerListener listener;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -247,16 +250,20 @@ public abstract class EssentialPlayer extends ImageView {
 		double bulletX = getLayoutX() + x2 + PLAYER_HEAD_X;
 		double bulletY = getLayoutY() + y2 + PLAYER_HEAD_Y;
 
-		generateBullet(bulletX, bulletY, angle);
+		generateBullet(bulletCounter, bulletX, bulletY, angle);
 
+		bulletCounter ++;
 		hasShot = true;
 	}
 
-	public void generateBullet(double x, double y, double angle){
-		Bullet bullet = new Bullet(bulletCounter, x, y, angle, team, gameSpeed);
+	public void generateBullet(int bulletId, double x, double y, double angle){
+		Bullet bullet = new Bullet(bulletId, x, y, angle, team, gameSpeed);
 
+		if(listener != null){
+			listener.onShotBullet(id, bulletCounter, x, y, angle);
+		}
 		firedBullets.add(bullet);
-		bulletCounter ++;
+
 	}
 
 	public void beenShot() {
@@ -514,13 +521,17 @@ public abstract class EssentialPlayer extends ImageView {
 			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
 		else if(!hasFlag)
 				shadow.setColor(Color.BLACK);
-		
+
 		if (!b)
 			shieldRemoved = true;
 	}
-	
+
 	public boolean isSpeedActive(){
 		return speedActive;
+	}
+
+	public void setCollisionsHandlerListener(CollisionsHandlerListener listener){
+		this.listener = listener;
 	}
 }
 
