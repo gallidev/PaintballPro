@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
+import rendering.Renderer;
 
 import static org.junit.Assert.*;
 
@@ -48,8 +49,15 @@ public class TestGUIManager {
 			guiManager.transitionTo(Menu.MainMenu);
 			guiManager.transitionTo(Menu.CTFSingle);
 			guiManager.transitionTo(Menu.MainMenu);
+			guiManager.setRenderer(new Renderer("elimination", guiManager));
 			guiManager.transitionTo(Menu.EndGame, "0,0", TeamEnum.BLUE);
 			guiManager.transitionTo(Menu.MainMenu);
+			try {
+				guiManager.transitionTo(null);
+				fail("transitionTo null should throw");
+			} catch (RuntimeException e) {
+				// This will throw
+			}
 		});
 		JavaFXTestHelper.waitForPlatform();
 	}
