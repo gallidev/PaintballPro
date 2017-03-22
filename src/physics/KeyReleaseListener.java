@@ -15,7 +15,7 @@ public class KeyReleaseListener implements EventHandler<KeyEvent>
 	@Override
 	public void handle(KeyEvent event)
 	{
-		if(!GUIManager.renderer.getPauseMenuState() && !GUIManager.renderer.getSettingsMenuState())
+		if((!GUIManager.renderer.getPauseMenuState() && !GUIManager.renderer.getSettingsMenuState()))
 			switch(event.getCode())
 			{
 				case UP:

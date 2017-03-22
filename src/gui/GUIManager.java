@@ -363,4 +363,8 @@ public class GUIManager {
 		}
 	}
 
+	public void setRenderer(Renderer renderer){
+		this.renderer = renderer;
+	}
+
 }
