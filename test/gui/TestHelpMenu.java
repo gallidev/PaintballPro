@@ -5,6 +5,7 @@ import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,8 +13,13 @@ import static org.junit.Assert.*;
 
 /**
  * Tests for the Help Menu
+ *
+ * @author Jack Hughes
  */
 public class TestHelpMenu {
+
+    GUIManagerTestHelper guiManager = new GUIManagerTestHelper();
+    Scene scene;
 
     /**
      * Create the JavaFX Application Thread
@@ -22,6 +28,8 @@ public class TestHelpMenu {
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.waitForPlatform();
+        guiManager.currentMenu = Menu.Help;
     }
 
     /**
@@ -30,15 +38,21 @@ public class TestHelpMenu {
      */
     @Test
     public void getScene() throws Exception {
-        GUIManagerTestHelper g = new GUIManagerTestHelper();
-        g.currentMenu = Menu.Help;
-        Platform.runLater(() -> {
-            Scene s = HelpMenu.getScene(g);
-            GUIManagerTestHelper.findButtonByTextInParent("Back", s.getRoot()).fire();
-            System.out.println("Pressed!");
-        });
+        scene = HelpMenu.getScene(guiManager);
+        GUIManagerTestHelper.findButtonByTextInParent("Back", scene.getRoot()).fire();
 
-        Thread.sleep(5000);
+        Thread.sleep(1000);
+
+        assertTrue(guiManager.currentMenu == Menu.MainMenu);
     }
 
+    /**
+     *
+     * @throws Exception
+     */
+    @After
+    public void tearDown() throws Exception {
+        guiManager = null;
+        scene = null;
+    }
 }

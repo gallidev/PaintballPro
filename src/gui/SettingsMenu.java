@@ -52,6 +52,7 @@ public class SettingsMenu {
 		Label musicLabel = new Label("Music Volume");
 
 		Slider musicSlider = new Slider();
+		musicSlider.setId("MusicSlider");
 		musicSlider.setMin(0);
 		musicSlider.setMax(100);
 		musicSlider.setValue(s.getMusicVolume());
@@ -60,18 +61,16 @@ public class SettingsMenu {
 		musicSlider.setMajorTickUnit(50);
 		musicSlider.setMinorTickCount(5);
 		musicSlider.setBlockIncrement(10);
-		musicSlider.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
-			@Override
-			public void handle(InputEvent event) {
-				s.setMusicVolume((int) musicSlider.getValue());
-				guiManager.notifySettingsObservers();
-			}
+		musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+			s.setMusicVolume((int) musicSlider.getValue());
+			guiManager.notifySettingsObservers();
 		});
 
 		// Create the sound FX label and slider
 		Label sfxLabel = new Label("SFX Volume");
 
 		Slider sfxSlider = new Slider();
+		sfxSlider.setId("SFXSlider");
 		sfxSlider.setMin(0);
 		sfxSlider.setMax(100);
 		sfxSlider.setValue(s.getSfxVolume());
@@ -80,32 +79,28 @@ public class SettingsMenu {
 		sfxSlider.setMajorTickUnit(50);
 		sfxSlider.setMinorTickCount(5);
 		sfxSlider.setBlockIncrement(10);
-		sfxSlider.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
-			@Override
-			public void handle(InputEvent event) {
-				s.setSfxVolume((int) sfxSlider.getValue());
-				guiManager.notifySettingsObservers();
-			}
-		});
+		sfxSlider.valueProperty().addListener(((observable, oldValue, newValue) -> {
+			s.setSfxVolume((int) sfxSlider.getValue());
+			guiManager.notifySettingsObservers();
+		}));
 
 		// Create the shading option label and checkbox
 		Label shadingLabel = new Label("Use shading (default on)");
 
 		CheckBox shadingCheckbox = new CheckBox();
+		shadingCheckbox.setId("ShadingCheckbox");
 		shadingCheckbox.setSelected(s.getShading());
-		shadingCheckbox.addEventHandler(InputEvent.ANY, new EventHandler<InputEvent>() {
-			@Override
-			public void handle(InputEvent event) {
-				s.setShading(shadingCheckbox.isSelected());
-				guiManager.notifySettingsObservers();
-			}
-		});
+		shadingCheckbox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+			s.setShading(shadingCheckbox.isSelected());
+			guiManager.notifySettingsObservers();
+		}));
 
 		// Create the resolution label and combo box
 		Label resolutionLabel = new Label("Resolution");
 
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		ComboBox<String> resolutionComboBox = new ComboBox<>();
+		resolutionComboBox.setId("ResolutionComboBox");
 		boolean found = false;
 		for (int i = 0; i < UserSettings.possibleResolutions.length; i++) {
 			String res = UserSettings.possibleResolutions[i];

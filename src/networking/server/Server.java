@@ -46,7 +46,7 @@ public class Server extends Thread {
 			this.gui = gui;
 		} catch (UnknownHostException e) {
 			if (testing == 0) {
-				(new AlertBox("Connection Failed", "Unknown host.")).showAlert(); 
+				(new AlertBox("Connection Failed", "Unknown host.")).showAlert(true);
 				System.exit(1);
 			} else
 				exceptionCheck = 1;
@@ -162,7 +162,7 @@ public class Server extends Thread {
 					// Catch some possible errors - IO.
 				} catch (IOException e) {
 					if (testing == 0) {
-						//(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
+						//(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert(true);
 					} else {
 						//System.out.println("3 Couldn't listen on port " + portNumber);
 						exceptionCheck = 3;
@@ -174,7 +174,7 @@ public class Server extends Thread {
 							try {
 								sockets.get(i).close();
 							} catch (IOException f) {
-								(new AlertBox("Error", "There was an error while closing the client.")).showAlert();
+								(new AlertBox("Error", "There was an error while closing the client.")).showAlert(true);
 							}
 						}
 					}
@@ -193,7 +193,7 @@ public class Server extends Thread {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert();
+						(new AlertBox("Connection Failed", "Couldn't listen on port " + portNumber)).showAlert(true);
 					}
 				});
 			} else {
@@ -207,7 +207,7 @@ public class Server extends Thread {
 					try {
 						sockets.get(i).close();
 					} catch (IOException f) {
-						(new AlertBox("Error", "There was an error while closing the client.")).showAlert();
+						(new AlertBox("Error", "There was an error while closing the client.")).showAlert(true);
 					}
 				}
 			}

@@ -26,13 +26,6 @@ public class AlertBox {
 
 	/**
 	 * Show the alert
-	 */
-	public void showAlert() {
-		showAlert(true);
-	}
-
-	/**
-	 * Show the alert
 	 *
 	 * @param blocking true if the GUI should wait for the alert to be dimissed
 	 */
@@ -44,14 +37,6 @@ public class AlertBox {
 			alert.showAndWait();
 		else
 			alert.show();
-	}
-
-	/**
-	 * Dismiss the alert
-	 */
-	public void dismissAlert() {
-		if (alert != null && alert.isShowing())
-			alert.close();
 	}
 
 }

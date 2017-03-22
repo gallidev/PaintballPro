@@ -6,6 +6,8 @@ import org.junit.Test;
 
 /**
  * Test for showing an Alert Box
+ *
+ * @author Jack Hughes
  */
 public class TestAlertBox {
 
@@ -19,14 +21,10 @@ public class TestAlertBox {
 
         Platform.runLater(() -> {
             AlertBox ab = new AlertBox("Example Alert", "Testing - Press OK");
-            (new Thread(() -> {
-                Platform.runLater(() -> {
-                    ab.showAlert(false);
-                });
-            })).start();
+            ab.showAlert(false);
         });
 
-        Thread.sleep(3000);
+        JavaFXTestHelper.waitForPlatform();
 
     }
 
