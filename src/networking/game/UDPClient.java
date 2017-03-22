@@ -312,7 +312,7 @@ public class UDPClient extends Thread {
 				visibility = false;
 
 			boolean eliminated = false;
-			if(actions[5].equals("true"))
+			if(actions[6].equals("true"))
 				eliminated = true;
 
 			if (gameStateReceiver != null) {
