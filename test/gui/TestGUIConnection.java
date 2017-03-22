@@ -50,8 +50,6 @@ public class TestGUIConnection {
 
 		guiManager.setIpAddress("0.0.0.0");
 		assertTrue(guiManager.establishConnection() != 0);
-
-		GUIManagerTestHelper.findButtonByTextInParent("Exit", serverGUI.getRoot()).fire();
 	}
 
 	@After
