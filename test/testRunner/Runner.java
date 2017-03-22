@@ -16,7 +16,7 @@ import testSuites.NetworkingSuite;
  */
 public class Runner {
    public static void main(String[] args) {
-      Result result = JUnitCore.runClasses( LogicSuite.class, IntegrationSuite.class, NetworkingSuite.class, AISuite.class);
+      Result result = JUnitCore.runClasses( NetworkingSuite.class, LogicSuite.class, IntegrationSuite.class);
 
       for (Failure failure : result.getFailures()) {
          System.out.println(failure.toString());
