@@ -41,9 +41,10 @@ public class Lobby {
 	private static int maxId;
 	
 	// Required for all players
+	public boolean inGameStatus;
+	
 	private int id;
 	private Map map;
-	public boolean inGameStatus;
 	
 	// Game information
 	private ServerGame currentSessionGame;
@@ -474,13 +475,15 @@ public class Lobby {
 
 		HashMapGen hashMaps = new HashMapGen(map);
 		
-		// filling the game with AI players
-		AIManager redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
-		AIManager blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
-		
 		ServerInputReceiver inputReceiver;
 		
+		// filling the game with AI players
+		AIManager redAIM;
+		AIManager blueAIM;
+		
+		redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
 		redAIM.createPlayers();
+		blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
 		blueAIM.createPlayers();
 
 		// setting team players and enemies

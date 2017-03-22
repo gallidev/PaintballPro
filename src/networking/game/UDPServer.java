@@ -17,14 +17,14 @@ import java.net.InetAddress;
  */
 public class UDPServer extends Thread {
 
+	public boolean m_running = true;
+	
 	private boolean debug = true;
 	private ClientTable clients;
 	private DatagramSocket serverSocket;
 	private int sIP;
 	private LobbyTable lobbyTab;
 	private ServerInputReceiver inputReceiver;
-	
-	public boolean m_running = true;
 
 	/**
 	 * Constructor, sets global variables to those passed for the UDP Server.

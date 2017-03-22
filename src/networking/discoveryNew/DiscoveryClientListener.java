@@ -7,7 +7,7 @@ package networking.discoveryNew;
  */
 public class DiscoveryClientListener {
 
-	DiscoveryClient client;
+	private DiscoveryClient client;
 
 	/**
 	 * Get the IP address and port of the first server found

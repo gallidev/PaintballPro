@@ -15,14 +15,14 @@ public class LobbyTable {
 
 	// Game Modes - 1 = Team Match, 2 = KoTH, 3 = CTF, 4 = Escort
 
+	public boolean testEnv = false;
+	
 	// Each open lobby is stored here.
 	private ConcurrentMap<Integer, Lobby> lobbyList = new ConcurrentHashMap<Integer, Lobby>();
 
 	// Each lobby will have an incrementing unique id - allows for each lobby to
 	// be identified.
 	private int id = 1;
-
-	public boolean testEnv = false;
 
 	/**
 	 * Remove lobby information from the data structures.

@@ -24,6 +24,12 @@ import static gui.GUIManager.renderer;
  */
 public class UDPClient extends Thread {
 
+	public boolean bulletDebug = false;
+	public boolean connected = false;
+	public boolean testIntegration = false;
+	public boolean testSendToAll = false;
+	public static double PINGDELAY = 0;	
+	
 	private boolean active = true;
 	private boolean debug = true;
 	private ClientGameStateReceiver gameStateReceiver;
@@ -35,12 +41,6 @@ public class UDPClient extends Thread {
 	private InetAddress IPAddress;
 	private String nickname;
 	private TeamTable teams;
-	
-	public boolean bulletDebug = false;
-	public boolean connected = false;
-	public boolean testIntegration = false;
-	public boolean testSendToAll = false;
-	public static double PINGDELAY = 0;
 	
 	/**
 	 * We establish a connection with the UDP server... we tell it we are
