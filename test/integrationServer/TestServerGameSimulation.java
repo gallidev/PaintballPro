@@ -60,6 +60,7 @@ public class TestServerGameSimulation {
 		for (EssentialPlayer p : players)
 			assertTrue(((UserPlayer) p).isTicked);
 
+		gameSimulation.stopGameLoop();
 	}
 
 	@Test

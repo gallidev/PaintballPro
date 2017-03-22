@@ -158,10 +158,6 @@ public class UDPClient extends Thread
 				{
 					testSendToAll = true;
 				}
-				else if(receivedPacket.contains("0:1:Up:Left:Right:Shoot:2:3"))
-				{
-					testIntegration = true;
-				}
 
 				switch(receivedPacket.charAt(0))
 				{
@@ -274,7 +270,7 @@ public class UDPClient extends Thread
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
-	private void updatePlayerAction(String text)
+	public void updatePlayerAction(String text)
 	{
 		//Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
 		if(debug) System.out.println(text);
@@ -293,7 +289,7 @@ public class UDPClient extends Thread
 				visibility = false;
 
 			boolean eliminated = false;
-			if(actions[6].equals("true"))
+			if(actions[5].equals("true"))
 				eliminated = true;
 
 			if(gameStateReceiver != null)
@@ -311,6 +307,7 @@ public class UDPClient extends Thread
 	 */
 	public void updateScoreAction(String text)
 	{
+		testIntegration= false;
 		int redScore = Integer.parseInt(text.split(":")[1]);
 		int blueScore = Integer.parseInt(text.split(":")[2]);
 
@@ -324,12 +321,17 @@ public class UDPClient extends Thread
 				{
 					GUIManager.renderer.setRedScore(redScore);
 					GUIManager.renderer.setBlueScore(blueScore);
+					
 				}
 			});
 		}
 
+		if (redScore == 5 && blueScore == 10)
+			testIntegration = true;
+
 		if(debug) System.out.println("Red score: " + redScore);
 		if(debug) System.out.println("Blue score: " + blueScore);
+
 
 	}
 
@@ -341,7 +343,7 @@ public class UDPClient extends Thread
 	 * @author Alexandra Paduraru
 	 * @author Filippo Galli
 	 */
-	public void updateBulletAction(String text)
+	private void updateBulletAction(String text)
 	{
 		// Protocol message: 4:id:idBullet:x:y:...
 
@@ -400,8 +402,8 @@ public class UDPClient extends Thread
 	{
 
 		String time = sentence.split(":")[1];
-
 		if(debug) System.out.println("remaining time on client: " + time);
+		
 		if(GUIManager.renderer != null && GUIManager.renderer.getHud() != null)
 		{
 			Platform.runLater(new Runnable()
@@ -421,7 +423,7 @@ public class UDPClient extends Thread
 	 * @param text The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void capturedFlagAction(String text)
+	public void capturedFlagAction(String text)
 	{
 		//Protocol : 8:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
@@ -440,7 +442,7 @@ public class UDPClient extends Thread
 	 * @param text The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void lostFlagAction(String text)
+	public void lostFlagAction(String text)
 	{
 		//Protocol : 9:<id>
 		int id = Integer.parseInt(text.split(":")[1]);
@@ -459,7 +461,7 @@ public class UDPClient extends Thread
 	 * @param text The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void baseFlagAction(String text)
+	public void baseFlagAction(String text)
 	{
 		//Protocol : !:<id>
 
@@ -504,7 +506,7 @@ public class UDPClient extends Thread
 	 * @param text The protocol message containing the player's id.
 	 * @author Alexandra Paduraru
 	 */
-	private void shieldRemovedAction(String receivedPacket)
+	public void shieldRemovedAction(String receivedPacket)
 	{
 		int id = Integer.parseInt(receivedPacket.split(":")[1]);
 		gameStateReceiver.shieldRemovedAction(id);
@@ -515,7 +517,7 @@ public class UDPClient extends Thread
 	 * @param text The protocol message containing the player's id, as well as powerup type: 0 for shield and 1 for speed.
 	 * @author Alexandra Paduraru
 	 */
-	private void powerUpAction(String receivedPacket)
+	public void powerUpAction(String receivedPacket)
 	{
 		int id = Integer.parseInt(receivedPacket.split(":")[2]);
 
@@ -523,11 +525,9 @@ public class UDPClient extends Thread
 		{
 			case "0":
 				gameStateReceiver.powerupAction(id, PowerupType.SHIELD);
-				System.out.println("Player " + id + " took shield powerup");
 				break;
 			case "1":
 				gameStateReceiver.powerupAction(id, PowerupType.SPEED);
-				System.out.println("Player" + id + " took speed powerup");
 				break;
 		}
 

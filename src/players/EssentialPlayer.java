@@ -514,6 +514,13 @@ public abstract class EssentialPlayer extends ImageView {
 			shadow.setColor(team == TeamEnum.RED ? Color.RED : Color.BLUE);
 		else if(!hasFlag)
 				shadow.setColor(Color.BLACK);
+		
+		if (!b)
+			shieldRemoved = true;
+	}
+	
+	public boolean isSpeedActive(){
+		return speedActive;
 	}
 }
 

@@ -1,14 +1,13 @@
 package networking.game;
 
-import networking.server.ClientTable;
-import networking.server.LobbyTable;
-import players.ServerBasicPlayer;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import integration.server.ServerInputReceiver;
+import networking.server.ClientTable;
+import networking.server.LobbyTable;
+import players.ServerBasicPlayer;
 
 /**
  * Server-side Sender and Receiver using UDP protocol for in-game transmission.
@@ -25,6 +24,8 @@ public class UDPServer extends Thread{
 	private DatagramSocket serverSocket;
 	private ServerInputReceiver inputReceiver;
 	private int sIP;
+	
+	public String winnerTest;
 
 	/**
 	 * Constructor, sets global variables to those passed for the UDP Server.
@@ -117,6 +118,7 @@ public class UDPServer extends Thread{
 			}
 		} catch(Exception e)
 		{
+			e.printStackTrace();
 			if(debug) System.err.println(e.getMessage());
 		}
 		finally
@@ -249,10 +251,8 @@ public class UDPServer extends Thread{
 			default		 : break;
 			}
 		}
-
+		System.out.println(inputReceiver);
 		inputReceiver.updatePlayer(id, up, down, left, right, shoot, angle);
-
-
 	}
 
 	/**
@@ -265,6 +265,8 @@ public class UDPServer extends Thread{
 		String winner = text.split(":")[1];
 
 		if (debug) System.out.println("The winner is : " + winner);
+		
+		winnerTest = winner;
 	}
 
 
