@@ -16,6 +16,7 @@ import testSuites.NetworkingSuite;
  */
 public class Runner {
    public static void main(String[] args) {
+
       Result result = JUnitCore.runClasses(IntegrationSuite.class, LogicSuite.class, NetworkingSuite.class, AISuite.class);
 
       for (Failure failure : result.getFailures()) {
