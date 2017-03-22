@@ -100,6 +100,18 @@ public class TestCollisionsHandler {
 			public void onPowerupRespawn(PowerupType type, int location) {
 
 			}
+
+			@Override
+			public void onShotBullet(int playerId, int bullet, double x, double y, double angle) {
+
+			}
+
+			@Override
+			public void onBulletKills(int playerId, int bulletId) {
+				// TODO Auto-generated method stub
+
+			}
+
 		};
 		collisionsHandler.setListener(listener);
 

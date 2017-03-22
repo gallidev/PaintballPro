@@ -70,11 +70,9 @@ public class Mover {
         }
     }
 
-    public boolean isFinished(){
-        return this.finished;
-    }
-
     public Point2D getTarget(){
         return this.target;
     }
+
+    public ArrayList<Point2D> getPath(){return this.path;}
 }

@@ -60,7 +60,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		Runnable sender = () ->
 		{
 			sendClient();
-			sendBullets();
+//			sendBullets();
 			sendRemainingTime();
 
 			//sendEliminatedPlayers();
@@ -114,20 +114,37 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	/**
 	 * Send the active bullets of each player to the client, according to the protocol.
 	 */
-	protected void sendBullets() {
+	public void onShotBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
 
-		for(EssentialPlayer p : players){
+//		for(EssentialPlayer p : players){
+//
+//			String toBeSent = "4:" + p.getPlayerId();
+//
+//			if(p.hasShot()){
+//				p.setHasShot(false);
+//				toBeSent += ":shot";
+//				udpServer.sendToAll(toBeSent, lobbyId);
+//			}
+//
+//		}
 
-			String toBeSent = "4:" + p.getPlayerId();
+		String toBeSent = "4:" + playerId;
+		toBeSent += ":" + bulletId;
+		toBeSent += ":" + originX;
+		toBeSent += ":" + originY;
+		toBeSent += ":" + angle;
 
-			if(p.hasShot()){
-				p.setHasShot(false);
-				toBeSent += ":shot";
-				udpServer.sendToAll(toBeSent, lobbyId);
-			}
+		udpServer.sendToAll(toBeSent, lobbyId);
 
-		}
+	}
+
+	@Override
+	public void onBulletKills(int playerId, int bulletId) {
+		String toBeSent = "5:" + playerId;
+		toBeSent += ":" + bulletId;
+
+		udpServer.sendToAll(toBeSent, lobbyId);
 
 	}
 
@@ -260,4 +277,5 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		toBeSent += location;
 		udpServer.sendToAll(toBeSent, lobbyId);
 	}
+
 }

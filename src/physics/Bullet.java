@@ -88,4 +88,8 @@ public class Bullet extends Circle
 	public TeamEnum getColour(){
 		return colour;
 	}
+
+	public int getBulletId(){
+		return this.id;
+	}
 }

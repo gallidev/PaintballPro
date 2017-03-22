@@ -182,6 +182,9 @@ public class UDPClient extends Thread {
 				case '4':
 					generateBullet(receivedPacket);
 					break;
+				case '5':
+					destroyBullet(receivedPacket);
+					break;
 				case '6':
 					getRemainingTime(receivedPacket);
 					break;
@@ -228,6 +231,7 @@ public class UDPClient extends Thread {
 		if (debug)
 			System.out.println("Closing UDP Client");
 	}
+
 
 	private void getWinnerAction(String text) {
 		// Protocol: 2:Red/Blue:RedScore:BlueScore
@@ -395,12 +399,31 @@ public class UDPClient extends Thread {
 	public void generateBullet(String text) {
 		// Protocol message: 4:id:idBullet:x:y:...
 
-		int id = Integer.parseInt(text.split(":")[1]);
+		String[] actions = text.split(":");
+		int playerId = Integer.parseInt(actions[1]);
+		int bulletId = Integer.parseInt(actions[2]);
+		double originX = Double.parseDouble(actions[3]);
+		double originY = Double.parseDouble(actions[4]);
+		double angle = Double.parseDouble(actions[5]);
+
 
 		if (gameStateReceiver != null) {
-			gameStateReceiver.updateBullets(id);
+			gameStateReceiver.generateBullet(playerId, bulletId, originX, originY, angle);
 		}
 	}
+
+	private void destroyBullet(String text) {
+
+		String[] actions = text.split(":");
+		int playerId = Integer.parseInt(actions[1]);
+		int bulletId = Integer.parseInt(actions[2]);
+
+		if (gameStateReceiver != null) {
+			gameStateReceiver.destroyBullet(playerId, bulletId);
+		}
+
+	}
+
 
 	/**
 	 * Method to retrieve the game remaining time sent from the server.

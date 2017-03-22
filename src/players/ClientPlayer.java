@@ -69,7 +69,7 @@ public class ClientPlayer extends EssentialPlayer {
 		if(!eliminated)
 		{
 			updatePosition();
-			updateShooting();
+			//updateShooting();
 			updateAngle();
 
 		}

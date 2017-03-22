@@ -68,6 +68,8 @@ public class ClientInputSender {
 	    	   if (!udpClient.isActive())
 	    		   scheduler.shutdown();
 
+	    	   if (!udpClient.isActive())
+	    		   scheduler.shutdown();
 	       }
 	     };
 
@@ -127,7 +129,7 @@ public class ClientInputSender {
 
 
 	/**
-	 * Method to test network latency, by calculating the time a client message reaches the server. 
+	 * Method to test network latency, by calculating the time a client message reaches the server.
 	 */
 	private void sendCurrentTime(){
 		String toSend = "3:"  + player.getPlayerId() + ":";
