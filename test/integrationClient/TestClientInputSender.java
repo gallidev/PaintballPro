@@ -68,6 +68,7 @@ public class TestClientInputSender {
 		client.stopThread();
 		server.m_running = false;
 		server.interrupt();
+		client.active = false;
 	}
 
 	@Test
