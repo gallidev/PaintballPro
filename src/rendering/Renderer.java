@@ -80,6 +80,8 @@ public class Renderer extends Scene
 
 		map.powerups = new Powerup[]{new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
 		};
+		map.powerups[0].addAlternatePowerup(map.powerups[1]);
+		map.powerups[1].addAlternatePowerup(map.powerups[0]);
 		view.getChildren().addAll(map.powerups);
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);

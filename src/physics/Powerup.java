@@ -7,12 +7,14 @@ import javafx.scene.paint.Color;
 import rendering.GameObject;
 import rendering.ImageFactory;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Powerup extends ImageView
 {
 	private static final int duration = 15000; //Respawn 15 seconds after being taken
 	private PowerupType type;
+	private ArrayList<Powerup> alternatePowerups = new ArrayList<>();
 	private GameObject[] locations;
 	private CollisionsHandlerListener listener;
 
@@ -22,7 +24,6 @@ public class Powerup extends ImageView
 		setEffect(new DropShadow(8, type == PowerupType.SHIELD ? Color.GREEN : Color.YELLOW));
 		this.type = type;
 		this.locations = locations;
-		resetPosition();
 	}
 
 	public PowerupType getType()
@@ -38,8 +39,16 @@ public class Powerup extends ImageView
 	private void resetPosition()
 	{
 		int indexLocation = (new Random()).nextInt(locations.length);
+		double x = locations[indexLocation].getX() * 64 + 16, y =  locations[indexLocation].getY() * 64 + 16;
 
-		relocate(locations[indexLocation].getX() * 64 + 16, locations[indexLocation].getY() * 64 + 16);
+		for(Powerup alternatePowerup : alternatePowerups)
+			if(x == alternatePowerup.getLayoutX() && y == alternatePowerup.getLayoutY())
+			{
+				resetPosition();
+				return;
+			}
+
+		relocate(x, y);
 		if(listener != null)
 			listener.onPowerupRespawn(type, indexLocation);
 	}
@@ -49,14 +58,20 @@ public class Powerup extends ImageView
 		relocate(locations[index].getX() * 64 + 16, locations[index].getY() * 64 + 16);
 	}
 
+	public void addAlternatePowerup(Powerup alternatePowerup)
+	{
+		this.alternatePowerups.add(alternatePowerup);
+		resetPosition();
+	}
+
 	void take() {
 		setVisible(false);
+		resetPosition();
 		new java.util.Timer().schedule(
 		        new java.util.TimerTask() {
 		            @Override
 		            public void run() {
 		            	setVisible(true);
-		                resetPosition();
 		            }
 		        },
 		        duration
