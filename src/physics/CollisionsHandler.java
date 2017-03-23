@@ -37,16 +37,16 @@ public class CollisionsHandler
 
 	public CollisionsHandler(Map map)
 	{
-		this.propsWalls = map.getRecProps();
-		this.propsWalls.addAll(map.getRecWalls());
-		this.redTeam = new ArrayList<>();
-		this.blueTeam = new ArrayList<>();
+		propsWalls = map.getRecProps();
+		propsWalls.addAll(map.getRecWalls());
+		redTeam = new ArrayList<>();
+		blueTeam = new ArrayList<>();
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
-		this.spawnAreaBlue = map.getRecSpawn(TeamEnum.BLUE);
-		this.spawnAreaRed = map.getRecSpawn(TeamEnum.RED);
-		this.flag = map.getFlag();
-		this.powerups = map.getPowerups();
+		spawnAreaBlue = map.getRecSpawn(TeamEnum.BLUE);
+		spawnAreaRed = map.getRecSpawn(TeamEnum.RED);
+		flag = map.getFlag();
+		powerups = map.getPowerups();
 	}
 
 	public void handlePropWallCollision(EssentialPlayer p){
@@ -194,9 +194,9 @@ public class CollisionsHandler
 				p.setHasFlag(false);
 
 				if (red.containsPlayer(p))
-					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
+					blue.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
 				else
-					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
+					red.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
 
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
@@ -217,9 +217,9 @@ public class CollisionsHandler
 					p.setHasFlag(false);
 
 					if (red.containsPlayer(p))
-						red.incrementScore(CaptureTheFlagMode.flagScore);
+						red.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
 					else
-						blue.incrementScore(CaptureTheFlagMode.flagScore);
+						blue.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
 					if(listener != null)
 						listener.onFlagRespawned(p.getPlayerId());
 				}

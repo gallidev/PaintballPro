@@ -385,7 +385,7 @@ public class TestCollisionsHandler {
 			e.printStackTrace();
 		}
 
-		assertTrue(collisionsHandler.getShieldPowerup().isVisible());
+		assertFalse(collisionsHandler.getShieldPowerup().isVisible());
 
 		player1.setAngle(1.5708);
 		player2.setAngle(1.5708);
@@ -417,7 +417,7 @@ public class TestCollisionsHandler {
 			e.printStackTrace();
 		}
 
-		assertTrue(collisionsHandler.getSpeedPowerup().isVisible());
+		assertFalse(collisionsHandler.getSpeedPowerup().isVisible());
 
 		gameSimulation.stopGameLoop();
 	}

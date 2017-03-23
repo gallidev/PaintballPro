@@ -3,76 +3,92 @@ package logic;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 /**
  * Creates a timer for a game round.
+ * 
  * @author Alexandra Paduraru
  */
 public class RoundTimer {
-	
+
 	private static int interval = 1;
-	private Timer timer;
+
 	private int timeLeft;
-	
+	private Timer timer;
+
 	/**
 	 * Create a timer with a given running time.
-	 * @param roundTime How long should the game last.
+	 * 
+	 * @param roundTime
+	 *            How long should the game last.
 	 */
-	public RoundTimer(int roundTime){
+	public RoundTimer(int roundTime) {
 		timer = new Timer();
 		this.timeLeft = roundTime;
 	}
-	
+
 	/**
 	 * Decrements the time left to play the round.
 	 */
 	private void setTimeLeft() {
-	    if (timeLeft == 1)
-	        timer.cancel();
-	    timeLeft--;
+		if (timeLeft == 1)
+			timer.cancel();
+		timeLeft--;
 	}
 
 	/**
 	 * Checks to see if the round has finished.
+	 * 
 	 * @return Whether or not the game round has finished.
 	 */
-	public boolean isTimeElapsed(){
+	public boolean isTimeElapsed() {
 		return (timeLeft <= 0);
 	}
-	
+
 	/**
 	 * Starts the game round and runs for the entire game length.
 	 */
-	public void startTimer(){
-		int delay = 1000;
-	    int period = 1000;
-	    timer.scheduleAtFixedRate(new TimerTask() {
+	public void startTimer() {
+		int delay;
+		int period;
 
-	        public void run() {
-	            	setTimeLeft();
-	        }
-	    }, delay, period);
+		delay = 1000;
+		period = 1000;
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+			public void run() {
+				setTimeLeft();
+			}
+		}, delay, period);
 	}
-	
-	public int getTimeLeft(){
+
+	/**
+	 * Method which retrieves the remaining time.
+	 * 
+	 * @return The remaining time in seconds.
+	 */
+	public int getTimeLeft() {
 		return timeLeft;
 	}
-	
-	//Main method for testing purposes
-/*	public static void main(String[] args) {
-	    Scanner sc = new Scanner(System.in);
-	    System.out.print("Run for (Seconds) : ");
-	    long roundTime = sc.nextInt();
-	    RoundTimer rt = new RoundTimer(roundTime);
-	    
-	    rt.startTimer();
-	    
-	    System.out.println(rt.isTimeElapsed());
-	}
-*/
-	
-	public void setTimeLeft(int time){
+
+	/**
+	 * Changes the remaining time.
+	 * 
+	 * @param time
+	 *            The new time.
+	 */
+	public void setTimeLeft(int time) {
 		timeLeft = time;
 	}
-	
+
+	// Main method for testing purposes
+	/*
+	 * public static void main(String[] args) { Scanner sc = new
+	 * Scanner(System.in); System.out.print("Run for (Seconds) : "); long
+	 * roundTime = sc.nextInt(); RoundTimer rt = new RoundTimer(roundTime);
+	 * 
+	 * rt.startTimer();
+	 * 
+	 * System.out.println(rt.isTimeElapsed()); }
+	 */
+
 }

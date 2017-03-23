@@ -16,11 +16,11 @@ public class TestRoundTimer {
 	int noInterval = 0;
 	int smallInterval = 2;
 	int gameInterval = 4;
-	
+
 	RoundTimer noTimer;
 	RoundTimer smallTimer;
 	RoundTimer gameTimer;
-	
+
 	/**
 	 * Set up 3 timers, one which should not run at all, two small timers of differentl length for testing.
 	 * @throws Exception
@@ -31,10 +31,10 @@ public class TestRoundTimer {
 		smallTimer = new RoundTimer(smallInterval);
 		gameTimer = new RoundTimer(gameInterval);
 	}
-	
+
 	/**
 	 * Method that tests if timers run for as long as they have been declared.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	@Test
@@ -47,7 +47,7 @@ public class TestRoundTimer {
 		assertTrue(noTimer.isTimeElapsed());
 		assertFalse(smallTimer.isTimeElapsed());
 		assertFalse(gameTimer.isTimeElapsed());
-		
+
 		gameTimer.startTimer();
 
 
@@ -55,40 +55,46 @@ public class TestRoundTimer {
 		assertTrue(noTimer.isTimeElapsed());
 		assertTrue(smallTimer.isTimeElapsed());
 		assertTrue(gameTimer.isTimeElapsed());
-		
+
 		assertTrue(smallTimer.getTimeLeft() == 0);
 		assertTrue(gameTimer.getTimeLeft() == 0);
 		assertTrue(noTimer.getTimeLeft() <= 0);
-		
+
 	}
-	
+
 	/**
 	 * Method that tests if timers return the correct remaining time.
 	 * @throws InterruptedException
 	 */
 	@Test
 	public void getTimeLeftTest() throws InterruptedException{
+
 		assertTrue(smallTimer.getTimeLeft() <= 2);
 		assertTrue(gameTimer.getTimeLeft() <= 4);
 		assertTrue(noTimer.getTimeLeft() == 0);
-		
-		Thread.sleep(2500);
+
+		noTimer.startTimer();
+		smallTimer.startTimer();
+		gameTimer.startTimer();
+
+		Thread.sleep(3000);
 		assertTrue(noTimer.isTimeElapsed());
 		assertTrue(smallTimer.isTimeElapsed());
 		assertFalse(gameTimer.isTimeElapsed());
 	}
-	
+
 	/**
 	 * Method to test if the remaining time is changed correctly using the corresponding set method.
 	 */
+
 	public void setTimeLeftTest(){
 		assertTrue(smallTimer.getTimeLeft() == 0);
 		assertTrue(gameTimer.getTimeLeft() == 0);
 		assertTrue(noTimer.getTimeLeft() <= 0);
-		
+
 		smallTimer.setTimeLeft(10);
 		assertTrue(smallTimer.getTimeLeft() == 10);
-		
+
 	}
-	
+
 }

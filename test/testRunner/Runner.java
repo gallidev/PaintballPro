@@ -15,7 +15,7 @@ import testSuites.RenderingSuite;
 
 /**
  * Main JUnit test runner - runs all JUnit tests and prints success/failures.
- * 
+ *
  * @author Matthew Walters
  */
 public class Runner {
@@ -26,12 +26,12 @@ public class Runner {
       for (Failure failure : result.getFailures()) {
          System.out.println(failure.toString());
       }
-		
+
       if(result.wasSuccessful())
     	  System.out.println(">> All tests pass. <<");
       else
     	  System.out.println(">> There were test failures. <<");
-      
+
       System.exit(0);
    }
-} 
+}

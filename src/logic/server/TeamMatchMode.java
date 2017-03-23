@@ -12,10 +12,10 @@ import logic.RoundTimer;
  */
 public class TeamMatchMode extends GameMode {
 
-	private static final int gameTime = 180; // in seconds
-	private RoundTimer timer;
-	//debugging
+	private static final int GAME_TIME = 180; // in seconds
+
 	private boolean debug = false;
+	private RoundTimer timer;
 
 	/**
 	 * Initialises the game with two teams and starts the count-down.
@@ -27,7 +27,7 @@ public class TeamMatchMode extends GameMode {
 	 */
 	public TeamMatchMode(Team t1, Team t2) {
 		super(t1, t2);
-		timer = new RoundTimer(gameTime);
+		timer = new RoundTimer(GAME_TIME);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class TeamMatchMode extends GameMode {
 		return getRemainingTime() == 0;
 	}
 
-		/**
+	/**
 	 * Returns the winner team.
 	 *
 	 * @return The team who has won the game. The method returns null in case if
@@ -51,26 +51,39 @@ public class TeamMatchMode extends GameMode {
 			return getRedTeam();
 		else if (getRedTeam().getScore() < getBlueTeam().getScore())
 			return getBlueTeam();
-		else{
-			//allocate 30 more seconds to the game.
+		else {
+			// allocate 30 more seconds to the game.
 			timer = new RoundTimer(30);
 			timer.startTimer();
 			return null;
 		}
 	}
 
+	/**
+	 * Start a new game.
+	 */
 	@Override
 	public void start() {
 		timer.startTimer();
 	}
-	
-	public RoundTimer getTimer(){
+
+	/**
+	 * Returns the timer used in the game.
+	 * 
+	 * @return The game timer.
+	 */
+	public RoundTimer getTimer() {
 		return timer;
 	}
 
+	/**
+	 * Returns the remaining game time.
+	 * 
+	 * @return The remaining time in the game(in seconds).
+	 */
 	@Override
 	public int getRemainingTime() {
 		return timer.getTimeLeft();
 	}
-	
+
 }
