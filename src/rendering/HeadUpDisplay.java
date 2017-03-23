@@ -56,6 +56,9 @@ public class HeadUpDisplay extends SubScene
 
 	void setScore(TeamEnum team, int score)
 	{
+		if (!(team == TeamEnum.RED ? redScore : blueScore).getText().equals(String.valueOf(score)))
+			guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float)1.0);
+
 		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(score));
 	}
 
