@@ -29,6 +29,7 @@ public class UDPClient extends Thread {
 	public boolean testSendToAll = false;
 	public boolean testNetworking = false;
 	public int port;
+	
 	private boolean debug = false;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;

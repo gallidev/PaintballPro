@@ -63,8 +63,6 @@ public class ClientSender extends Thread {
 			}
 		}
 		// If stopped, return.
-		// server.close();
-		System.out.println("Stopping ClientSender");
 		return;
 	}
 

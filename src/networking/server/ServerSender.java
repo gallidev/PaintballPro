@@ -17,11 +17,9 @@ import networking.shared.MessageQueue;
 public class ServerSender extends Thread {
 
 	private boolean m_running = true;
-	private int clientID;
 	private MessageQueue queue;
 	private PrintStream client;
 	private Socket socket;
-	private String clientName;
 
 	/**
 	 * Construct the class, setting passed variables to local objects.
@@ -32,17 +30,11 @@ public class ServerSender extends Thread {
 	 *            Stream to print out to the client.
 	 * @param socket
 	 *            Socket to the client.
-	 * @param clientName
-	 *            Name of the client.
-	 * @param ClientID
-	 *            ID of the client.
 	 */
-	public ServerSender(MessageQueue queue, PrintStream clientStream, Socket socket, String clientName, int ClientID) {
+	public ServerSender(MessageQueue queue, PrintStream clientStream, Socket socket) {
 		this.queue = queue;
 		this.client = clientStream;
 		this.socket = socket;
-		this.clientName = clientName;
-		this.clientID = ClientID;
 	}
 
 	/**
@@ -71,9 +63,8 @@ public class ServerSender extends Thread {
 			// Attempt to close the socket to the client.
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//
 		}
-		System.out.println(clientID + " " + clientName + " disconnected.");
 		return;
 	}
 }

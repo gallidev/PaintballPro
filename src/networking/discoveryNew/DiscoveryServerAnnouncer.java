@@ -60,7 +60,7 @@ public class DiscoveryServerAnnouncer extends Thread {
 			}
 			socket.close();
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
+			//
 		}
 		return;
 	}

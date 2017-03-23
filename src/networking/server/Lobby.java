@@ -57,6 +57,8 @@ public class Lobby {
 	private boolean testEnv = false;
 	private CollisionsHandler collissionsHandler;
 	private ConcurrentMap<Integer,ArrayList<ServerBasicPlayer>> teams;
+	private int currPlayerBlueNum;
+	private int currPlayerRedNum;
 	private Team red;
 	private Team blue;
 
@@ -75,6 +77,8 @@ public class Lobby {
 		inGameStatus = false;
 		gameType = PassedGameType;
 		maxPlayers = 8;
+		currPlayerBlueNum = 0;
+		currPlayerRedNum = 0;
 		id = myid;
 		players = new ArrayList<>();
 		this.testEnv = testEnv;
@@ -163,7 +167,7 @@ public class Lobby {
 		// We check in LobbyTable if max players is reached.
 		int totPlayers = getCurrPlayerTotal();
 
-		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (teams.get(1).size() <= (maxPlayers / 2))) {
+		if (((specific == 0) && (totPlayers % 2 == 0)) || ((specific == 2)) && (teams.get(1).size() <= (maxPlayers / 2))) {
 			teams.get(1).add(playerToAdd);
 		} else {
 			teams.get(2).add(playerToAdd);
@@ -234,7 +238,7 @@ public class Lobby {
 			 * other team.
 			 */
 			if (player.getID() == playerToSwitch.getID()) {
-				if (teams.get(1).size() < (maxPlayers / 2)) {
+				if (currPlayerRedNum < (maxPlayers / 2)) {
 					removePlayer(playerToSwitch);
 					addPlayer(playerToSwitch, 2);
 					switched = true;
@@ -250,9 +254,8 @@ public class Lobby {
 				 * the other team.
 				 */
 				if (player.getID() == playerToSwitch.getID()) {
-					if (teams.get(2).size() < (maxPlayers / 2)) {
+					if (currPlayerBlueNum < (maxPlayers / 2)) {
 						removePlayer(playerToSwitch);
-						System.out.println("Adding to new team.");
 						addPlayer(playerToSwitch, 1);
 						switched = true;
 						break;
