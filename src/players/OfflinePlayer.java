@@ -25,28 +25,30 @@ import rendering.Map;
  */
 public class OfflinePlayer extends EssentialPlayer
 {
+	//game information
 	private Team myTeam;
 	private Team oppTeam;
-	private InputHandler inputHandler;
+	
 	private AudioManager audio;
-	private Random rand;
+	private InputHandler inputHandler;
 	private Label nameTag;
-
+	private Random rand;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player
 	 *
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
+	 * @author Alexandra Paduraru
 	 */
 	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode, double currentFPS)
 	{
 		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode, currentFPS);
 		this.audio = guiManager.getAudioManager();
 		this.inputHandler = inputHandler;
-		angle = 0.0;
 		this.team = team;
 
+		angle = 0.0;
 		rand = new Random();
 
 		nameTag = new Label("Player");
@@ -94,7 +96,6 @@ public class OfflinePlayer extends EssentialPlayer
 
 	}
 
-
 	/**
 	 * Tick is called every frame
 	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed
@@ -135,7 +136,7 @@ public class OfflinePlayer extends EssentialPlayer
 
 	/**
 	 * Updates the score of the opponent team when the current player has been eliminated.
-	 * @author atp575
+	 * @author Alexandra Paduraru
 	 */
 	@Override
 	public void updateScore() {
@@ -194,10 +195,8 @@ public class OfflinePlayer extends EssentialPlayer
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
-
 	public void shoot()
 	{
-
 		double x1 = (83 * getImage().getWidth() / 120) - PLAYER_HEAD_X;
 		double y1 = (12 * getImage().getHeight() / 255) - PLAYER_HEAD_Y;
 
@@ -241,7 +240,6 @@ public class OfflinePlayer extends EssentialPlayer
 		}
 
 	}
-
 
 	public void setMX(double mx)
 	{

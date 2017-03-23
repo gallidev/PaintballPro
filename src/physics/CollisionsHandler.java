@@ -194,9 +194,9 @@ public class CollisionsHandler
 				p.setHasFlag(false);
 
 				if (red.containsPlayer(p))
-					blue.incrementScore(CaptureTheFlagMode.lostFlagScore);
+					blue.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
 				else
-					red.incrementScore(CaptureTheFlagMode.lostFlagScore);
+					red.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
 
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
@@ -217,9 +217,9 @@ public class CollisionsHandler
 					p.setHasFlag(false);
 
 					if (red.containsPlayer(p))
-						red.incrementScore(CaptureTheFlagMode.flagScore);
+						red.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
 					else
-						blue.incrementScore(CaptureTheFlagMode.flagScore);
+						blue.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
 					if(listener != null)
 						listener.onFlagRespawned(p.getPlayerId());
 				}
