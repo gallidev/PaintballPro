@@ -189,6 +189,7 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
+		receiver.getUdpClient().setActive(true);
 		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer);
 		inputSender.startSending();
 

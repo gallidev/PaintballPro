@@ -133,6 +133,7 @@ public class ClientReceiver extends Thread {
 			}
 		} catch (IOException e) {
 			// If there is something wrong... exit cleanly.
+			e.printStackTrace();
 			return;
 		}
 	}
@@ -202,7 +203,6 @@ public class ClientReceiver extends Thread {
 			String nickname = data[i + 2];
 
 			if (data[i + 1].equals(clientTeam)) {
-
 				if (clientTeam.equals("Red")) {
 					GhostPlayer p = new GhostPlayer(map.getSpawns()[myTeam.size()].x * 64,
 							map.getSpawns()[myTeam.size()].y * 64, id, map.getSpawns(), TeamEnum.RED, collisionHandler,
@@ -366,4 +366,11 @@ public class ClientReceiver extends Thread {
 		allplayers.add(cPlayer);
 		return allplayers;
 	}
+
+	public void resetGame() {
+		myTeam = new ArrayList<>();
+		enemies = new ArrayList<>();
+		teams = new TeamTable();
+	}
+
 }

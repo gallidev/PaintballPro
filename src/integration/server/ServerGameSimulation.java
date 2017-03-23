@@ -135,6 +135,7 @@ public class ServerGameSimulation {
 					try {
 						Thread.sleep(1);
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 					now = System.nanoTime();
