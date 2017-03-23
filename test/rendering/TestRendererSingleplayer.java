@@ -2,7 +2,6 @@ package rendering;
 
 import gui.GUIManager;
 import helpers.JavaFXTestHelper;
-import javafx.scene.shape.Rectangle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,19 +62,4 @@ public class TestRendererSingleplayer
 		assertFalse(renderer.getSettingsMenuState());
 		assertTrue(renderer.getPauseMenuState());
 	}
-
-	@Test
-	public void generateSprays()
-	{
-		Rectangle wall = renderer.getMap().getRecWalls().get(0);
-		renderer.generateSpray(wall.getX(), wall.getY(), "red");
-		wall = renderer.getMap().getRecWalls().get(1);
-		renderer.generateSpray(wall.getX(), wall.getY(), "blue");
-
-		Rectangle prop = renderer.getMap().getRecProps().get(0);
-		renderer.generateSpray(prop.getX(), prop.getY(), "red");
-		prop = renderer.getMap().getRecProps().get(1);
-		renderer.generateSpray(prop.getX(), prop.getY(), "blue");
-	}
-
 }
