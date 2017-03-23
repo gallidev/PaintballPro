@@ -39,6 +39,7 @@ public class TestRoundTimer {
 	 */
 	@Test
 	public void gameTimingsTest() throws InterruptedException{
+
 		// testing startTimer: only two timers start and the third one is tested
 		// to ensure that its time is not running
 		noTimer.startTimer();

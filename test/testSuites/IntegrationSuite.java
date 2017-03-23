@@ -13,8 +13,8 @@ import integrationServer.TestServerGameStateSender;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-	TestClientIntegration.class,
 	TestClientInputSender.class,
+	TestClientIntegration.class,
 	TestServerInputReceiver.class,
 	TestServerGameSimulation.class,
 	TestServerIntegration.class,
