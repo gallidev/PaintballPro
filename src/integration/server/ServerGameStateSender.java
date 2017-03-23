@@ -10,6 +10,7 @@ import players.EssentialPlayer;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,7 +61,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		Runnable sender = () -> {
 			sendClient();
 			// sendBullets();
-			sendRemainingTime();
+			
 			// sendEliminatedPlayers();
 
 			if (gameLoop.getGame().isGameFinished()) {
@@ -79,15 +80,13 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 		// for testing purposes:
 
-		/*
-		 * Runnable frameCounter = new Runnable() { public void run() {
-		 * System.out.println("server Sending frames " + frames); frames = 0;
-		 *
-		 * } };
-		 *
-		 * ScheduledFuture<?> frameCounterHandle =
-		 * scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
-		 */
+		
+		Runnable timeSender = new Runnable() { public void run() {
+			sendRemainingTime();
+		} };
+		
+		scheduler.scheduleAtFixedRate(timeSender, 0, 1, TimeUnit.SECONDS);
+		
 	}
 
 	/**

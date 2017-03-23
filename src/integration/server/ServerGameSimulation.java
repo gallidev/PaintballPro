@@ -120,7 +120,7 @@ public class ServerGameSimulation {
 				// Update the frames we got.
 				int thisSecond = (int) (lastUpdateTime / 1000000000);
 				if (thisSecond > lastSecondTime) {
-					System.out.println("NEW SECOND " + thisSecond + " fps: " + frameCount);
+					 System.out.println("NEW SECOND " + thisSecond + " fps: " + frameCount);
 					fps = frameCount;
 					frameCount = 0;
 					lastSecondTime = thisSecond;

@@ -22,7 +22,7 @@ public class ClientInputSender {
 	private static final boolean debug = false;
 
 	// sending stats
-	private long delayMilliseconds = 17;
+	private long delayMilliseconds = 25;
 
 	private InputHandler handler;
 	private ClientPlayer player;
