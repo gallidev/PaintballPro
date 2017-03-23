@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 
 /**
  * Tests for the Menu Controls helper class
+ *
+ * @author Jack Hughes
  */
 public class TestMenuControls {
 
@@ -22,6 +24,7 @@ public class TestMenuControls {
     @Test
     public void centreInPane() throws Exception {
         JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.waitForPlatform();
 
         Button b = new Button("Test");
         GridPane p = MenuControls.centreInPane(b);

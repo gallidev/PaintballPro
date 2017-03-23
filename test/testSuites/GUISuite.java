@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 		TestGUIConnection.class,
         TestGUIManager.class,
         TestHelpMenu.class,
+		TestLoadingPane.class,
         TestMainMenu.class,
         TestMenuControls.class,
         TestNicknameServerSelectMenu.class,

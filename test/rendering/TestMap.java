@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MapTest
+public class TestMap
 {
 	private Map singleMap, serverMap;
 	private GUIManager guiManager;

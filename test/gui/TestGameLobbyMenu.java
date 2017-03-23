@@ -13,6 +13,8 @@ import static org.junit.Assert.*;
 
 /**
  * Tests for the game lobby menu
+ *
+ * @author Jack Hughes
  */
 public class TestGameLobbyMenu {
 
@@ -23,6 +25,7 @@ public class TestGameLobbyMenu {
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.waitForPlatform();
     }
 
     /**
@@ -49,6 +52,23 @@ public class TestGameLobbyMenu {
         Thread.sleep(1000);
 
         g.setTimeLeft(4);
+
+        Thread.sleep(1000);
+
+        g.setTimeLeft(1);
+
+        Thread.sleep(1000);
     }
 
+    /**
+     * Test that the GUIManager can handle lobby updates
+     * @throws Exception test failed
+     */
+    @Test
+    public void testLobbyUpdates() throws Exception {
+        GUIManager g = new GUIManager();
+        String[] newPlayers = {"Player 1", "Player 2"};
+        g.updateBlueLobby(newPlayers);
+        g.updateRedLobby(newPlayers);
+    }
 }

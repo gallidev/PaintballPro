@@ -1,20 +1,18 @@
 package physics;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import gui.GUIManager;
 import helpers.JavaFXTestHelper;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import players.EssentialPlayer;
 import rendering.Renderer;
+
+import static gui.GUIManager.renderer;
+import static org.junit.Assert.*;
 
 public class TestInputHandler {
 
@@ -23,7 +21,6 @@ public class TestInputHandler {
 	private KeyReleaseListener keyReleaseListener;
 	private KeyPressListener keyPressListener;
 	private GUIManager guiManager;
-	private Renderer rendererSingle;
 
 	@Before
 	public void setUp()
@@ -31,8 +28,7 @@ public class TestInputHandler {
 
 		JavaFXTestHelper.setupApplication();
 		guiManager = new GUIManager();
-		rendererSingle = new Renderer("elimination", guiManager);
-		guiManager.setRenderer(rendererSingle);
+		GUIManager.renderer = new Renderer("elimination", guiManager);
 
 		inputHandler = new InputHandler();
 		keyPressListener = new KeyPressListener(inputHandler);
@@ -44,8 +40,8 @@ public class TestInputHandler {
 	@After
 	public void tearDown()
 	{
-		rendererSingle.destroy();
-		rendererSingle = null;
+		renderer.destroy();
+		renderer = null;
 	}
 
 	@Test

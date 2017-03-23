@@ -11,6 +11,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the end game menu
+ *
+ * @author Jack Hughes
  */
 public class TestEndGameMenu {
 
@@ -26,7 +28,7 @@ public class TestEndGameMenu {
         Scene s = EndGameMenu.getScene(m, "1,0", TeamEnum.BLUE);
         m.currentMenu = Menu.EndGame;
         GUIManagerTestHelper.findButtonByTextInParent("Continue", s.getRoot()).fire();
-        Thread.sleep(2000);
+        JavaFXTestHelper.waitForPlatform();
         assertTrue(m.currentMenu == Menu.SingleplayerGameType);
     }
 

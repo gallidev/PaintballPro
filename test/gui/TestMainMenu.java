@@ -11,6 +11,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the main menu
+ *
+ * @author Jack Hughes
  */
 public class TestMainMenu {
 
@@ -21,6 +23,7 @@ public class TestMainMenu {
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
+        JavaFXTestHelper.waitForPlatform();
     }
 
     /**
