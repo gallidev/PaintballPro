@@ -16,6 +16,8 @@ import java.util.Enumeration;
 public class DiscoveryClient extends Thread {
 
 	public String retVal = "";
+	
+	private boolean debug = false;
 
 	/**
 	 * Get the IP address and port of the first server found
@@ -72,7 +74,8 @@ public class DiscoveryClient extends Thread {
 				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
 						InetAddress.getByName(networking.discoveryNew.IPAddress.getLAN()), 25561);
 				clientSocket.send(sendPacket);
-				System.out.println("::: " + InetAddress.getByName("127.0.0.1").toString());
+				if(debug)
+					System.out.println("::: " + InetAddress.getByName("127.0.0.1").toString());
 			} catch (Exception e) {
 			}
 
@@ -82,7 +85,8 @@ public class DiscoveryClient extends Thread {
 			
 			while (true) {
 				clientSocket.receive(receivePacket);
-				System.out.println("Received a packet from server.");
+				if(debug)
+					System.out.println("Received a packet from server.");
 				if (!receivePacket.getAddress().getHostAddress().contains("192.168.56"))
 					break;
 			}

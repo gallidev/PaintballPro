@@ -256,7 +256,6 @@ public class Lobby {
 				if (player.getID() == playerToSwitch.getID()) {
 					if (currPlayerBlueNum < (maxPlayers / 2)) {
 						removePlayer(playerToSwitch);
-						System.out.println("Adding to new team.");
 						addPlayer(playerToSwitch, 1);
 						switched = true;
 						break;
@@ -408,32 +407,32 @@ public class Lobby {
 	 *
 	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
-//		if (timer == null) {
-//			timer = new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					RoundTimer timer = new RoundTimer(lobbyTime);
-//					timer.startTimer();
-//					long lastTime = -1;
-//					while (!timer.isTimeElapsed()) {
-//						try {
-//							if (lastTime != timer.getTimeLeft()) {
-//									// System.out.println("Timer changed: from " +
-//								// lastTime + " to " + timer.getTimeLeft());
-//								lastTime = timer.getTimeLeft();
-//								receiver.sendToAll("LTime:" + timer.getTimeLeft());
-//							}
-//							Thread.sleep(100);
-//						} catch (InterruptedException e) {
-//
-//						}
-//					}
-//					playGame(receiver, udpServer, gameMode);
-//					startGameLoop(udpServer, gameMode);
-//				}
-//			});
-//			timer.start();
-//		}
+		if (timer == null) {
+			timer = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					RoundTimer timer = new RoundTimer(lobbyTime);
+					timer.startTimer();
+					long lastTime = -1;
+					while (!timer.isTimeElapsed()) {
+						try {
+							if (lastTime != timer.getTimeLeft()) {
+									// System.out.println("Timer changed: from " +
+								// lastTime + " to " + timer.getTimeLeft());
+								lastTime = timer.getTimeLeft();
+								receiver.sendToAll("LTime:" + timer.getTimeLeft());
+							}
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+
+						}
+					}
+					playGame(receiver, udpServer, gameMode);
+					startGameLoop(udpServer, gameMode);
+				}
+			});
+			timer.start();
+		}
 
 	}
 
