@@ -20,7 +20,7 @@ public class UDPServer extends Thread {
 
 	public boolean m_running = true;
 	public String winnerTest;
-	
+
 	private boolean debug = false;
 	private ClientTable clients;
 	private DatagramSocket serverSocket;
@@ -153,6 +153,7 @@ public class UDPServer extends Thread {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			if (debug)
 				System.err.println(e.getMessage());
 		} finally {

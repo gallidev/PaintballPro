@@ -27,9 +27,9 @@ import rendering.Map;
 
 /**
  * Test class to test the information that a client sends to the server, based
- * on the user input. 
+ * on the user input.
  * Class tested - {@link ClientInputSender}
- * 
+ *
  * @author Alexandra Paduraru
  *
  */
@@ -50,7 +50,7 @@ public class TestClientInputSender {
 
 		handler = new InputHandler();
 
-		server = new UDPServer(table, lobby, 19877);
+		server = new UDPServer(table, lobby, 19887);
 		server.start();
 
 		JavaFXTestHelper.setupApplication();
@@ -64,7 +64,7 @@ public class TestClientInputSender {
 		inputReceiver.setPlayers(players);
 		server.setInputReceiver(inputReceiver);
 
-		client = new UDPClient(1, "127.0.0.1", 19877,null, null, 25567, "test");
+		client = new UDPClient(1, "127.0.0.1", 19887,null, null, 25567, "test");
 		client.start();
 
 		inputSender = new ClientInputSender(client, handler, player);
@@ -80,7 +80,7 @@ public class TestClientInputSender {
 
 	/**
 	 * Method to test that the client sends the correct input.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	@Test
@@ -93,7 +93,7 @@ public class TestClientInputSender {
 
 		// "0:1:Up:Left:Right:Shoot:2:3:0:0"
 		inputSender.startSending();
-		Thread.sleep(100);
+		Thread.sleep(1500);
 
 		assertTrue(player.getUp());
 		assertTrue(player.getDown());
