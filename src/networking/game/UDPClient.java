@@ -5,14 +5,11 @@ import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.client.TeamTable;
 import physics.PowerupType;
-import players.EssentialPlayer;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 import static gui.GUIManager.renderer;
 
@@ -24,6 +21,14 @@ import static gui.GUIManager.renderer;
  */
 public class UDPClient extends Thread {
 
+	public static double PINGDELAY = 0;
+	public boolean active = true;
+	public boolean bulletDebug = false;
+	public boolean connected = false;
+	public boolean testIntegration = false;
+	public boolean testSendToAll = false;
+	public boolean testNetworking = false;
+	public int port;
 	private boolean debug = false;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
@@ -34,15 +39,6 @@ public class UDPClient extends Thread {
 	private InetAddress IPAddress;
 	private String nickname;
 	private TeamTable teams;
-
-	public boolean active = true;
-	public boolean bulletDebug = false;
-	public boolean connected = false;
-	public boolean testIntegration = false;
-	public boolean testSendToAll = false;
-	public boolean testNetworking = false;
-	public int port;
-	public static double PINGDELAY = 0;
 
 	/**
 	 * We establish a connection with the UDP server... we tell it we are
@@ -313,7 +309,7 @@ public class UDPClient extends Thread {
 			}
 
 			boolean eliminated = false;
-			if(actions[5].equals("true")) {
+			if(actions[6].equals("true")) {
 				eliminated = true;
 			}
 
@@ -474,9 +470,9 @@ public class UDPClient extends Thread {
 		double x = Double.parseDouble(text.split(":")[2]);
 		double y = Double.parseDouble(text.split(":")[3]);
 
-		if (gameStateReceiver != null) {
+		//if (gameStateReceiver != null) {
 			gameStateReceiver.respawnFlag(id, x, y);
-		}
+		//}
 		if (debug) System.out.println("flag rebased");
 	}
 
@@ -503,7 +499,8 @@ public class UDPClient extends Thread {
 	public void powerUpRespawn(String receivedPacket) {
 		String[] message = receivedPacket.split(":");
 		PowerupType type = (message[1].equals("0") ? PowerupType.SHIELD : PowerupType.SPEED);
-		gameStateReceiver.powerUpRespawn(type, Integer.parseInt(message[2]));
+		if(gameStateReceiver != null)
+			gameStateReceiver.powerUpRespawn(type, Integer.parseInt(message[2]));
 	}
 
 	/**

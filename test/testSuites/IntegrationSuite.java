@@ -9,6 +9,7 @@ import integrationServer.TestLobbyIntegration;
 import integrationServer.TestServerGameSimulation;
 import integrationServer.TestServerInputReceiver;
 import integrationServer.TestServerIntegration;
+import integrationServer.TestServerGameStateSender;
 
 @RunWith(Suite.class)
 
@@ -20,10 +21,11 @@ import integrationServer.TestServerIntegration;
 	TestServerGameSimulation.class,
 	TestServerIntegration.class,
 	TestLobbyIntegration.class,
+	TestServerGameStateSender.class
 })
 
 /**
- * Logic Test Suite.
+ * Integration Test Suite.
  *
  * @author Alexandra Paduraru
  */

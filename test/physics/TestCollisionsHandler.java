@@ -120,7 +120,17 @@ public class TestCollisionsHandler {
 	@After
 	public void tearDown()
 	{
-		//gameSimulation.stopGameLoop();
+		collisionsHandler = null;
+		map = null;
+		player1 = null;
+		player2 = null;
+		player3 = null;
+		player4 = null;
+
+		red = null;
+		blue = null;
+		game = null;
+		gameSimulation = null;
 	}
 
 	@Test
@@ -374,7 +384,7 @@ public class TestCollisionsHandler {
 			e.printStackTrace();
 		}
 
-		assertTrue(collisionsHandler.getShieldPowerup().isVisible());
+		assertFalse(collisionsHandler.getShieldPowerup().isVisible());
 
 		player1.setAngle(1.5708);
 		player2.setAngle(1.5708);
@@ -406,7 +416,7 @@ public class TestCollisionsHandler {
 			e.printStackTrace();
 		}
 
-		assertTrue(collisionsHandler.getSpeedPowerup().isVisible());
+		assertFalse(collisionsHandler.getSpeedPowerup().isVisible());
 
 		gameSimulation.stopGameLoop();
 	}

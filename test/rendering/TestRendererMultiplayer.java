@@ -32,12 +32,12 @@ public class TestRendererMultiplayer
 		int id = table.add("test");
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 
-		UDPServer server = new UDPServer(table, lobby, 19878);
+		UDPServer server = new UDPServer(table, lobby, 19887);
 		server.start();
-		UDPClient client = new UDPClient(1, "127.0.0.1", 19878,null, null, 25568, "test");
+		UDPClient client = new UDPClient(1, "127.0.0.1", 19887,null, null, 25568, "test");
 
 		ClientReceiver receiver = new ClientReceiver(0, null, null, guiManager, client, new TeamTable());
-		receiver.startGameAction("2:0:1:Red:Artur:2:Blue:Beth:");
+		receiver.startGameAction("2:0:1:0:0:1:Red:Artur:2:Blue:Beth:");
 		renderer = new Renderer("ctf", receiver, guiManager);
 	}
 

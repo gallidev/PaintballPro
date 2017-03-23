@@ -39,7 +39,7 @@ import rendering.Renderer;
  * Tester class to test the client-sided part of the integration, by if the
  * correct actions are carried out, given a server input. Classes tested
  * {@link UDPClient}, {@link ClientGameStateReceiver}, {@link EssentialPlayer}
- * 
+ *
  * @author Alexandra Paduraru
  *
  */
@@ -59,10 +59,10 @@ public class TestClientIntegration {
 		GUIManager gui = new GUIManager();
 		LobbyTable lobby = new LobbyTable();
 
-		server = new UDPServer(clientTable, lobby, 19877);
+		server = new UDPServer(clientTable, lobby, 19897);
 		server.start();
 
-		client = new UDPClient(1, "127.0.0.1", 19877, null, null, 25567, "test");
+		client = new UDPClient(1, "127.0.0.1", 19897, null, null, 25567, "test");
 		client.start();
 
 		JavaFXTestHelper.setupApplication();
@@ -101,7 +101,7 @@ public class TestClientIntegration {
 	/**
 	 * Method that gathers and runs all tests, for the all the various kinds of
 	 * server messages.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	@Test
@@ -119,7 +119,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a player updates correctly according to the server
 	 * message.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void updatePlayerTest() throws InterruptedException {
@@ -146,7 +146,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a score updates correctly according to the server
 	 * message.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void updateScoreTest() {
@@ -165,7 +165,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a bullets updates correctly according to the server
 	 * message.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void bulletTest() throws InterruptedException {
@@ -199,7 +199,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a game information(players, flags) updates correctly
 	 * when a flag is captured.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void capturedFlagTest() throws InterruptedException {
@@ -215,7 +215,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a game information(players, flags) updates correctly
 	 * when a flag is lost.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void lostFlagTest() throws InterruptedException {
@@ -233,7 +233,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a game information(players, flags) updates correctly
 	 * when a flag is brough back to a team's base.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void baseFlagTest() throws InterruptedException {
@@ -247,7 +247,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a game information(players, power-ups) updates correctly
 	 * when a powerup is picked.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void powerUpTest() {
@@ -278,7 +278,7 @@ public class TestClientIntegration {
 	/**
 	 * Checks to see if a game information(players, power-ups) updates correctly
 	 * when a shield is removed.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void shieldRemovedTest() {

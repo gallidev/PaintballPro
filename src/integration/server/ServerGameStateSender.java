@@ -33,7 +33,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	/**
 	 * Initialises a new Server game state sender with the server, players
 	 * involved in the game and the id of the lobby corresponding to that game.
-	 * 
+	 *
 	 * @param udpServer
 	 *            The server used to send information to all clients involved in
 	 *            a game.
@@ -83,9 +83,9 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		/*
 		 * Runnable frameCounter = new Runnable() { public void run() {
 		 * System.out.println("server Sending frames " + frames); frames = 0;
-		 * 
+		 *
 		 * } };
-		 * 
+		 *
 		 * ScheduledFuture<?> frameCounterHandle =
 		 * scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 		 */
@@ -130,7 +130,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/**
 	 * Kill a player when ia bullett has touched a player.
-	 * 
+	 *
 	 * @param playerId
 	 *            The id of the player to be killed.
 	 * @param bulletId
@@ -173,7 +173,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 			}
 
 			if (p.getShieldPopped()) {
-				sendShieldRemoved(p);
+				sendShieldRemoved(p.getPlayerId());
 				p.setShieldPopped(false);
 			}
 		}
@@ -211,12 +211,12 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/**
 	 * Send clients when a player does not have the shield power-up anymore.
-	 * 
+	 *
 	 * @param p
 	 *            The player which has lost the shield power-up.
 	 */
-	private void sendShieldRemoved(EssentialPlayer p) {
-		udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
+	public void sendShieldRemoved(int playerId) {
+		udpServer.sendToAll("%:" + playerId, lobbyId);
 		// udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 		// udpServer.sendToAll("%:" + p.getPlayerId(), lobbyId);
 
@@ -224,7 +224,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/**
 	 * Sends clients that a player has captured the flag.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the player which has captured the flag.
 	 */
@@ -237,7 +237,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/**
 	 * Sends clients that a player has dropped the flag.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the player which has dropped the flag.
 	 */
@@ -250,7 +250,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/**
 	 * Sends clients that a player has brought the flag back to its base.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the player.
 	 */
@@ -275,7 +275,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		case SPEED:
 			toBeSent = "$:1:" + player;
 			break;
-		default : 
+		default :
 			break;
 		}
 		udpServer.sendToAll(toBeSent, lobbyId);
@@ -297,7 +297,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 	/*
 	 * Sets the game simulation.
-	 * 
+	 *
 	 * @param sim The simulation of the game, which runs on the server.
 	 */
 	public void setGameLoop(ServerGameSimulation sim) {

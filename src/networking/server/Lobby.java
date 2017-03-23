@@ -1,12 +1,5 @@
 package networking.server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import ai.AIManager;
 import ai.HashMapGen;
 import enums.TeamEnum;
@@ -26,6 +19,13 @@ import players.ServerBasicPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Class to represent a lobby.
@@ -515,9 +515,16 @@ public class Lobby {
 
 		udpServer.setInputReceiver(inputReceiver);
 
+		map.getPowerups()[0].addAlternatePowerup(map.getPowerups()[1]);
+		map.getPowerups()[1].addAlternatePowerup(map.getPowerups()[0]);
+
 		for (EssentialPlayer p : players) {
 			String toBeSent = "2:" + gameMode + ":";
-
+			toBeSent += map.getPowerups()[0].getIndex() + ":" + map.getPowerups()[1].getIndex() + ":";
+			if(map.getFlag() != null)
+				toBeSent += map.getFlag().getIndex() + ":";
+			else
+				toBeSent += "0:";
 			// the current player's info
 			toBeSent += p.getPlayerId() + ":" + (p.getTeam() == TeamEnum.RED ? "Red" : "Blue") + ":" + p.getNickname()
 					+ ":";
@@ -548,7 +555,7 @@ public class Lobby {
 	public void startGameLoop(UDPServer udpServer, int gameMode) {
 
 		ServerGameSimulation gameloop = null;
-		ServerGameStateSender stateSender ;
+		ServerGameStateSender stateSender;
 
 		if (gameMode == 1)
 			gameloop = new ServerGameSimulation(new TeamMatchMode(red, blue));
@@ -560,11 +567,13 @@ public class Lobby {
 		stateSender.setGameLoop(gameloop);
 		map.getPowerups()[0].setListener(stateSender);
 		map.getPowerups()[1].setListener(stateSender);
+
 		collissionsHandler.setListener(stateSender);
 		for(EssentialPlayer p: players){
 			p.setCollisionsHandlerListener(stateSender);
 		}
 		stateSender.startSending();
+
 		inGameStatus = true;
 	}
 
@@ -601,6 +610,16 @@ public class Lobby {
 //	}
 
 	/**
+	 * Sets the current maximum id of a user player.
+	 *
+	 * @param newMax
+	 *            The new maximum id.
+	 */
+	public static void setMaxId(int newMax) {
+		maxId = newMax;
+	}
+
+	/**
 	 * Return red converted team.
 	 *
 	 * @return Red Team object.
@@ -616,16 +635,6 @@ public class Lobby {
 	 */
 	public Team getBlueTeam() {
 		return blue;
-	}
-
-	/**
-	 * Sets the current maximum id of a user player.
-	 *
-	 * @param newMax
-	 *            The new maximum id.
-	 */
-	public static void setMaxId(int newMax) {
-		maxId = newMax;
 	}
 
 	/**
