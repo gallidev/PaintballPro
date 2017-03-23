@@ -47,6 +47,7 @@ public class NicknameServerSelectMenu {
 		// Create the username label and text field
 		Label usernameLabel = new Label("Username");
 		TextField usernameText = new TextField();
+		usernameText.setId("UsernameTextField");
 		usernameText.setText(userSettings.getUsername());
 		topGrid.add(usernameLabel, 0, 0);
 		topGrid.add(usernameText, 1, 0);

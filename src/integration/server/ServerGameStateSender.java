@@ -65,7 +65,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 			if (gameLoop.getGame().isGameFinished()) {
 
-				//udpServer.sendToAll("5", lobbyId);
 				sendWinner();
 				// scheduler.shutdown();
 			}

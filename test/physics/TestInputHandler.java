@@ -124,10 +124,6 @@ public class TestInputHandler {
 		assertFalse(inputHandler.isLeft());
 		assertFalse(inputHandler.isRight());
 
-
-
-
-
 	}
 
 }

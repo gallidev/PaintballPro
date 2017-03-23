@@ -72,7 +72,9 @@ public class TestLobbyIntegration {
 		lobby.setPlayerNames();
 		
 		File names;
+		System.out.println(1);
 		names = new File("res/names.txt");
+		System.out.println(2);
 		Scanner readNames;
 		try {
 			readNames = new Scanner(names);

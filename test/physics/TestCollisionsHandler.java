@@ -262,17 +262,6 @@ public class TestCollisionsHandler {
 		assertTrue(player1.hasFlag());
 
 		//test when the player loses the flag and the other one catches it
-		player1.relocate(collisionsHandler.getFlag().getLayoutX()+80, collisionsHandler.getFlag().getLayoutY());
-
-		player1.setLeft(true);
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		assertTrue(player1.hasFlag());
 
 		player1.setLeft(false);
 
