@@ -65,7 +65,7 @@ public class TestServerGameStateSender {
 
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 
-		server = new UDPServer(table, lobby, 19878);
+		server = new UDPServer(table, lobby, 19999);
 		server.start();
 		Thread.sleep(500);
 
@@ -104,13 +104,13 @@ public class TestServerGameStateSender {
 		serverGameStateSender = new ServerGameStateSender(server, playersForServer, 1);
 		serverGameStateSender.setGameLoop(gameSimulation);
 
-		client1 = new UDPClient(id, "127.0.0.1", 19878,null, null, 25568, "test");
+		client1 = new UDPClient(id, "127.0.0.1", 19999,null, null, 25568, "test");
 
 		id = table.add("test2");
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 		lobby.switchTeams(table.getPlayer(id), null);
 
-		client2 = new UDPClient(id, "127.0.0.1", 19878,null, null, 25569, "test");
+		client2 = new UDPClient(id, "127.0.0.1", 19999,null, null, 25569, "test");
 
 		client1.testNetworking = true;
 		client2.testNetworking = true;
