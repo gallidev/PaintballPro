@@ -23,6 +23,12 @@ import networking.server.ServerReceiver;
 import players.AIPlayer;
 import players.EssentialPlayer;
 
+/**
+ * Test class to test the integration parts of the lobby.
+ * Class tested - {@link Lobby}
+ * @author Alexandra Paduraru
+ *
+ */
 public class TestLobbyIntegration {
 	
 	private Team blue;
@@ -34,6 +40,10 @@ public class TestLobbyIntegration {
 	private UDPServer server;
 	private ServerReceiver serverReceiver;
 
+	/**
+	 * Initialises all the networking required and a lobby.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		JavaFXTestHelper.setupApplication();
@@ -53,8 +63,11 @@ public class TestLobbyIntegration {
 		lobby = null;
 	}
 
+	/**
+	 * Test method to see if the names assigned to the AI players are correct.
+	 */
 	@Test
-	public void lobbyTest() {
+	public void nameTest() {
 		lobby.playGame(serverReceiver, server, 1);
 		lobby.setPlayerNames();
 		
@@ -80,18 +93,27 @@ public class TestLobbyIntegration {
 		
 	}
 	
+	/**
+	 * Tests the consistency of the red team.
+	 */
 	@Test
 	public void getRedTeamTest() {
 		lobby.setRedTeam(red);
 		assertTrue(lobby.getRedTeam() == red);
 	}
 	
+	/**
+	 * Tests the consistency of the blue team.
+	 */
 	@Test
 	public void getBlueTeamTest() {
 		lobby.setRedTeam(blue);
 		assertTrue(lobby.getBlueTeam() == blue);
 	}
 	
+	/**
+	 * Tests the maximum number of players in the lobby.
+	 */
 	@Test
 	public void getMaxIdTest() {
 		lobby.playGame(serverReceiver, server, 1);

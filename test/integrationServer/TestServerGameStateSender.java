@@ -162,7 +162,8 @@ public class TestServerGameStateSender {
 	 * @throws InterruptedException
 	 */
 	@Test
-	public void testSendingEverything() throws InterruptedException {
+	public void testSendingEverything(
+			) throws InterruptedException {
 		gameSimulation.runGameLoop();
 
 		serverGameStateSender.startSending();
