@@ -17,7 +17,7 @@ import java.net.InetAddress;
  */
 public class UDPServer extends Thread {
 
-
+	public boolean activePlayers = true;
 	public boolean m_running = true;
 	public String winnerTest;
 	
@@ -176,26 +176,30 @@ public class UDPServer extends Thread {
 		sendData = toBeSent.getBytes();
 
 		// We get all players in the same game as the transmitting player.
-		players = lobbyTab.getLobby(lobbyID).getPlayers();
+		if (lobbyTab.getLobby(lobbyID) != null){
+			players = lobbyTab.getLobby(lobbyID).getPlayers();
+			
+			for (ServerBasicPlayer player : players) {
+				int id = player.getID();
+				String playerIP = clients.getIP(id);
 
-		// Let's send a message to them all.
-		for (ServerBasicPlayer player : players) {
-			int id = player.getID();
-			String playerIP = clients.getIP(id);
+				// Parse IP to get first part and port number.
+				String ipAddr = playerIP.split(":")[0];
+				int port = Integer.parseInt(playerIP.split(":")[1]);
 
-			// Parse IP to get first part and port number.
-			String ipAddr = playerIP.split(":")[0];
-			int port = Integer.parseInt(playerIP.split(":")[1]);
+				try {
+					// Let's send the message.
+					InetAddress sendAddress = InetAddress.getByName(ipAddr);
+					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, port);
+					serverSocket.send(sendPacket);
+				} catch (Exception e) {
+					if (debug)
+						System.out.println("Cannot send message:" + toBeSent + ", to:" + ipAddr);
+				}
 
-			try {
-				// Let's send the message.
-				InetAddress sendAddress = InetAddress.getByName(ipAddr);
-				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, sendAddress, port);
-				serverSocket.send(sendPacket);
-			} catch (Exception e) {
-				if (debug)
-					System.out.println("Cannot send message:" + toBeSent + ", to:" + ipAddr);
-			}
+		}
+		}else{
+			activePlayers = false;
 		}
 	}
 

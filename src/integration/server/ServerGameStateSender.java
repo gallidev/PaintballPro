@@ -46,6 +46,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		this.udpServer = udpServer;
 		this.players = players;
 		this.lobbyId = lobbyId;
+		udpServer.activePlayers = true;
 	}
 
 	/**
@@ -67,6 +68,11 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 				udpServer.sendToAll("5", lobbyId);
 				sendWinner();
 				// scheduler.shutdown();
+			}
+			
+			if (!udpServer.activePlayers){
+				scheduler.shutdown();
+				gameLoop.stopGameLoop();
 			}
 		};
 

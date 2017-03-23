@@ -1,8 +1,20 @@
 package testSuites;
 
-import gui.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+import gui.TestAlertBox;
+import gui.TestEndGameMenu;
+import gui.TestGUIConnection;
+import gui.TestGUIManager;
+import gui.TestGameLobbyMenu;
+import gui.TestGameTypeMenu;
+import gui.TestHelpMenu;
+import gui.TestLoadingPane;
+import gui.TestMainMenu;
+import gui.TestMenuControls;
+import gui.TestNicknameServerSelectMenu;
+import gui.TestSettingsMenu;
 
 @RunWith(Suite.class)
 

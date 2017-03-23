@@ -193,10 +193,10 @@ public class CollisionsHandler
 					listener.onFlagDropped(p.getPlayerId());
 				p.setHasFlag(false);
 
-				if (red.containsPlayer(p))
-					blue.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
-				else
-					red.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
+//				if (red.containsPlayer(p))
+//					blue.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
+//				else
+//					red.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
 
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){

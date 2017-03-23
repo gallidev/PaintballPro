@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import logic.GameMode;
 import logic.server.Team;
+import networking.game.UDPServer;
 import players.EssentialPlayer;
 
 /**
@@ -38,7 +39,6 @@ public class ServerGameSimulation {
 		this.game = game;
 		this.redTeam = game.getRedTeam();
 		this.blueTeam = game.getBlueTeam();
-
 	}
 
 	/**

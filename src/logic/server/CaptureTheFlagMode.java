@@ -11,7 +11,7 @@ import logic.RoundTimer;
  */
 public class CaptureTheFlagMode extends GameMode {
 
-	public static final int FLAG_SCORE = 5;
+	public static final int FLAG_SCORE = 1;
 	public static final int LOST_FLAG_SCORE = 2;
 
 	private static final int ROUND_TIME = 300;
