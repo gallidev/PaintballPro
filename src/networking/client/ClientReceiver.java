@@ -252,6 +252,8 @@ public class ClientReceiver extends Thread {
 
 		powerups[0] = new Powerup(PowerupType.SHIELD, map.getPowerupLocations());
 		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
+		powerups[0].addAlternatePowerup(powerups[1]);
+		powerups[1].addAlternatePowerup(powerups[0]);
 
 		if (gameMode == 1) {
 			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), powerups);

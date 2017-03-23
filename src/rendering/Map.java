@@ -195,6 +195,8 @@ public class Map
 
 		powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, powerupLocations), new Powerup(PowerupType.SPEED, powerupLocations)
 		};
+		powerups[0].addAlternatePowerup(powerups[1]);
+		powerups[1].addAlternatePowerup(powerups[0]);
 
 	}
 
