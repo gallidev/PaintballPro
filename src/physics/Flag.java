@@ -15,16 +15,27 @@ public class Flag extends ImageView
 	private boolean captured = false;
 	private GameObject[] locations;
 	private EssentialPlayer flagCarrier;
+	private int index = 0;
 
 	public Flag(GameObject[] locations)
 	{
 		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
 		this.locations = locations;
-		resetPosition();
 		setEffect(new DropShadow(12, Color.BLACK));
+		resetPosition();
 	}
 
-	public Flag(){
+	public Flag(int index, GameObject[] locations)
+	{
+		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
+		this.locations = locations;
+		setEffect(new DropShadow(12, Color.BLACK));
+		this.index = index;
+		resetPosition(index);
+	}
+
+	public Flag()
+	{
 		super(ImageFactory.getObjectiveImage(ObjectType.FLAG));
 		setEffect(new DropShadow(12, Color.BLACK));
 	}
@@ -45,8 +56,13 @@ public class Flag extends ImageView
 
 	void resetPosition()
 	{
-		int randomLocation = (new Random()).nextInt(locations.length);
-		relocate(locations[randomLocation].getX() * 64 + 8, locations[randomLocation].getY() * 64 + 8);
+		index = (new Random()).nextInt(locations.length);
+		relocate(locations[index].getX() * 64 + 8, locations[index].getY() * 64 + 8);
+	}
+
+	public void resetPosition(int index)
+	{
+		relocate(locations[index].getX() * 64 + 8, locations[index].getY() * 64 + 8);
 	}
 
 	public EssentialPlayer getFlagCarrier()
@@ -57,5 +73,10 @@ public class Flag extends ImageView
 	void setFlagCarrier(EssentialPlayer p)
 	{
 		this.flagCarrier = p;
+	}
+
+	public int getIndex()
+	{
+		return index;
 	}
 }

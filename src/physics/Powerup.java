@@ -17,6 +17,7 @@ public class Powerup extends ImageView
 	private ArrayList<Powerup> alternatePowerups = new ArrayList<>();
 	private GameObject[] locations;
 	private CollisionsHandlerListener listener;
+	private int index;
 
 	public Powerup(PowerupType type, GameObject[] locations)
 	{
@@ -24,6 +25,8 @@ public class Powerup extends ImageView
 		setEffect(new DropShadow(8, type == PowerupType.SHIELD ? Color.GREEN : Color.YELLOW));
 		this.type = type;
 		this.locations = locations;
+		double x = locations[0].getX() * 64 + 16, y =  locations[0].getY() * 64 + 16;
+		relocate(x, y);
 	}
 
 	public PowerupType getType()
@@ -36,10 +39,10 @@ public class Powerup extends ImageView
 		this.listener = listener;
 	}
 
-	private void resetPosition()
+	public void resetPosition()
 	{
-		int indexLocation = (new Random()).nextInt(locations.length);
-		double x = locations[indexLocation].getX() * 64 + 16, y =  locations[indexLocation].getY() * 64 + 16;
+		index = (new Random()).nextInt(locations.length);
+		double x = locations[index].getX() * 64 + 16, y =  locations[index].getY() * 64 + 16;
 
 		for(Powerup alternatePowerup : alternatePowerups)
 			if(x == alternatePowerup.getLayoutX() && y == alternatePowerup.getLayoutY())
@@ -50,7 +53,7 @@ public class Powerup extends ImageView
 
 		relocate(x, y);
 		if(listener != null)
-			listener.onPowerupRespawn(type, indexLocation);
+			listener.onPowerupRespawn(type, index);
 	}
 
 	public void resetPosition(int index)
@@ -66,16 +69,21 @@ public class Powerup extends ImageView
 
 	void take() {
 		setVisible(false);
-		resetPosition();
 		new java.util.Timer().schedule(
 		        new java.util.TimerTask() {
 		            @Override
 		            public void run() {
 		            	setVisible(true);
+			            resetPosition();
 		            }
 		        },
 		        duration
 		);
 
+	}
+
+	public int getIndex()
+	{
+		return index;
 	}
 }

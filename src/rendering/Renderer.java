@@ -82,6 +82,8 @@ public class Renderer extends Scene
 		};
 		map.powerups[0].addAlternatePowerup(map.powerups[1]);
 		map.powerups[1].addAlternatePowerup(map.powerups[0]);
+		map.powerups[0].resetPosition();
+		map.powerups[1].resetPosition();
 		view.getChildren().addAll(map.powerups);
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);

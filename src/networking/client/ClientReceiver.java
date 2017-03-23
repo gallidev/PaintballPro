@@ -158,10 +158,14 @@ public class ClientReceiver extends Thread {
 		// Declarations
 		String[] data = text.split(":");
 		int gameMode = Integer.parseInt(data[1]);
-		String myNickname = data[3];
-		String clientTeam = data[3];
+		int powerUpIndex1 = Integer.parseInt(data[2]);
+		int powerUpIndex2 = Integer.parseInt(data[3]);
+		int flagIndex = Integer.parseInt(data[4]);
+
+		String myNickname = data[6];
+		String clientTeam = data[6];
 		Map map = null;
-		clientID = Integer.parseInt(data[2]);
+		clientID = Integer.parseInt(data[5]);
 
 		if (gameMode == 1)
 			map = Map.loadRaw("elimination");
@@ -192,7 +196,7 @@ public class ClientReceiver extends Thread {
 		cPlayer.setNickname(myNickname);
 
 		// extract the other members
-		for (int i = 5; i < data.length - 2; i = i + 3) {
+		for (int i = 8; i < data.length - 2; i = i + 3) {
 
 			int id = Integer.parseInt(data[i]);
 			String nickname = data[i + 2];
@@ -251,14 +255,15 @@ public class ClientReceiver extends Thread {
 		teams.setMyTeam(myTeam);
 
 		powerups[0] = new Powerup(PowerupType.SHIELD, map.getPowerupLocations());
+		powerups[0].resetPosition(powerUpIndex1);
 		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
-		powerups[0].addAlternatePowerup(powerups[1]);
-		powerups[1].addAlternatePowerup(powerups[0]);
+		powerups[1].resetPosition(powerUpIndex2);
 
 		if (gameMode == 1) {
 			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), powerups);
 		} else {
 			flag.setLocations(map.getFlagLocations());
+			flag.resetPosition(flagIndex);
 			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), flag, powerups);
 		}
 
