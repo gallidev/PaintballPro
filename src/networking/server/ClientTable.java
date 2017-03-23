@@ -158,7 +158,7 @@ public class ClientTable {
 	 */
 	public boolean checkUsernameAvailable(String username) {
 		for (ServerBasicPlayer player : playerInstances.values()) {
-			if (player.getUsername().contains(username))
+			if (player.getUsername().equals(username))
 				return false;
 		}
 		return true;

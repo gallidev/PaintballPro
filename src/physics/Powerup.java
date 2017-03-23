@@ -25,8 +25,6 @@ public class Powerup extends ImageView
 		setEffect(new DropShadow(8, type == PowerupType.SHIELD ? Color.GREEN : Color.YELLOW));
 		this.type = type;
 		this.locations = locations;
-		double x = locations[0].getX() * 64 + 16, y =  locations[0].getY() * 64 + 16;
-		relocate(x, y);
 	}
 
 	public PowerupType getType()
@@ -63,7 +61,7 @@ public class Powerup extends ImageView
 
 	public void addAlternatePowerup(Powerup alternatePowerup)
 	{
-		this.alternatePowerups.add(alternatePowerup);
+		alternatePowerups.add(alternatePowerup);
 		resetPosition();
 	}
 
