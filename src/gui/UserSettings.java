@@ -7,8 +7,8 @@ package gui;
  */
 public class UserSettings {
 	// Options that the user can change, with defaults set
-	private int musicVolume = 100;
-	private int sfxVolume = 100;
+	private int musicVolume = 60;
+	private int sfxVolume = 60;
 	private String username = "Player";
 	private boolean shading = true;
 	public static String possibleResolutions[] = {"640x360", "960x540", "1024x576", "1280x720"};
