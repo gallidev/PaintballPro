@@ -92,6 +92,8 @@ public class TestServerGameStateSender {
 
 		Team red = new Team(TeamEnum.RED);
 		Team blue = new Team(TeamEnum.BLUE);
+
+		red.incrementScore();
 		red.addMember(userPlayer1);
 		blue.addMember(userPlayer2);
 		TeamMatchMode game = new TeamMatchMode(red, blue);
@@ -157,9 +159,12 @@ public class TestServerGameStateSender {
 		serverGameStateSender.onPowerupAction(PowerupType.SHIELD, 2);
 		serverGameStateSender.onPowerupAction(PowerupType.SPEED, 1);
 		serverGameStateSender.onPowerupRespawn(PowerupType.SPEED, 1);
+		serverGameStateSender.onPowerupRespawn(PowerupType.SHIELD, 1);
+		serverGameStateSender.sendWinner();
+		serverGameStateSender.sendShieldRemoved(1);
 
 
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 
 		serverGameStateSender.stopSending();
 		gameSimulation.stopGameLoop();
