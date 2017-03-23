@@ -75,7 +75,7 @@ public class GameLobbyMenu {
 				}
 				System.out.println(checkLobby.isAlive());
 				guiManager.getClient().getSender().sendMessage("Exit:Game");
-				guiManager.transitionTo(Menu.MainMenu);
+				guiManager.transitionTo(Menu.MultiplayerGameType);
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);

@@ -15,7 +15,7 @@ import rendering.TestRendererSingleplayer;
 })
 
 /**
- * AI Test Suite.
+ * Rendering Test Suite.
  *
  * @author Artur Komoter
  */
