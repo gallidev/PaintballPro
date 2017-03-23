@@ -42,6 +42,11 @@ public class TestInputHandler {
 	{
 		renderer.destroy();
 		renderer = null;
+		inputHandler = null;
+		mouseListener = null;
+		keyReleaseListener = null;
+		keyPressListener = null;
+		guiManager = null;
 	}
 
 	@Test

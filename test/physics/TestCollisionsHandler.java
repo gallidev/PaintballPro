@@ -120,7 +120,18 @@ public class TestCollisionsHandler {
 	@After
 	public void tearDown()
 	{
-		//gameSimulation.stopGameLoop();
+		gameSimulation.stopGameLoop();
+		collisionsHandler = null;
+		map = null;
+		player1 = null;
+		player2 = null;
+		player3 = null;
+		player4 = null;
+
+		red = null;
+		blue = null;
+		game = null;
+		gameSimulation = null;
 	}
 
 	@Test
