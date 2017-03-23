@@ -120,7 +120,6 @@ public class TestCollisionsHandler {
 	@After
 	public void tearDown()
 	{
-		gameSimulation.stopGameLoop();
 		collisionsHandler = null;
 		map = null;
 		player1 = null;
