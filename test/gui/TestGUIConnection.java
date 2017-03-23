@@ -19,9 +19,7 @@ import static org.junit.Assert.*;
  */
 public class TestGUIConnection {
 
-	private Thread serverThread;
 	private GUIManager guiManager;
-	private ServerGUI serverGUI;
 
 	/**
 	 * Setup the JavaFX application
@@ -31,16 +29,6 @@ public class TestGUIConnection {
 	public void setUp() throws Exception {
 		JavaFXTestHelper.setupApplication();
 		JavaFXTestHelper.waitForPlatform();
-		serverThread = new Thread(() -> {
-			int portNo = 25566;
-			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer();
-			discovery.start();
-			serverGUI = new ServerGUI();
-			Server server = new Server(portNo, IPAddress.getLAN(), serverGUI, 0);
-			server.start();
-			serverGUI.setServer(server, discovery);
-		});
-		serverThread.start();
 		Thread.sleep(3000);
 		guiManager = new GUIManager();
 		Platform.runLater(() -> {
@@ -55,22 +43,8 @@ public class TestGUIConnection {
 	 */
 	@Test
 	public void testConnection() throws Exception {
-		guiManager.setIpAddress(IPAddress.getLAN());
-		assertTrue(guiManager.establishConnection() == 0);
-
 		guiManager.setIpAddress("0.0.0.0");
 		assertTrue(guiManager.establishConnection() != 0);
 	}
 
-	/**
-	 * Remove created fields
-	 * @throws Exception test failed
-	 */
-	@After
-	public void tearDown() throws Exception {
-		if (serverThread != null)
-			serverThread.interrupt();
-		serverThread = null;
-		serverGUI = null;
-	}
 }
