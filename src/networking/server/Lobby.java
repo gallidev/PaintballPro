@@ -1,5 +1,13 @@
 package networking.server;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import ai.AIManager;
 import ai.HashMapGen;
 import enums.TeamEnum;
@@ -19,13 +27,6 @@ import players.ServerBasicPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Class to represent a lobby.
@@ -55,10 +56,7 @@ public class Lobby {
 	private boolean debug = false;
 	private boolean testEnv = false;
 	private CollisionsHandler collissionsHandler;
-	private ConcurrentMap<Integer, ServerBasicPlayer> blueTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
-	private ConcurrentMap<Integer, ServerBasicPlayer> redTeam = new ConcurrentHashMap<Integer, ServerBasicPlayer>();
-	private int currPlayerBlueNum;
-	private int currPlayerRedNum;
+	private ConcurrentMap<Integer,ArrayList<ServerBasicPlayer>> teams;
 	private Team red;
 	private Team blue;
 
@@ -77,11 +75,12 @@ public class Lobby {
 		inGameStatus = false;
 		gameType = PassedGameType;
 		maxPlayers = 8;
-		currPlayerBlueNum = 0;
-		currPlayerRedNum = 0;
 		id = myid;
 		players = new ArrayList<>();
 		this.testEnv = testEnv;
+		teams = new ConcurrentHashMap<Integer,ArrayList<ServerBasicPlayer>>(); // 1 - red, 2 - blue
+		teams.put(1, new ArrayList<ServerBasicPlayer>());
+		teams.put(2, new ArrayList<ServerBasicPlayer>());
 
 		if (!testEnv) {
 			// setting up the map
@@ -146,7 +145,7 @@ public class Lobby {
 	 * @return Total number of players in the lobby currently.
 	 */
 	public int getCurrPlayerTotal() {
-		return currPlayerBlueNum + currPlayerRedNum;
+		return teams.get(1).size() + teams.get(2).size();
 	}
 
 	/**
@@ -164,12 +163,10 @@ public class Lobby {
 		// We check in LobbyTable if max players is reached.
 		int totPlayers = getCurrPlayerTotal();
 
-		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (currPlayerRedNum <= (maxPlayers / 2))) {
-			redTeam.put(currPlayerRedNum, playerToAdd);
-			currPlayerRedNum++;
+		if (((totPlayers % 2 == 0) && (specific == 0 || specific == 2)) && (teams.get(1).size() <= (maxPlayers / 2))) {
+			teams.get(1).add(playerToAdd);
 		} else {
-			blueTeam.put(currPlayerBlueNum, playerToAdd);
-			currPlayerBlueNum++;
+			teams.get(2).add(playerToAdd);
 		}
 	}
 
@@ -184,42 +181,32 @@ public class Lobby {
 		boolean removed = false;
 		int counter = 0;
 
-		for (ServerBasicPlayer player : blueTeam.values()) {
+		Iterator<ServerBasicPlayer> it = teams.get(2).iterator();
+		for(int i = 0; i < teams.get(2).size(); i++) {
+			ServerBasicPlayer player = it.next();
 			/*
 			 * We look through until we find the player we are looking for, we
 			 * then remove this player from the team and shift all of the items
 			 * above the player down by one position.
 			 */
 			if (player.getID() == playerToRemove.getID()) {
-				blueTeam.remove(counter);
-				currPlayerBlueNum--;
+				teams.get(2).remove(counter);
 				removed = true;
-				for (int i = (counter + 1); i < (maxPlayers / 2); i++) {
-					if (blueTeam.containsKey(i)) {
-						blueTeam.replace(i - 1, blueTeam.get(i));
-						blueTeam.remove(i);
-					}
-				}
 			}
 			counter++;
 		}
 		if (!removed) {
 			counter = 0;
-			for (ServerBasicPlayer player : redTeam.values()) {
+			it = teams.get(1).iterator();
+			for(int i = 0; i < teams.get(1).size(); i++) {
+				ServerBasicPlayer player = it.next();
 				/*
 				 * We look through until we find the player we are looking for,
 				 * we then remove this player from the team and shift all of the
 				 * items above the player down by one position.
 				 */
 				if (player.getID() == playerToRemove.getID()) {
-					redTeam.remove(counter);
-					currPlayerRedNum--;
-					for (int i = (counter + 1); i < (maxPlayers / 2); i++) {
-						if (redTeam.containsKey(i)) {
-							redTeam.replace(i - 1, redTeam.get(i));
-							redTeam.remove(i);
-						}
-					}
+					teams.get(1).remove(counter);
 				}
 				counter++;
 			}
@@ -234,20 +221,20 @@ public class Lobby {
 	 * @param receiver
 	 *            Server Receiver used to retrieve/send messages between clients
 	 */
-	public void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
+	public synchronized void switchTeam(ServerBasicPlayer playerToSwitch, ServerReceiver receiver) {
 
 		boolean switched = false;
 		String redMems;
 		String blueMems;
-
-		for (ServerBasicPlayer player : blueTeam.values()) {
+		
+		for (ServerBasicPlayer player : teams.get(2)) {
 			/*
 			 * We look through until we find the player we are looking for, we
 			 * then remove them from their original team and add them to the
 			 * other team.
 			 */
 			if (player.getID() == playerToSwitch.getID()) {
-				if (currPlayerRedNum < (maxPlayers / 2)) {
+				if (teams.get(1).size() < (maxPlayers / 2)) {
 					removePlayer(playerToSwitch);
 					addPlayer(playerToSwitch, 2);
 					switched = true;
@@ -256,15 +243,16 @@ public class Lobby {
 			}
 		}
 		if (!switched) {
-			for (ServerBasicPlayer player : redTeam.values()) {
+			for (ServerBasicPlayer player : teams.get(1)) {
 				/*
 				 * We look through until we find the player we are looking for,
 				 * we then remove them from their original team and add them to
 				 * the other team.
 				 */
 				if (player.getID() == playerToSwitch.getID()) {
-					if (currPlayerBlueNum < (maxPlayers / 2)) {
+					if (teams.get(2).size() < (maxPlayers / 2)) {
 						removePlayer(playerToSwitch);
+						System.out.println("Adding to new team.");
 						addPlayer(playerToSwitch, 1);
 						switched = true;
 						break;
@@ -290,11 +278,11 @@ public class Lobby {
 	public String getTeam(int teamNum) {
 		String retStr = "";
 		if (teamNum == 1) {
-			for (ServerBasicPlayer player : blueTeam.values()) {
+			for (ServerBasicPlayer player : teams.get(2)) {
 				retStr = retStr + player.getUsername() + "-";
 			}
 		} else {
-			for (ServerBasicPlayer player : redTeam.values()) {
+			for (ServerBasicPlayer player : teams.get(1)) {
 				retStr = retStr + player.getUsername() + "-";
 			}
 		}
@@ -313,8 +301,8 @@ public class Lobby {
 		ArrayList<ServerBasicPlayer> playArr = new ArrayList<>();
 		ServerBasicPlayer[] playArrReturn;
 
-		playArr.addAll(blueTeam.values());
-		playArr.addAll(redTeam.values());
+		playArr.addAll(teams.get(2));
+		playArr.addAll(teams.get(1));
 		playArrReturn = new ServerBasicPlayer[playArr.size()];
 		playArr.toArray(playArrReturn);
 
@@ -334,9 +322,9 @@ public class Lobby {
 	 *
 	 * @author Alexandra Paduraru and Matthew Walters
 	 */
-	private Team convertTeam(ServerReceiver receiver, ConcurrentMap<Integer, ServerBasicPlayer> team, int teamNum) {
+	private Team convertTeam(ServerReceiver receiver, ArrayList<ServerBasicPlayer> team, int teamNum) {
 		Team newTeam = new Team(teamNum == 1 ? TeamEnum.BLUE : TeamEnum.RED);
-		for (ServerBasicPlayer origPlayer : team.values()) {
+		for (ServerBasicPlayer origPlayer : team) {
 
 			UserPlayer player = null;
 
@@ -426,7 +414,7 @@ public class Lobby {
 					while (!timer.isTimeElapsed()) {
 						try {
 							if (lastTime != timer.getTimeLeft()) {
-								// System.out.println("Timer changed: from " +
+									// System.out.println("Timer changed: from " +
 								// lastTime + " to " + timer.getTimeLeft());
 								lastTime = timer.getTimeLeft();
 								receiver.sendToAll("LTime:" + timer.getTimeLeft());
@@ -462,8 +450,8 @@ public class Lobby {
 	 * @author Filippo Galli
 	 */
 	public void playGame(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
-		red = convertTeam(receiver, redTeam, 2);
-		blue = convertTeam(receiver, blueTeam, 1);
+		red = convertTeam(receiver, teams.get(1), 2);
+		blue = convertTeam(receiver, teams.get(2), 1);
 
 		if (debug)
 		{

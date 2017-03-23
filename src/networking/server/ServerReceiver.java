@@ -92,7 +92,7 @@ public class ServerReceiver extends Thread {
 
 					// When user attempts to switch teams, try to switch.
 					else if (text.contains("SwitchTeam"))
-						gameLobby.switchTeams(clientTable.getPlayer(myClientsID), this);
+						switchTeams();
 
 					// UI Client Requests
 					// ------------------
@@ -133,6 +133,10 @@ public class ServerReceiver extends Thread {
 	 * Different actions performed depending on the messages received from
 	 * clients.
 	 */
+	
+	private void switchTeams() {
+		gameLobby.switchTeams(clientTable.getPlayer(myClientsID), this);
+	}
 
 	/**
 	 * Retrieve the username for a particular client.
