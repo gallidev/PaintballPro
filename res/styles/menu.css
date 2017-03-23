@@ -16,9 +16,9 @@
 }
 
 .button {
-    -fx-background-color: #B2B2B2;
+    -fx-background-color: #D8D8D8;
     -fx-background-radius: 15;
-    -fx-border-color: #363636;
+    -fx-border-color: #979797;
     -fx-border-width: 3px;
     -fx-border-radius: 10;
     -fx-text-fill: black;
@@ -31,18 +31,18 @@
 }
 
 .button#primary {
-    -fx-background-color: #D8D8D8;
-    -fx-border-color: #979797;
+    -fx-background-color: #B2B2B2;
+    -fx-border-color: #363636;
 }
 
 .button:hover {
-    -fx-background-color: #909090;
-    -fx-border-color: #060606;
+    -fx-background-color: #B2B2B2;
+    -fx-border-color: #262626;
 }
 
 .button#primary:hover {
-    -fx-background-color: #B2B2B2;
-    -fx-border-color: #262626;
+    -fx-background-color: #909090;
+    -fx-border-color: #060606;
 }
 
 #RedScore {
