@@ -12,7 +12,7 @@ import audio.TestAudioManager;
 })
 
 /**
- * AI Test Suite.
+ * Audio Test Suite.
  *
  * @author Jack Hughes
  */

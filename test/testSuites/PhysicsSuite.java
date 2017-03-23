@@ -14,7 +14,7 @@ import physics.TestInputHandler;
 })
 
 /**
- * AI Test Suite.
+ * Physics Test Suite.
  *
  * @author Fillipo Galli
  */
