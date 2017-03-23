@@ -23,6 +23,7 @@ public class Runner {
 
       Result result = JUnitCore.runClasses(IntegrationSuite.class, LogicSuite.class, NetworkingSuite.class, PhysicsSuite.class, AISuite.class, RenderingSuite.class, AudioSuite.class, GUISuite.class);
 
+
       for (Failure failure : result.getFailures()) {
          System.out.println(failure.toString());
       }
