@@ -5,6 +5,9 @@ import gui.UserSettings;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 /**
  * Class to manage playing of audio resources
  *
@@ -81,10 +84,16 @@ public class AudioManager implements gui.UserSettingsObserver {
 	 * @param distanceVolume value for the distance away the sound is (1.0 at player, 0.0 at infinity)
 	 */
 	public void playSFX(Media media, float distanceVolume) {
-		MediaPlayer sfxPlayer = new MediaPlayer(media);
-		sfxPlayer.getStatus();
-		sfxPlayer.setVolume(sfxVolume * distanceVolume);
-		sfxPlayer.play();
+		(new Thread(() -> {
+			MediaPlayer sfxPlayer = new MediaPlayer(media);
+			sfxPlayer.getStatus();
+			sfxPlayer.setVolume(sfxVolume * distanceVolume);
+			sfxPlayer.play();
+			sfxPlayer.setOnEndOfMedia(() -> {
+				sfxPlayer.stop();
+				sfxPlayer.dispose();
+			});
+		})).start();
 	}
 
 }
