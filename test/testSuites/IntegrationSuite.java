@@ -8,7 +8,7 @@ import integrationClient.TestClientIntegration;
 import integrationServer.TestServerGameSimulation;
 import integrationServer.TestServerInputReceiver;
 import integrationServer.TestServerIntegration;
-import test.TestServerGameStateSender;
+import integrationServer.TestServerGameStateSender;
 
 @RunWith(Suite.class)
 
