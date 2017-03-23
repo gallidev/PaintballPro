@@ -30,7 +30,7 @@ public class TestServerInputReceiver {
 
 	private ServerInputReceiver inputReceiver;
 	private ArrayList<EssentialPlayer> players;
-	private EssentialPlayer p;
+	private EssentialPlayer essPlayer;
 	private ServerInputReceiver inputReceiver2;
 
 	@Before
@@ -39,11 +39,12 @@ public class TestServerInputReceiver {
 		players = new ArrayList<>();
 
 		JavaFXTestHelper.setupApplication();
-		Map map = Map.loadRaw("elimination");
-		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+		Map map;
+		map = Map.loadRaw("elimination");
+		essPlayer = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
-		players.add(p);
+		players.add(essPlayer);
 
 		inputReceiver2 = new ServerInputReceiver(players);
 	}
@@ -56,12 +57,12 @@ public class TestServerInputReceiver {
 		inputReceiver.setPlayers(players);
 		inputReceiver.updatePlayer(1, true, false, true, false, true, 30);
 
-		assertTrue(p.getUp());
-		assertFalse(p.getDown());
-		assertTrue(p.getLeft());
-		assertFalse(p.getRight());
-		assertTrue(p.isShooting());
-		assertEquals(30.0, p.getAngle(), 0.2);
+		assertTrue(essPlayer.getUp());
+		assertFalse(essPlayer.getDown());
+		assertTrue(essPlayer.getLeft());
+		assertFalse(essPlayer.getRight());
+		assertTrue(essPlayer.isShooting());
+		assertEquals(30.0, essPlayer.getAngle(), 0.2);
 
 	}
 

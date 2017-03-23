@@ -29,9 +29,9 @@ import rendering.Map;
  */
 public class TestServerGameSimulation {
 
-	private Team red;
 	private Team blue;
 	private GameMode game;
+	private Team red;
 	private ServerGameSimulation gameSimulation;
 
 	@Before
@@ -40,7 +40,8 @@ public class TestServerGameSimulation {
 		blue = new Team(TeamEnum.BLUE);
 
 		JavaFXTestHelper.setupApplication();
-		Map map = Map.loadRaw("elimination");
+		Map map;
+		map = Map.loadRaw("elimination");
 		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION,
 				ServerGameSimulation.GAME_HERTZ);
@@ -72,8 +73,9 @@ public class TestServerGameSimulation {
 		players.addAll(red.getMembers());
 		players.addAll(blue.getMembers());
 
-		for (EssentialPlayer p : players)
+		for (EssentialPlayer p : players){
 			assertTrue(((UserPlayer) p).isTicked);
+		}
 
 		gameSimulation.stopGameLoop();
 	}

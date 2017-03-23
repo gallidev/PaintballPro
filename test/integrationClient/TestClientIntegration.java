@@ -46,18 +46,22 @@ import rendering.Renderer;
 public class TestClientIntegration {
 
 	private UDPClient client;
-	private UDPServer server;
-	private ClientGameStateReceiver gameStateReceiver;
-	private EssentialPlayer player;
-	private ClientPlayer cPlayer;
-	private Map map;
 	private CollisionsHandler ch;
+	private ClientPlayer cPlayer;
+	private ClientGameStateReceiver gameStateReceiver;
+	private Map map;
+	private EssentialPlayer player;
+	private UDPServer server;
 
 	@Before
 	public void setUp() throws Exception {
-		ClientTable clientTable = new ClientTable();
-		GUIManager gui = new GUIManager();
-		LobbyTable lobby = new LobbyTable();
+		ClientTable clientTable;
+		GUIManager gui;
+		LobbyTable lobby;
+
+		clientTable= new ClientTable();
+		gui = new GUIManager();
+		lobby = new LobbyTable();
 
 		server = new UDPServer(clientTable, lobby, 19897);
 		server.start();
@@ -73,7 +77,8 @@ public class TestClientIntegration {
 		cPlayer = new ClientPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, gui, ch, null,
 				ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
 
-		ArrayList<EssentialPlayer> players = new ArrayList<>();
+		ArrayList<EssentialPlayer> players;
+		players = new ArrayList<>();
 		players.add(player);
 		players.add(cPlayer);
 
@@ -123,7 +128,8 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void updatePlayerTest() throws InterruptedException {
-		String input = "1:1:2:3:30:true:false";
+		String input;
+		input = "1:1:2:3:30:true:false";
 		client.updatePlayerAction(input);
 
 		assertNotNull(gameStateReceiver);
@@ -150,7 +156,8 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void updateScoreTest() {
-		String input = "3:5:10";
+		String input;
+		input = "3:5:10";
 
 		client.updateScoreAction(input);
 
@@ -170,7 +177,8 @@ public class TestClientIntegration {
 	 */
 	public void bulletTest() throws InterruptedException {
 
-		String input = "4:1:1:" + map.getSpawns()[1].x * 64 + ":" + map.getSpawns()[1].y * 64 + ":1.2";
+		String input;
+		input = "4:1:1:" + map.getSpawns()[1].x * 64 + ":" + map.getSpawns()[1].y * 64 + ":1.2";
 
 		client.generateBullet(input);
 		Thread.sleep(100);
@@ -203,7 +211,8 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void capturedFlagTest() throws InterruptedException {
-		String input = "8:1";
+		String input;
+		input = "8:1";
 
 		client.capturedFlagAction(input);
 		Thread.sleep(100);
@@ -219,7 +228,8 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void lostFlagTest() throws InterruptedException {
-		String input = "9:1";
+		String input;
+		input = "9:1";
 
 		client.lostFlagAction(input);
 		Thread.sleep(100);
@@ -237,10 +247,10 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void baseFlagTest() throws InterruptedException {
-		String input = "!:2:30:45";
+		String input;
+		input = "!:2:30:45";
 
 		client.baseFlagAction(input);
-
 		assertFalse(cPlayer.hasFlag());
 	}
 
@@ -251,7 +261,8 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void powerUpTest() {
-		String input = "$:0:1";
+		String input;
+		input= "$:0:1";
 		client.powerUpAction(input);
 
 		assertFalse(gameStateReceiver.getPowerups()[0].isVisible());
@@ -282,7 +293,8 @@ public class TestClientIntegration {
 	 * @throws InterruptedException
 	 */
 	public void shieldRemovedTest() {
-		String input = "%:1";
+		String input;
+		input = "%:1";
 		client.shieldRemovedAction(input);
 		assertTrue(player.getShieldPopped());
 	}

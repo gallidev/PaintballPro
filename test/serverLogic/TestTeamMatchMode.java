@@ -20,10 +20,12 @@ import logic.server.TeamMatchMode;
  */
 public class TestTeamMatchMode {
 
-	private Team red;
-	private Team blue;
 	private TeamMatchMode game;
-
+	
+	//teams
+	private Team blue;
+	private Team red;
+	
 	/**
 	 * Initialises the game with the red and blue team.
 	 * 
@@ -44,7 +46,6 @@ public class TestTeamMatchMode {
 	 */
 	@Test
 	public void gameTimeTest() throws InterruptedException {
-
 		game.start();
 
 		assertFalse(game.isGameFinished());
@@ -84,7 +85,6 @@ public class TestTeamMatchMode {
 
 		game.whoWon();
 		game.getRedTeam().setScore(5);
-		System.out.println(game.getTimer().getTimeLeft());
 		assertTrue(game.getTimer().getTimeLeft() <= 30);
 		assertTrue(game.getTimer().getTimeLeft() >= 1);
 

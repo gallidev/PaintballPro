@@ -16,7 +16,6 @@ import helpers.JavaFXTestHelper;
 import integration.client.ClientInputSender;
 import integration.server.ServerGameSimulation;
 import integration.server.ServerGameStateSender;
-import integration.server.ServerInputReceiver;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
 import networking.game.UDPClient;
@@ -34,28 +33,39 @@ import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
 
+/**
+ * Test class for a server game state sender, which transmits the game data to
+ * the clients. Class Tested {@link ServerGameStateSender}
+ * 
+ * @author Filippo Galli
+ *
+ */
 public class TestServerGameStateSender {
 
-	private UDPServer server;
-	private UDPClient client1;
-	private UDPClient client2;
+	// players
+	private GhostPlayer ghostPlayer;
 	private InputHandler handler;
+	private ClientPlayer player;
 	private UserPlayer userPlayer1;
 	private UserPlayer userPlayer2;
 
-	private ClientPlayer player;
-	private GhostPlayer ghostPlayer;
+	// networking
+	private UDPClient client1;
+	private UDPClient client2;
+	private ServerGameSimulation gameSimulation;
+	private ClientInputSender inputSender;
+	private LobbyTable lobby;
+	private UDPServer server;
+	private ClientTable table;
 	private ServerGameStateSender serverGameStateSender;
 
-	private ClientInputSender inputSender;
-	private ClientTable table;
-	private LobbyTable lobby;
-
-	private ServerGameSimulation gameSimulation;
-
+	/**
+	 * Initialising all the required networking and ServerGameState Sender
+	 * 
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
-
 		table = new ClientTable();
 
 		lobby = new LobbyTable();
@@ -69,24 +79,27 @@ public class TestServerGameStateSender {
 		server.start();
 		Thread.sleep(500);
 
-
 		JavaFXTestHelper.setupApplication();
-		Map map = Map.loadRaw("ctf");
+		Map map;
+		map = Map.loadRaw("ctf");
 
-		CollisionsHandler ch = new CollisionsHandler(map);
+		CollisionsHandler ch;
+		ch = new CollisionsHandler(map);
 
-		player = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), ch , new InputHandler(), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURETHEFLAG, Renderer.TARGET_FPS);
+		player = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), ch, new InputHandler(),
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURETHEFLAG, Renderer.TARGET_FPS);
 
-		ghostPlayer = new GhostPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch, GameMode.CAPTURETHEFLAG, Renderer.TARGET_FPS);
+		ghostPlayer = new GhostPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch, GameMode.CAPTURETHEFLAG,
+				Renderer.TARGET_FPS);
 
-		userPlayer1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
-		userPlayer2 = new UserPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch, ImageFactory.getPlayerImage(TeamEnum.BLUE), GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
-
+		userPlayer1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch,
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+		userPlayer2 = new UserPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch,
+				ImageFactory.getPlayerImage(TeamEnum.BLUE), GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
 
 		ArrayList<EssentialPlayer> playersForServer = new ArrayList<>();
 		playersForServer.add(userPlayer1);
 		playersForServer.add(userPlayer2);
-
 
 		ch.setPlayers(playersForServer);
 
@@ -100,17 +113,16 @@ public class TestServerGameStateSender {
 
 		gameSimulation = new ServerGameSimulation(game);
 
-
 		serverGameStateSender = new ServerGameStateSender(server, playersForServer, 1);
 		serverGameStateSender.setGameLoop(gameSimulation);
 
-		client1 = new UDPClient(id, "127.0.0.1", 19999,null, null, 25568, "test");
+		client1 = new UDPClient(id, "127.0.0.1", 19999, null, null, 25568, "test");
 
 		id = table.add("test2");
 		lobby.addPlayerToLobby(table.getPlayer(id), 1, null, null);
 		lobby.switchTeams(table.getPlayer(id), null);
 
-		client2 = new UDPClient(id, "127.0.0.1", 19999,null, null, 25569, "test");
+		client2 = new UDPClient(id, "127.0.0.1", 19999, null, null, 25569, "test");
 
 		client1.testNetworking = true;
 		client2.testNetworking = true;
@@ -118,9 +130,7 @@ public class TestServerGameStateSender {
 		client1.start();
 		client2.start();
 
-		server.sendToAll("TestSendToAll", "127.0.0.1:"+client1.port);
-
-
+		server.sendToAll("TestSendToAll", "127.0.0.1:" + client1.port);
 	}
 
 	@After
@@ -133,20 +143,26 @@ public class TestServerGameStateSender {
 		client2.active = false;
 	}
 
-//	@Test
-//	public void startSendingTest() throws InterruptedException {
-//
-//		serverGameStateSender.startSending();
-//
-//		Thread.sleep(1000);
-//
-//		serverGameStateSender.stopSending();
-//
-//	}
+	/*
+	 * @Test public void startSendingTest() throws InterruptedException {
+	 * 
+	 * serverGameStateSender.startSending();
+	 * 
+	 * Thread.sleep(1000);
+	 * 
+	 * serverGameStateSender.stopSending();
+	 * 
+	 * }
+	 */
 
+	/**
+	 * Method to test if the server is sending moves, bullets, flag actions and
+	 * power-up stats correctly to the clients.
+	 * 
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void testSendingEverything() throws InterruptedException {
-
 		gameSimulation.runGameLoop();
 
 		serverGameStateSender.startSending();
@@ -162,7 +178,6 @@ public class TestServerGameStateSender {
 		serverGameStateSender.onPowerupRespawn(PowerupType.SHIELD, 1);
 		serverGameStateSender.sendWinner();
 		serverGameStateSender.sendShieldRemoved(1);
-
 
 		Thread.sleep(2000);
 

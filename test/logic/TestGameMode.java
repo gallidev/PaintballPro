@@ -18,6 +18,8 @@ import logic.server.TeamMatchMode;
 public class TestGameMode {
 
 	GameMode game;
+	
+	//teams
 	Team red = new Team(TeamEnum.RED);
 	Team blue = new Team(TeamEnum.BLUE);
 
@@ -52,7 +54,8 @@ public class TestGameMode {
 	 */
 	@Test
 	public void setRedTeamTest() {
-		Team newTeam = new Team(TeamEnum.RED);
+		Team newTeam;
+		newTeam = new Team(TeamEnum.RED);
 		game.setRedTeam(newTeam);
 		assertTrue(game.getRedTeam() == newTeam);
 	}
@@ -62,7 +65,8 @@ public class TestGameMode {
 	 */
 	@Test
 	public void setBlueTeamTest() {
-		Team newTeam = new Team(TeamEnum.RED);
+		Team newTeam;
+		newTeam = new Team(TeamEnum.RED);
 		game.setBlueTeam(newTeam);
 		assertTrue(game.getBlueTeam() == newTeam);
 	}

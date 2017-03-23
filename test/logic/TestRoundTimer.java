@@ -15,13 +15,15 @@ import org.junit.Before;
  */
 public class TestRoundTimer {
 
+	//time intervals
+	int gameInterval = 4;
 	int noInterval = 0;
 	int smallInterval = 2;
-	int gameInterval = 4;
 
+	//timers
+	RoundTimer gameTimer;
 	RoundTimer noTimer;
 	RoundTimer smallTimer;
-	RoundTimer gameTimer;
 
 	/**
 	 * Set up 3 timers, one which should not run at all, two small timers of differentl length for testing.
@@ -79,7 +81,6 @@ public class TestRoundTimer {
 		assertFalse(gameTimer.isTimeElapsed());
 
 		gameTimer.startTimer();
-
 
 		Thread.sleep(4500);
 		assertTrue(noTimer.isTimeElapsed());

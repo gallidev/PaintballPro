@@ -19,6 +19,8 @@ import logic.server.Team;
 public class TestCaptureTheFlagMode {
 
 	CaptureTheFlagMode game;
+	
+	//teams
 	Team red;
 	Team blue;
 

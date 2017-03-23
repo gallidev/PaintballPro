@@ -28,9 +28,10 @@ import rendering.Map;
  */
 public class TestTeam {
 
-	private Team team;
-	private EssentialPlayer p;
+	private EssentialPlayer player;
 	private Map map;
+	private Team team;
+	
 
 	/**
 	 * Initialises a new team.
@@ -41,7 +42,7 @@ public class TestTeam {
 
 		JavaFXTestHelper.setupApplication();
 		map = Map.loadRaw("ctf");
-		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+		player = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
 	}
 
@@ -82,9 +83,9 @@ public class TestTeam {
 	@Test
 	public void addMemberTest() {
 
-		team.addMember(p);
+		team.addMember(player);
 
-		assertTrue(team.getMembers().get(0) == p);
+		assertTrue(team.getMembers().get(0) == player);
 	}
 
 	/**
@@ -93,11 +94,12 @@ public class TestTeam {
 	@Test
 	public void containsMemberTest() {
 
-		team.addMember(p);
-		EssentialPlayer p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+		team.addMember(player);
+		EssentialPlayer p1;
+		p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
 
-		assertTrue(team.containsPlayer(p));
+		assertTrue(team.containsPlayer(player));
 		assertFalse(team.containsPlayer(p1));
 
 	}
@@ -112,9 +114,9 @@ public class TestTeam {
 		assertEquals(team.getMembersNo(), 0);
 		assertTrue(team.getColour() == TeamEnum.RED);
 
-		players.add(p);
+		players.add(player);
 		team.setMembers(players);
-		assertTrue(team.getMembers().get(0) == p);
+		assertTrue(team.getMembers().get(0) == player);
 		assertTrue(team.getMembersNo() == 1);
 		assertTrue(team.getColour() == TeamEnum.RED);
 	}

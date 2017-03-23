@@ -25,12 +25,13 @@ import players.EssentialPlayer;
 
 public class TestLobbyIntegration {
 	
-	private Team red;
 	private Team blue;
-	private Lobby lobby;
-	private UDPServer server;
+
 	private UDPClient client;
 	private ClientReceiver clientReceiver;
+	private Lobby lobby;
+	private Team red;
+	private UDPServer server;
 	private ServerReceiver serverReceiver;
 
 	@Before
@@ -57,7 +58,8 @@ public class TestLobbyIntegration {
 		lobby.playGame(serverReceiver, server, 1);
 		lobby.setPlayerNames();
 		
-		File names = new File("res/names.txt");
+		File names;
+		names = new File("res/names.txt");
 		Scanner readNames;
 		try {
 			readNames = new Scanner(names);

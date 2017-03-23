@@ -35,29 +35,33 @@ import rendering.Map;
  */
 public class TestClientInputSender {
 
-	private UDPServer server;
 	private UDPClient client;
 	private InputHandler handler;
-	private ClientPlayer player;
 	private ServerInputReceiver inputReceiver;
-
 	private ClientInputSender inputSender;
+	private ClientPlayer player;
+	private UDPServer server;
 
 	@Before
 	public void setUp() throws Exception {
-		ClientTable table = new ClientTable();
-		LobbyTable lobby = new LobbyTable();
+		LobbyTable lobby;
+		ClientTable table;
+		
+		table = new ClientTable();
+		lobby = new LobbyTable();
 
 		handler = new InputHandler();
-
 		server = new UDPServer(table, lobby, 19887);
 		server.start();
 
 		JavaFXTestHelper.setupApplication();
-		Map map = Map.loadRaw("elimination");
+		Map map;
+		map = Map.loadRaw("elimination");
+		
 		player = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), new CollisionsHandler(map),
 				new InputHandler(), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
-		ArrayList<EssentialPlayer> players = new ArrayList<>();
+		ArrayList<EssentialPlayer> players;
+		players = new ArrayList<>();
 		players.add(player);
 
 		inputReceiver = new ServerInputReceiver();
