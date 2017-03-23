@@ -20,7 +20,7 @@ public class ClientPlayer extends EssentialPlayer {
 
 
 	double angleRadians;
-	private double limitDifferencePosition = 30;
+	private double limitDifferencePosition = 40;
 	private InputHandler inputHandler;
 	private AudioManager audio;
 	private Random rand;
