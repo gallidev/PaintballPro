@@ -12,7 +12,7 @@ import logic.RoundTimer;
  */
 public class TeamMatchMode extends GameMode {
 
-	private static final int GAME_TIME = 10; // in seconds
+	private static final int GAME_TIME = 180; // in seconds
 
 	private boolean debug = false;
 	private RoundTimer timer;
