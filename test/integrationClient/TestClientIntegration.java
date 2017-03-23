@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -17,10 +18,12 @@ import gui.GUIManager;
 import helpers.JavaFXTestHelper;
 import integration.client.ClientGameStateReceiver;
 import logic.server.Team;
+import networking.client.ClientReceiver;
 import networking.game.UDPClient;
 import networking.game.UDPServer;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
+import networking.server.ServerReceiver;
 import physics.CollisionsHandler;
 import physics.Flag;
 import physics.Powerup;

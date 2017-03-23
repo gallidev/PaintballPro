@@ -3,6 +3,8 @@ package logic;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -30,6 +32,33 @@ public class TestRoundTimer {
 		noTimer = new RoundTimer(noInterval);
 		smallTimer = new RoundTimer(smallInterval);
 		gameTimer = new RoundTimer(gameInterval);
+	}
+	
+	@After
+	public void tearDown(){
+		noTimer = null;
+		smallTimer = null;
+		gameTimer = null;
+	}
+	
+	/**
+	 * Method that tests if timers return the correct remaining time.
+	 * @throws InterruptedException
+	 */
+	@Test
+	public void getTimeLeftTest() throws InterruptedException{
+		noTimer.startTimer();
+		smallTimer.startTimer();
+		gameTimer.startTimer();
+		
+		assertTrue(smallTimer.getTimeLeft() <= 2);
+		assertTrue(gameTimer.getTimeLeft() <= 4);
+		assertTrue(noTimer.getTimeLeft() == 0);
+		
+		Thread.sleep(2500);
+		assertTrue(noTimer.isTimeElapsed());
+		assertTrue(smallTimer.isTimeElapsed());
+		assertFalse(gameTimer.isTimeElapsed());
 	}
 	
 	/**
@@ -60,22 +89,6 @@ public class TestRoundTimer {
 		assertTrue(gameTimer.getTimeLeft() == 0);
 		assertTrue(noTimer.getTimeLeft() <= 0);
 		
-	}
-	
-	/**
-	 * Method that tests if timers return the correct remaining time.
-	 * @throws InterruptedException
-	 */
-	@Test
-	public void getTimeLeftTest() throws InterruptedException{
-		assertTrue(smallTimer.getTimeLeft() <= 2);
-		assertTrue(gameTimer.getTimeLeft() <= 4);
-		assertTrue(noTimer.getTimeLeft() == 0);
-		
-		Thread.sleep(2500);
-		assertTrue(noTimer.isTimeElapsed());
-		assertTrue(smallTimer.isTimeElapsed());
-		assertFalse(gameTimer.isTimeElapsed());
 	}
 	
 	/**

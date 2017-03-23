@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import integrationClient.TestClientInputSender;
 import integrationClient.TestClientIntegration;
+import integrationServer.TestLobbyIntegration;
 import integrationServer.TestServerGameSimulation;
 import integrationServer.TestServerInputReceiver;
 import integrationServer.TestServerIntegration;
@@ -12,12 +13,13 @@ import integrationServer.TestServerIntegration;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-	TestClientIntegration.class,
 	TestClientInputSender.class,
+	TestClientIntegration.class,
 	TestClientIntegration.class,
 	TestServerInputReceiver.class,
 	TestServerGameSimulation.class,
 	TestServerIntegration.class,
+	TestLobbyIntegration.class,
 })
 
 /**

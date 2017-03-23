@@ -377,7 +377,7 @@ public class Lobby {
 	 *
 	 * @author Alexandra Paduraru
 	 */
-	private void setPlayerNames() {
+	public void setPlayerNames() {
 		File names = new File("res/names.txt");
 		Scanner readNames;
 		try {
@@ -635,5 +635,13 @@ public class Lobby {
 	 */
 	public int getMaxPlayers() {
 		return maxPlayers;
+	}
+	
+	public void setRedTeam(Team team){
+		red = team;
+	}
+	
+	public void setBlueTeam(Team team){
+		blue = team;
 	}
 }
