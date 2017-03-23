@@ -5,7 +5,6 @@ import gui.GUIManager;
 import integration.client.ClientInputSender;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -14,7 +13,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import logic.GameMode;
 import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
@@ -48,7 +46,7 @@ public class Renderer extends Scene
 
 	//attributes for multiplayer
 	private int blueScore, redScore;
-	private int timeRemaining = 0;
+	private int timeRemaining;
 
 	private PauseMenu pauseMenu;
 	private PauseSettingsMenu settingsMenu;
@@ -82,8 +80,6 @@ public class Renderer extends Scene
 		};
 		map.powerups[0].addAlternatePowerup(map.powerups[1]);
 		map.powerups[1].addAlternatePowerup(map.powerups[0]);
-		map.powerups[0].resetPosition();
-		map.powerups[1].resetPosition();
 		view.getChildren().addAll(map.powerups);
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
@@ -193,17 +189,15 @@ public class Renderer extends Scene
 		view.getChildren().add(hud);
 		hud.toFront();
 
+		receiver.getUdpClient().setActive(true);
 		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer);
 		inputSender.startSending();
-		Group displayBullets = new Group();
-		view.getChildren().add(displayBullets);
 
 		timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
 			{
-
 				for(EssentialPlayer player : players)
 				{
 					for(Bullet pellet : player.getBullets())
@@ -331,38 +325,6 @@ public class Renderer extends Scene
 		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
 		imageView.setCache(true);
 		view.getChildren().add(paintIndex, imageView);
-	}
-
-	void generateSpray(double x, double y, String colour)
-	{
-		Rectangle collision = null;
-		for(Rectangle rec : map.getRecWalls())
-		{
-			if(rec.getX() == x && rec.getY() == y)
-			{
-				collision = rec;
-				break;
-			}
-		}
-		if(collision == null)
-		{
-			for(Rectangle rec : map.getRecProps())
-			{
-				if(rec.getX() == x && rec.getY() == y)
-				{
-					collision = rec;
-					break;
-				}
-			}
-		}
-		if(collision != null)
-		{
-			Bullet pellet = new Bullet(0, x, y, 0, colour.equals("red") ? TeamEnum.RED : TeamEnum.BLUE, Renderer.TARGET_FPS);
-			pellet.disable(collision);
-			generateSpray(pellet);
-			return;
-		}
-		throw new NoSuchElementException("Could not generate spray. Invalid collision given!");
 	}
 
 	private void init(String mapName)

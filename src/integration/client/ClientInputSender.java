@@ -22,7 +22,7 @@ public class ClientInputSender {
 	private static final boolean debug = false;
 
 	// sending stats
-	private long delayMilliseconds = 25;
+	private long delayMilliseconds = 28;
 
 	private InputHandler handler;
 	private ClientPlayer player;
@@ -31,7 +31,7 @@ public class ClientInputSender {
 
 	/**
 	 * Initialises a new input sender.
-	 * 
+	 *
 	 * @param udpClient
 	 *            The client sender used by networking to send all information
 	 *            to the server.
@@ -79,9 +79,9 @@ public class ClientInputSender {
 		/*
 		 * Runnable frameCounter = new Runnable() { public void run() {
 		 * System.out.println("cliend Sending times " + times); times = 0;
-		 * 
+		 *
 		 * } };
-		 * 
+		 *
 		 * ScheduledFuture<?> frameCounterHandle =
 		 * scheduler.scheduleAtFixedRate(frameCounter, 0, 1, TimeUnit.SECONDS);
 		 */

@@ -145,7 +145,14 @@ public class Map
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 			map.loadProps();
 			map.loadWalls();
-			map.initGameObjects();
+
+			if(map.gameMode == GameMode.CAPTURETHEFLAG)
+				map.flag = new Flag(map.flagLocations);
+
+			map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
+			};
+			map.powerups[0].addAlternatePowerup(map.powerups[1]);
+			map.powerups[1].addAlternatePowerup(map.powerups[0]);
 
 		}
 		catch(FileNotFoundException e)
@@ -186,18 +193,6 @@ public class Map
 			rectangles.add(new Rectangle(node.getBoundsInParent().getMinX(), node.getBoundsInParent().getMinY(), 64, 64));
 		});
 		return rectangles;
-	}
-
-	private void initGameObjects()
-	{
-		if(gameMode == GameMode.CAPTURETHEFLAG)
-			flag = new Flag(flagLocations);
-
-		powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, powerupLocations), new Powerup(PowerupType.SPEED, powerupLocations)
-		};
-		powerups[0].addAlternatePowerup(powerups[1]);
-		powerups[1].addAlternatePowerup(powerups[0]);
-
 	}
 
 	public ArrayList<Rectangle> getRecWalls()

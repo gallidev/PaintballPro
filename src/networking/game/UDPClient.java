@@ -560,4 +560,11 @@ public class UDPClient extends Thread {
 		return active;
 	}
 
+	/**
+	 * Update whether the UDP client is active
+	 * @param active true if active
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }
