@@ -191,7 +191,7 @@ public class ClientPlayer extends EssentialPlayer {
 	}
 
 	public void updateGameSpeed(){
-		gameSpeed = (1000 + UDPClient.PINGDELAY) / 1000;
+		//gameSpeed = (1000 + UDPClient.PINGDELAY) / 1000;
 	}
 
 }

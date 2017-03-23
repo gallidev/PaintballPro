@@ -10,13 +10,13 @@ import players.EssentialPlayer;
 /**
  * Class that represents a simulation of the enitre game logic, running on the
  * server.
- * 
+ *
  * @author Alexandra Paduraru
  * @author Filippo Galli
  */
 public class ServerGameSimulation {
 
-	public static final double GAME_HERTZ = 40.0;
+	public static final double GAME_HERTZ = 45.0;
 
 	// game inforation
 	private Team blueTeam;
@@ -31,7 +31,7 @@ public class ServerGameSimulation {
 
 	/**
 	 * Initialises a new game simulation, in a given game mode.
-	 * 
+	 *
 	 * @param game
 	 *            The game mode which is played.
 	 */
@@ -120,7 +120,7 @@ public class ServerGameSimulation {
 				// Update the frames we got.
 				int thisSecond = (int) (lastUpdateTime / 1000000000);
 				if (thisSecond > lastSecondTime) {
-					 System.out.println("NEW SECOND " + thisSecond + " fps: " + frameCount);
+					if(debug) System.out.println("NEW SECOND " + thisSecond + " fps: " + frameCount);
 					fps = frameCount;
 					frameCount = 0;
 					lastSecondTime = thisSecond;
@@ -150,7 +150,7 @@ public class ServerGameSimulation {
 
 	/**
 	 * Retrieves the current game mode.
-	 * 
+	 *
 	 * @return The game mode which is played in the particular game.
 	 */
 	public GameMode getGame() {

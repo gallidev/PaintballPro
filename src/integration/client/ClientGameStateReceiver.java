@@ -57,7 +57,7 @@ public class ClientGameStateReceiver {
 
 	/**
 	 * Updates a ghost player's location.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the player which has changed location.
 	 * @param x
@@ -109,7 +109,7 @@ public class ClientGameStateReceiver {
 	public void powerupAction(int id, PowerupType type) {
 		EssentialPlayer player;
 		player = getPlayerWithId(id);
-		
+
 		switch (type) {
 		case SHIELD:
 			powerups[0].setVisible(false);
@@ -183,7 +183,7 @@ public class ClientGameStateReceiver {
 			Bullet b = getBulletWithId(p, bulletId);
 			if (b != null) {
 				Platform.runLater(() -> {
-					System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
+					if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
 					b.setVisible(false);
 					b.setActive(false);
 				});
@@ -242,7 +242,7 @@ public class ClientGameStateReceiver {
 	/**
 	 * Helper method to find the player with a specific id from the entire list
 	 * of players in the game.
-	 * 
+	 *
 	 * @param id
 	 *            The player's id.
 	 */

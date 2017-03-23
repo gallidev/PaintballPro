@@ -482,7 +482,7 @@ public class UDPClient extends Thread {
 
 		long ClientTime = Long.parseLong(actions[2]);
 
-		System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
+		if(debug) System.out.println("toServerAndBack ping : " + (System.currentTimeMillis() - ClientTime));
 		PINGDELAY = (System.currentTimeMillis() - ClientTime) + 20;
 
 	}
@@ -531,11 +531,11 @@ public class UDPClient extends Thread {
 		switch (receivedPacket.split(":")[1]) {
 		case "0":
 			gameStateReceiver.powerupAction(id, PowerupType.SHIELD);
-			System.out.println("Player " + id + " took shield powerup");
+			if(debug) System.out.println("Player " + id + " took shield powerup");
 			break;
 		case "1":
 			gameStateReceiver.powerupAction(id, PowerupType.SPEED);
-			System.out.println("Player" + id + " took speed powerup");
+			if(debug) System.out.println("Player" + id + " took speed powerup");
 			break;
 		}
 
