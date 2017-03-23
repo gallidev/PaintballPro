@@ -196,13 +196,19 @@ public class ServerReceiver extends Thread {
 
 		// extract the lobby which contains only the players that should receive
 		// the message
-		Lobby currentLobby = gameLobby.getLobby(clientTable.getPlayer(myClientsID).getAllocatedLobby());
+		ServerBasicPlayer myClientID = clientTable.getPlayer(myClientsID);
+		if (myClientID != null) {
+			int allocatedLobby = myClientID.getAllocatedLobby();
+			Lobby currentLobby = gameLobby.getLobby(allocatedLobby);
 
-		ServerBasicPlayer[] gamePlayers = currentLobby.getPlayers();
-		
-		for (ServerBasicPlayer player : gamePlayers) {
-			MessageQueue queue = clientTable.getQueue(player.getID());
-			queue.offer(new Message(text));
+			if (currentLobby != null) {
+				ServerBasicPlayer[] gamePlayers = currentLobby.getPlayers();
+
+				for (ServerBasicPlayer player : gamePlayers) {
+					MessageQueue queue = clientTable.getQueue(player.getID());
+					queue.offer(new Message(text));
+				}
+			}
 		}
 
 	}
