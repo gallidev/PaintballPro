@@ -292,7 +292,7 @@ public class ClientPlayer extends EssentialPlayer {
 				//System.out.println("saved buffer x: " + bufferReconciliation.get(i).getX() + " saved buffer y: " + bufferReconciliation.get(i).getY() );
 				//System.out.println("update: " + (i - index) + "new x: " + getLayoutX() + " new y: " + getLayoutY() );
 			}
-			System.out.println("n Updates: " +  (bufferReconciliation.size() - 1 - index) );
+			//System.out.println("n Updates: " +  (bufferReconciliation.size() - 1 - index) );
 
 //			down = lDown;
 //			up = lUp;
