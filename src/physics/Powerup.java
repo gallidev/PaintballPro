@@ -37,25 +37,27 @@ public class Powerup extends ImageView
 		this.listener = listener;
 	}
 
-	public void resetPosition()
+	private void resetPosition()
 	{
-		index = (new Random()).nextInt(locations.length);
-		double x = locations[index].getX() * 64 + 16, y =  locations[index].getY() * 64 + 16;
+		int randomLocation = (new Random()).nextInt(locations.length);
 
 		for(Powerup alternatePowerup : alternatePowerups)
-			if(x == alternatePowerup.getLayoutX() && y == alternatePowerup.getLayoutY())
+			if(randomLocation == alternatePowerup.getIndex())
 			{
 				resetPosition();
 				return;
 			}
 
+		double x = locations[randomLocation].getX() * 64 + 16, y = locations[randomLocation].getY() * 64 + 16;
 		relocate(x, y);
+		index = randomLocation;
 		if(listener != null)
 			listener.onPowerupRespawn(type, index);
 	}
 
 	public void resetPosition(int index)
 	{
+		this.index = index;
 		relocate(locations[index].getX() * 64 + 16, locations[index].getY() * 64 + 16);
 	}
 

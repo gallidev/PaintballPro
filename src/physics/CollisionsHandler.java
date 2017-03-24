@@ -1,6 +1,5 @@
 package physics;
 
-import audio.AudioManager;
 import enums.TeamEnum;
 import gui.GUIManager;
 import integrationServer.CollisionsHandlerListener;
@@ -179,7 +178,7 @@ public class CollisionsHandler
 					p.getPolygonBounds().getBoundsInParent().intersects(flag.getBoundsInParent()) &&
 					!p.isEliminated()){
 				if(debug) System.out.println("Caught the flag");
-				if (isLocal) (new AudioManager(GUIManager.getUserSettings(), new GUIManager())).playSFX(new AudioManager(GUIManager.getUserSettings(), new GUIManager()).sfx.flagcollect, (float)1.0);
+				if (isLocal) GUIManager.audio.playSFX(GUIManager.audio.sfx.flagcollect, (float)1.0);
 				flag.setFlagCarrier(p);
 				flag.setCaptured(true);
 				flag.setVisible(false);
@@ -248,7 +247,7 @@ public class CollisionsHandler
 				if(powerup.isVisible())
 				{
 					powerup.take();
-					if (isLocal) (new AudioManager(GUIManager.getUserSettings(), new GUIManager())).playSFX(new AudioManager(GUIManager.getUserSettings(), new GUIManager()).sfx.pickup, (float)1.0);
+					if (isLocal) GUIManager.audio.playSFX(GUIManager.audio.sfx.pickup, (float)1.0);
 					if(powerup.getType() == PowerupType.SHIELD)
 					{
 						p.setShield(true);
