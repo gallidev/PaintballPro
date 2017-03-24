@@ -212,7 +212,7 @@ public class ClientPlayer extends EssentialPlayer {
 		this.bufferReconciliation = bufferReconciliation;
 	}
 
-	public int getTheRightBufferIndex(int counterFrame){
+	public synchronized int getTheRightBufferIndex(int counterFrame){
 		for(int i = 0; i < bufferReconciliation.size(); i++){
 			//System.out.print(i + ": " + counterFrame + " --- ");
 			if(bufferReconciliation.get(i).getFrame() == counterFrame){
