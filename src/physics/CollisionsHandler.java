@@ -15,6 +15,8 @@ import rendering.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import static gui.GUIManager.renderer;
+
 /**
  *
  * @author gallifilippo
@@ -182,6 +184,8 @@ public class CollisionsHandler
 				flag.setCaptured(true);
 				flag.setVisible(false);
 				p.setHasFlag(true);
+				if(renderer != null)
+					renderer.getHud().setFlagStatus(p.getTeam());
 
 				if(listener != null)
 					listener.onFlagCaptured(p.getPlayerId());
@@ -190,10 +194,11 @@ public class CollisionsHandler
 			//check if the player got shot so leave the flag in the player position
 			if(p.isEliminated() && p.hasFlag()){
 				if(debug) System.out.println("Dropped the flag");
-				flag.setLayoutX(p.getLayoutX());
-				flag.setLayoutY(p.getLayoutY());
+				flag.relocate(p.getLayoutX(), p.getLayoutY());
 				flag.setCaptured(false);
 				flag.setVisible(true);
+				if(renderer != null)
+					renderer.getHud().setFlagStatus(p.getTeam());
 				if(listener != null)
 					listener.onFlagDropped(p.getPlayerId());
 				p.setHasFlag(false);
@@ -225,6 +230,8 @@ public class CollisionsHandler
 						red.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
 					else
 						blue.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
+					if(renderer != null)
+						renderer.getHud().setFlagStatus(p.getTeam());
 					if(listener != null)
 						listener.onFlagRespawned(p.getPlayerId());
 				}

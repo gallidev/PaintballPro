@@ -11,6 +11,8 @@ import players.EssentialPlayer;
 
 import java.util.ArrayList;
 
+import static gui.GUIManager.renderer;
+
 /**
  * Client-sided class which receives an action imposed by the server on the
  * player and executes it.
@@ -20,10 +22,9 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
+	private static final boolean debug = false;
 	// for testing purposes
 	public boolean integrationTest;
-
-	private static final boolean debug = false;
 	private Flag flag;
 	private ArrayList<EssentialPlayer> players;
 	private EssentialPlayer currentPlayer;
@@ -214,6 +215,7 @@ public class ClientGameStateReceiver {
 
 		Platform.runLater(() -> {
 			player.setHasFlag(true);
+			renderer.getHud().setFlagStatus(player.getTeam());
 			flag.setVisible(false);
 		});
 
@@ -227,6 +229,7 @@ public class ClientGameStateReceiver {
 		EssentialPlayer player = getPlayerWithId(id);
 		Platform.runLater(() -> {
 			player.setHasFlag(false);
+			renderer.getHud().setFlagStatus(player.getTeam());
 			flag.setVisible(true);
 			flag.relocate(player.getLayoutX(), player.getLayoutY());
 		});
@@ -238,9 +241,6 @@ public class ClientGameStateReceiver {
 	 * @param id The id of the player which captured the flag.
 	 */
 	public void respawnFlag(int id, double x, double y) {
-		flag.setVisible(true);
-		flag.relocate(x, y);
-
 		EssentialPlayer player;
 		player = getPlayerWithId(id);
 
@@ -248,6 +248,7 @@ public class ClientGameStateReceiver {
 			flag.setVisible(true);
 			flag.relocate(x, y);
 			player.setHasFlag(false);
+			renderer.getHud().setFlagStatus(player.getTeam());
 		});
 	}
 
