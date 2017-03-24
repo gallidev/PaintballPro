@@ -175,9 +175,7 @@ public class ClientGameStateReceiver {
 	 */
 	public void generateBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		EssentialPlayer p = getPlayerWithId(playerId);
-		if (p.equals(currentPlayer)){
-			//audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
-		}
+		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 
 		if (p != null) {
 			Platform.runLater(() -> {
