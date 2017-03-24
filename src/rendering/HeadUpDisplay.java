@@ -23,6 +23,8 @@ public class HeadUpDisplay extends SubScene
 			redScore = new Label("0"),
 			blueScore = new Label("0");
 	private final GUIManager guiManager;
+	private ImageView redTeamFlag, blueTeamFlag;
+	private DropShadow flagGlow = new DropShadow(view.getWidth() / 64, Color.WHITE);
 
 	HeadUpDisplay(GUIManager guiManager, GameMode gameMode, TeamEnum playerTeam)
 	{
@@ -34,7 +36,6 @@ public class HeadUpDisplay extends SubScene
 		setScaleY(576 / guiManager.height);
 
 		Circle redTeamCircle = null, blueTeamCircle = null;
-		ImageView redTeamFlag = null, blueTeamFlag = null;
 		if(gameMode == GameMode.ELIMINATION)
 		{
 			redTeamCircle = new Circle(view.getWidth() / 64, Color.RED);
@@ -50,11 +51,10 @@ public class HeadUpDisplay extends SubScene
 			redTeamFlag = new ImageView(ImageFactory.getHudFlagImage(TeamEnum.RED));
 			redTeamFlag.setFitWidth(view.getWidth() / 32);
 			redTeamFlag.setFitHeight(view.getWidth() / 32);
-			DropShadow glow = new DropShadow(view.getWidth() / 64, Color.RED);
-			redTeamFlag.setEffect(glow);
 			blueTeamFlag = new ImageView(ImageFactory.getHudFlagImage(TeamEnum.BLUE));
 			blueTeamFlag.setFitWidth(view.getWidth() / 32);
 			blueTeamFlag.setFitHeight(view.getWidth() / 32);
+			flagGlow.setSpread(0.25);
 		}
 
 		String textStyle = "-fx-font-size: 16pt; -fx-text-fill: white";
@@ -91,6 +91,12 @@ public class HeadUpDisplay extends SubScene
 		}
 
 		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(score));
+	}
+
+	public void setFlagStatus(TeamEnum team)
+	{
+		ImageView flag = (team == TeamEnum.RED ? redTeamFlag : blueTeamFlag);
+		flag.setEffect(flag.getEffect() == null ? flagGlow : null);
 	}
 
 	public void tick(int time)

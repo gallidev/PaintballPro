@@ -2,6 +2,7 @@ package audio;
 
 import gui.GUIManager;
 import gui.UserSettings;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -86,7 +87,7 @@ public class AudioManager implements gui.UserSettingsObserver {
 	 */
 	public void playSFX(Media media, float distanceVolume) {
 		(new Thread(() -> {
-			synchronized (media) {
+			Platform.runLater(() -> {
 				MediaPlayer sfxPlayer = new MediaPlayer(media);
 				sfxPlayer.getStatus();
 				sfxPlayer.setVolume(sfxVolume * distanceVolume);
@@ -95,7 +96,8 @@ public class AudioManager implements gui.UserSettingsObserver {
 					sfxPlayer.stop();
 					sfxPlayer.dispose();
 				});
-			}
+			});
+
 		})).start();
 	}
 
