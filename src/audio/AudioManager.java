@@ -4,6 +4,7 @@ import gui.GUIManager;
 import gui.UserSettings;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -85,20 +86,9 @@ public class AudioManager implements gui.UserSettingsObserver {
 	 * @param media          sound to play
 	 * @param distanceVolume value for the distance away the sound is (1.0 at player, 0.0 at infinity)
 	 */
-	public void playSFX(Media media, float distanceVolume) {
-		(new Thread(() -> {
-			Platform.runLater(() -> {
-				MediaPlayer sfxPlayer = new MediaPlayer(media);
-				sfxPlayer.getStatus();
-				sfxPlayer.setVolume(sfxVolume * distanceVolume);
-				sfxPlayer.play();
-				sfxPlayer.setOnEndOfMedia(() -> {
-					sfxPlayer.stop();
-					sfxPlayer.dispose();
-				});
-			});
-
-		})).start();
+	public void playSFX(AudioClip media, float distanceVolume) {
+		media.setVolume(distanceVolume * sfxVolume);
+		media.play();
 	}
 
 }
