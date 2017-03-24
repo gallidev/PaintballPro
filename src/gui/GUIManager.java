@@ -27,8 +27,11 @@ import java.util.ArrayList;
  */
 public class GUIManager {
 
+	private static final int tcpPortNumber = 25566;
 	// Renderer
 	public static Renderer renderer;
+	// Audio
+	public static AudioManager audio;
 	// Settings
 	private static UserSettings user = UserSettingsManager.loadSettings();
 	// Scene
@@ -38,7 +41,6 @@ public class GUIManager {
 	public int udpPortNumber = 0;
 	private ArrayList<UserSettingsObserver> settingsObservers = new ArrayList<>();
 	private Stage s;
-	private int tcpPortNumber = 25566;
 	private String ipAddress = "";
 	private Client c;
 	// GUI
@@ -46,8 +48,6 @@ public class GUIManager {
 	private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
 	private boolean lobbyTimerStarted = false;
 	private int lobbyTimeLeft = 10;
-	// Audio
-	private AudioManager audio;
 
 	/**
 	 * Constructor for GUIManager
@@ -369,7 +369,7 @@ public class GUIManager {
 	}
 
 	public void setRenderer(Renderer renderer){
-		this.renderer = renderer;
+		GUIManager.renderer = renderer;
 	}
 
 }
