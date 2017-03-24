@@ -1,5 +1,6 @@
 package test;
 
+import audio.AudioManager;
 import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -72,8 +73,8 @@ public class TestClientIntegration {
 		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
 
 
-		ClientGameStateReceiver gameStateReceiver2 = new ClientGameStateReceiver(players, powerups);
-		gameStateReceiver = new ClientGameStateReceiver(players, new Flag(), powerups);
+		ClientGameStateReceiver gameStateReceiver2 = new ClientGameStateReceiver(players, players.get(0), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
+		gameStateReceiver = new ClientGameStateReceiver(players, players.get(0), new Flag(), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
 
 		client.setGameStateReceiver(gameStateReceiver);
 		Thread.sleep(1000);

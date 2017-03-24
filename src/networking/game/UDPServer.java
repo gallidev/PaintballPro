@@ -50,15 +50,18 @@ public class UDPServer extends Thread {
 	 */
 	public void run() {
 		try {
-			if (debug)
+			if (debug) {
 				System.out.println("Starting server");
-			System.out.println("Opening socket on port:"+serverPort);
+				System.out.println("Opening socket on port:"+serverPort);
+			}
 			serverSocket = new DatagramSocket(serverPort);
-			System.out.println("Opened successfully");
-			if (debug)
+			
+			if (debug) {
+				System.out.println("Opened successfully");
 				System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:"
 						+ serverSocket.getInetAddress());
-
+			}
+			
 			byte[] receiveData = new byte[1024];
 
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -108,7 +111,6 @@ public class UDPServer extends Thread {
 
 					clients.addNewIP(ipAdd, clientID);
 					clients.addUDPQueue(ipAdd);
-					System.out.println(">>>>Added:"+ipAdd);
 
 					sendData = new byte[1024];
 					sendData = "Successfully Connected".getBytes();
@@ -153,7 +155,6 @@ public class UDPServer extends Thread {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (debug)
 				System.err.println(e.getMessage());
 		} finally {

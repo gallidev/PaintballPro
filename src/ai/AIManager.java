@@ -12,7 +12,7 @@ import rendering.Map;
 /**
  * Class to create all AI players required to fill in a team, up to a maximum of
  * 4 players per team.
- * 
+ *
  * @author Alexandra Paduraru
  *
  */
@@ -27,7 +27,7 @@ public class AIManager {
 	/**
 	 * Initialises a new AI manager by assigning the necessary information
 	 * needed to fill in the given team.
-	 * 
+	 *
 	 * @param team
 	 *            A team of players that needs to be filled with AI players.
 	 * @param map
@@ -78,7 +78,7 @@ public class AIManager {
 
 	/**
 	 * Method that returns the current team.
-	 * 
+	 *
 	 * @return The team.
 	 */
 	public Team getTeam() {

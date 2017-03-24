@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 
+import audio.AudioManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,8 +90,8 @@ public class TestClientIntegration {
 		powerups[0] = new Powerup(PowerupType.SHIELD, map.getPowerupLocations());
 		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
 
-		ClientGameStateReceiver gameStateReceiver2 = new ClientGameStateReceiver(players, powerups);
-		gameStateReceiver = new ClientGameStateReceiver(players, new Flag(), powerups);
+		ClientGameStateReceiver gameStateReceiver2 = new ClientGameStateReceiver(players, players.get(0), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
+		gameStateReceiver = new ClientGameStateReceiver(players, players.get(0), new Flag(), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
 
 		client.setGameStateReceiver(gameStateReceiver);
 		Thread.sleep(1000);

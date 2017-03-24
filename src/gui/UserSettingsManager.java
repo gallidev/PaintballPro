@@ -34,7 +34,7 @@ public class UserSettingsManager {
 	private static UserSettings loadSettings(int i) {
 		try {
 			// Load the JSON file
-			JsonReader reader = new JsonReader(new FileReader("res/preferences.json"));
+			JsonReader reader = new JsonReader(new FileReader("preferences.json"));
 			Gson gson = new Gson();
 			// Turn the JSON into a user settings class
 			UserSettings s = gson.fromJson(reader, UserSettings.class);
@@ -68,7 +68,7 @@ public class UserSettingsManager {
 	public static void saveSettings(UserSettings s) {
 		try {
 			// Create the file
-			File file = new File("res/preferences.json");
+			File file = new File("preferences.json");
 			file.createNewFile();
 			Gson gson = new Gson();
 			// Convert the object to JSON

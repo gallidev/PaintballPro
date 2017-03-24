@@ -129,8 +129,7 @@ public class Server extends Thread {
 							
 							// We create and start a new thread to write to the
 							// client:
-							sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket,
-									clientName, clientID);
+							sender = new ServerSender(clientTable.getQueue(clientID), toClient, socket);
 							sender.start();
 
 							// We create and start a new thread to read from the
