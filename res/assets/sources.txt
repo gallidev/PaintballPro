@@ -1,4 +1,4 @@
-flag.png - based on:
+flag.png, red_flag.png, blue_flag.png - based on:
 http://flaticons.net/customize.php?dir=Miscellaneous&icon=Flag.png
 
 powerup_speed.png - based on:

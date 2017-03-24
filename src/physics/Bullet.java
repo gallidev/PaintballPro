@@ -41,6 +41,7 @@ public class Bullet extends Circle
 		setCenterY(y);
 		setRadius(3);
 		setFill(team == TeamEnum.RED ? Color.RED : Color.BLUE);
+		setCache(true);
 
 		this.speed = this.speed * gameSpeed;
 		this.colour = team;

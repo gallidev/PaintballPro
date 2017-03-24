@@ -72,7 +72,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 			}
 
 			if (!udpServer.activePlayers){
-				scheduler.shutdown();
+				//scheduler.shutdown();
 				gameLoop.stopGameLoop();
 			}
 		};

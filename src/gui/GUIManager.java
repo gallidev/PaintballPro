@@ -94,6 +94,10 @@ public class GUIManager {
 					break;
 				case MultiplayerGameType:
 					c.getReceiver().resetGame();
+//					if (renderer != null) {
+//						renderer.destroy();
+//						renderer = null;
+//					}
 					s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
 					break;
 				case SingleplayerGameType:

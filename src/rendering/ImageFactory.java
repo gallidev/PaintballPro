@@ -11,6 +11,8 @@ public class ImageFactory
 	private static final Image RED_PLAYER = new Image("assets/characters/player_red.png", 30, 64, true, true);
 	private static final Image BLUE_PLAYER = new Image("assets/characters/player_blue.png", 30, 64, true, true);
 	private static final Image RED_PLAYER_FLAG = new Image("assets/characters/player_red_flag.png", 30, 64, true, true);
+	private static final Image HUD_BLUE_FLAG = new Image("assets/blue_flag.png");
+	private static final Image HUD_RED_FLAG = new Image("assets/red_flag.png");
 	private static final Image BLUE_PLAYER_FLAG = new Image("assets/characters/player_blue_flag.png", 30, 64, true, true);
 	private static final Image FLAG = new Image("assets/flag.png", 48, 48, true, true);
 
@@ -27,6 +29,11 @@ public class ImageFactory
 	public static Image getPlayerFlagImage(TeamEnum team)
 	{
 		return team == TeamEnum.RED ? RED_PLAYER_FLAG : BLUE_PLAYER_FLAG;
+	}
+
+	static Image getHudFlagImage(TeamEnum team)
+	{
+		return team == TeamEnum.RED ? HUD_RED_FLAG : HUD_BLUE_FLAG;
 	}
 
 	public static Image getObjectiveImage(ObjectType objective)

@@ -105,7 +105,7 @@ public class Renderer extends Scene
 		view.getChildren().addAll(players);
 		collisionsHandler.setPlayers(players);
 
-		hud = new HeadUpDisplay(guiManager, player.getTeam());
+		hud = new HeadUpDisplay(guiManager, map.gameMode, player.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
 
@@ -187,7 +187,7 @@ public class Renderer extends Scene
 
 		view.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
 
-		hud = new HeadUpDisplay(guiManager, cPlayer.getTeam());
+		hud = new HeadUpDisplay(guiManager, map.gameMode, cPlayer.getTeam());
 		view.getChildren().add(hud);
 		hud.toFront();
 

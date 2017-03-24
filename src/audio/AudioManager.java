@@ -86,14 +86,16 @@ public class AudioManager implements gui.UserSettingsObserver {
 	 */
 	public void playSFX(Media media, float distanceVolume) {
 		(new Thread(() -> {
-			MediaPlayer sfxPlayer = new MediaPlayer(media);
-			sfxPlayer.getStatus();
-			sfxPlayer.setVolume(sfxVolume * distanceVolume);
-			sfxPlayer.play();
-			sfxPlayer.setOnEndOfMedia(() -> {
-				sfxPlayer.stop();
-				sfxPlayer.dispose();
-			});
+			synchronized (media) {
+				MediaPlayer sfxPlayer = new MediaPlayer(media);
+				sfxPlayer.getStatus();
+				sfxPlayer.setVolume(sfxVolume * distanceVolume);
+				sfxPlayer.play();
+				sfxPlayer.setOnEndOfMedia(() -> {
+					sfxPlayer.stop();
+					sfxPlayer.dispose();
+				});
+			}
 		})).start();
 	}
 
