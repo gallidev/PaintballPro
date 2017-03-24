@@ -471,10 +471,10 @@ public class Lobby {
 		AIManager blueAIM;
 
 		redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
-		redAIM.createPlayers();
+		//redAIM.createPlayers();
 
 		blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
-		blueAIM.createPlayers();
+		//blueAIM.createPlayers();
 
 		// setting team players and enemies
 		for (EssentialPlayer p : red.getMembers()) {
