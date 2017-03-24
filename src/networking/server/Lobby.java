@@ -37,7 +37,7 @@ public class Lobby {
 	// Structures storing relevant data.
 
 	// Lobby information
-	private static final int lobbyTime = 10;
+	private static final int lobbyTime = 30;
 	private static int maxId;
 
 	// Required for all players
@@ -49,7 +49,7 @@ public class Lobby {
 	// Game information
 	private int gameType;
 	private int maxPlayers;
-	private Thread timer;
+	private LobbyTimer timer;
 
 	// Team information
 	private ArrayList<EssentialPlayer> players;
@@ -85,6 +85,7 @@ public class Lobby {
 		teams = new ConcurrentHashMap<Integer,ArrayList<ServerBasicPlayer>>(); // 1 - red, 2 - blue
 		teams.put(1, new ArrayList<ServerBasicPlayer>());
 		teams.put(2, new ArrayList<ServerBasicPlayer>());
+		timer = null;
 
 		if (!testEnv) {
 			// setting up the map
@@ -408,32 +409,21 @@ public class Lobby {
 	 */
 	public void timerStart(ServerReceiver receiver, UDPServer udpServer, int gameMode) {
 		if (timer == null) {
-			timer = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					RoundTimer timer = new RoundTimer(lobbyTime);
-					timer.startTimer();
-					long lastTime = -1;
-					while (!timer.isTimeElapsed()) {
-						try {
-							if (lastTime != timer.getTimeLeft()) {
-									// System.out.println("Timer changed: from " +
-								// lastTime + " to " + timer.getTimeLeft());
-								lastTime = timer.getTimeLeft();
-								receiver.sendToAll("LTime:" + timer.getTimeLeft());
-							}
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-
-						}
-					}
-					playGame(receiver, udpServer, gameMode);
-					startGameLoop(udpServer, gameMode);
-				}
-			});
+			timer = new LobbyTimer(lobbyTime, receiver, udpServer, gameMode, this);
 			timer.start();
 		}
-
+	}
+	
+	public void stopTimer() {
+		if (timer != null) {
+			timer.m_running = false;
+			try {
+				timer.join(100);
+			} catch (InterruptedException e) {
+				//
+			}
+			timer = null;
+		}
 	}
 
 	/**
@@ -471,10 +461,10 @@ public class Lobby {
 		AIManager blueAIM;
 
 		redAIM = new AIManager(red, map, collissionsHandler, getMaxId(), hashMaps);
-		redAIM.createPlayers();
+		//redAIM.createPlayers();
 
 		blueAIM = new AIManager(blue, map, collissionsHandler, getMaxId(), hashMaps);
-		blueAIM.createPlayers();
+		//blueAIM.createPlayers();
 
 		// setting team players and enemies
 		for (EssentialPlayer p : red.getMembers()) {
