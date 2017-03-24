@@ -84,6 +84,7 @@ public class Renderer extends Scene
 		view.getChildren().addAll(map.powerups);
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+		collisionsHandler.isLocal = true;
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
 		KeyReleaseListener keyReleaseListener = new KeyReleaseListener(inputHandler);
