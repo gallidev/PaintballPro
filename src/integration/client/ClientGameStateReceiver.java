@@ -1,5 +1,6 @@
 package integration.client;
 
+import audio.AudioManager;
 import javafx.application.Platform;
 import physics.Bullet;
 import physics.Flag;
@@ -25,7 +26,9 @@ public class ClientGameStateReceiver {
 	private static final boolean debug = false;
 	private Flag flag;
 	private ArrayList<EssentialPlayer> players;
+	private EssentialPlayer currentPlayer;
 	private Powerup[] powerups;
+	private AudioManager audio;
 
 	/**
 	 * Initialises a new action receiver with a player which will be controlled
@@ -35,9 +38,11 @@ public class ClientGameStateReceiver {
 	 *            The list of all players in the game.
 	 *
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Powerup[] powerups) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, EssentialPlayer currentPlayer, Powerup[] powerups, AudioManager audio){
 		this.players = players;
+		this.currentPlayer = currentPlayer;
 		this.powerups = powerups;
+		this.audio = audio;
 	}
 
 	/**
@@ -49,10 +54,12 @@ public class ClientGameStateReceiver {
 	 * @param flag
 	 *            The flag of the capture the flag mode
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag, Powerup[] powerups) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, EssentialPlayer currentPlayer, Flag flag, Powerup[] powerups, AudioManager audio) {
 		this.players = players;
+		this.currentPlayer = currentPlayer;
 		this.flag = flag;
 		this.powerups = powerups;
+		this.audio = audio;
 	}
 
 	/**
@@ -114,10 +121,12 @@ public class ClientGameStateReceiver {
 		case SHIELD:
 			powerups[0].setVisible(false);
 			player.setShield(true);
+			audio.playSFX(audio.sfx.pickup, (float)1.0);
 			break;
 		case SPEED:
 			powerups[1].setVisible(false);
 			player.setSpeed(true);
+			audio.playSFX(audio.sfx.pickup, (float)1.0);
 			break;
 		default: break;
 		}
@@ -162,7 +171,8 @@ public class ClientGameStateReceiver {
 	 */
 	public void generateBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		EssentialPlayer p = getPlayerWithId(playerId);
-
+		if (p.equals(currentPlayer))
+			audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 		if (p != null) {
 			Platform.runLater(() -> {
 				p.generateBullet(bulletId, originX, originY, angle);
@@ -199,6 +209,8 @@ public class ClientGameStateReceiver {
 	public void updateFlag(int id) {
 		EssentialPlayer player;
 		player = getPlayerWithId(id);
+
+		audio.playSFX(audio.sfx.flagcollect, (float)1.0);
 
 		Platform.runLater(() -> {
 			player.setHasFlag(true);

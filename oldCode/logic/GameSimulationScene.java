@@ -32,6 +32,7 @@ public class GameSimulationScene extends Scene{
 		Map map = Map.loadRaw("res/maps/" + "elimination" + ".json");
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
+		collisionsHandler.isOffline = false;
 
 		UserPlayer redPlayer = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 0, map.getSpawns(), TeamEnum.RED, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED), map.getGameMode(), 60);
 		UserPlayer bluePlayer = new UserPlayer(map.getSpawns()[4].x * 64, map.getSpawns()[4].y * 64, 4, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED), map.getGameMode(), 60);

@@ -2,6 +2,7 @@ package audio;
 
 import gui.GUIManager;
 import gui.UserSettings;
+import javafx.scene.Node;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 

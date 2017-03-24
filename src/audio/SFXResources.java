@@ -20,6 +20,10 @@ public class SFXResources {
 	public Media splat = new Media(new File("res/assets/sfx/splat.wav").toURI().toString());
 	// Adapted from http://www.freesound.org/people/InspectorJ/sounds/345560/ (Creative Commons 3.0)
 	public Media footsteps = new Media(new File("res/assets/sfx/footsteps.wav").toURI().toString());
+	// Adapted from http://www.freesound.org/people/DrMinky/sounds/166184/ (Creative Commons 3.0)
+	public Media pickup = new Media(new File("res/assets/sfx/pickup.wav").toURI().toString());
+	// Adapted from http://www.freesound.org/people/DrMinky/sounds/166184/ (Creative Commons 3.0)
+	public Media flagcollect = new Media(new File("res/assets/sfx/flagcollect.mp3").toURI().toString());
 
 	/**
 	 * All paintball sounds available in the game
