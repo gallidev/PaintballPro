@@ -37,7 +37,7 @@ public class Lobby {
 	// Structures storing relevant data.
 
 	// Lobby information
-	private static final int lobbyTime = 10;
+	private static final int lobbyTime = 30;
 	private static int maxId;
 
 	// Required for all players
