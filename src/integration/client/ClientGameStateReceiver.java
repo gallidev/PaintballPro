@@ -280,7 +280,7 @@ public class ClientGameStateReceiver {
 	 * @return The bullet with a given id nelonging to the given player.
 	 */
 	public Bullet getBulletWithId(EssentialPlayer p, int id) {
-		for (Bullet b : p.getBullets()) {
+		for (Bullet b : p.getSyncBullets()) {
 			if (b.getBulletId() == id)
 				return b;
 		}
