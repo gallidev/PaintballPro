@@ -56,6 +56,10 @@ class PauseMenu extends SubScene {
 			GUIManager.renderer.toggleSettingsMenu();
 		}), new MenuOption("Back to Main Menu", false, (event) -> {
 			guiManager.exitClient();
+//			if (guiManager.getClient() != null && guiManager.getClient().getSender() != null) {
+//				guiManager.getClient().getSender().sendMessage("Exit:Game");
+//				guiManager.transitionTo(Menu.MultiplayerGameType);
+//			}
 			guiManager.transitionTo(Menu.MainMenu);
 		})};
 
