@@ -22,7 +22,7 @@ import rendering.Map;
  * Test class to test the input receiver on the server, which receives
  * information from all clients regarding player locations. Class tested-
  * {@link ServerInputReceiver}, {@link EssentialPlayer}
- * 
+ *
  * @author Alexandra Paduraru
  *
  */
@@ -55,7 +55,7 @@ public class TestServerInputReceiver {
 	@Test
 	public void updatePlayerTest() {
 		inputReceiver.setPlayers(players);
-		inputReceiver.updatePlayer(1, true, false, true, false, true, 30);
+		inputReceiver.updatePlayer(1, 100, true, false, true, false, true, 30);
 
 		assertTrue(essPlayer.getUp());
 		assertFalse(essPlayer.getDown());

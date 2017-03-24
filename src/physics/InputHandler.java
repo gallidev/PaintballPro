@@ -1,6 +1,5 @@
 package physics;
 
-
 public class InputHandler {
 
 	private double playerHeadX = 12.5, playerHeadY = 47.5;

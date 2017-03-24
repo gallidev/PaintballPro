@@ -514,5 +514,9 @@ public abstract class EssentialPlayer extends ImageView {
 	public void setCollisionsHandlerListener(CollisionsHandlerListener listener){
 		this.listener = listener;
 	}
+
+	public int getCounterFrame() {
+		return 0;
+	}
 }
 

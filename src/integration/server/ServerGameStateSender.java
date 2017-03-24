@@ -6,6 +6,7 @@ import logic.server.Team;
 import networking.game.UDPServer;
 import physics.PowerupType;
 import players.EssentialPlayer;
+import players.UserPlayer;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -61,7 +62,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		Runnable sender = () -> {
 			sendClient();
 			// sendBullets();
-			
+
 			// sendEliminatedPlayers();
 
 			if (gameLoop.getGame().isGameFinished()) {
@@ -69,7 +70,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 				sendWinner();
 				// scheduler.shutdown();
 			}
-			
+
 			if (!udpServer.activePlayers){
 				//scheduler.shutdown();
 				gameLoop.stopGameLoop();
@@ -80,13 +81,13 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 		// for testing purposes:
 
-		
+
 		Runnable timeSender = new Runnable() { public void run() {
 			sendRemainingTime();
 		} };
-		
+
 		scheduler.scheduleAtFixedRate(timeSender, 0, 1, TimeUnit.SECONDS);
-		
+
 	}
 
 	/**
@@ -154,9 +155,10 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 		// Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>:<eliminated>"
 
 		for (EssentialPlayer p : players) {
+
 			String toBeSent;
 			toBeSent = "1:" + p.getPlayerId();
-
+			toBeSent += ":" + p.getCounterFrame();
 			toBeSent += ":" + p.getLayoutX();
 			toBeSent += ":" + p.getLayoutY();
 			toBeSent += ":" + p.getAngle();

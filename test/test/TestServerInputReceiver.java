@@ -49,7 +49,7 @@ public class TestServerInputReceiver {
 	@Test
 	public void updatePlayerTest() {
 		inputReceiver.setPlayers(players);
-		inputReceiver.updatePlayer(1, true, false, true, false, true, 30);
+		inputReceiver.updatePlayer(1, 100, true, false, true, false, true, 30);
 
 		assertTrue(p.getUp());
 		assertFalse(p.getDown());

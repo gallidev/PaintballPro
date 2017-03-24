@@ -11,6 +11,8 @@ import players.EssentialPlayer;
 
 import java.util.ArrayList;
 
+import static gui.GUIManager.renderer;
+
 /**
  * Client-sided class which receives an action imposed by the server on the
  * player and executes it.
@@ -20,10 +22,9 @@ import java.util.ArrayList;
  */
 public class ClientGameStateReceiver {
 
+	private static final boolean debug = false;
 	// for testing purposes
 	public boolean integrationTest;
-
-	private static final boolean debug = false;
 	private Flag flag;
 	private ArrayList<EssentialPlayer> players;
 	private EssentialPlayer currentPlayer;
@@ -77,7 +78,7 @@ public class ClientGameStateReceiver {
 	 *            Whether or not the player is visible(i.e. it has been
 	 *            eliminated>
 	 */
-	public void updatePlayer(int id, double x, double y, double angle, boolean visible, boolean eliminated) {
+	public void updatePlayer(int id, int counterFrame, double x, double y, double angle, boolean visible, boolean eliminated) {
 
 		EssentialPlayer playerToBeUpdated;
 		playerToBeUpdated = getPlayerWithId(id);
@@ -88,7 +89,10 @@ public class ClientGameStateReceiver {
 			ClientPlayer cPlayer = (ClientPlayer) playerToBeUpdated;
 			Platform.runLater(() -> {
 				if (cPlayer.shouldIUpdatePosition(x, y)) {
+					//System.out.println("big difference lag client Player");
 					playerToBeUpdated.relocate(x, y);
+				}else{
+					cPlayer.replayMoves(counterFrame, x, y);
 				}
 				// playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
@@ -121,12 +125,12 @@ public class ClientGameStateReceiver {
 		case SHIELD:
 			powerups[0].setVisible(false);
 			player.setShield(true);
-			audio.playSFX(audio.sfx.pickup, (float)1.0);
+			//audio.playSFX(audio.sfx.pickup, (float)1.0);
 			break;
 		case SPEED:
 			powerups[1].setVisible(false);
 			player.setSpeed(true);
-			audio.playSFX(audio.sfx.pickup, (float)1.0);
+			//audio.playSFX(audio.sfx.pickup, (float)1.0);
 			break;
 		default: break;
 		}
@@ -171,8 +175,10 @@ public class ClientGameStateReceiver {
 	 */
 	public void generateBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		EssentialPlayer p = getPlayerWithId(playerId);
-		if (p.equals(currentPlayer))
-			audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+		if (p.equals(currentPlayer)){
+			//audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+		}
+
 		if (p != null) {
 			Platform.runLater(() -> {
 				p.generateBullet(bulletId, originX, originY, angle);
@@ -210,10 +216,11 @@ public class ClientGameStateReceiver {
 		EssentialPlayer player;
 		player = getPlayerWithId(id);
 
-		audio.playSFX(audio.sfx.flagcollect, (float)1.0);
+		//audio.playSFX(audio.sfx.flagcollect, (float)1.0);
 
 		Platform.runLater(() -> {
 			player.setHasFlag(true);
+			renderer.getHud().setFlagStatus(player.getTeam());
 			flag.setVisible(false);
 		});
 
@@ -227,6 +234,7 @@ public class ClientGameStateReceiver {
 		EssentialPlayer player = getPlayerWithId(id);
 		Platform.runLater(() -> {
 			player.setHasFlag(false);
+			renderer.getHud().setFlagStatus(player.getTeam());
 			flag.setVisible(true);
 			flag.relocate(player.getLayoutX(), player.getLayoutY());
 		});
@@ -238,9 +246,6 @@ public class ClientGameStateReceiver {
 	 * @param id The id of the player which captured the flag.
 	 */
 	public void respawnFlag(int id, double x, double y) {
-		flag.setVisible(true);
-		flag.relocate(x, y);
-
 		EssentialPlayer player;
 		player = getPlayerWithId(id);
 
@@ -248,6 +253,7 @@ public class ClientGameStateReceiver {
 			flag.setVisible(true);
 			flag.relocate(x, y);
 			player.setHasFlag(false);
+			renderer.getHud().setFlagStatus(player.getTeam());
 		});
 	}
 
