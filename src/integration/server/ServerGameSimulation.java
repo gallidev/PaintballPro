@@ -24,7 +24,7 @@ public class ServerGameSimulation {
 	private ArrayList<EssentialPlayer> players;
 	private Team redTeam;
 
-	private boolean debug = true;
+	private boolean debug = false;
 	private Thread loop;
 	private boolean paused = false;
 	private boolean running = true;

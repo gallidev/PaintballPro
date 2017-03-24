@@ -286,6 +286,10 @@ public abstract class EssentialPlayer extends ImageView {
 		return this.firedBullets;
 	}
 
+	public synchronized List<Bullet> getSyncBullets(){
+		return this.firedBullets;
+	}
+
 	public double getAngle(){
 		return this.angle;
 	}

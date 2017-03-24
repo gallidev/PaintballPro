@@ -277,7 +277,7 @@ public class ClientPlayer extends EssentialPlayer {
 
 		double simulateX = getLayoutX();
 		double simulateY = getLayoutY();
-		if(index != -1 && index != (bufferReconciliation.size() -1) &&
+		if(index != -1 && index != (bufferReconciliation.size() -1) && (index+1) != bufferReconciliation.size()  &&
 				(x != bufferReconciliation.get(index+ 1).getX() || y != bufferReconciliation.get(index+ 1).getY() ) &&
 				(getLayoutX() != x || getLayoutY() != y)){
 
