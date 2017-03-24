@@ -12,7 +12,7 @@ import players.UserPlayer;
  *
  * The class performs the computation required server-side(collision-handling,
  * etc)
- * 
+ *
  * @author Alexandra Paduraru
  *
  */
@@ -24,7 +24,7 @@ public class ServerInputReceiver {
 	/**
 	 * Initialises a new Server input receiver with all the players currently
 	 * playing in the game.
-	 * 
+	 *
 	 * @param players
 	 *            A list of all the players involved in the game.
 	 */
@@ -41,7 +41,7 @@ public class ServerInputReceiver {
 	 * Computes all the required changes on a player, based on the inputs
 	 * received from the client. This method performs all the collision handling
 	 * and updates the player based on that and the user input.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the player to be updated.
 	 * @param up
@@ -59,20 +59,21 @@ public class ServerInputReceiver {
 	 * @param mouseY
 	 *            The new y coordinate of the user.
 	 */
-	public void updatePlayer(int id, boolean up, boolean down, boolean left, boolean right, boolean shooting,
+	public void updatePlayer(int id, int counterFrame, boolean up, boolean down, boolean left, boolean right, boolean shooting,
 			double angle) {
 
 		// double timeUpdating = 0;
 		//
 		// timeUpdating = System.nanoTime();
 
-		EssentialPlayer playerToBeUpdated;
-		playerToBeUpdated = getPlayerWithId(id);
+		UserPlayer playerToBeUpdated;
+		playerToBeUpdated = (UserPlayer) getPlayerWithId(id);
 
 		if (debug)
 			System.out.println("angle: " + angle);
 
 		// update everything
+		playerToBeUpdated.setCounterFrame(counterFrame);
 		playerToBeUpdated.setUp(up);
 		playerToBeUpdated.setDown(down);
 		playerToBeUpdated.setLeft(left);
@@ -87,7 +88,7 @@ public class ServerInputReceiver {
 	/**
 	 * Helper method to find the player with a specific id from the entire list
 	 * of players in the game.
-	 * 
+	 *
 	 * @param id
 	 *            The player's id.
 	 */
@@ -101,7 +102,7 @@ public class ServerInputReceiver {
 
 	/**
 	 * Sets the game players.
-	 * 
+	 *
 	 * @param players
 	 *            A list of all the players involved in the game.
 	 */
@@ -111,7 +112,7 @@ public class ServerInputReceiver {
 
 	/**
 	 * Retrieve the players currently in the game.
-	 * 
+	 *
 	 * @return The list of players in the game.
 	 */
 	public ArrayList<EssentialPlayer> getPlayers() {

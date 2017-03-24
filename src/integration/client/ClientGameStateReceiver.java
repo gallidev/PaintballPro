@@ -70,7 +70,7 @@ public class ClientGameStateReceiver {
 	 *            Whether or not the player is visible(i.e. it has been
 	 *            eliminated>
 	 */
-	public void updatePlayer(int id, double x, double y, double angle, boolean visible, boolean eliminated) {
+	public void updatePlayer(int id, int counterFrame, double x, double y, double angle, boolean visible, boolean eliminated) {
 
 		EssentialPlayer playerToBeUpdated;
 		playerToBeUpdated = getPlayerWithId(id);
@@ -80,9 +80,11 @@ public class ClientGameStateReceiver {
 
 			ClientPlayer cPlayer = (ClientPlayer) playerToBeUpdated;
 			Platform.runLater(() -> {
-				if (cPlayer.shouldIUpdatePosition(x, y)) {
-					playerToBeUpdated.relocate(x, y);
-				}
+//				if (cPlayer.shouldIUpdatePosition(x, y)) {
+//					//System.out.println("big difference lag client Player");
+//					playerToBeUpdated.relocate(x, y);
+//				}
+				cPlayer.replayMoves(counterFrame, x, y);
 				// playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
 				playerToBeUpdated.setEliminated(eliminated);

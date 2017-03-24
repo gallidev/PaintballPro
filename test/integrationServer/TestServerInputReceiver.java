@@ -22,7 +22,7 @@ import rendering.Map;
  * Test class to test the input receiver on the server, which receives
  * information from all clients regarding player locations. Class tested-
  * {@link ServerInputReceiver}, {@link EssentialPlayer}
- * 
+ *
  * @author Alexandra Paduraru
  *
  */

@@ -16,7 +16,7 @@ import players.EssentialPlayer;
  */
 public class ServerGameSimulation {
 
-	public static final double GAME_HERTZ = 45.0;
+	public static final double GAME_HERTZ = 30.0;
 
 	// game inforation
 	private Team blueTeam;

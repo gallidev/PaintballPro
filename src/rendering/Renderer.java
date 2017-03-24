@@ -57,6 +57,7 @@ public class Renderer extends Scene
 	private GUIManager guiManager;
 	private boolean singlePlayer = false;
 
+
 	/**
 	 * Renders an offline game instance by loading the selected map, spawning the AI players and responding to changes in game logic.
 	 *

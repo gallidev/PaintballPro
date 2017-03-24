@@ -1,8 +1,10 @@
 package integration.client;
 
 import networking.game.UDPClient;
+import physics.GameStateClient;
 import physics.InputHandler;
 import players.ClientPlayer;
+import rendering.Renderer;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,7 +24,13 @@ public class ClientInputSender {
 	private static final boolean debug = false;
 
 	// sending stats
-	private long delayMilliseconds = 28;
+	public static final long DELAY_MILLISECONDS = 25;
+
+	private static double fps = 1000/DELAY_MILLISECONDS;
+
+	public static int step =  (int) ((Renderer.TARGET_FPS / fps) * 10);
+
+	public static int counterFrame = 0;
 
 	private InputHandler handler;
 	private ClientPlayer player;
@@ -63,7 +71,7 @@ public class ClientInputSender {
 			}
 		};
 
-		ScheduledFuture<?> senderHandler = scheduler.scheduleAtFixedRate(sender, 0, delayMilliseconds,
+		ScheduledFuture<?> senderHandler = scheduler.scheduleAtFixedRate(sender, 0, DELAY_MILLISECONDS,
 				TimeUnit.MILLISECONDS);
 
 		Runnable frameCounter = new Runnable() {
@@ -96,8 +104,18 @@ public class ClientInputSender {
 		// Protocol: "0:id:" + Up/Down/Left/Right/Shooting + "Angle:<angle>",
 		// depending on the player's action
 
+		counterFrame += step;
+
+		player.setUp(handler.isUp());
+		player.setDown(handler.isDown());
+		player.setLeft(handler.isLeft());
+		player.setRight(handler.isRight());
+
+		player.getBufferReconciliation().add(new GameStateClient(counterFrame, player.getLayoutX(), player.getLayoutY(),
+				handler.isUp(), handler.isDown(), handler.isLeft(), handler.isRight()));
+
 		String toBeSent;
-		toBeSent = "0:" + player.getPlayerId() + ":";
+		toBeSent = "0:" + player.getPlayerId() + ":" + counterFrame + ":";
 		// did player move up?
 		if (handler.isUp())
 			toBeSent += "Up:";

@@ -13,6 +13,7 @@ import rendering.Spawn;
  */
 public class UserPlayer extends EssentialPlayer{
 
+	int counterFrame;
 	private Team oppTeam;
 	private Team myTeam;
 
@@ -22,6 +23,7 @@ public class UserPlayer extends EssentialPlayer{
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS) {
 		super(x, y, id, spawn, team, collisionsHandler, image, game, currentFPS);
+		counterFrame = 0;
 	}
 
 	public void tick()
@@ -136,6 +138,13 @@ public class UserPlayer extends EssentialPlayer{
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	public int getCounterFrame() {
+		return counterFrame;
+	}
+
+	public void setCounterFrame(int counterFrame) {
+		this.counterFrame = counterFrame;
+	}
 
 }
 

@@ -29,7 +29,7 @@ public class UDPClient extends Thread {
 	public boolean testSendToAll = false;
 	public boolean testNetworking = false;
 	public int port;
-	
+
 	private boolean debug = false;
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
@@ -300,22 +300,23 @@ public class UDPClient extends Thread {
 			String[] actions = text.split(":");
 
 			int id = Integer.parseInt(actions[1]);
-			double x = Double.parseDouble(actions[2]);
-			double y = Double.parseDouble(actions[3]);
-			double angle = Double.parseDouble(actions[4]);
+			int counterFrame = Integer.parseInt(actions[2]);
+			double x = Double.parseDouble(actions[3]);
+			double y = Double.parseDouble(actions[4]);
+			double angle = Double.parseDouble(actions[5]);
 
 			boolean visibility = true;
-			if (actions[5].equals("false")){
+			if (actions[6].equals("false")){
 				visibility = false;
 			}
 
 			boolean eliminated = false;
-			if(actions[6].equals("true")) {
+			if(actions[7].equals("true")) {
 				eliminated = true;
 			}
 
 			if (gameStateReceiver != null) {
-				gameStateReceiver.updatePlayer(id, x, y, angle, visibility, eliminated);
+				gameStateReceiver.updatePlayer(id,counterFrame, x, y, angle, visibility, eliminated);
 			}
 		}
 	}

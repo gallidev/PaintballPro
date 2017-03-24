@@ -55,13 +55,13 @@ public class UDPServer extends Thread {
 				System.out.println("Opening socket on port:"+serverPort);
 			}
 			serverSocket = new DatagramSocket(serverPort);
-			
+
 			if (debug) {
 				System.out.println("Opened successfully");
 				System.out.println("Opened socket on port " + serverSocket.getLocalPort() + " with ip addr:"
 						+ serverSocket.getInetAddress());
 			}
-			
+
 			byte[] receiveData = new byte[1024];
 
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -180,7 +180,7 @@ public class UDPServer extends Thread {
 		// We get all players in the same game as the transmitting player.
 		if (lobbyTab.getLobby(lobbyID) != null){
 			players = lobbyTab.getLobby(lobbyID).getPlayers();
-			
+
 			for (ServerBasicPlayer player : players) {
 				int id = player.getID();
 				String playerIP = clients.getIP(id);
@@ -285,6 +285,7 @@ public class UDPServer extends Thread {
 		String[] actions = text.split(":");
 
 		int id = Integer.parseInt(actions[1]);
+		int counterFrame = Integer.parseInt(actions[2]);
 
 		boolean up = false;
 		boolean down = false;
@@ -293,7 +294,7 @@ public class UDPServer extends Thread {
 		boolean shoot = false;
 		double angle = 0;
 
-		for (int i = 0; i < actions.length; i++) {
+		for (int i = 3; i < actions.length; i++) {
 			String act = actions[i];
 			switch (act) {
 			case "Up":
@@ -319,7 +320,7 @@ public class UDPServer extends Thread {
 				break;
 			}
 		}
-		inputReceiver.updatePlayer(id, up, down, left, right, shoot, angle);
+		inputReceiver.updatePlayer(id, counterFrame, up, down, left, right, shoot, angle);
 	}
 
 	/**
