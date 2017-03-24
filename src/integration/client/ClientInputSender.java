@@ -6,6 +6,7 @@ import physics.InputHandler;
 import players.ClientPlayer;
 import rendering.Renderer;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -105,6 +106,24 @@ public class ClientInputSender {
 		// depending on the player's action
 
 		counterFrame += step;
+
+//		if(counterFrame < 255){
+//			counterFrame += step;
+//		}
+//		else {
+//			counterFrame = step;
+////			ArrayList<GameStateClient> states = new ArrayList<>();
+////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-5));
+////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-4));
+////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-3));
+////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-2));
+////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-1));
+////
+////			player.getBufferReconciliation().clear();
+////
+////			player.setBufferReconciliation(states);
+//		}
+
 
 		player.setUp(handler.isUp());
 		player.setDown(handler.isDown());

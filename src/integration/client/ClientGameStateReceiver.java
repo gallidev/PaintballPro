@@ -87,11 +87,12 @@ public class ClientGameStateReceiver {
 
 			ClientPlayer cPlayer = (ClientPlayer) playerToBeUpdated;
 			Platform.runLater(() -> {
-//				if (cPlayer.shouldIUpdatePosition(x, y)) {
-//					//System.out.println("big difference lag client Player");
-//					playerToBeUpdated.relocate(x, y);
-//				}
-				cPlayer.replayMoves(counterFrame, x, y);
+				if (cPlayer.shouldIUpdatePosition(x, y)) {
+					//System.out.println("big difference lag client Player");
+					playerToBeUpdated.relocate(x, y);
+				}else{
+					cPlayer.replayMoves(counterFrame, x, y);
+				}
 				// playerToBeUpdated.setAngle(angle);
 				playerToBeUpdated.setVisible(visible);
 				playerToBeUpdated.setEliminated(eliminated);
@@ -123,12 +124,12 @@ public class ClientGameStateReceiver {
 		case SHIELD:
 			powerups[0].setVisible(false);
 			player.setShield(true);
-			audio.playSFX(audio.sfx.pickup, (float)1.0);
+			//audio.playSFX(audio.sfx.pickup, (float)1.0);
 			break;
 		case SPEED:
 			powerups[1].setVisible(false);
 			player.setSpeed(true);
-			audio.playSFX(audio.sfx.pickup, (float)1.0);
+			//audio.playSFX(audio.sfx.pickup, (float)1.0);
 			break;
 		default: break;
 		}
@@ -173,8 +174,10 @@ public class ClientGameStateReceiver {
 	 */
 	public void generateBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		EssentialPlayer p = getPlayerWithId(playerId);
-		if (p.equals(currentPlayer))
-			audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+		if (p.equals(currentPlayer)){
+			//audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
+		}
+
 		if (p != null) {
 			Platform.runLater(() -> {
 				p.generateBullet(bulletId, originX, originY, angle);
@@ -212,7 +215,7 @@ public class ClientGameStateReceiver {
 		EssentialPlayer player;
 		player = getPlayerWithId(id);
 
-		audio.playSFX(audio.sfx.flagcollect, (float)1.0);
+		//audio.playSFX(audio.sfx.flagcollect, (float)1.0);
 
 		Platform.runLater(() -> {
 			player.setHasFlag(true);

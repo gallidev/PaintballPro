@@ -16,7 +16,7 @@ import players.EssentialPlayer;
  */
 public class ServerGameSimulation {
 
-	public static final double GAME_HERTZ = 30.0;
+	public static final double GAME_HERTZ = 40.0;
 
 	// game inforation
 	private Team blueTeam;
@@ -24,7 +24,7 @@ public class ServerGameSimulation {
 	private ArrayList<EssentialPlayer> players;
 	private Team redTeam;
 
-	private boolean debug = false;
+	private boolean debug = true;
 	private Thread loop;
 	private boolean paused = false;
 	private boolean running = true;

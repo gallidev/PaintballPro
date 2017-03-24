@@ -24,7 +24,7 @@ public class ClientPlayer extends EssentialPlayer {
 
 
 	double angleRadians;
-	private double limitDifferencePosition = 40;
+	private double limitDifferencePosition = 60;
 	private InputHandler inputHandler;
 	private AudioManager audio;
 	private Random rand;
@@ -214,13 +214,13 @@ public class ClientPlayer extends EssentialPlayer {
 
 	public int getTheRightBufferIndex(int counterFrame){
 		for(int i = 0; i < bufferReconciliation.size(); i++){
-			System.out.print(i + ": " + counterFrame + " --- ");
+			//System.out.print(i + ": " + counterFrame + " --- ");
 			if(bufferReconciliation.get(i).getFrame() == counterFrame){
-				System.out.println();
+				//System.out.println();
 				return i;
 			}
 		}
-		System.out.println();
+		//System.out.println();
 		return -1;
 	}
 
@@ -274,30 +274,34 @@ public class ClientPlayer extends EssentialPlayer {
 
 	public void replayMoves(int counterFrame, double x, double y){
 		int index = getTheRightBufferIndex(counterFrame);
-//		double simulateX = getLayoutX();
-//		double simulateY = getLayoutY();
-		if(index != -1){
 
-			setLayoutX(x);
-			setLayoutY(y);
+		double simulateX = getLayoutX();
+		double simulateY = getLayoutY();
+		if(index != -1 && index != (bufferReconciliation.size() -1) &&
+				(x != bufferReconciliation.get(index+ 1).getX() || y != bufferReconciliation.get(index+ 1).getY() ) &&
+				(getLayoutX() != x || getLayoutY() != y)){
 
 			//boolean lDown = down , lUp = up, lRight = right , lLeft = left;
 			double lmovementSpeed = movementSpeed;
-			movementSpeed = movementSpeed * ((double) ClientInputSender.step / 10.0);
 			//System.out.println("old Speed: " + lmovementSpeed + "new speed: " + movementSpeed );
-			for(int i = index; i < bufferReconciliation.size() - 1; i++){
-				simulateUpdate(bufferReconciliation.get(i));
+			for(int i = index+1; i < bufferReconciliation.size() - 1; i++){
+				setLayoutX(x);
+				setLayoutY(y);
+				movementSpeed = movementSpeed * ((double) ClientInputSender.step / 10.0);
+				simulateUpdate(bufferReconciliation.get(i+1));
 				//System.out.println("saved buffer x: " + bufferReconciliation.get(i).getX() + " saved buffer y: " + bufferReconciliation.get(i).getY() );
-//				System.out.println("update: " + (i - index) + "new x: " + getLayoutX() + " new y: " + getLayoutY() );
+				//System.out.println("update: " + (i - index) + "new x: " + getLayoutX() + " new y: " + getLayoutY() );
 			}
+			System.out.println("n Updates: " +  (bufferReconciliation.size() - 1 - index) );
 
 //			down = lDown;
 //			up = lUp;
 //			right = lRight;
 //			left = lLeft;
 //			tickPosition();
-//			System.out.println("received x: " + x + " received y: " + y );
-//			System.out.println("resulted x: " + getLayoutX() + " resulted y: " + getLayoutY() );
+			//System.out.println("received x: " + x + " received y: " + y );
+			//System.out.println("resulted x: " + getLayoutX() + " resulted y: " + getLayoutY() );
+			//System.out.println("my x: " + bufferReconciliation.get(index).getX() + " my y: " + bufferReconciliation.get(index).getY() );
 //			System.out.println("simulate x: " + simulateX + " simulate y: " + simulateY );
 
 //			setLayoutX(simulateX);
@@ -308,11 +312,12 @@ public class ClientPlayer extends EssentialPlayer {
 
 			for(int i = 0; i < index-1; i++){
 				bufferReconciliation.remove(i);
+				index--;
 			}
 
 
 		}else{
-			System.out.println("error no counterFrame found : " + counterFrame );
+			//System.out.println("no counterFrame found or no need to update : " + counterFrame );
 		}
 
 
