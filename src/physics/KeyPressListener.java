@@ -66,6 +66,9 @@ public class KeyPressListener implements EventHandler<KeyEvent>
 				case D:
 					inputHandler.setRight(true);
 					break;
+//				case P:
+//					System.out.println(Math.round(renderer.player.getLayoutX() / 64) + " " + Math.round(renderer.player.getLayoutY() / 64));
+//					break;
 				case ESCAPE:
 					renderer.togglePauseMenu();
 					break;
