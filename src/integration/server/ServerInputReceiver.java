@@ -14,6 +14,7 @@ import players.UserPlayer;
  * etc)
  *
  * @author Alexandra Paduraru
+ * @author Filippo Galli
  *
  */
 public class ServerInputReceiver {

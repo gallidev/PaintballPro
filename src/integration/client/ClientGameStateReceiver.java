@@ -18,6 +18,7 @@ import static gui.GUIManager.renderer;
  * player and executes it.
  *
  * @author Alexandra Paduraru
+ * @author Filippo Galli
  *
  */
 public class ClientGameStateReceiver {
@@ -68,6 +69,8 @@ public class ClientGameStateReceiver {
 	 *
 	 * @param id
 	 *            The id of the player which has changed location.
+	 * @param counterFrame
+	 *            the step of the update in which the packet has been sent
 	 * @param x
 	 *            The new x coordinate of the player.
 	 * @param y

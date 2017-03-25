@@ -22,6 +22,7 @@ import physics.CollisionsHandler;
 import physics.InputHandler;
 import players.ClientPlayer;
 import players.EssentialPlayer;
+import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 
@@ -39,14 +40,15 @@ public class TestClientInputSender {
 	private InputHandler handler;
 	private ServerInputReceiver inputReceiver;
 	private ClientInputSender inputSender;
-	private ClientPlayer player;
+	private ClientPlayer cPlayer;
+	private UserPlayer uPlayer;
 	private UDPServer server;
 
 	@Before
 	public void setUp() throws Exception {
 		LobbyTable lobby;
 		ClientTable table;
-		
+
 		table = new ClientTable();
 		lobby = new LobbyTable();
 
@@ -57,12 +59,14 @@ public class TestClientInputSender {
 		JavaFXTestHelper.setupApplication();
 		Map map;
 		map = Map.loadRaw("elimination");
-		
-		player = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), new CollisionsHandler(map),
+
+		cPlayer = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), new CollisionsHandler(map),
 				new InputHandler(), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+		uPlayer = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
 		ArrayList<EssentialPlayer> players;
 		players = new ArrayList<>();
-		players.add(player);
+		players.add(uPlayer);
 
 		inputReceiver = new ServerInputReceiver();
 		inputReceiver.setPlayers(players);
@@ -71,7 +75,7 @@ public class TestClientInputSender {
 		client = new UDPClient(1, "127.0.0.1", 19887,null, null, 25567, "test");
 		client.start();
 
-		inputSender = new ClientInputSender(client, handler, player);
+		inputSender = new ClientInputSender(client, handler, cPlayer);
 	}
 
 	@After
@@ -95,20 +99,24 @@ public class TestClientInputSender {
 		handler.setRight(true);
 		handler.setShoot(true);
 
-		// "0:1:Up:Left:Right:Shoot:2:3:0:0"
+
+
+		// "0:1:<counterFrame>:Up:Left:Right:Shoot:2:3:0:0"
 		inputSender.startSending();
 		Thread.sleep(1500);
 
-		assertTrue(player.getUp());
-		assertTrue(player.getDown());
-		assertTrue(player.getLeft());
-		assertTrue(player.getRight());
-		assertTrue(player.isShooting());
+
+		assertEquals(ClientInputSender.counterFrame, uPlayer.getCounterFrame());
+		assertTrue(uPlayer.getUp());
+		assertTrue(uPlayer.getDown());
+		assertTrue(uPlayer.getLeft());
+		assertTrue(uPlayer.getRight());
+		assertTrue(uPlayer.isShooting());
 
 		handler.setDown(false);
 		inputSender.startSending();
 		Thread.sleep(100);
-		assertFalse(player.getDown());
+		assertFalse(uPlayer.getDown());
 
 	}
 
