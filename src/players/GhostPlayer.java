@@ -77,9 +77,9 @@ public class GhostPlayer extends EssentialPlayer {
 	}
 
 	void cleanBullets(){
-		if(firedBullets.size() > 0) {
-			if (!firedBullets.get(0).isActive()) {
-				firedBullets.remove(0);
+		if(firedPellets.size() > 0) {
+			if (!firedPellets.get(0).isActive()) {
+				firedPellets.remove(0);
 			}
 		}
 	}

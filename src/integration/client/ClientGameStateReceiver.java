@@ -2,14 +2,15 @@ package integration.client;
 
 import audio.AudioManager;
 import javafx.application.Platform;
-import physics.Bullet;
 import physics.Flag;
+import physics.Pellet;
 import physics.Powerup;
 import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static gui.GUIManager.renderer;
 
@@ -24,11 +25,9 @@ import static gui.GUIManager.renderer;
 public class ClientGameStateReceiver {
 
 	private static final boolean debug = false;
-	// for testing purposes
-	public boolean integrationTest;
+
 	private Flag flag;
 	private ArrayList<EssentialPlayer> players;
-	private EssentialPlayer currentPlayer;
 	private Powerup[] powerups;
 	private AudioManager audio;
 
@@ -40,9 +39,8 @@ public class ClientGameStateReceiver {
 	 *            The list of all players in the game.
 	 *
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, EssentialPlayer currentPlayer, Powerup[] powerups, AudioManager audio){
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Powerup[] powerups, AudioManager audio){
 		this.players = players;
-		this.currentPlayer = currentPlayer;
 		this.powerups = powerups;
 		this.audio = audio;
 	}
@@ -56,9 +54,8 @@ public class ClientGameStateReceiver {
 	 * @param flag
 	 *            The flag of the capture the flag mode
 	 */
-	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, EssentialPlayer currentPlayer, Flag flag, Powerup[] powerups, AudioManager audio) {
+	public ClientGameStateReceiver(ArrayList<EssentialPlayer> players, Flag flag, Powerup[] powerups, AudioManager audio) {
 		this.players = players;
-		this.currentPlayer = currentPlayer;
 		this.flag = flag;
 		this.powerups = powerups;
 		this.audio = audio;
@@ -125,19 +122,21 @@ public class ClientGameStateReceiver {
 		player = getPlayerWithId(id);
 
 		switch (type) {
-		case SHIELD:
-			powerups[0].setVisible(false);
-			player.setShield(true);
-			//audio.playSFX(audio.sfx.pickup, (float)1.0);
-			break;
-		case SPEED:
-			powerups[1].setVisible(false);
-			player.setSpeed(true);
-			//audio.playSFX(audio.sfx.pickup, (float)1.0);
-			break;
-		default: break;
+			case SHIELD:
+				Platform.runLater(() -> {
+					powerups[0].setVisible(false);
+					player.setShield(true);
+					//audio.playSFX(audio.sfx.pickup, (float)1.0);
+				});
+				break;
+			case SPEED:
+				Platform.runLater(() -> {
+					powerups[1].setVisible(false);
+					player.setSpeed(true);
+					//audio.playSFX(audio.sfx.pickup, (float)1.0);
+				});
+				break;
 		}
-
 	}
 
 	/**
@@ -147,14 +146,18 @@ public class ClientGameStateReceiver {
 	 */
 	public void powerUpRespawn(PowerupType type, int location) {
 		switch (type) {
-		case SHIELD:
-			powerups[0].resetPosition(location);
-			powerups[0].setVisible(true);
-			break;
-		case SPEED:
-			powerups[1].resetPosition(location);
-			powerups[1].setVisible(true);
-			break;
+			case SHIELD:
+				Platform.runLater(() -> {
+					powerups[0].resetPosition(location);
+					powerups[0].setVisible(true);
+				});
+				break;
+			case SPEED:
+				Platform.runLater(() -> {
+					powerups[1].resetPosition(location);
+					powerups[1].setVisible(true);
+				});
+				break;
 		}
 	}
 
@@ -163,9 +166,8 @@ public class ClientGameStateReceiver {
 	 * @param id The id of the player that needs to be updated.
 	 */
 	public void shieldRemovedAction(int id) {
-		EssentialPlayer player;
-		player = getPlayerWithId(id);
-		player.setShieldEffect(false);
+		EssentialPlayer player = getPlayerWithId(id);
+		Platform.runLater(() -> player.setShieldEffect(false));
 	}
 
 	/**
@@ -180,11 +182,7 @@ public class ClientGameStateReceiver {
 		EssentialPlayer p = getPlayerWithId(playerId);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float)1.0);
 
-		if (p != null) {
-			Platform.runLater(() -> {
-				p.generateBullet(bulletId, originX, originY, angle);
-			});
-		}
+		Platform.runLater(() -> p.generateBullet(bulletId, originX, originY, angle));
 	}
 
 	/**
@@ -193,20 +191,14 @@ public class ClientGameStateReceiver {
 	 * @param bulletId The id of the bullet that needs to be destroyed.
 	 */
 	public void destroyBullet(int playerId, int bulletId) {
-		EssentialPlayer p;
-		p = getPlayerWithId(playerId);
+		EssentialPlayer p = getPlayerWithId(playerId);
+		Pellet b = getBulletWithId(p, bulletId);
 
-		if (p != null) {
-			Bullet b = getBulletWithId(p, bulletId);
-			if (b != null) {
-				Platform.runLater(() -> {
-					if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
-					b.setVisible(false);
-					b.setActive(false);
-				});
-			}
-		}
-
+		Platform.runLater(() -> {
+			if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
+			b.setVisible(false);
+			b.setActive(false);
+		});
 	}
 
 	/**
@@ -214,8 +206,7 @@ public class ClientGameStateReceiver {
 	 * @param id The id of the player which captured the flag.
 	 */
 	public void updateFlag(int id) {
-		EssentialPlayer player;
-		player = getPlayerWithId(id);
+		EssentialPlayer player = getPlayerWithId(id);
 
 		//audio.playSFX(audio.sfx.flagcollect, (float)1.0);
 
@@ -271,21 +262,21 @@ public class ClientGameStateReceiver {
 				return p;
 			}
 		}
-		return null;
+		throw new NoSuchElementException("Player with id " + id + " could not be found!");
 	}
 
 	/**
 	 * Returns the bullet with a given id.
 	 * @param p The player whose bullet is looked for.
 	 * @param id The bullet id to be found.
-	 * @return The bullet with a given id nelonging to the given player.
+	 * @return The bullet with a given id belonging to the given player.
 	 */
-	public Bullet getBulletWithId(EssentialPlayer p, int id) {
-		for (Bullet b : p.getSyncBullets()) {
-			if (b.getBulletId() == id)
+	private Pellet getBulletWithId(EssentialPlayer p, int id) {
+		for (Pellet b : p.getSyncBullets()) {
+			if (b.getPelletId() == id)
 				return b;
 		}
-		return null;
+		throw new NoSuchElementException("Pellet with id " + id + " could not be found!");
 	}
 
 	/**

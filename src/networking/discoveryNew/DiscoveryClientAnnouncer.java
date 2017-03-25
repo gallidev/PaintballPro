@@ -5,7 +5,7 @@ package networking.discoveryNew;
  * 
  * @author Matthew Walters
  */
-public class DiscoveryClientListener {
+public class DiscoveryClientAnnouncer {
 
 	private DiscoveryClient client;
 
@@ -33,7 +33,7 @@ public class DiscoveryClientListener {
 	 * @return Test result - did it pass?
 	 */
 	public boolean test() {
-		DiscoveryServerAnnouncer annoc = new DiscoveryServerAnnouncer();
+		DiscoveryServerListener annoc = new DiscoveryServerListener();
 		String ret;
 		annoc.start();
 		ret = this.findServer();

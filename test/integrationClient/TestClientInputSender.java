@@ -1,13 +1,5 @@
 package integrationClient;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -18,6 +10,9 @@ import networking.game.UDPClient;
 import networking.game.UDPServer;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import physics.InputHandler;
 import players.ClientPlayer;
@@ -25,6 +20,10 @@ import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * Test class to test the information that a client sends to the server, based
@@ -61,9 +60,9 @@ public class TestClientInputSender {
 		map = Map.loadRaw("elimination");
 
 		cPlayer = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), new CollisionsHandler(map),
-				new InputHandler(), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+				new InputHandler(), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.TEAM_MATCH, 30);
 		uPlayer = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
-				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.TEAM_MATCH, 30);
 		ArrayList<EssentialPlayer> players;
 		players = new ArrayList<>();
 		players.add(uPlayer);

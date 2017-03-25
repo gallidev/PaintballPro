@@ -8,7 +8,7 @@ import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import networking.discoveryNew.DiscoveryServerAnnouncer;
+import networking.discoveryNew.DiscoveryServerListener;
 import networking.discoveryNew.IPAddress;
 import networking.server.Server;
 import org.junit.After;
@@ -40,7 +40,7 @@ public class TestConnection {
 		JavaFXTestHelper.waitForPlatform();
 		serverThread = new Thread(() -> {
 			int portNo = 25566;
-			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer();
+			DiscoveryServerListener discovery = new DiscoveryServerListener();
 			discovery.start();
 			serverGUI = new ServerGUI();
 			Server server = new Server(portNo, IPAddress.getLAN(), serverGUI, 0);

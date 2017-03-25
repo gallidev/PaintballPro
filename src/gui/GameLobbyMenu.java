@@ -4,7 +4,6 @@ import enums.Menu;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -75,7 +74,7 @@ public class GameLobbyMenu {
 				}
 				System.out.println(checkLobby.isAlive());
 				guiManager.getClient().getSender().sendMessage("Exit:Game");
-				guiManager.transitionTo(Menu.MultiplayerGameType);
+				guiManager.transitionTo(Menu.MULTIPLAYER_GAME_TYPE);
 			}
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);

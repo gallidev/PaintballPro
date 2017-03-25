@@ -18,7 +18,7 @@ public class HashMapGen {
     private String csvSplitBy = ",";
 
     public HashMapGen(Map map){
-        if(map.getGameMode() == GameMode.CAPTURETHEFLAG){
+        if(map.getGameMode() == GameMode.CAPTURE_THE_FLAG){
             csvFile = "res/maps/ctf_paths.csv";
         } else {
             csvFile = "res/maps/elimination_paths.csv";

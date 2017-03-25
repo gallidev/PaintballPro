@@ -36,7 +36,7 @@ public class HeadUpDisplay extends SubScene
 		setScaleY(576 / guiManager.height);
 
 		Circle redTeamCircle = null, blueTeamCircle = null;
-		if(gameMode == GameMode.ELIMINATION)
+		if(gameMode == GameMode.TEAM_MATCH)
 		{
 			redTeamCircle = new Circle(view.getWidth() / 64, Color.RED);
 			blueTeamCircle = new Circle(view.getWidth() / 64, Color.BLUE);
@@ -65,14 +65,14 @@ public class HeadUpDisplay extends SubScene
 		HBox statusBar;
 		if(playerTeam == TeamEnum.RED)
 		{
-			if(gameMode == GameMode.ELIMINATION)
+			if(gameMode == GameMode.TEAM_MATCH)
 				statusBar = new HBox(view.getWidth() / 32, redScore, redTeamCircle, timer, blueTeamCircle, blueScore);
 			else
 				statusBar = new HBox(view.getWidth() / 32, redScore, redTeamFlag, timer, blueTeamFlag, blueScore);
 		}
 		else
 		{
-			if(gameMode == GameMode.ELIMINATION)
+			if(gameMode == GameMode.TEAM_MATCH)
 				statusBar = new HBox(view.getWidth() / 32, blueScore, blueTeamCircle, timer, redTeamCircle, redScore);
 			else
 				statusBar = new HBox(view.getWidth() / 32, blueScore, blueTeamFlag, timer, redTeamFlag, redScore);
@@ -110,7 +110,7 @@ public class HeadUpDisplay extends SubScene
 
 	public void endGame(int red, int blue)
 	{
-		guiManager.transitionTo(Menu.EndGame, red + "," + blue, (renderer.cPlayer == null ? renderer.player.getTeam() : renderer.cPlayer.getTeam()));
+		guiManager.transitionTo(Menu.END_GAME, red + "," + blue, (renderer.cPlayer == null ? renderer.player.getTeam() : renderer.cPlayer.getTeam()));
 
 	}
 }

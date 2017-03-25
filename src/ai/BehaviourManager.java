@@ -50,7 +50,7 @@ public class BehaviourManager{
 
     public void tick(){
         defaultTick();
-        if(gameMode == GameMode.CAPTURETHEFLAG) {
+        if(gameMode == GameMode.CAPTURE_THE_FLAG) {
             if (ai.hasFlag()) {
                 retreat.tick();
             } else {

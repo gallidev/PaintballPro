@@ -28,7 +28,7 @@ public abstract class Behaviour {
     public void startAction(){
         boolean b = rand.nextBoolean();
         if(b){
-            if(ai.getMap().getGameMode() == GameMode.ELIMINATION) {
+            if(ai.getMap().getGameMode() == GameMode.TEAM_MATCH) {
                 PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 14, 2);
                 mover.setPath(ai.getHashMaps().getPathMap().get(p));
             } else {
@@ -36,7 +36,7 @@ public abstract class Behaviour {
                 mover.setPath(ai.getHashMaps().getPathMap().get(p));
             }
         } else {
-            if(ai.getMap().getGameMode() == GameMode.ELIMINATION) {
+            if(ai.getMap().getGameMode() == GameMode.TEAM_MATCH) {
                 PointPairs p = new PointPairs(Math.floor((ai.getLayoutX() + PLAYER_HEAD_X) / 64), Math.floor((ai.getLayoutY() + PLAYER_HEAD_Y) / 64), 14, 10);
                 mover.setPath(ai.getHashMaps().getPathMap().get(p));
             } else {

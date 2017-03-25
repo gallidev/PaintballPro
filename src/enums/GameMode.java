@@ -2,5 +2,5 @@ package enums;
 
 public enum GameMode
 {
-	ELIMINATION, CAPTURETHEFLAG
+	TEAM_MATCH, CAPTURE_THE_FLAG
 }

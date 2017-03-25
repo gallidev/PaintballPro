@@ -1,30 +1,19 @@
 package integrationClient;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.BufferedReader;
-import java.util.ArrayList;
-
 import audio.AudioManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
 import helpers.JavaFXTestHelper;
 import integration.client.ClientGameStateReceiver;
 import logic.server.Team;
-import networking.client.ClientReceiver;
 import networking.game.UDPClient;
 import networking.game.UDPServer;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
-import networking.server.ServerReceiver;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import physics.Flag;
 import physics.Powerup;
@@ -35,6 +24,10 @@ import players.GhostPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * Tester class to test the client-sided part of the integration, by if the
@@ -73,7 +66,7 @@ public class TestClientIntegration {
 		JavaFXTestHelper.setupApplication();
 		map = Map.loadRaw("elimination");
 		ch = new CollisionsHandler(map);
-		player = new GhostPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.ELIMINATION, Renderer.TARGET_FPS);
+		player = new GhostPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.TEAM_MATCH, Renderer.TARGET_FPS);
 
 		cPlayer = new ClientPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, gui, ch, null,
 				ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
@@ -90,8 +83,8 @@ public class TestClientIntegration {
 		powerups[0] = new Powerup(PowerupType.SHIELD, map.getPowerupLocations());
 		powerups[1] = new Powerup(PowerupType.SPEED, map.getPowerupLocations());
 
-		ClientGameStateReceiver gameStateReceiver2 = new ClientGameStateReceiver(players, players.get(0), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
-		gameStateReceiver = new ClientGameStateReceiver(players, players.get(0), new Flag(), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
+		ClientGameStateReceiver gameStateReceiver2 = new ClientGameStateReceiver(players, powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
+		gameStateReceiver = new ClientGameStateReceiver(players, new Flag(), powerups, new AudioManager(GUIManager.getUserSettings(), new GUIManager()));
 
 		client.setGameStateReceiver(gameStateReceiver);
 		Thread.sleep(1000);

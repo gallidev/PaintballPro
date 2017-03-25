@@ -13,12 +13,11 @@ import rendering.Spawn;
  */
 public class UserPlayer extends EssentialPlayer{
 
+	/* For testing purposes */
+	public static boolean isTicked = false;
 	int counterFrame;
 	private Team oppTeam;
 	private Team myTeam;
-
-	/* For testing purposes */
-	public static boolean isTicked = false;
 
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS) {
@@ -116,7 +115,7 @@ public class UserPlayer extends EssentialPlayer{
 
 	@Override
 	public void updateScore() {
-		if (gameMode == GameMode.ELIMINATION)
+		if (gameMode == GameMode.TEAM_MATCH)
 			oppTeam.incrementScore();
 
 		scoreChanged = true;

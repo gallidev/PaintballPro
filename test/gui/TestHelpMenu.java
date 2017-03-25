@@ -3,13 +3,12 @@ package gui;
 import enums.Menu;
 import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the Help Menu
@@ -29,7 +28,7 @@ public class TestHelpMenu {
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
         JavaFXTestHelper.waitForPlatform();
-        guiManager.currentMenu = Menu.Help;
+        guiManager.currentMenu = Menu.HELP;
     }
 
     /**
@@ -43,7 +42,7 @@ public class TestHelpMenu {
 
         Thread.sleep(1000);
 
-        assertTrue(guiManager.currentMenu == Menu.MainMenu);
+        assertTrue(guiManager.currentMenu == Menu.MAIN_MENU);
     }
 
     /**

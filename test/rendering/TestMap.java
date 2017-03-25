@@ -110,8 +110,8 @@ public class TestMap
 	@Test
 	public void getGameMode()
 	{
-		assertTrue(singleMap.getGameMode() == GameMode.ELIMINATION);
-		assertTrue(serverMap.getGameMode() == GameMode.CAPTURETHEFLAG);
+		assertTrue(singleMap.getGameMode() == GameMode.TEAM_MATCH);
+		assertTrue(serverMap.getGameMode() == GameMode.CAPTURE_THE_FLAG);
 	}
 
 	@Test

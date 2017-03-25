@@ -1,23 +1,22 @@
 package test;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import integration.server.ServerGameSimulation;
 import logic.GameMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class to test the game simulation running on the server in multiplayer.
@@ -39,7 +38,7 @@ public class TestServerGameSimulation {
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.TEAM_MATCH, ServerGameSimulation.GAME_HERTZ);
 
 		red.addMember(p);
 
@@ -58,7 +57,7 @@ public class TestServerGameSimulation {
 		players.addAll(blue.getMembers());
 
 		for (EssentialPlayer p : players)
-			assertTrue(((UserPlayer) p).isTicked);
+			assertTrue(UserPlayer.isTicked);
 
 		gameSimulation.stopGameLoop();
 	}

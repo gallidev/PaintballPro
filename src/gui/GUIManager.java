@@ -44,7 +44,7 @@ public class GUIManager {
 	private String ipAddress = "";
 	private Client c;
 	// GUI
-	private Menu currentScene = Menu.MainMenu;
+	private Menu currentScene = Menu.MAIN_MENU;
 	private ObservableList<GameLobbyRow> lobbyData = FXCollections.observableArrayList();
 	private boolean lobbyTimerStarted = false;
 	private int lobbyTimeLeft = 10;
@@ -79,32 +79,32 @@ public class GUIManager {
 		if (!menu.equals(currentScene)) {
 			currentScene = menu;
 			switch (menu) {
-				case MainMenu:
+				case MAIN_MENU:
 					if (renderer != null) {
 						renderer.destroy();
 						renderer = null;
 					}
 					s.setScene(MainMenu.getScene(this));
 					break;
-				case NicknameServerConnection:
+				case NICKNAME_SERVER_CONNECTION:
 					s.setScene(NicknameServerSelectMenu.getScene(this));
 					break;
-				case Settings:
+				case SETTINGS:
 					s.setScene(SettingsMenu.getScene(this));
 					break;
-				case MultiplayerGameType:
+				case MULTIPLAYER_GAME_TYPE:
 					if (c != null && c.getReceiver() != null)
 						c.getReceiver().resetGame();
 //					if (renderer != null) {
 //						renderer.destroy();
 //						renderer = null;
 //					}
-					s.setScene(GameTypeMenu.getScene(this, GameLocation.MultiplayerServer));
+					s.setScene(GameTypeMenu.getScene(this, GameLocation.MULTIPLAYER));
 					break;
-				case SingleplayerGameType:
-					s.setScene(GameTypeMenu.getScene(this, GameLocation.SingleplayerLocal));
+				case SINGLEPLAYER_GAME_TYPE:
+					s.setScene(GameTypeMenu.getScene(this, GameLocation.SINGLEPLAYER));
 					break;
-				case Lobby:
+				case LOBBY:
 					lobbyTimerStarted = false;
 					if (o[0] instanceof String) {
 						if (o[0].equals("CTF")) {
@@ -117,34 +117,34 @@ public class GUIManager {
 					}
 					s.setScene(GameLobbyMenu.getScene(this, lobbyData));
 					break;
-				case EliminationSingle:
+				case TEAM_MATCH_SINGLEPLAYER:
 					audio.startMusic(audio.music.getRandomTrack());
 					renderer = new Renderer("elimination", this);
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
-				case EliminationMulti:
+				case TEAM_MATCH_MULTIPLAYER:
 					audio.startMusic(audio.music.getRandomTrack());
 					renderer = new Renderer("elimination", c.getReceiver(), this);
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
-				case CTFSingle:
+				case CAPTURE_THE_FLAG_SINGLEPLAYER:
 					renderer = new Renderer("ctf", this);
 					audio.startMusic(audio.music.getRandomTrack());
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
-				case CTFMulti:
+				case CAPTURE_THE_FLAG_MULTIPLAYER:
 					audio.startMusic(audio.music.getRandomTrack());
 					renderer = new Renderer("ctf", c.getReceiver(), this);
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
-				case EndGame:
+				case END_GAME:
 					s.setScene(EndGameMenu.getScene(this, (String) o[0], (TeamEnum) o[1]));
 					if (renderer != null) {
 						renderer.destroy();
 						renderer = null;
 					}
 					break;
-				case Help:
+				case HELP:
 					s.setScene(HelpMenu.getScene(this));
 					break;
 				default:

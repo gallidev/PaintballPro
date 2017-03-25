@@ -3,7 +3,7 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import networking.discoveryNew.DiscoveryServerAnnouncer;
+import networking.discoveryNew.DiscoveryServerListener;
 import networking.discoveryNew.IPAddress;
 import networking.server.Server;
 
@@ -42,7 +42,7 @@ public class GameServer extends Application {
 		stage.show();
 		(new Thread(() -> {
 			int portNo = 25566;
-			DiscoveryServerAnnouncer discovery = new DiscoveryServerAnnouncer();
+			DiscoveryServerListener discovery = new DiscoveryServerListener();
 			discovery.start();
 			server = new Server(portNo, IPAddress.getLAN(), gui, 0);
 			server.start();

@@ -1,7 +1,5 @@
 package players;
 
-import java.util.ArrayList;
-
 import ai.BehaviourManager;
 import ai.HashMapGen;
 import enums.GameMode;
@@ -10,6 +8,8 @@ import logic.server.Team;
 import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
 
 public class AIPlayer extends EssentialPlayer{
 
@@ -89,7 +89,7 @@ public class AIPlayer extends EssentialPlayer{
 	 */
 	public void updateScore(){
 
-		if (gameMode == GameMode.ELIMINATION)
+		if (gameMode == GameMode.TEAM_MATCH)
 			oppTeam.incrementScore();
 
 		scoreChanged = true;

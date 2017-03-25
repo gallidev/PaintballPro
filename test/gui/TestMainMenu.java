@@ -37,7 +37,7 @@ public class TestMainMenu {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Single Player", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu == Menu.SingleplayerGameType);
+        assertTrue(m.currentMenu == Menu.SINGLEPLAYER_GAME_TYPE);
     }
 
     /**
@@ -51,7 +51,7 @@ public class TestMainMenu {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Multiplayer", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu == Menu.NicknameServerConnection);
+        assertTrue(m.currentMenu == Menu.NICKNAME_SERVER_CONNECTION);
     }
 
     /**
@@ -65,7 +65,7 @@ public class TestMainMenu {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Settings", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu == Menu.Settings);
+        assertTrue(m.currentMenu == Menu.SETTINGS);
     }
 
     /**
@@ -79,7 +79,7 @@ public class TestMainMenu {
 
         (GUIManagerTestHelper.findButtonByTextInParent("Help", mainMenu.getRoot())).fire();
 
-        assertTrue(m.currentMenu == Menu.Help);
+        assertTrue(m.currentMenu == Menu.HELP);
     }
 
 }

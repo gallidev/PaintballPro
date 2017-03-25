@@ -26,10 +26,10 @@ public class TestEndGameMenu {
 
         GUIManagerTestHelper m = new GUIManagerTestHelper();
         Scene s = EndGameMenu.getScene(m, "1,0", TeamEnum.BLUE);
-        m.currentMenu = Menu.EndGame;
+        m.currentMenu = Menu.END_GAME;
         GUIManagerTestHelper.findButtonByTextInParent("Continue", s.getRoot()).fire();
         JavaFXTestHelper.waitForPlatform();
-        assertTrue(m.currentMenu == Menu.SingleplayerGameType);
+        assertTrue(m.currentMenu == Menu.SINGLEPLAYER_GAME_TYPE);
     }
 
 }

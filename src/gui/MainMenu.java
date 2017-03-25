@@ -1,9 +1,6 @@
 package gui;
 
 import enums.Menu;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -31,10 +28,10 @@ public class MainMenu {
 		iv.setFitWidth(400);
 
 		// Create a set of button options, with each button's title and event handler
-		MenuOption[] set = {new MenuOption("Single Player", true, (event) -> guiManager.transitionTo(Menu.SingleplayerGameType)),
-				new MenuOption("Multiplayer", true, (event) -> guiManager.transitionTo(Menu.NicknameServerConnection)),
-				new MenuOption("Settings", false, (event) -> guiManager.transitionTo(Menu.Settings)),
-				new MenuOption("Help", false, (event) -> guiManager.transitionTo(Menu.Help))};
+		MenuOption[] set = {new MenuOption("Single Player", true, (event) -> guiManager.transitionTo(Menu.SINGLEPLAYER_GAME_TYPE)),
+				new MenuOption("Multiplayer", true, (event) -> guiManager.transitionTo(Menu.NICKNAME_SERVER_CONNECTION)),
+				new MenuOption("Settings", false, (event) -> guiManager.transitionTo(Menu.SETTINGS)),
+				new MenuOption("Help", false, (event) -> guiManager.transitionTo(Menu.HELP))};
 
 		// Turn the collection of button options into a GridPane to be displayed
 		GridPane grid = MenuOptionSet.optionSetToGridPane(set);

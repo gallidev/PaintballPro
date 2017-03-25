@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import networking.discoveryNew.DiscoveryClientListener;
+import networking.discoveryNew.DiscoveryClientAnnouncer;
 
 /**
  * Test class to test Network Discovery.
@@ -16,11 +16,11 @@ import networking.discoveryNew.DiscoveryClientListener;
  */
 public class TestNetworkDiscovery {
 
-	DiscoveryClientListener client;
+	DiscoveryClientAnnouncer client;
 	
 	@Before
 	public void setUp() throws Exception {
-		client = new DiscoveryClientListener();
+		client = new DiscoveryClientAnnouncer();
 	}
 
 	@After
