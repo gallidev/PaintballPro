@@ -2,11 +2,13 @@ package gui;
 
 import helpers.GUIManagerTestHelper;
 import helpers.JavaFXTestHelper;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,12 @@ public class TestSettingsMenu {
 	public void setUp() throws Exception {
 		JavaFXTestHelper.setupApplication();
 		JavaFXTestHelper.waitForPlatform();
-		scene = SettingsMenu.getScene(new GUIManager());
+		GUIManager guiManager = new GUIManager();
+		Platform.runLater(() -> {
+			guiManager.setStage(new Stage());
+		});
+		JavaFXTestHelper.waitForPlatform();
+		scene = SettingsMenu.getScene(guiManager);
 	}
 
 	/**

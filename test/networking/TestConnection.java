@@ -78,7 +78,7 @@ public class TestConnection {
 		Thread.sleep(500);
 		Platform.runLater(() -> {
 			try {
-				((TextField)guiManager.getStage().getScene().lookup("#UsernameTextField")).setText("Test1");
+				((TextField)guiManager.getStage().getScene().lookup("#UsernameTextField")).setText("TestConnection1");
 			} catch (RuntimeException e) {
 				fail(e.getMessage());
 			}
@@ -97,7 +97,7 @@ public class TestConnection {
 		Thread.sleep(1000);
 		Platform.runLater(() -> {
 			try {
-				((TextField)guiManager2.getStage().getScene().lookup("#UsernameTextField")).setText("Test2");
+				((TextField)guiManager2.getStage().getScene().lookup("#UsernameTextField")).setText("TestConnection2");
 			} catch (RuntimeException e) {
 				fail(e.getMessage());
 			}
@@ -140,7 +140,7 @@ public class TestConnection {
 			}
 		});
 		JavaFXTestHelper.waitForPlatform();
-		Thread.sleep(8000);
+		Thread.sleep(30000);
 		Platform.runLater(() -> {
 			guiManager2.transitionTo(Menu.MainMenu);
 		});
