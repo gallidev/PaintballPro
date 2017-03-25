@@ -44,6 +44,8 @@ public class ServerInputReceiver {
 	 *
 	 * @param id
 	 *            The id of the player to be updated.
+	 * @param counterFrame
+	 *            the step in which the packet has been sent
 	 * @param up
 	 *            Whether or not a player has moved up.
 	 * @param down

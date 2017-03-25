@@ -24,18 +24,21 @@ public class ClientInputSender {
 	// for testing purposes
 	private static final boolean debug = false;
 
-	// sending stats
+	// sending stats delay
 	public static final long DELAY_MILLISECONDS = 25;
 
+	//amount of packets sent per second
 	private static double fps = 1000/DELAY_MILLISECONDS;
 
+	//integer that represent a step for synchronization Client-Server
 	public static int step =  (int) ((Renderer.TARGET_FPS / fps) * 10);
 
-	public static int counterFrame = 0;
+	// counter of the step being sent
+	public static long counterFrame = 0;
 
 	private InputHandler handler;
 	private ClientPlayer player;
-	private int times;
+	private int actualTimes;
 	private UDPClient udpClient;
 
 	/**
@@ -64,7 +67,7 @@ public class ClientInputSender {
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		Runnable sender = new Runnable() {
 			public void run() {
-				times++;
+				actualTimes++;
 				sendServer();
 
 				if (!udpClient.isActive())
@@ -102,28 +105,10 @@ public class ClientInputSender {
 	 * position changes) through the protocol.
 	 */
 	private void sendServer() {
-		// Protocol: "0:id:" + Up/Down/Left/Right/Shooting + "Angle:<angle>",
+		// Protocol: "0:id:counterFrame:" + Up/Down/Left/Right/Shooting + ":Angle:<angle>",
 		// depending on the player's action
 
 		counterFrame += step;
-
-//		if(counterFrame < 255){
-//			counterFrame += step;
-//		}
-//		else {
-//			counterFrame = step;
-////			ArrayList<GameStateClient> states = new ArrayList<>();
-////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-5));
-////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-4));
-////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-3));
-////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-2));
-////			states.add(player.getBufferReconciliation().get(player.getBufferReconciliation().size()-1));
-////
-////			player.getBufferReconciliation().clear();
-////
-////			player.setBufferReconciliation(states);
-//		}
-
 
 		player.setUp(handler.isUp());
 		player.setDown(handler.isDown());

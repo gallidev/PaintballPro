@@ -2,7 +2,7 @@ package physics;
 
 import enums.TeamEnum;
 import gui.GUIManager;
-import integrationServer.CollisionsHandlerListener;
+import integration.server.GameUpdateListener;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -38,7 +38,7 @@ public class CollisionsHandler
 	private Team red;
 	private Team blue;
 
-	private CollisionsHandlerListener listener;
+	private GameUpdateListener listener;
 
 	public CollisionsHandler(Map map)
 	{
@@ -340,7 +340,7 @@ public class CollisionsHandler
 		}
 	}
 
-	public void setListener(CollisionsHandlerListener listener)
+	public void setListener(GameUpdateListener listener)
 	{
 		this.listener = listener;
 	}

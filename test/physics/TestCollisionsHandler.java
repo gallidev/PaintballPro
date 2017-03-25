@@ -2,8 +2,8 @@ package physics;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
+import integration.server.GameUpdateListener;
 import integration.server.ServerGameSimulation;
-import integrationServer.CollisionsHandlerListener;
 import logic.GameMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
@@ -75,7 +75,7 @@ public class TestCollisionsHandler {
 
 		collisionsHandler.setPlayers(players);
 
-		CollisionsHandlerListener listener = new CollisionsHandlerListener(){
+		GameUpdateListener listener = new GameUpdateListener(){
 
 			@Override
 			public void onFlagCaptured(int player) {

@@ -2,7 +2,7 @@ package players;
 
 import enums.GameMode;
 import enums.TeamEnum;
-import integrationServer.CollisionsHandlerListener;
+import integration.server.GameUpdateListener;
 import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
@@ -64,7 +64,7 @@ public abstract class EssentialPlayer extends ImageView {
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 	private boolean shieldPopped = false;
 
-	private CollisionsHandlerListener listener;
+	private GameUpdateListener listener;
 
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player,
@@ -515,7 +515,7 @@ public abstract class EssentialPlayer extends ImageView {
 		return speedActive;
 	}
 
-	public void setCollisionsHandlerListener(CollisionsHandlerListener listener){
+	public void setCollisionsHandlerListener(GameUpdateListener listener){
 		this.listener = listener;
 	}
 

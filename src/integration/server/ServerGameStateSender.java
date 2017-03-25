@@ -1,7 +1,6 @@
 package integration.server;
 
 import enums.TeamEnum;
-import integrationServer.CollisionsHandlerListener;
 import logic.server.Team;
 import networking.game.UDPServer;
 import physics.PowerupType;
@@ -15,13 +14,13 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sends user inputs(client-sided) to the server.
+ * Sends the Game State packets to the relevant clients and the updates
  *
  * @author Alexandra Paduraru
  * @author Filippo Galli
  *
  */
-public class ServerGameStateSender implements CollisionsHandlerListener {
+public class ServerGameStateSender implements GameUpdateListener {
 
 	/* Dealing with sending the information */
 	private static final long DELAY_MILLISECONDS = 25;
@@ -61,9 +60,6 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 		Runnable sender = () -> {
 			sendClient();
-			// sendBullets();
-
-			// sendEliminatedPlayers();
 
 			if (gameLoop.getGame().isGameFinished()) {
 
@@ -79,9 +75,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 
 		scheduler.scheduleAtFixedRate(sender, 0, DELAY_MILLISECONDS, TimeUnit.MILLISECONDS);
 
-		// for testing purposes:
-
-
+		//Sending the remaining time every second
 		Runnable timeSender = new Runnable() { public void run() {
 			sendRemainingTime();
 		} };
@@ -111,8 +105,18 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	}
 
 	/**
-	 * Send the active bullets of each player to the client, according to the
-	 * protocol.
+	 * A player has shot and generate a bullet
+	 *
+	 * @param playerId
+	 *            The id of the player that has shot.
+	 * @param bulletId
+	 *            The id of the bullet that has been shot.
+	 * @param originX
+	 *            The origin coordinate x of the bullet
+	 * @param originY
+	 *            The origin coordinate y of the bullet
+	 * @param angle
+	 *            The angle of the bullet is moving towards
 	 */
 	public void onShotBullet(int playerId, int bulletId, double originX, double originY, double angle) {
 		// Protocol: "4:<id>:<bulletX>:<bulletY>:<angle>:...
@@ -152,7 +156,7 @@ public class ServerGameStateSender implements CollisionsHandlerListener {
 	 * has to go through all players in the current game.
 	 */
 	private void sendClient() {
-		// Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>:<eliminated>"
+		// Protocol: "1:<id>:<counterFrame>:<x>:<y>:<angle>:<visiblity>:<eliminated>"
 
 		for (EssentialPlayer p : players) {
 

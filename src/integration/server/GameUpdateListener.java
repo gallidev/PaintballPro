@@ -1,8 +1,16 @@
-package integrationServer;
+package integration.server;
 
 import physics.PowerupType;
 
-public interface CollisionsHandlerListener
+/**
+ * Listener class to game updates, in order to make the ServerGameStateSender Event based and avoiding continuously sending packets
+ *
+ * @author Filippo Galli
+ * @author Artur Komoter
+ *
+ */
+
+public interface GameUpdateListener
 {
 	void onFlagCaptured(int player);
 	void onFlagDropped(int player);

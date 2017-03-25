@@ -1,6 +1,5 @@
 package physics;
 
-import integrationServer.CollisionsHandlerListener;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -10,13 +9,15 @@ import rendering.ImageFactory;
 import java.util.ArrayList;
 import java.util.Random;
 
+import integration.server.GameUpdateListener;
+
 public class Powerup extends ImageView
 {
 	private static final int duration = 15000; //Respawn 15 seconds after being taken
 	private PowerupType type;
 	private ArrayList<Powerup> alternatePowerups = new ArrayList<>();
 	private GameObject[] locations;
-	private CollisionsHandlerListener listener;
+	private GameUpdateListener listener;
 	private int index;
 
 	public Powerup(PowerupType type, GameObject[] locations)
@@ -32,7 +33,7 @@ public class Powerup extends ImageView
 		return type;
 	}
 
-	public void setListener(CollisionsHandlerListener listener)
+	public void setListener(GameUpdateListener listener)
 	{
 		this.listener = listener;
 	}
