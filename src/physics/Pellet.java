@@ -6,7 +6,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 /**
- * A bullet is represented as a circle, that travels along a given direction
+ * A pellet is represented as a circle, that travels along a given direction
  */
 
 public class Pellet extends Circle
@@ -22,11 +22,11 @@ public class Pellet extends Circle
 	private TeamEnum colour;
 
 	/**
-	 * Create a bullet at the given global coordinates with the given global angle
+	 * Create a pellet at the given global coordinates with the given global angle
 	 *
-	 * @param x     The x-coordinate of the bullet
-	 * @param y     The y-coordinate of the bullet
-	 * @param angle The angle at which the bullet will travel
+	 * @param x     The x-coordinate of the pellet
+	 * @param y     The y-coordinate of the pellet
+	 * @param angle The angle at which the pellet will travel
 	 */
 
 	public Pellet(int id, double x, double y, double angle, TeamEnum team, double gameSpeed) {
@@ -43,12 +43,12 @@ public class Pellet extends Circle
 		setFill(team == TeamEnum.RED ? Color.RED : Color.BLUE);
 		setCache(true);
 
-		this.speed = this.speed * gameSpeed;
-		this.colour = team;
+		speed *= gameSpeed;
+		colour = team;
 	}
 
 	/**
-	 * Updates the position of the bullet
+	 * Updates the position of the pellet
 	 */
 	public void moveInDirection()
 	{
@@ -70,12 +70,12 @@ public class Pellet extends Circle
 		this.active = b;
 	}
 
-	public void disable()
+	void disable()
 	{
 		active = false;
 	}
 
-	public void disable(Rectangle collision)
+	void disable(Rectangle collision)
 	{
 		active = false;
 		this.collision = collision;
@@ -90,7 +90,7 @@ public class Pellet extends Circle
 		return colour;
 	}
 
-	public int getBulletId(){
+	public int getPelletId(){
 		return this.id;
 	}
 }

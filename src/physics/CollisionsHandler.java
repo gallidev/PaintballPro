@@ -276,7 +276,7 @@ public class CollisionsHandler
 					//System.out.println("Been shot ");
 					pellet.disable();
 					if(listener != null){
-						listener.onBulletKills(enemy.getPlayerId(), pellet.getBulletId());
+						listener.onBulletKills(enemy.getPlayerId(), pellet.getPelletId());
 					}
 					//check if the player has the shield power up
 					if(p.getShieldActive()){

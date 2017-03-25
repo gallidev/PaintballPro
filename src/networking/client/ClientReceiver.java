@@ -260,11 +260,11 @@ public class ClientReceiver extends Thread {
 		powerups[1].resetPosition(powerUpIndex2);
 
 		if (gameMode == 1) {
-			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), cPlayer, powerups, guiManager.getAudioManager());
+			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), powerups, guiManager.getAudioManager());
 		} else {
 			flag.setLocations(map.getFlagLocations());
 			flag.resetPosition(flagIndex);
-			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), cPlayer, flag, powerups, guiManager.getAudioManager());
+			clientGameStateReceiver = new ClientGameStateReceiver(getAllPlayers(), flag, powerups, guiManager.getAudioManager());
 		}
 
 		udpClient.setGameStateReceiver(clientGameStateReceiver);
