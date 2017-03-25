@@ -12,6 +12,7 @@ package rendering;
  *     <li><code>false</code> - right to left/bottom to top</li>
  * </ul>
  * and starts at (<i>x</i>,<i>y</i>).<br>
+ * @author Artur Komoter
  */
 public class Wall
 {

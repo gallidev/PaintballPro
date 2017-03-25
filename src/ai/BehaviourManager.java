@@ -79,8 +79,8 @@ public class BehaviourManager{
 
     public boolean canSee(double x, double y){
         Line line = new Line((ai.getLayoutX() + PLAYER_HEAD_X), (ai.getLayoutY() + PLAYER_HEAD_Y), x, y);
-        ArrayList<Rectangle> propsWalls = ai.getMap().getRecProps();
-        propsWalls.addAll(ai.getMap().getRecWalls());
+        ArrayList<Rectangle> propsWalls = ai.getMap().getPropCollisionBounds();
+        propsWalls.addAll(ai.getMap().getWallCollisionBounds());
         for(Rectangle propWall : propsWalls){
             if(Shape.intersect(line, propWall).getBoundsInLocal().isEmpty() == false) {
                 return false;

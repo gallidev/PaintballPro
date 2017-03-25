@@ -14,17 +14,15 @@ import static org.junit.Assert.*;
 public class TestMap
 {
 	private Map singleMap, serverMap;
-	private GUIManager guiManager;
 	private Renderer renderer;
 
 	@Before
 	public void setUp()
 	{
 		JavaFXTestHelper.setupApplication();
-		guiManager = new GUIManager();
-		renderer = new Renderer("elimination", guiManager);
+		renderer = new Renderer("desert", new GUIManager());
 		singleMap = renderer.getMap();
-		serverMap = Map.loadRaw("ctf");
+		serverMap = Map.loadRaw("castle");
 	}
 
 	@After
@@ -37,14 +35,14 @@ public class TestMap
 	@Test
 	public void getRecSpawn()
 	{
-		Rectangle redSpawn = singleMap.getRecSpawn(TeamEnum.RED);
-		Rectangle blueSpawn = singleMap.getRecSpawn(TeamEnum.BLUE);
+		Rectangle redSpawn = singleMap.getSpawnCollisionBound(TeamEnum.RED);
+		Rectangle blueSpawn = singleMap.getSpawnCollisionBound(TeamEnum.BLUE);
 
 		assertNotNull(redSpawn);
 		assertNotNull(blueSpawn);
 
-		redSpawn = serverMap.getRecSpawn(TeamEnum.RED);
-		blueSpawn = serverMap.getRecSpawn(TeamEnum.BLUE);
+		redSpawn = serverMap.getSpawnCollisionBound(TeamEnum.RED);
+		blueSpawn = serverMap.getSpawnCollisionBound(TeamEnum.BLUE);
 
 		assertNotNull(redSpawn);
 		assertNotNull(blueSpawn);

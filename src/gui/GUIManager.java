@@ -95,10 +95,6 @@ public class GUIManager {
 				case MULTIPLAYER_GAME_TYPE:
 					if (c != null && c.getReceiver() != null)
 						c.getReceiver().resetGame();
-//					if (renderer != null) {
-//						renderer.destroy();
-//						renderer = null;
-//					}
 					s.setScene(GameTypeMenu.getScene(this, GameLocation.MULTIPLAYER));
 					break;
 				case SINGLEPLAYER_GAME_TYPE:
@@ -119,22 +115,22 @@ public class GUIManager {
 					break;
 				case TEAM_MATCH_SINGLEPLAYER:
 					audio.startMusic(audio.music.getRandomTrack());
-					renderer = new Renderer("elimination", this);
+					renderer = new Renderer("desert", this);
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
 				case TEAM_MATCH_MULTIPLAYER:
 					audio.startMusic(audio.music.getRandomTrack());
-					renderer = new Renderer("elimination", c.getReceiver(), this);
+					renderer = new Renderer("desert", c.getReceiver(), this);
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
 				case CAPTURE_THE_FLAG_SINGLEPLAYER:
-					renderer = new Renderer("ctf", this);
+					renderer = new Renderer("castle", this);
 					audio.startMusic(audio.music.getRandomTrack());
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
 				case CAPTURE_THE_FLAG_MULTIPLAYER:
 					audio.startMusic(audio.music.getRandomTrack());
-					renderer = new Renderer("ctf", c.getReceiver(), this);
+					renderer = new Renderer("castle", c.getReceiver(), this);
 					Platform.runLater(() -> s.setScene(renderer));
 					break;
 				case END_GAME:

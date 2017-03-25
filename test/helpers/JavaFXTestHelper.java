@@ -25,7 +25,7 @@ public class JavaFXTestHelper {
 
     public static void waitForPlatform() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
-        Platform.runLater(() -> { latch.countDown(); });
+        Platform.runLater(latch::countDown);
         latch.await();
     }
 

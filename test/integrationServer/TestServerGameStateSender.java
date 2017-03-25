@@ -77,7 +77,7 @@ public class TestServerGameStateSender {
 
 		JavaFXTestHelper.setupApplication();
 		Map map;
-		map = Map.loadRaw("ctf");
+		map = Map.loadRaw("castle");
 
 		CollisionsHandler ch;
 		ch = new CollisionsHandler(map);

@@ -49,7 +49,7 @@ public class TestGUIManager {
 			guiManager.transitionTo(Menu.MAIN_MENU);
 			guiManager.transitionTo(Menu.CAPTURE_THE_FLAG_SINGLEPLAYER);
 			guiManager.transitionTo(Menu.MAIN_MENU);
-			guiManager.setRenderer(new Renderer("elimination", guiManager));
+			guiManager.setRenderer(new Renderer("desert", guiManager));
 			guiManager.transitionTo(Menu.END_GAME, "0,0", TeamEnum.BLUE);
 			guiManager.transitionTo(Menu.MAIN_MENU);
 			try {

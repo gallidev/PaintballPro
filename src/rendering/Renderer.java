@@ -1,5 +1,6 @@
 package rendering;
 
+import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
 import integration.client.ClientInputSender;
@@ -27,21 +28,22 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import static gui.GUIManager.renderer;
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 /**
- * A scene of a game instance. All assets are drawn on a <i>view</i> pane. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.
- *
+ * A class that extends <code>Scene</code> to implement the displaying of a game instance. All assets are drawn on a <code>Pane</code>. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.<br><br>
+ * Two constructors exist, depending on whether a singleplayer or multiplayer game is launched.
  * @author Artur Komoter
  */
 public class Renderer extends Scene
 {
 	public static final double TARGET_FPS = 60.0;
 
-	static Pane view = new Pane();
+	static Pane VIEW = new Pane();
 
-	ClientPlayer cPlayer;
+	ClientPlayer onlinePlayer;
 	OfflinePlayer player;
 
 	//attributes for multiplayer
@@ -55,6 +57,8 @@ public class Renderer extends Scene
 	private int paintIndex;
 	private AnimationTimer timer;
 	private GUIManager guiManager;
+
+	//are we playing singleplayer?
 	private boolean singlePlayer = false;
 
 
@@ -66,7 +70,7 @@ public class Renderer extends Scene
 	 */
 	public Renderer(String mapName, GUIManager guiManager)
 	{
-		super(view, guiManager.width, guiManager.height);
+		super(VIEW, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 		singlePlayer = true;
@@ -74,14 +78,14 @@ public class Renderer extends Scene
 		if(map.gameMode == enums.GameMode.CAPTURE_THE_FLAG)
 		{
 			map.flag = new Flag(map.flagLocations);
-			view.getChildren().add(map.flag);
+			VIEW.getChildren().add(map.flag);
 		}
 
 		map.powerups = new Powerup[]{new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
 		};
 		map.powerups[0].addAlternatePowerup(map.powerups[1]);
 		map.powerups[1].addAlternatePowerup(map.powerups[0]);
-		view.getChildren().addAll(map.powerups);
+		VIEW.getChildren().addAll(map.powerups);
 
 		CollisionsHandler collisionsHandler = new CollisionsHandler(map);
 		collisionsHandler.isLocal = true;
@@ -102,14 +106,14 @@ public class Renderer extends Scene
 		players.addAll(player.getMyTeam().getMembers());
 		players.addAll(player.getOppTeam().getMembers());
 
-		view.getChildren().addAll(players);
+		VIEW.getChildren().addAll(players);
 		collisionsHandler.setPlayers(players);
 
 		hud = new HeadUpDisplay(guiManager, map.gameMode, player.getTeam());
-		view.getChildren().add(hud);
+		VIEW.getChildren().add(hud);
 		hud.toFront();
 
-		GameMode gameLoop = initGame(player);
+		GameMode gameLoop = initGame();
 		gameLoop.start();
 
 		timer = new AnimationTimer()
@@ -123,24 +127,24 @@ public class Renderer extends Scene
 					{
 						if(pellet.isActive())
 						{
-							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(view.getChildren().size() - 2, pellet);
+							if(!VIEW.getChildren().contains(pellet))
+								VIEW.getChildren().add(VIEW.getChildren().size() - 2, pellet);
 						}
-						else if(view.getChildren().contains(pellet))
+						else if(VIEW.getChildren().contains(pellet))
 						{
 							if(pellet.getCollision() != null)
 								generateSpray(pellet);
-							view.getChildren().remove(pellet);
+							VIEW.getChildren().remove(pellet);
 						}
 					}
 					player.tick();
 				}
 				hud.tick(gameLoop.getRemainingTime());
-				if(gameLoop.getRemainingTime() == 0)
-					hud.endGame(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
 
-				hud.setScore(TeamEnum.RED, gameLoop.getRedTeam().getScore());
-				hud.setScore(TeamEnum.BLUE, gameLoop.getBlueTeam().getScore());
+				if(gameLoop.getRemainingTime() == 0)
+					guiManager.transitionTo(Menu.END_GAME, gameLoop.getRedTeam().getScore() + "," + gameLoop.getBlueTeam().getScore(), player.getTeam());
+
+				hud.setScore(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
 				updateView();
 			}
 		};
@@ -157,17 +161,17 @@ public class Renderer extends Scene
 	 */
 	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
 	{
-		super(view, guiManager.width, guiManager.height);
+		super(VIEW, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 
-		cPlayer = receiver.getClientPlayer();
+		onlinePlayer = receiver.getClientPlayer();
 		ArrayList<EssentialPlayer> players = receiver.getAllPlayers();
-		view.getChildren().add(cPlayer);
-		view.getChildren().addAll(receiver.getMyTeam());
-		receiver.getMyTeam().forEach(player -> view.getChildren().add(player.getNameTag()));
-		view.getChildren().addAll(receiver.getEnemies());
-		receiver.getEnemies().forEach(player -> view.getChildren().add(player.getNameTag()));
+		VIEW.getChildren().add(onlinePlayer);
+		VIEW.getChildren().addAll(receiver.getMyTeam());
+		receiver.getMyTeam().forEach(player -> VIEW.getChildren().add(player.getNameTag()));
+		VIEW.getChildren().addAll(receiver.getEnemies());
+		receiver.getEnemies().forEach(player -> VIEW.getChildren().add(player.getNameTag()));
 
 		InputHandler inputHandler = new InputHandler();
 		KeyPressListener keyPressListener = new KeyPressListener(inputHandler);
@@ -180,19 +184,19 @@ public class Renderer extends Scene
 		setOnMousePressed(mouseListener);
 		setOnMouseReleased(mouseListener);
 
-		cPlayer.setInputHandler(inputHandler);
+		onlinePlayer.setInputHandler(inputHandler);
 
 		if(map.getGameMode() == enums.GameMode.CAPTURE_THE_FLAG)
-			view.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
+			VIEW.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
 
-		view.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
+		VIEW.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
 
-		hud = new HeadUpDisplay(guiManager, map.gameMode, cPlayer.getTeam());
-		view.getChildren().add(hud);
+		hud = new HeadUpDisplay(guiManager, map.gameMode, onlinePlayer.getTeam());
+		VIEW.getChildren().add(hud);
 		hud.toFront();
 
 		receiver.getUdpClient().setActive(true);
-		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, cPlayer);
+		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, onlinePlayer);
 		inputSender.startSending();
 
 		timer = new AnimationTimer()
@@ -206,29 +210,42 @@ public class Renderer extends Scene
 					{
 						if(pellet.isActive())
 						{
-							if(!view.getChildren().contains(pellet))
-								view.getChildren().add(view.getChildren().size() - 2, pellet);
+							if(!VIEW.getChildren().contains(pellet))
+								VIEW.getChildren().add(VIEW.getChildren().size() - 2, pellet);
 						}
-						else if(view.getChildren().contains(pellet))
+						else if(VIEW.getChildren().contains(pellet))
 						{
 							if(pellet.getCollision() != null)
 								generateSpray(pellet);
-							view.getChildren().remove(pellet);
+							VIEW.getChildren().remove(pellet);
 						}
 					}
 					player.tick();
 				}
 
 				hud.tick(timeRemaining);
-				hud.setScore(TeamEnum.RED, redScore);
-				hud.setScore(TeamEnum.BLUE, blueScore);
+				hud.setScore(redScore, blueScore);
 				updateView();
 			}
 		};
 		timer.start();
 	}
 
-	private GameMode initGame(OfflinePlayer player)
+	/**
+	 * End the game by transitioning to the end game screen.
+	 * @param red Final score of the red team
+	 * @param blue Final score of the blue team
+	 */
+	public void endGame(String red, String blue)
+	{
+		guiManager.transitionTo(Menu.END_GAME, red + "," + blue, (renderer.onlinePlayer == null ? renderer.player.getTeam() : renderer.onlinePlayer.getTeam()));
+	}
+
+	/**
+	 * Determine which game logic to use before starting the game loop.
+	 * @return Game logic to be used for the game loop
+	 */
+	private GameMode initGame()
 	{
 		Team red = player.getMyTeam(), blue = player.getOppTeam();
 		switch(map.getGameMode())
@@ -248,9 +265,9 @@ public class Renderer extends Scene
 	public void togglePauseMenu()
 	{
 		if(!pauseMenu.opened)
-			view.getChildren().add(pauseMenu);
+			VIEW.getChildren().add(pauseMenu);
 		else
-			view.getChildren().remove(pauseMenu);
+			VIEW.getChildren().remove(pauseMenu);
 		pauseMenu.opened = !pauseMenu.opened;
 	}
 
@@ -261,13 +278,13 @@ public class Renderer extends Scene
 	{
 		if(!settingsMenu.opened)
 		{
-			view.getChildren().remove(pauseMenu);
-			view.getChildren().add(settingsMenu);
+			VIEW.getChildren().remove(pauseMenu);
+			VIEW.getChildren().add(settingsMenu);
 		}
 		else
 		{
-			view.getChildren().remove(settingsMenu);
-			view.getChildren().add(pauseMenu);
+			VIEW.getChildren().remove(settingsMenu);
+			VIEW.getChildren().add(pauseMenu);
 		}
 		settingsMenu.opened = !settingsMenu.opened;
 	}
@@ -292,25 +309,41 @@ public class Renderer extends Scene
 		return settingsMenu.opened;
 	}
 
+	/**
+	 * Get the current map that is loaded.
+	 * @return Map that the game instance is using
+	 */
 	public Map getMap()
 	{
 		return map;
 	}
 
+	/**
+	 * Get the head up display that is displayed in-game.
+	 * @return A head up display object
+	 */
 	public HeadUpDisplay getHud()
 	{
 		return hud;
 	}
 
+	/**
+	 * Stop the <code>AnimationTimer</code> and reset all static attributes used by <code>Renderer</code> before killing the game renderer.<br><br>
+	 * <b>NOTE</b>: Has to be called <u>before</u> setting <code>Renderer</code> object to <code>null</code>!
+	 */
 	public void destroy()
 	{
 		timer.stop();
-		view = new Pane();
+		VIEW = new Pane();
 		PauseMenu.gridPane = new GridPane();
 		PauseSettingsMenu.gridPane = new GridPane();
-		HeadUpDisplay.view = new BorderPane();
+		HeadUpDisplay.VIEW = new BorderPane();
 	}
 
+	/**
+	 * Generate random paint spray pattern on a map asset.
+	 * @param pellet The <code>Pellet</code> that has collided with a map asset
+	 */
 	private void generateSpray(Pellet pellet)
 	{
 		WritableImage paint = new WritableImage(64, 64);
@@ -326,55 +359,73 @@ public class Renderer extends Scene
 		ImageView imageView = new ImageView(paint);
 		imageView.relocate(pellet.getCollision().getX(), pellet.getCollision().getY());
 		imageView.setCache(true);
-		view.getChildren().add(paintIndex, imageView);
+		VIEW.getChildren().add(paintIndex, imageView);
 	}
 
+	/**
+	 * Common code to initialise the <code>Renderer</code>.
+	 * @param mapName Name of the map file to load
+	 */
 	private void init(String mapName)
 	{
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
-		view.setStyle("-fx-background-color: black;");
-		view.getStylesheets().add("styles/menu.css");
-		view.setScaleX(guiManager.width / 1024);
-		view.setScaleY(guiManager.height / 576);
+		VIEW.setStyle("-fx-background-color: black;");
+		VIEW.getStylesheets().add("styles/menu.css");
+		VIEW.setScaleX(guiManager.width / 1024);
+		VIEW.setScaleY(guiManager.height / 576);
 		pauseMenu = new PauseMenu(guiManager);
 		settingsMenu = new PauseSettingsMenu(guiManager);
 		map = Map.load(mapName);
-		paintIndex = view.getChildren().size();
+		paintIndex = VIEW.getChildren().size();
 	}
 
+	/**
+	 * Update the camera view to be centered on the player.
+	 */
 	private void updateView()
 	{
-		double playerLayoutX = (singlePlayer ? player : cPlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : cPlayer).getLayoutY();
+		double playerLayoutX = (singlePlayer ? player : onlinePlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : onlinePlayer).getLayoutY();
 
-		double viewPositionX = (getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * view.getScaleX(),
-				viewPositionY = (getHeight() / 2 - playerLayoutY - PLAYER_HEAD_Y) * view.getScaleY(),
+		double viewPositionX = (getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * VIEW.getScaleX(),
+				viewPositionY = (getHeight() / 2 - playerLayoutY - PLAYER_HEAD_Y) * VIEW.getScaleY(),
 				subScenePositionX = (playerLayoutX + PLAYER_HEAD_X - (getWidth() / 2)),
 				subScenePositionY = (playerLayoutY + PLAYER_HEAD_Y - (getHeight() / 2));
 
-		view.relocate(viewPositionX, viewPositionY);
+		VIEW.relocate(viewPositionX, viewPositionY);
 		hud.relocate(subScenePositionX, subScenePositionY);
 
-		if(view.getChildren().contains(pauseMenu))
+		if(VIEW.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(subScenePositionX, subScenePositionY);
-		if(view.getChildren().contains(settingsMenu))
+		if(VIEW.getChildren().contains(settingsMenu))
 			settingsMenu.relocate(subScenePositionX, subScenePositionY);
 	}
 
-
+	/**
+	 * Set the score of the blue team.
+	 * @param blueScore New score of the blue team
+	 */
 	public void setBlueScore(int blueScore)
 	{
 		this.blueScore = blueScore;
 	}
 
+	/**
+	 * Set the score of the red team.
+	 * @param redScore New score of the red team
+	 */
 	public void setRedScore(int redScore)
 	{
 		this.redScore = redScore;
 	}
 
-	public void setTimeRemaining(int timeRemaining)
+	/**
+	 * Update the game timer.
+	 * @param time Game time remaining in seconds
+	 */
+	public void setTimeRemaining(int time)
 	{
-		this.timeRemaining = timeRemaining;
+		timeRemaining = time;
 	}
 
 }

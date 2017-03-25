@@ -28,10 +28,10 @@ public class TestPathHashMapGenerators {
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
 
-        Map elimMap = Map.loadRaw("elimination");
+        Map elimMap = Map.loadRaw("desert");
         elimPathGen = new HashMapGen(elimMap);
 
-        Map ctfMap = Map.loadRaw("ctf");
+        Map ctfMap = Map.loadRaw("castle");
         ctfPathGen = new HashMapGen(ctfMap);
 
     }

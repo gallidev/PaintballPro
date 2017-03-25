@@ -10,7 +10,6 @@ import players.ClientPlayer;
 import players.EssentialPlayer;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import static gui.GUIManager.renderer;
 
@@ -194,11 +193,12 @@ public class ClientGameStateReceiver {
 		EssentialPlayer p = getPlayerWithId(playerId);
 		Pellet b = getBulletWithId(p, bulletId);
 
-		Platform.runLater(() -> {
-			if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
-			b.setVisible(false);
-			b.setActive(false);
-		});
+		if(b != null)
+			Platform.runLater(() -> {
+				if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
+				b.setVisible(false);
+				b.setActive(false);
+			});
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class ClientGameStateReceiver {
 
 		Platform.runLater(() -> {
 			player.setHasFlag(true);
-			renderer.getHud().setFlagStatus(player.getTeam());
+			renderer.getHud().toggleFlagStatus(player.getTeam());
 			flag.setVisible(false);
 		});
 
@@ -226,7 +226,7 @@ public class ClientGameStateReceiver {
 		EssentialPlayer player = getPlayerWithId(id);
 		Platform.runLater(() -> {
 			player.setHasFlag(false);
-			renderer.getHud().setFlagStatus(player.getTeam());
+			renderer.getHud().toggleFlagStatus(player.getTeam());
 			flag.setVisible(true);
 			flag.relocate(player.getLayoutX(), player.getLayoutY());
 		});
@@ -245,7 +245,7 @@ public class ClientGameStateReceiver {
 			flag.setVisible(true);
 			flag.relocate(x, y);
 			player.setHasFlag(false);
-			renderer.getHud().setFlagStatus(player.getTeam());
+			renderer.getHud().toggleFlagStatus(player.getTeam());
 		});
 	}
 
@@ -262,7 +262,7 @@ public class ClientGameStateReceiver {
 				return p;
 			}
 		}
-		throw new NoSuchElementException("Player with id " + id + " could not be found!");
+		return null;
 	}
 
 	/**
@@ -276,7 +276,7 @@ public class ClientGameStateReceiver {
 			if (b.getPelletId() == id)
 				return b;
 		}
-		throw new NoSuchElementException("Pellet with id " + id + " could not be found!");
+		return null;
 	}
 
 	/**

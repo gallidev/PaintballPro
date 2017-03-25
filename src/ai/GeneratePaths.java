@@ -4,7 +4,6 @@ package ai;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import rendering.Map;
-import ai.Node;
 
 import java.io.FileWriter;
 
@@ -12,13 +11,13 @@ public class GeneratePaths extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Map map = Map.loadRaw("elimination") ;
+        Map map = Map.loadRaw("desert");
         Pathfinding pathfinder = new Pathfinding(map);
         Node[][] nodes = pathfinder.getNodeGrid();
         int x = nodes.length;
         int y = nodes[0].length;
 
-        String csvFile = "res/maps/" + "elimination" + "_paths.csv";
+        String csvFile = "res/maps/" + "desert" + "_paths.csv";
         FileWriter writer = new FileWriter(csvFile);
 
         //For every node, calculate a path to every other node

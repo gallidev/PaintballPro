@@ -38,7 +38,7 @@ public class TestTeam {
 		team = new Team(TeamEnum.RED);
 
 		JavaFXTestHelper.setupApplication();
-		map = Map.loadRaw("ctf");
+		map = Map.loadRaw("castle");
 		player = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.TEAM_MATCH, 30);
 	}

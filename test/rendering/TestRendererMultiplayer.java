@@ -38,7 +38,7 @@ public class TestRendererMultiplayer
 
 		ClientReceiver receiver = new ClientReceiver(0, null, null, guiManager, client, new TeamTable());
 		receiver.startGameAction("2:0:1:0:0:1:Red:Artur:2:Blue:Beth:");
-		renderer = new Renderer("ctf", receiver, guiManager);
+		renderer = new Renderer("castle", receiver, guiManager);
 	}
 
 	@After
@@ -55,10 +55,10 @@ public class TestRendererMultiplayer
 		assertNotNull(renderer.getMap());
 
 		assertNotNull(renderer.getHud());
-		assertTrue(Renderer.view.getChildren().contains(renderer.getHud()));
+		assertTrue(Renderer.VIEW.getChildren().contains(renderer.getHud()));
 
-		assertNotNull(renderer.cPlayer);
-		assertTrue(Renderer.view.getChildren().contains(renderer.cPlayer));
+		assertNotNull(renderer.onlinePlayer);
+		assertTrue(Renderer.VIEW.getChildren().contains(renderer.onlinePlayer));
 	}
 
 }

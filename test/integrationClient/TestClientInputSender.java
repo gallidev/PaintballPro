@@ -57,7 +57,7 @@ public class TestClientInputSender {
 
 		JavaFXTestHelper.setupApplication();
 		Map map;
-		map = Map.loadRaw("elimination");
+		map = Map.loadRaw("desert");
 
 		cPlayer = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), new CollisionsHandler(map),
 				new InputHandler(), ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.TEAM_MATCH, 30);

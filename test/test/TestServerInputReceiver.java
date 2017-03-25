@@ -37,7 +37,7 @@ public class TestServerInputReceiver {
 		players = new ArrayList<>();
 
 		JavaFXTestHelper.setupApplication();
-		Map map = Map.loadRaw("elimination");
+		Map map = Map.loadRaw("desert");
 		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.TEAM_MATCH, ServerGameSimulation.GAME_HERTZ);
 
 		players.add(p);

@@ -19,9 +19,9 @@ public class HashMapGen {
 
     public HashMapGen(Map map){
         if(map.getGameMode() == GameMode.CAPTURE_THE_FLAG){
-            csvFile = "res/maps/ctf_paths.csv";
+            csvFile = "res/maps/castle_paths.csv";
         } else {
-            csvFile = "res/maps/elimination_paths.csv";
+            csvFile = "res/maps/desert_paths.csv";
         }
 
         pathMap = new HashMap<>();

@@ -1,6 +1,6 @@
 {
 	"name": "Castle",
-	"gameMode": "CAPTURETHEFLAG",
+	"gameMode": "CAPTURE_THE_FLAG",
 	"spawns": [
 		{"x": 3, "y": 23, "team": "RED"},
 		{"x": 3, "y": 24, "team": "RED"},

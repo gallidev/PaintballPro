@@ -64,7 +64,7 @@ public class TestClientIntegration {
 		client.start();
 
 		JavaFXTestHelper.setupApplication();
-		map = Map.loadRaw("elimination");
+		map = Map.loadRaw("desert");
 		ch = new CollisionsHandler(map);
 		player = new GhostPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.TEAM_MATCH, Renderer.TARGET_FPS);
 

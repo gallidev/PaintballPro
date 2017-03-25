@@ -1,7 +1,6 @@
 package rendering;
 
 import enums.GameMode;
-import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.geometry.Pos;
@@ -14,32 +13,42 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static gui.GUIManager.renderer;
-
+/**
+ * A class that extends a <code>SubScene</code> to implement a head up display for the game. A head up display consists of a dark gray horizontal bar at the bottom of the view. A game timer is displayed in the middle. On both sides of the timer are red and blue team score counters. The team that the user is on will have its score counter displayed to the left of the timer.<br><br>
+ * The score counters have different behaviour and look based on the gamemode being played. In a team match, the counters increment based on amount of eliminations during the game.<br><br>
+ * For Capture the Flag, the counters increment for the amount of flags returned to the team base. The status of the flag (on the ground or carried by a player) is indicated by a glowing effect of the flag icon of a team that is currently carrying the flag.
+ * @author Artur Komoter
+ */
 public class HeadUpDisplay extends SubScene
 {
-	static BorderPane view = new BorderPane();
+	static BorderPane VIEW = new BorderPane();
 	private final Label timer = new Label("0:00"),
 			redScore = new Label("0"),
 			blueScore = new Label("0");
 	private final GUIManager guiManager;
 	private ImageView redTeamFlag, blueTeamFlag;
-	private DropShadow flagGlow = new DropShadow(view.getWidth() / 64, Color.WHITE);
+	private DropShadow flagGlow = new DropShadow(VIEW.getWidth() / 64, Color.WHITE);
 
+	/**
+	 * Creates a head up display that is displayed during a game.
+	 * @param guiManager GUI Manager singleton
+	 * @param gameMode Gamemode of the game instance to be played
+	 * @param playerTeam Team that the user is on
+	 */
 	HeadUpDisplay(GUIManager guiManager, GameMode gameMode, TeamEnum playerTeam)
 	{
-		super(view, guiManager.width, guiManager.height);
+		super(VIEW, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
-		view.setStyle("-fx-background-color: transparent");
-		view.getStylesheets().add("styles/menu.css");
+		VIEW.setStyle("-fx-background-color: transparent");
+		VIEW.getStylesheets().add("styles/menu.css");
 		setScaleX(1024 / guiManager.width);
 		setScaleY(576 / guiManager.height);
 
 		Circle redTeamCircle = null, blueTeamCircle = null;
 		if(gameMode == GameMode.TEAM_MATCH)
 		{
-			redTeamCircle = new Circle(view.getWidth() / 64, Color.RED);
-			blueTeamCircle = new Circle(view.getWidth() / 64, Color.BLUE);
+			redTeamCircle = new Circle(VIEW.getWidth() / 64, Color.RED);
+			blueTeamCircle = new Circle(VIEW.getWidth() / 64, Color.BLUE);
 
 			redTeamCircle.setStroke(Color.WHITE);
 			redTeamCircle.setStrokeWidth(3);
@@ -49,11 +58,11 @@ public class HeadUpDisplay extends SubScene
 		else
 		{
 			redTeamFlag = new ImageView(ImageFactory.getHudFlagImage(TeamEnum.RED));
-			redTeamFlag.setFitWidth(view.getWidth() / 32);
-			redTeamFlag.setFitHeight(view.getWidth() / 32);
+			redTeamFlag.setFitWidth(VIEW.getWidth() / 32);
+			redTeamFlag.setFitHeight(VIEW.getWidth() / 32);
 			blueTeamFlag = new ImageView(ImageFactory.getHudFlagImage(TeamEnum.BLUE));
-			blueTeamFlag.setFitWidth(view.getWidth() / 32);
-			blueTeamFlag.setFitHeight(view.getWidth() / 32);
+			blueTeamFlag.setFitWidth(VIEW.getWidth() / 32);
+			blueTeamFlag.setFitHeight(VIEW.getWidth() / 32);
 			flagGlow.setSpread(0.25);
 		}
 
@@ -66,51 +75,55 @@ public class HeadUpDisplay extends SubScene
 		if(playerTeam == TeamEnum.RED)
 		{
 			if(gameMode == GameMode.TEAM_MATCH)
-				statusBar = new HBox(view.getWidth() / 32, redScore, redTeamCircle, timer, blueTeamCircle, blueScore);
+				statusBar = new HBox(VIEW.getWidth() / 32, redScore, redTeamCircle, timer, blueTeamCircle, blueScore);
 			else
-				statusBar = new HBox(view.getWidth() / 32, redScore, redTeamFlag, timer, blueTeamFlag, blueScore);
+				statusBar = new HBox(VIEW.getWidth() / 32, redScore, redTeamFlag, timer, blueTeamFlag, blueScore);
 		}
+		else if(gameMode == GameMode.TEAM_MATCH)
+			statusBar = new HBox(VIEW.getWidth() / 32, blueScore, blueTeamCircle, timer, redTeamCircle, redScore);
 		else
-		{
-			if(gameMode == GameMode.TEAM_MATCH)
-				statusBar = new HBox(view.getWidth() / 32, blueScore, blueTeamCircle, timer, redTeamCircle, redScore);
-			else
-				statusBar = new HBox(view.getWidth() / 32, blueScore, blueTeamFlag, timer, redTeamFlag, redScore);
-		}
-		statusBar.setPrefHeight(view.getHeight() / 8);
+			statusBar = new HBox(VIEW.getWidth() / 32, blueScore, blueTeamFlag, timer, redTeamFlag, redScore);
+		statusBar.setPrefHeight(VIEW.getHeight() / 8);
 		statusBar.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75)");
 		statusBar.setAlignment(Pos.CENTER);
 
-		view.setBottom(statusBar);
+		VIEW.setBottom(statusBar);
 	}
 
-	void setScore(TeamEnum team, int score)
+	/**
+	 * Update the score counters of both teams.
+	 * @param redScore New score of the red team
+	 * @param blueScore New score of the blue team
+	 */
+	void setScore(int redScore, int blueScore)
 	{
-		if (Integer.parseInt((team == TeamEnum.RED ? redScore : blueScore).getText()) < score) {
+		if (Integer.parseInt(this.redScore.getText()) < redScore || Integer.parseInt(this.blueScore.getText()) < blueScore)
 			guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float) 0.6);
-		}
 
-		(team == TeamEnum.RED ? redScore : blueScore).setText(String.valueOf(score));
+		this.redScore.setText(String.valueOf(redScore));
+		this.blueScore.setText(String.valueOf(blueScore));
 	}
 
-	public void setFlagStatus(TeamEnum team)
+	/**
+	 * Toggle the flag status of a team in Capture the Flag gamemode between carrying a flag and dropping a flag.
+	 * @param team Team that should have its flag status toggled
+	 */
+	public void toggleFlagStatus(TeamEnum team)
 	{
 		ImageView flag = (team == TeamEnum.RED ? redTeamFlag : blueTeamFlag);
 		flag.setEffect(flag.getEffect() == null ? flagGlow : null);
 	}
 
+	/**
+	 * Update game timer.
+	 * @param time New game time in seconds
+	 */
 	public void tick(int time)
 	{
 		if(time < 0)
 			return;
 		int minutes = (time % 3600) / 60, seconds = time % 60;
 		timer.setText(String.format("%02d:%02d", minutes, seconds));
-
-	}
-
-	public void endGame(int red, int blue)
-	{
-		guiManager.transitionTo(Menu.END_GAME, red + "," + blue, (renderer.cPlayer == null ? renderer.player.getTeam() : renderer.cPlayer.getTeam()));
 
 	}
 }

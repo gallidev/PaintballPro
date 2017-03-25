@@ -1,11 +1,5 @@
 package ai;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static players.EssentialPlayer.PLAYER_HEAD_X;
-import static players.EssentialPlayer.PLAYER_HEAD_Y;
-
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import integration.server.ServerGameSimulation;
@@ -18,10 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 import physics.CollisionsHandler;
 import players.AIPlayer;
-import players.EssentialPlayer;
 import rendering.Map;
 
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestEliminationBehaviour {
 
@@ -40,7 +35,7 @@ public class TestEliminationBehaviour {
     public void setUp()
     {
         JavaFXTestHelper.setupApplication();
-        map = Map.loadRaw("elimination");
+        map = Map.loadRaw("desert");
         CollisionsHandler ch = new CollisionsHandler(map);
         HashMapGen hashMaps = new HashMapGen(map);
 

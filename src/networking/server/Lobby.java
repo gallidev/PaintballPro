@@ -1,13 +1,5 @@
 package networking.server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import ai.AIManager;
 import ai.HashMapGen;
 import enums.TeamEnum;
@@ -15,7 +7,6 @@ import integration.server.ServerGameSimulation;
 import integration.server.ServerGameStateSender;
 import integration.server.ServerInputReceiver;
 import javafx.scene.image.Image;
-import logic.RoundTimer;
 import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
@@ -27,6 +18,14 @@ import players.ServerBasicPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Class to represent a lobby.
@@ -90,9 +89,9 @@ public class Lobby {
 		if (!testEnv) {
 			// setting up the map
 			if (PassedGameType == 1)
-				map = Map.loadRaw("elimination");
+				map = Map.loadRaw("desert");
 			else
-				map = Map.loadRaw("ctf");
+				map = Map.loadRaw("castle");
 
 			// setting up the collision handler
 			collissionsHandler = new CollisionsHandler(map);
@@ -609,6 +608,10 @@ public class Lobby {
 		return red;
 	}
 
+	public void setRedTeam(Team team){
+		red = team;
+	}
+
 	/**
 	 * Return blue converted team.
 	 *
@@ -617,7 +620,11 @@ public class Lobby {
 	public Team getBlueTeam() {
 		return blue;
 	}
-
+	
+	public void setBlueTeam(Team team){
+		blue = team;
+	}
+	
 	/**
 	 * Get maximum number of players that the Lobby will allow.
 	 *
@@ -625,13 +632,5 @@ public class Lobby {
 	 */
 	public int getMaxPlayers() {
 		return maxPlayers;
-	}
-	
-	public void setRedTeam(Team team){
-		red = team;
-	}
-	
-	public void setBlueTeam(Team team){
-		blue = team;
 	}
 }

@@ -18,7 +18,7 @@ public class TestRendererSingleplayer
 	{
 		JavaFXTestHelper.setupApplication();
 		guiManager = new GUIManager();
-		renderer = new Renderer("elimination", guiManager);
+		renderer = new Renderer("desert", guiManager);
 	}
 
 	@After
@@ -35,10 +35,10 @@ public class TestRendererSingleplayer
 		assertNotNull(renderer.getMap());
 
 		assertNotNull(renderer.getHud());
-		assertTrue(Renderer.view.getChildren().contains(renderer.getHud()));
+		assertTrue(Renderer.VIEW.getChildren().contains(renderer.getHud()));
 
 		assertNotNull(renderer.player);
-		assertTrue(Renderer.view.getChildren().contains(renderer.player));
+		assertTrue(Renderer.VIEW.getChildren().contains(renderer.player));
 	}
 
 	@Test

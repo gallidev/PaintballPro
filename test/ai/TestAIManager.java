@@ -2,19 +2,12 @@ package ai;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
-import integration.server.ServerGameSimulation;
-import javafx.geometry.Point2D;
-import logic.GameMode;
-import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import physics.CollisionsHandler;
-import players.AIPlayer;
 import rendering.Map;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
@@ -31,7 +24,7 @@ public class TestAIManager {
     public void setUp()
     {
         JavaFXTestHelper.setupApplication();
-        map = Map.loadRaw("elimination");
+        map = Map.loadRaw("desert");
         CollisionsHandler ch = new CollisionsHandler(map);
         HashMapGen hashMaps = new HashMapGen(map);
 

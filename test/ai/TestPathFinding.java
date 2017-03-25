@@ -29,10 +29,10 @@ public class TestPathFinding {
     @Before
     public void setUp() throws Exception {
         JavaFXTestHelper.setupApplication();
-        Map elimMap = Map.loadRaw("elimination") ;
+        Map elimMap = Map.loadRaw("desert") ;
         elimPathfinder = new Pathfinding(elimMap);
 
-        Map ctfMap = Map.loadRaw("ctf") ;
+        Map ctfMap = Map.loadRaw("castle") ;
         ctfPathfinder = new Pathfinding(ctfMap);
 
         //Elimination paths

@@ -21,11 +21,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import static rendering.Renderer.view;
+import static rendering.Renderer.VIEW;
 
 /**
- * A representation of a game map. All information is deserialised into this class from a JSON map file. All assets are placed in a grid format, where each space on a grid is 64x64 pixels. A map does not have a fixed size, therefore it should be treated as being infinite.<br>
- * Each map object stores its name, an array of walls, floor tile groups, props and spawn points for each team.
+ * A representation of a game map. All information is deserialised into this class from a JSON map file. All assets are placed in a grid format, where each space on a grid is 64x64 pixels. A map does not have a fixed size, therefore it should be treated as being infinite.<br><br>
+ * Each map stores its gamemode type, powerup locations, flag locations (for a Capture the Flag map), walls, floors, props and spawn locations.<br><br>
+ * @author Artur Komoter
  */
 @SuppressWarnings("MismatchedReadAndWriteOfArray")
 public class Map
@@ -100,7 +101,7 @@ public class Map
 			map.loadWalls();
 			map.wallGroup.setCache(true);
 
-			view.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
+			VIEW.getChildren().addAll(floorGroup, redSpawnView, blueSpawnView, map.propGroup, map.wallGroup);
 
 			//define shading
 			map.propShadow = new DropShadow(16, 0, 0, Color.BLACK);
@@ -137,6 +138,11 @@ public class Map
 		return map;
 	}
 
+	/**
+	 * Load a map file without floors and displaying the map assets. Used by the client receiver and the server.
+	 * @param mapName Name of the map file to load
+	 * @return Instance of a loaded map
+	 */
 	public static Map loadRaw(String mapName)
 	{
 		Map map = null;
@@ -162,6 +168,9 @@ public class Map
 		return map;
 	}
 
+	/**
+	 * Display all props on the map.
+	 */
 	private void loadProps()
 	{
 		for(Prop prop : props)
@@ -172,6 +181,9 @@ public class Map
 		}
 	}
 
+	/**
+	 * Display all walls on the map.
+	 */
 	private void loadWalls()
 	{
 		for(Wall wall : walls)
@@ -185,6 +197,11 @@ public class Map
 		}
 	}
 
+	/**
+	 * Get collision bounds for a given <code>Group</code> of map assets.
+	 * @param group The group from which to generate collision bounds
+	 * @return An <code>ArrayList</code> of collision bounds
+	 */
 	private ArrayList<Rectangle> getCollisions(Group group)
 	{
 		ArrayList<Rectangle> rectangles = new ArrayList<>();
@@ -195,17 +212,29 @@ public class Map
 		return rectangles;
 	}
 
-	public ArrayList<Rectangle> getRecWalls()
+	/**
+	 * Get collision bounds for all walls on a map.
+	 * @return An <code>ArrayList</code> of wall collision bounds
+	 */
+	public ArrayList<Rectangle> getWallCollisionBounds()
 	{
 		return getCollisions(wallGroup);
 	}
 
-	public ArrayList<Rectangle> getRecProps()
+	/**
+	 * Get collision bounds for all props on a map.
+	 * @return An <code>ArrayList</code> of prop collision bounds
+	 */
+	public ArrayList<Rectangle> getPropCollisionBounds()
 	{
 		return getCollisions(propGroup);
 	}
 
-	public Rectangle getRecSpawn(TeamEnum team)
+	/**
+	 * Get collision bounds for a given team spawn area.
+	 * @return A collision bound for a given team spawn area
+	 */
+	public Rectangle getSpawnCollisionBound(TeamEnum team)
 	{
 		if(team == TeamEnum.RED)
 			return new Rectangle(spawns[0].x * 64, spawns[0].y * 64, 128, 128);
@@ -213,51 +242,90 @@ public class Map
 			return new Rectangle(spawns[4].x * 64, spawns[4].y * 64, 128, 128);
 	}
 
+	/**
+	 * Get all floors on a map.
+	 * @return An array of <code>Floor</code> objects
+	 */
 	public Floor[] getFloors()
 	{
 		return floors;
 	}
 
+	/**
+	 * Get all props on a map.
+	 * @return An array of <code>Prop</code> objects
+	 */
 	public Prop[] getProps()
 	{
 		return props;
 	}
 
+	/**
+	 * Get all walls on a map.
+	 * @return An array of <code>Wall</code> objects
+	 */
 	public Wall[] getWalls()
 	{
 		return walls;
 	}
 
+	/**
+	 * Get all spawn tiles on a map.
+	 * @return An array of <code>Spawn</code> objects
+	 */
 	public Spawn[] getSpawns()
 	{
 		return spawns;
 	}
 
+	/**
+	 * Get the gamemode of a map.
+	 * @return The gamemode of a map
+	 */
 	public GameMode getGameMode()
 	{
 		return gameMode;
 	}
 
+	/**
+	 * For Capture the Flag, get the <code>Flag</code> on a map.
+	 * @return The <code>Flag</code> object
+	 */
 	public Flag getFlag()
 	{
 		return flag;
 	}
 
+	/**
+	 * For Capture the Flag, get all possible locations a flag could appear in on a map.
+	 * @return An array of <code>GameObject</code> locations
+	 */
 	public GameObject[] getFlagLocations()
 	{
 		return flagLocations;
 	}
 
+	/**
+	 * Get all powerups that appear on a map.
+	 * @return An array of <code>Powerup</code> objects
+	 */
 	public Powerup[] getPowerups()
 	{
 		return powerups;
 	}
 
+	/**
+	 * Get all possible locations a powerup could appear in on a map.
+	 * @return An array of <code>GameObject</code> locations
+	 */
 	public GameObject[] getPowerupLocations()
 	{
 		return powerupLocations;
 	}
 
+	/**
+	 * Toggle the shading of map assets. When toggled off, increases performance on older computers and at higher resolutions.
+	 */
 	void toggleShading()
 	{
 		if(propGroup.getEffect() == null)

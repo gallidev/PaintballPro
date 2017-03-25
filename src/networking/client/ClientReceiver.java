@@ -169,9 +169,9 @@ public class ClientReceiver extends Thread {
 		clientID = Integer.parseInt(data[5]);
 
 		if (gameMode == 1)
-			map = Map.loadRaw("elimination");
+			map = Map.loadRaw("desert");
 		else
-			map = Map.loadRaw("ctf");
+			map = Map.loadRaw("castle");
 
 		CollisionsHandler collisionHandler = new CollisionsHandler(map);
 		ArrayList<EssentialPlayer> players = new ArrayList<EssentialPlayer>(myTeam);

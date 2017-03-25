@@ -28,7 +28,7 @@ public class TestInputHandler {
 
 		JavaFXTestHelper.setupApplication();
 		guiManager = new GUIManager();
-		GUIManager.renderer = new Renderer("elimination", guiManager);
+		GUIManager.renderer = new Renderer("desert", guiManager);
 
 		inputHandler = new InputHandler();
 		keyPressListener = new KeyPressListener(inputHandler);

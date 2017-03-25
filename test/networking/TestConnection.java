@@ -142,7 +142,7 @@ public class TestConnection {
 		JavaFXTestHelper.waitForPlatform();
 		Thread.sleep(30000);
 		Platform.runLater(() -> {
-			guiManager2.transitionTo(Menu.MainMenu);
+			guiManager2.transitionTo(Menu.MAIN_MENU);
 		});
 		JavaFXTestHelper.waitForPlatform();
 		Thread.sleep(2000);

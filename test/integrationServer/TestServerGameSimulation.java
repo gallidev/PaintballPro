@@ -40,7 +40,7 @@ public class TestServerGameSimulation {
 
 		JavaFXTestHelper.setupApplication();
 		Map map;
-		map = Map.loadRaw("elimination");
+		map = Map.loadRaw("desert");
 		EssentialPlayer p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
 				ImageFactory.getPlayerFlagImage(TeamEnum.RED), enums.GameMode.TEAM_MATCH,
 				ServerGameSimulation.GAME_HERTZ);

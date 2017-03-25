@@ -42,14 +42,14 @@ public class CollisionsHandler
 
 	public CollisionsHandler(Map map)
 	{
-		propsWalls = map.getRecProps();
-		propsWalls.addAll(map.getRecWalls());
+		propsWalls = map.getPropCollisionBounds();
+		propsWalls.addAll(map.getWallCollisionBounds());
 		redTeam = new ArrayList<>();
 		blueTeam = new ArrayList<>();
 		red = new Team(TeamEnum.RED);
 		blue = new Team(TeamEnum.BLUE);
-		spawnAreaBlue = map.getRecSpawn(TeamEnum.BLUE);
-		spawnAreaRed = map.getRecSpawn(TeamEnum.RED);
+		spawnAreaBlue = map.getSpawnCollisionBound(TeamEnum.BLUE);
+		spawnAreaRed = map.getSpawnCollisionBound(TeamEnum.RED);
 		flag = map.getFlag();
 		powerups = map.getPowerups();
 	}
@@ -184,7 +184,7 @@ public class CollisionsHandler
 				flag.setVisible(false);
 				p.setHasFlag(true);
 				if(renderer != null)
-					renderer.getHud().setFlagStatus(p.getTeam());
+					renderer.getHud().toggleFlagStatus(p.getTeam());
 
 				if(listener != null)
 					listener.onFlagCaptured(p.getPlayerId());
@@ -197,7 +197,7 @@ public class CollisionsHandler
 				flag.setCaptured(false);
 				flag.setVisible(true);
 				if(renderer != null)
-					renderer.getHud().setFlagStatus(p.getTeam());
+					renderer.getHud().toggleFlagStatus(p.getTeam());
 				if(listener != null)
 					listener.onFlagDropped(p.getPlayerId());
 				p.setHasFlag(false);
@@ -230,7 +230,7 @@ public class CollisionsHandler
 					else
 						blue.incrementScore(CaptureTheFlagMode.FLAG_SCORE);
 					if(renderer != null)
-						renderer.getHud().setFlagStatus(p.getTeam());
+						renderer.getHud().toggleFlagStatus(p.getTeam());
 					if(listener != null)
 						listener.onFlagRespawned(p.getPlayerId());
 				}

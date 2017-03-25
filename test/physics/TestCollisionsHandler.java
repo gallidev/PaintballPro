@@ -44,7 +44,7 @@ public class TestCollisionsHandler {
 		blue = new Team(TeamEnum.BLUE);
 
 		JavaFXTestHelper.setupApplication();
-		map = Map.loadRaw("ctf");
+		map = Map.loadRaw("castle");
 		collisionsHandler = new CollisionsHandler(map);
 
 		ArrayList<EssentialPlayer> players = new ArrayList<>();

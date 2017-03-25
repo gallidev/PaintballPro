@@ -9,7 +9,6 @@ import physics.PowerupType;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.HashMap;
 
 import static gui.GUIManager.renderer;
 
@@ -23,7 +22,7 @@ public class UDPClient extends Thread {
 
 	public static double PINGDELAY = 0;
 	public boolean active = true;
-	public boolean bulletDebug = false;
+	//public static final boolean bulletDebug = false;
 	public boolean connected = false;
 	public boolean testIntegration = false;
 	public boolean testSendToAll = false;
@@ -34,7 +33,6 @@ public class UDPClient extends Thread {
 	private ClientGameStateReceiver gameStateReceiver;
 	private DatagramSocket clientSocket;
 	private GUIManager guiManager;
-	private HashMap<Integer, Long> lastPlayedEliminatedSound = new HashMap<Integer, Long>();
 	private int clientID;
 	private int serverIP;
 	private InetAddress IPAddress;
@@ -238,12 +236,10 @@ public class UDPClient extends Thread {
 		String redScore = text.split(":")[2];
 		String blueScore = text.split(":")[3];
 
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				if (renderer != null)
-					renderer.getHud().endGame(Integer.parseInt(redScore), Integer.parseInt(blueScore));
-			}
+		Platform.runLater(() ->
+		{
+			if (renderer != null)
+				renderer.endGame(redScore, blueScore);
 		});
 		active = false;
 	}

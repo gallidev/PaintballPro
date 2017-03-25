@@ -7,7 +7,6 @@ import javafx.geometry.Point2D;
 import logic.GameMode;
 import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
-import logic.server.TeamMatchMode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class TestCTFBehaviour {
     public void setUp()
     {
         JavaFXTestHelper.setupApplication();
-        map = Map.loadRaw("ctf");
+        map = Map.loadRaw("castle");
         CollisionsHandler ch = new CollisionsHandler(map);
         HashMapGen hashMaps = new HashMapGen(map);
 

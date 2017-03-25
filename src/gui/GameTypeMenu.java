@@ -32,7 +32,7 @@ public class GameTypeMenu {
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Team Match", true, event -> {
 			if (loc == GameLocation.MULTIPLAYER) {
-				guiManager.transitionTo(Menu.LOBBY, "Elimination");
+				guiManager.transitionTo(Menu.LOBBY, "Team Match");
 			} else {
 				loadingPane.startLoading();
 				new Thread(() -> guiManager.transitionTo(Menu.TEAM_MATCH_SINGLEPLAYER)).start();
