@@ -1,13 +1,5 @@
 package integrationServer;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
@@ -16,12 +8,18 @@ import integration.server.ServerInputReceiver;
 import networking.game.UDPServer;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
-import networking.server.ServerReceiver;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * Test class to tests the server-sided integration: messages received by the
@@ -52,7 +50,7 @@ public class TestServerIntegration {
 		Map map;
 		map = Map.loadRaw("elimination");
 		player = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
-				ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+				ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.TEAM_MATCH, ServerGameSimulation.GAME_HERTZ);
 
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 		players.add(player);

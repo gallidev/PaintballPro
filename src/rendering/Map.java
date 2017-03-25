@@ -146,7 +146,7 @@ public class Map
 			map.loadProps();
 			map.loadWalls();
 
-			if(map.gameMode == GameMode.CAPTURETHEFLAG)
+			if(map.gameMode == GameMode.CAPTURE_THE_FLAG)
 				map.flag = new Flag(map.flagLocations);
 
 			map.powerups = new Powerup[] { new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)

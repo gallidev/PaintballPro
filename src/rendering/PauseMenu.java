@@ -60,7 +60,7 @@ class PauseMenu extends SubScene {
 //				guiManager.getClient().getSender().sendMessage("Exit:Game");
 //				guiManager.transitionTo(Menu.MultiplayerGameType);
 //			}
-			guiManager.transitionTo(Menu.MainMenu);
+			guiManager.transitionTo(Menu.MAIN_MENU);
 		})};
 
 		GridPane buttonSet = MenuOptionSet.optionSetToGridPane(set);

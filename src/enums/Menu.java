@@ -5,9 +5,9 @@ package enums;
  */
 public enum Menu
 {
-    MainMenu, NicknameServerConnection, Settings, MultiplayerGameType, SingleplayerGameType, Lobby,
-    EliminationSingle, EliminationMulti,
-    CTFSingle, CTFMulti,
-    EndGame,
-    Help
+    MAIN_MENU, NICKNAME_SERVER_CONNECTION, SETTINGS, MULTIPLAYER_GAME_TYPE, SINGLEPLAYER_GAME_TYPE, LOBBY,
+    TEAM_MATCH_SINGLEPLAYER, TEAM_MATCH_MULTIPLAYER,
+    CAPTURE_THE_FLAG_SINGLEPLAYER, CAPTURE_THE_FLAG_MULTIPLAYER,
+    END_GAME,
+    HELP
 }

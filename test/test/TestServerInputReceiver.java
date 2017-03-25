@@ -1,22 +1,21 @@
 package test;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import integration.server.ServerGameSimulation;
 import integration.server.ServerInputReceiver;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * Test class to test the input receiver on the server, which receives
@@ -39,7 +38,7 @@ public class TestServerInputReceiver {
 
 		JavaFXTestHelper.setupApplication();
 		Map map = Map.loadRaw("elimination");
-		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+		p = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map), ImageFactory.getPlayerFlagImage(TeamEnum.RED), GameMode.TEAM_MATCH, ServerGameSimulation.GAME_HERTZ);
 
 		players.add(p);
 

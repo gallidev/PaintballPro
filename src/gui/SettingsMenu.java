@@ -10,7 +10,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.input.InputEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 
@@ -148,7 +147,7 @@ public class SettingsMenu {
 			@Override
 			public void handle(ActionEvent event) {
 				// Transition back to the main menu
-				guiManager.transitionTo(Menu.MainMenu);
+				guiManager.transitionTo(Menu.MAIN_MENU);
 			}
 		})};
 		// Turn the array into a grid pane

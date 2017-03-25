@@ -37,7 +37,7 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
  */
 public class Renderer extends Scene
 {
-	public static double TARGET_FPS = 60.0;
+	public static final double TARGET_FPS = 60.0;
 
 	static Pane view = new Pane();
 
@@ -71,7 +71,7 @@ public class Renderer extends Scene
 		init(mapName);
 		singlePlayer = true;
 
-		if(map.gameMode == enums.GameMode.CAPTURETHEFLAG)
+		if(map.gameMode == enums.GameMode.CAPTURE_THE_FLAG)
 		{
 			map.flag = new Flag(map.flagLocations);
 			view.getChildren().add(map.flag);
@@ -119,7 +119,7 @@ public class Renderer extends Scene
 			{
 				for(EssentialPlayer player : players)
 				{
-					for(Bullet pellet : player.getBullets())
+					for(Pellet pellet : player.getBullets())
 					{
 						if(pellet.isActive())
 						{
@@ -182,7 +182,7 @@ public class Renderer extends Scene
 
 		cPlayer.setInputHandler(inputHandler);
 
-		if(map.getGameMode() == enums.GameMode.CAPTURETHEFLAG)
+		if(map.getGameMode() == enums.GameMode.CAPTURE_THE_FLAG)
 			view.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
 
 		view.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
@@ -202,7 +202,7 @@ public class Renderer extends Scene
 			{
 				for(EssentialPlayer player : players)
 				{
-					for(Bullet pellet : player.getBullets())
+					for(Pellet pellet : player.getBullets())
 					{
 						if(pellet.isActive())
 						{
@@ -233,9 +233,9 @@ public class Renderer extends Scene
 		Team red = player.getMyTeam(), blue = player.getOppTeam();
 		switch(map.getGameMode())
 		{
-			case ELIMINATION:
+			case TEAM_MATCH:
 				return new TeamMatchMode(red, blue);
-			case CAPTURETHEFLAG:
+			case CAPTURE_THE_FLAG:
 				return new CaptureTheFlagMode(red, blue);
 			default:
 				throw new NoSuchElementException("Gamemode doesn't exist");
@@ -311,7 +311,7 @@ public class Renderer extends Scene
 		HeadUpDisplay.view = new BorderPane();
 	}
 
-	private void generateSpray(Bullet pellet)
+	private void generateSpray(Pellet pellet)
 	{
 		WritableImage paint = new WritableImage(64, 64);
 		PixelWriter pixelWriter = paint.getPixelWriter();

@@ -57,7 +57,7 @@ public class TestClientIntegration {
 		JavaFXTestHelper.setupApplication();
 		map = Map.loadRaw("elimination");
 		ch = new CollisionsHandler(map);
-		player = new GhostPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.ELIMINATION, Renderer.TARGET_FPS);
+		player = new GhostPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.TEAM_MATCH, Renderer.TARGET_FPS);
 
 		cPlayer = new ClientPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, gui, ch, null, ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
 

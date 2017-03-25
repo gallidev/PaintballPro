@@ -2,7 +2,6 @@ package gui;
 
 import enums.Menu;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -129,7 +128,7 @@ public class NicknameServerSelectMenu {
 							guiManager.setIpAddress(ipPort);
 							int error = guiManager.establishConnection();
 							if (error == 0)
-								guiManager.transitionTo(Menu.MultiplayerGameType);
+								guiManager.transitionTo(Menu.MULTIPLAYER_GAME_TYPE);
 							else if (error == 6)
 								loadingPane.stopLoading();
 							else {
@@ -150,14 +149,14 @@ public class NicknameServerSelectMenu {
 
 							// Try to establish a connection
 							if (guiManager.establishConnection() == 0)
-								guiManager.transitionTo(Menu.MultiplayerGameType);
+								guiManager.transitionTo(Menu.MULTIPLAYER_GAME_TYPE);
 							else
 								loadingPane.stopLoading();
 						});
 					})).start();
 				}
 			})).start();
-		}), new MenuOption("Back", false, (event) -> guiManager.transitionTo(Menu.MainMenu))};
+		}), new MenuOption("Back", false, (event) -> guiManager.transitionTo(Menu.MAIN_MENU))};
 
 		// Turn the array into a grid pane
 		GridPane connectGrid = MenuOptionSet.optionSetToGridPane(connect);

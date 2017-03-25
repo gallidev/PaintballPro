@@ -4,15 +4,10 @@ import enums.Menu;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * Class to create a scene for the help screen
@@ -48,7 +43,7 @@ public class HelpMenu {
 			@Override
 			public void handle(ActionEvent event) {
 				// Transition back to the main menu
-				guiManager.transitionTo(Menu.MainMenu);
+				guiManager.transitionTo(Menu.MAIN_MENU);
 			}
 		})};
 		// Turn the array into a grid pane

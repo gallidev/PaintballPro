@@ -31,23 +31,23 @@ public class GameTypeMenu {
 
 		// Create a set of button options, with each button's title and event handler
 		MenuOption[] set = {new MenuOption("Team Match", true, event -> {
-			if (loc == GameLocation.MultiplayerServer) {
-				guiManager.transitionTo(Menu.Lobby, "Elimination");
+			if (loc == GameLocation.MULTIPLAYER) {
+				guiManager.transitionTo(Menu.LOBBY, "Elimination");
 			} else {
 				loadingPane.startLoading();
-				new Thread(() -> guiManager.transitionTo(Menu.EliminationSingle)).start();
+				new Thread(() -> guiManager.transitionTo(Menu.TEAM_MATCH_SINGLEPLAYER)).start();
 			}
 		}), new MenuOption("Capture The Flag", true, event -> {
-			if (loc == GameLocation.MultiplayerServer) {
-				guiManager.transitionTo(Menu.Lobby, "CTF");
+			if (loc == GameLocation.MULTIPLAYER) {
+				guiManager.transitionTo(Menu.LOBBY, "CTF");
 			} else {
 				loadingPane.startLoading();
-				new Thread(() -> guiManager.transitionTo(Menu.CTFSingle)).start();
+				new Thread(() -> guiManager.transitionTo(Menu.CAPTURE_THE_FLAG_SINGLEPLAYER)).start();
 			}
 		}), new MenuOption("Back", false, event -> {
-			if (loc == GameLocation.MultiplayerServer)
+			if (loc == GameLocation.MULTIPLAYER)
 				guiManager.exitClient();
-			guiManager.transitionTo(Menu.MainMenu);
+			guiManager.transitionTo(Menu.MAIN_MENU);
 		})};
 
 		// Turn the collection of button options into a GridPane to be displayed

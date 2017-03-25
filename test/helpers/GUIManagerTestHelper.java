@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class GUIManagerTestHelper extends GUIManager {
 
     // Field to keep track of the current menu
-    public Menu currentMenu = Menu.MainMenu;
+    public Menu currentMenu = Menu.MAIN_MENU;
 
     /**
      * Construct a new simulation of a GUIManager

@@ -34,11 +34,11 @@ public class TestGameTypeMenu {
     @Test
     public void selectEliminationSingle() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = GameTypeMenu.getScene(m, GameLocation.SingleplayerLocal);
-        assertTrue(m.currentMenu == Menu.MainMenu);
+        Scene s = GameTypeMenu.getScene(m, GameLocation.SINGLEPLAYER);
+        assertTrue(m.currentMenu == Menu.MAIN_MENU);
         GUIManagerTestHelper.findButtonByTextInParent("Team Match", s.getRoot()).fire();
         Thread.sleep(1000);
-        assertTrue(m.currentMenu == Menu.EliminationSingle);
+        assertTrue(m.currentMenu == Menu.TEAM_MATCH_SINGLEPLAYER);
     }
 
     /**
@@ -48,10 +48,10 @@ public class TestGameTypeMenu {
     @Test
     public void selectEliminationMulti() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = GameTypeMenu.getScene(m, GameLocation.MultiplayerServer);
-        assertTrue(m.currentMenu == Menu.MainMenu);
+        Scene s = GameTypeMenu.getScene(m, GameLocation.MULTIPLAYER);
+        assertTrue(m.currentMenu == Menu.MAIN_MENU);
         GUIManagerTestHelper.findButtonByTextInParent("Team Match", s.getRoot()).fire();
-        assertTrue(m.currentMenu == Menu.Lobby);
+        assertTrue(m.currentMenu == Menu.LOBBY);
     }
 
     /**
@@ -61,11 +61,11 @@ public class TestGameTypeMenu {
     @Test
     public void selectCTFSingle() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = GameTypeMenu.getScene(m, GameLocation.SingleplayerLocal);
-        assertTrue(m.currentMenu == Menu.MainMenu);
+        Scene s = GameTypeMenu.getScene(m, GameLocation.SINGLEPLAYER);
+        assertTrue(m.currentMenu == Menu.MAIN_MENU);
         GUIManagerTestHelper.findButtonByTextInParent("Capture The Flag", s.getRoot()).fire();
         Thread.sleep(4000);
-        assertTrue(m.currentMenu == Menu.CTFSingle);
+        assertTrue(m.currentMenu == Menu.CAPTURE_THE_FLAG_SINGLEPLAYER);
     }
 
     /**
@@ -75,10 +75,10 @@ public class TestGameTypeMenu {
     @Test
     public void selectCTFMulti() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = GameTypeMenu.getScene(m, GameLocation.MultiplayerServer);
-        assertTrue(m.currentMenu == Menu.MainMenu);
+        Scene s = GameTypeMenu.getScene(m, GameLocation.MULTIPLAYER);
+        assertTrue(m.currentMenu == Menu.MAIN_MENU);
         GUIManagerTestHelper.findButtonByTextInParent("Capture The Flag", s.getRoot()).fire();
-        assertTrue(m.currentMenu == Menu.Lobby);
+        assertTrue(m.currentMenu == Menu.LOBBY);
     }
 
     /**
@@ -88,10 +88,10 @@ public class TestGameTypeMenu {
     @Test
     public void selectBack() throws Exception {
         GUIManagerTestHelper m = new GUIManagerTestHelper();
-        Scene s = GameTypeMenu.getScene(m, GameLocation.MultiplayerServer);
-        m.currentMenu = Menu.SingleplayerGameType;
+        Scene s = GameTypeMenu.getScene(m, GameLocation.MULTIPLAYER);
+        m.currentMenu = Menu.SINGLEPLAYER_GAME_TYPE;
         GUIManagerTestHelper.findButtonByTextInParent("Back", s.getRoot()).fire();
-        assertTrue(m.currentMenu == Menu.MainMenu);
+        assertTrue(m.currentMenu == Menu.MAIN_MENU);
     }
 
 }

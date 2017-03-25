@@ -282,15 +282,15 @@ public class ClientReceiver extends Thread {
 			Platform.runLater(() -> {
 				if (!singlePlayer) {
 					if (gameMode == 1) {
-						guiManager.transitionTo(Menu.EliminationMulti);
+						guiManager.transitionTo(Menu.TEAM_MATCH_MULTIPLAYER);
 					} else {
-						guiManager.transitionTo(Menu.CTFMulti, flag);
+						guiManager.transitionTo(Menu.CAPTURE_THE_FLAG_MULTIPLAYER, flag);
 					}
 				} else {
 					if (gameMode == 1) {
-						guiManager.transitionTo(Menu.EliminationSingle);
+						guiManager.transitionTo(Menu.TEAM_MATCH_SINGLEPLAYER);
 					} else {
-						guiManager.transitionTo(Menu.CTFSingle);
+						guiManager.transitionTo(Menu.CAPTURE_THE_FLAG_SINGLEPLAYER);
 					}
 				}
 			});

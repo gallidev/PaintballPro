@@ -1,10 +1,5 @@
 package players;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Random;
-import java.util.Scanner;
-
 import ai.HashMapGen;
 import audio.AudioManager;
 import enums.GameMode;
@@ -14,11 +9,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import logic.server.Team;
-import physics.Bullet;
 import physics.CollisionsHandler;
 import physics.InputHandler;
+import physics.Pellet;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * The player, represented by an ImageView that should be running
@@ -140,7 +140,7 @@ public class OfflinePlayer extends EssentialPlayer
 	 */
 	@Override
 	public void updateScore() {
-		if (gameMode == GameMode.ELIMINATION)
+		if (gameMode == GameMode.TEAM_MATCH)
 			oppTeam.incrementScore();
 
 		scoreChanged = true;
@@ -214,9 +214,9 @@ public class OfflinePlayer extends EssentialPlayer
 		} else {
 			bulletAngle -= deviation;
 		}
-		Bullet bullet = new Bullet(bulletCounter++, bulletX, bulletY, bulletAngle, team, gameSpeed);
+		Pellet pellet = new Pellet(bulletCounter++, bulletX, bulletY, bulletAngle, team, gameSpeed);
 		audio.playSFX(audio.sfx.getRandomPaintball(), (float) 1.0);
-		firedBullets.add(bullet);
+		firedPellets.add(pellet);
 	}
 
 	private void setPlayerNames(){

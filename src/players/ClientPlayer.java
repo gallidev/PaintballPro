@@ -1,8 +1,5 @@
 package players;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import audio.AudioManager;
 import enums.GameMode;
 import enums.TeamEnum;
@@ -13,25 +10,24 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import logic.server.Team;
-import networking.game.UDPClient;
 import physics.CollisionsHandler;
-import physics.InputHandler;
-import rendering.Renderer;
-import rendering.Spawn;
 import physics.GameStateClient;
+import physics.InputHandler;
+import rendering.Spawn;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ClientPlayer extends EssentialPlayer {
 
 
 	double angleRadians;
+	ArrayList<GameStateClient> bufferReconciliation;
 	private double limitDifferencePosition = 60;
 	private InputHandler inputHandler;
 	private AudioManager audio;
 	private Random rand;
 	private Label nameTag;
-
-
-	ArrayList<GameStateClient> bufferReconciliation;
 
 	public ClientPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team, GUIManager guiManager,
 			CollisionsHandler collisionsHandler, InputHandler inputHandler, Image image, GameMode game, double currentFPS) {
@@ -164,9 +160,9 @@ public class ClientPlayer extends EssentialPlayer {
 	}
 
 	void cleanBullets(){
-		if(firedBullets.size() > 0) {
-			if (!firedBullets.get(0).isActive()) {
-				firedBullets.remove(0);
+		if(firedPellets.size() > 0) {
+			if (!firedPellets.get(0).isActive()) {
+				firedPellets.remove(0);
 			}
 		}
 	}

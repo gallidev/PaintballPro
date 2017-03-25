@@ -1,24 +1,21 @@
 package serverLogic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import integration.server.ServerGameSimulation;
 import logic.server.Team;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import players.EssentialPlayer;
 import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * Test class to test the team game logic. Class tested {@link Team}
@@ -43,7 +40,7 @@ public class TestTeam {
 		JavaFXTestHelper.setupApplication();
 		map = Map.loadRaw("ctf");
 		player = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
-				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, 30);
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.TEAM_MATCH, 30);
 	}
 
 	/**
@@ -97,7 +94,7 @@ public class TestTeam {
 		team.addMember(player);
 		EssentialPlayer p1;
 		p1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new CollisionsHandler(map),
-				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.ELIMINATION, ServerGameSimulation.GAME_HERTZ);
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.TEAM_MATCH, ServerGameSimulation.GAME_HERTZ);
 
 		assertTrue(team.containsPlayer(player));
 		assertFalse(team.containsPlayer(p1));

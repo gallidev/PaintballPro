@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import rendering.Renderer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for the GUI Manager
@@ -39,19 +39,19 @@ public class TestGUIManager {
 			Stage stage = new Stage();
 			guiManager.setStage(stage);
 
-			guiManager.transitionTo(Menu.MainMenu);
-			guiManager.transitionTo(Menu.Settings);
-			guiManager.transitionTo(Menu.Help);
-			guiManager.transitionTo(Menu.SingleplayerGameType);
-			guiManager.transitionTo(Menu.MultiplayerGameType);
-			guiManager.transitionTo(Menu.NicknameServerConnection);
-			guiManager.transitionTo(Menu.EliminationSingle);
-			guiManager.transitionTo(Menu.MainMenu);
-			guiManager.transitionTo(Menu.CTFSingle);
-			guiManager.transitionTo(Menu.MainMenu);
+			guiManager.transitionTo(Menu.MAIN_MENU);
+			guiManager.transitionTo(Menu.SETTINGS);
+			guiManager.transitionTo(Menu.HELP);
+			guiManager.transitionTo(Menu.SINGLEPLAYER_GAME_TYPE);
+			guiManager.transitionTo(Menu.MULTIPLAYER_GAME_TYPE);
+			guiManager.transitionTo(Menu.NICKNAME_SERVER_CONNECTION);
+			guiManager.transitionTo(Menu.TEAM_MATCH_SINGLEPLAYER);
+			guiManager.transitionTo(Menu.MAIN_MENU);
+			guiManager.transitionTo(Menu.CAPTURE_THE_FLAG_SINGLEPLAYER);
+			guiManager.transitionTo(Menu.MAIN_MENU);
 			guiManager.setRenderer(new Renderer("elimination", guiManager));
-			guiManager.transitionTo(Menu.EndGame, "0,0", TeamEnum.BLUE);
-			guiManager.transitionTo(Menu.MainMenu);
+			guiManager.transitionTo(Menu.END_GAME, "0,0", TeamEnum.BLUE);
+			guiManager.transitionTo(Menu.MAIN_MENU);
 			try {
 				guiManager.transitionTo(null);
 				fail("transitionTo null should throw");

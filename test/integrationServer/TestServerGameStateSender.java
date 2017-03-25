@@ -1,14 +1,5 @@
 package integrationServer;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import enums.GameMode;
 import enums.TeamEnum;
 import gui.GUIManager;
@@ -22,6 +13,9 @@ import networking.game.UDPClient;
 import networking.game.UDPServer;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import physics.CollisionsHandler;
 import physics.InputHandler;
 import physics.PowerupType;
@@ -32,6 +26,8 @@ import players.UserPlayer;
 import rendering.ImageFactory;
 import rendering.Map;
 import rendering.Renderer;
+
+import java.util.ArrayList;
 
 /**
  * Test class for a server game state sender, which transmits the game data to
@@ -87,15 +83,15 @@ public class TestServerGameStateSender {
 		ch = new CollisionsHandler(map);
 
 		player = new ClientPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, new GUIManager(), ch, new InputHandler(),
-				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURETHEFLAG, Renderer.TARGET_FPS);
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURE_THE_FLAG, Renderer.TARGET_FPS);
 
-		ghostPlayer = new GhostPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch, GameMode.CAPTURETHEFLAG,
+		ghostPlayer = new GhostPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch, GameMode.CAPTURE_THE_FLAG,
 				Renderer.TARGET_FPS);
 
 		userPlayer1 = new UserPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch,
-				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+				ImageFactory.getPlayerImage(TeamEnum.RED), GameMode.CAPTURE_THE_FLAG, ServerGameSimulation.GAME_HERTZ);
 		userPlayer2 = new UserPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, ch,
-				ImageFactory.getPlayerImage(TeamEnum.BLUE), GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+				ImageFactory.getPlayerImage(TeamEnum.BLUE), GameMode.CAPTURE_THE_FLAG, ServerGameSimulation.GAME_HERTZ);
 
 		ArrayList<EssentialPlayer> playersForServer = new ArrayList<>();
 		playersForServer.add(userPlayer1);

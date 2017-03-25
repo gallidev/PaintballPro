@@ -2,7 +2,6 @@ package gui;
 
 import enums.Menu;
 import enums.TeamEnum;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -64,9 +63,9 @@ public class EndGameMenu {
 		{
 			if (guiManager.getClient() != null && guiManager.getClient().getSender() != null) {
 				guiManager.getClient().getSender().sendMessage("Exit:Game");
-				guiManager.transitionTo(Menu.MultiplayerGameType);
+				guiManager.transitionTo(Menu.MULTIPLAYER_GAME_TYPE);
 			} else
-				guiManager.transitionTo(Menu.SingleplayerGameType);
+				guiManager.transitionTo(Menu.SINGLEPLAYER_GAME_TYPE);
 		})};
 		GridPane options = MenuOptionSet.optionSetToGridPane(set);
 

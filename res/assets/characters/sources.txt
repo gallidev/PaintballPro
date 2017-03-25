@@ -1,0 +1,2 @@
+player.png - based on:
+http://opengameart.org/content/animated-top-down-survivor-player

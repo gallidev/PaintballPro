@@ -12,8 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.server.Team;
-import physics.Bullet;
 import physics.CollisionsHandler;
+import physics.Pellet;
 import rendering.ImageFactory;
 import rendering.Spawn;
 
@@ -53,7 +53,7 @@ public abstract class EssentialPlayer extends ImageView {
 	boolean hasShot;
 	double angle, lastAngle;
 	double mouseX, mouseY;
-	ArrayList<Bullet> firedBullets = new ArrayList<Bullet>();
+	ArrayList<Pellet> firedPellets = new ArrayList<Pellet>();
 	long shootTimer, spawnTimer;
 	double lastX, lastY;
 	int bulletCounter;
@@ -115,14 +115,14 @@ public abstract class EssentialPlayer extends ImageView {
 
 	//Updates the location of the bullets
 	void updateBullets(){
-		for(Bullet firedBullet : firedBullets)
-			firedBullet.moveInDirection();
+		for(Pellet firedPellet : firedPellets)
+			firedPellet.moveInDirection();
 	}
 
 	void cleanBullets(){
-		if(firedBullets.size() > 0) {
-			if (!firedBullets.get(0).isActive()) {
-				firedBullets.remove(0);
+		if(firedPellets.size() > 0) {
+			if (!firedPellets.get(0).isActive()) {
+				firedPellets.remove(0);
 			}
 		}
 	}
@@ -256,12 +256,12 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	public void generateBullet(int bulletId, double x, double y, double angle){
-		Bullet bullet = new Bullet(bulletId, x, y, angle, team, gameSpeed);
+		Pellet pellet = new Pellet(bulletId, x, y, angle, team, gameSpeed);
 
 		if(listener != null){
 			listener.onShotBullet(id, bulletCounter, x, y, angle);
 		}
-		firedBullets.add(bullet);
+		firedPellets.add(pellet);
 
 	}
 
@@ -282,12 +282,12 @@ public abstract class EssentialPlayer extends ImageView {
 	//Getters and setters below this point
 	//-----------------------------------------------------------------------------
 
-	public List<Bullet> getBullets(){
-		return this.firedBullets;
+	public List<Pellet> getBullets(){
+		return this.firedPellets;
 	}
 
-	public synchronized List<Bullet> getSyncBullets(){
-		return this.firedBullets;
+	public synchronized List<Pellet> getSyncBullets(){
+		return this.firedPellets;
 	}
 
 	public double getAngle(){

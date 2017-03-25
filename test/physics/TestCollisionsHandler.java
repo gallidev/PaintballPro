@@ -49,14 +49,14 @@ public class TestCollisionsHandler {
 
 		ArrayList<EssentialPlayer> players = new ArrayList<>();
 
-		player1 = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, map.getSpawns(), TeamEnum.RED, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED), enums.GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+		player1 = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 1, map.getSpawns(), TeamEnum.RED, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED), enums.GameMode.CAPTURE_THE_FLAG, ServerGameSimulation.GAME_HERTZ);
 
-		player2 = new UserPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), enums.GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+		player2 = new UserPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 2, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), enums.GameMode.CAPTURE_THE_FLAG, ServerGameSimulation.GAME_HERTZ);
 
 
-		player3 = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 3, map.getSpawns(), TeamEnum.RED, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED), enums.GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+		player3 = new UserPlayer(map.getSpawns()[0].x * 64, map.getSpawns()[0].y * 64, 3, map.getSpawns(), TeamEnum.RED, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.RED), enums.GameMode.CAPTURE_THE_FLAG, ServerGameSimulation.GAME_HERTZ);
 
-		player4 = new UserPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 4, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), enums.GameMode.CAPTURETHEFLAG, ServerGameSimulation.GAME_HERTZ);
+		player4 = new UserPlayer(map.getSpawns()[5].x * 64, map.getSpawns()[5].y * 64, 4, map.getSpawns(), TeamEnum.BLUE, collisionsHandler, ImageFactory.getPlayerImage(TeamEnum.BLUE), enums.GameMode.CAPTURE_THE_FLAG, ServerGameSimulation.GAME_HERTZ);
 
 		red.addMember(player1);
 		blue.addMember(player2);

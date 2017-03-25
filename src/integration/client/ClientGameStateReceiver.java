@@ -2,8 +2,8 @@ package integration.client;
 
 import audio.AudioManager;
 import javafx.application.Platform;
-import physics.Bullet;
 import physics.Flag;
+import physics.Pellet;
 import physics.Powerup;
 import physics.PowerupType;
 import players.ClientPlayer;
@@ -197,7 +197,7 @@ public class ClientGameStateReceiver {
 		p = getPlayerWithId(playerId);
 
 		if (p != null) {
-			Bullet b = getBulletWithId(p, bulletId);
+			Pellet b = getBulletWithId(p, bulletId);
 			if (b != null) {
 				Platform.runLater(() -> {
 					if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
@@ -280,8 +280,8 @@ public class ClientGameStateReceiver {
 	 * @param id The bullet id to be found.
 	 * @return The bullet with a given id nelonging to the given player.
 	 */
-	public Bullet getBulletWithId(EssentialPlayer p, int id) {
-		for (Bullet b : p.getSyncBullets()) {
+	public Pellet getBulletWithId(EssentialPlayer p, int id) {
+		for (Pellet b : p.getSyncBullets()) {
 			if (b.getBulletId() == id)
 				return b;
 		}

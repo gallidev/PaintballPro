@@ -68,10 +68,10 @@ public class CollisionsHandler
 			double propX = propWall.getX();
 			double propY = propWall.getY();
 
-			for(Bullet bullet : p.getBullets())
+			for(Pellet pellet : p.getBullets())
 			{
-				if(bullet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
-					bullet.disable(propWall);
+				if(pellet.getBoundsInParent().intersects(propWall.getBoundsInParent())){
+					pellet.disable(propWall);
 				}
 
 			}
@@ -268,15 +268,15 @@ public class CollisionsHandler
 	private void checkBulletsAgainstATeam(EssentialPlayer p, ArrayList<EssentialPlayer> opponents){
 		for(EssentialPlayer enemy : opponents){
 
-			for(Bullet bullet : enemy.getBullets())
+			for(Pellet pellet : enemy.getBullets())
 			{
-				if(bullet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(bullet.getBoundsInParent()) && !p.isEliminated())
+				if(pellet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(pellet.getBoundsInParent()) && !p.isEliminated())
 				{
 
 					//System.out.println("Been shot ");
-					bullet.disable();
+					pellet.disable();
 					if(listener != null){
-						listener.onBulletKills(enemy.getPlayerId(), bullet.getBulletId());
+						listener.onBulletKills(enemy.getPlayerId(), pellet.getBulletId());
 					}
 					//check if the player has the shield power up
 					if(p.getShieldActive()){
