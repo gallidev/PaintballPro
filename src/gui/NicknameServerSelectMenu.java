@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import networking.discoveryNew.DiscoveryClientListener;
+import networking.discoveryNew.DiscoveryClientAnnouncer;
 import networking.discoveryNew.IPAddress;
 
 /**
@@ -114,7 +114,7 @@ public class NicknameServerSelectMenu {
 			(new Thread(() -> {
 				if (automatic.isSelected()) {
 					// Search the local network for servers
-					DiscoveryClientListener client = new DiscoveryClientListener();
+					DiscoveryClientAnnouncer client = new DiscoveryClientAnnouncer();
 					String ipPort = client.findServer().split(":")[0];
 
 					if (ipPort.equals("")) {

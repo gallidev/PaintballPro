@@ -10,7 +10,7 @@ import java.net.InetAddress;
  * 
  * @author Matthew Walters
  */
-public class DiscoveryServerAnnouncer extends Thread {
+public class DiscoveryServerListener extends Thread {
 
 	public boolean m_running = true;
 
@@ -22,7 +22,7 @@ public class DiscoveryServerAnnouncer extends Thread {
 	 * @param portNo
 	 *            TCP port that the game is running on
 	 */
-	public DiscoveryServerAnnouncer() {
+	public DiscoveryServerListener() {
 	}
 
 	/**

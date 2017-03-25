@@ -3,7 +3,7 @@ package gui;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import networking.discoveryNew.DiscoveryServerAnnouncer;
+import networking.discoveryNew.DiscoveryServerListener;
 import networking.discoveryNew.IPAddress;
 import networking.server.Server;
 import org.junit.After;
