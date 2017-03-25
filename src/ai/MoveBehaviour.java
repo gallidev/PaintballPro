@@ -8,6 +8,10 @@ import java.util.Random;
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
+/**
+ * The behaviour that makes an AI player move towards the nearest enemy
+ * @author Sivarjuen Ravichandran
+ */
 public class MoveBehaviour extends Behaviour {
 
     private long startTimer;
@@ -15,6 +19,11 @@ public class MoveBehaviour extends Behaviour {
     private boolean started = true;
     private boolean timerStarted = false;
 
+    /**
+     * Instantiates the behaviour
+     * @param ai The AI player
+     * @param manager The AI's behaviour manager
+     */
     public MoveBehaviour(AIPlayer ai, BehaviourManager manager) {
         super(ai, manager);
         startDelay = 6000;

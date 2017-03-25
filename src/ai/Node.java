@@ -3,6 +3,7 @@ package ai;
 
 /**
  * A node stores a set coordinate, which can be linked with other nodes to form a path
+ * @author Sivarjuen Ravichandran
  */
 public class Node {
     public int x;
@@ -21,6 +22,9 @@ public class Node {
         this.y = y;
     }
 
+    /**
+     * Resets the parent node, the heuristic cost and the final cost of the node
+     */
     public void reset(){
         parent = null;
         heuristicCost = 0;

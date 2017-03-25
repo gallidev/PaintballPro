@@ -13,6 +13,11 @@ import java.util.Random;
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
+/**
+ * The manager that represents tha finite state machine that switches between the different behaviours accordingly
+ * @author Sivarjuen Ravichandran
+ *
+ */
 public class BehaviourManager{
     private AIPlayer ai;
     private Mover mover;
@@ -37,6 +42,10 @@ public class BehaviourManager{
     //    CTFRetreat - Goes to base
     //    Random - Random movement - TEMP
 
+    /**
+     * Initialise all behaviours
+     * @param ai The ai player
+     */
     public BehaviourManager(AIPlayer ai){
         this.ai = ai;
         this.enemies = new ArrayList<>();
@@ -48,6 +57,9 @@ public class BehaviourManager{
         gameMode = ai.getMap().getGameMode();
     }
 
+    /**
+     * Updates the active behaviour when certain conditions are met
+     */
     public void tick(){
         defaultTick();
         if(gameMode == GameMode.CAPTURE_THE_FLAG) {
@@ -61,6 +73,11 @@ public class BehaviourManager{
         }
     }
 
+    /**
+     * The default behaviour that is called every time
+     * - finds nearest target
+     * - aims/shoots at the target if the target is within range
+     */
     private void defaultTick(){
         enemies = ai.getEnemies();
         updateAngle();
@@ -68,6 +85,12 @@ public class BehaviourManager{
         ai.setShoot(updateShooting(closestX, closestY));
     }
 
+    /**
+     * Checks to see if the nearest enemy can be shot
+     * @param x The x-coordinate of the target
+     * @param y The y-coordinate of the target
+     * @return True if the target is within range, and in sight. False otherwise.
+     */
     private boolean updateShooting(double x, double y){
 
         double distance = Math.sqrt(Math.pow(x - (ai.getLayoutX() + PLAYER_HEAD_X), 2) + (Math.pow((ai.getLayoutY() + PLAYER_HEAD_Y) - y, 2)));
@@ -77,6 +100,12 @@ public class BehaviourManager{
 
     }
 
+    /**
+     * Checks to see if a particular location is in the AI's line of sight
+     * @param x The x-coordinate of the target
+     * @param y The y-coordinate of the target
+     * @return True if the AI has clear line of sight to the target coordinates
+     */
     public boolean canSee(double x, double y){
         Line line = new Line((ai.getLayoutX() + PLAYER_HEAD_X), (ai.getLayoutY() + PLAYER_HEAD_Y), x, y);
         ArrayList<Rectangle> propsWalls = ai.getMap().getPropCollisionBounds();
@@ -89,6 +118,9 @@ public class BehaviourManager{
         return true;
     }
 
+    /**
+     * Implicitly finds closest enemy and checks if the AI should face them if they are in range
+     */
     public void updateAngle(){
         double minDistance = Double.MAX_VALUE;
         for(EssentialPlayer enemy: enemies){
@@ -114,18 +146,34 @@ public class BehaviourManager{
         }
     }
 
+    /**
+     * Returns the AI's mover
+     * @return
+     */
     public Mover getMover(){
         return this.mover;
     }
 
+    /**
+     * Returns the closest enemy to the AI
+     * @return
+     */
     public EssentialPlayer getClosestEnemy(){
         return this.closestEnemy;
     }
 
+    /**
+     * Returns the x-coordinate of the closest enemy
+     * @return
+     */
     public double getClosestX(){
         return this.closestX;
     }
 
+    /**
+     * Returns the y-coordinate of the closest enemy
+     * @return
+     */
     public double getClosestY(){
         return this.closestY;
     }

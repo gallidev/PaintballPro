@@ -1,5 +1,9 @@
 package ai;
 
+/**
+ * A node representing the position of a prop
+ * @author Sivarjuen Ravichandran
+ */
 public class PropNode {
     public int x;
     public int y;

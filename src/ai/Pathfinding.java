@@ -11,6 +11,7 @@ import java.util.Random;
 
 /**
  * Pathfinding uses A* search to compute an efficient path from the current position to a given target position
+ * @author Sivarjuen Ravichandran
  */
 public class Pathfinding {
 
@@ -28,6 +29,11 @@ public class Pathfinding {
     private Random random;
 
     //Initialise Pathfinding for each AI
+
+    /**
+     * Instantiates the pathfinder for the given map
+     * @param map The map
+     */
     public Pathfinding(Map map) {
         //Initialise nodes array from map
         nodes = new Node[48][48];
@@ -73,6 +79,13 @@ public class Pathfinding {
         }
     }
 
+    /**
+     * Performs A* search from a start node to an end node
+     * @param x The x-coordinate of the start node
+     * @param y The y-coordinate of the start node
+     * @param tx The x-coordinate of the end node
+     * @param ty The y-coordinate of the end node
+     */
     private void AStar(int x, int y, int tx, int ty){
         path.clearPath();
         closed.clear();
@@ -186,6 +199,12 @@ public class Pathfinding {
         }
     }
 
+    /**
+     * Processed all neighbouring nodes to determine which nodes should be explored next
+     * @param current The current node
+     * @param target The node being considered
+     * @param goal The goal node
+     */
     private void processNode(Node current, Node target, Node goal){
         if(closed.contains(target)) return;
         if(current == null || target == null) return;
@@ -201,7 +220,14 @@ public class Pathfinding {
 
     }
 
-    //Sqrt is expensive, but this takes into account diagonal movements
+    /**
+     * Calculates the euclidean distance between two nodes
+     * @param x The x-coordinate of the start node
+     * @param y The y-coordinate of the start node
+     * @param tx The x-coordinate of the end node
+     * @param ty The y-coordinate of the end node
+     * @return
+     */
     private float euclideanCost(int x, int y, int tx, int ty) {
         float dx = tx - x;
         float dy = ty - y;
@@ -211,6 +237,11 @@ public class Pathfinding {
         return result;
     }
 
+    /**
+     * Creates a path out of a series of connected nodes
+     * @param start Start node
+     * @param goal Goal node
+     */
     private void createPath(Node start, Node goal){
         if(goal == null){
             path = new Path();
@@ -229,12 +260,23 @@ public class Pathfinding {
 
     }
 
+    /**
+     * Returns the generates path
+     * @param x The x-coordinate of the start node
+     * @param y The y-coordinate of the start node
+     * @param tx The x-coordinate of the end node
+     * @param ty The y-coordinate of the end node
+     * @return
+     */
     public Path getPath(int x, int y, int tx, int ty){
         resetNodes();
         AStar(x, y, tx, ty);
         return path;
     }
 
+    /**
+     * Resets the parent chain, the heuristic costs, and the final costs of the nodes that are currently in the path
+     */
     private void resetNodes(){
         for (Node[] nodeRow:nodes) {
             for (Node node:nodeRow) {
@@ -245,6 +287,10 @@ public class Pathfinding {
         }
     }
 
+    /**
+     * Returns the 2d grid representation of the map
+     * @return
+     */
     public Node[][] getNodeGrid(){
         return this.nodes;
     }

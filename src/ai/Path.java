@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 /**
  * A Path is a list of Nodes leading towards some target. This path is computed bya path finding algorithm (i.e A*)
+ * @author Sivarjuen Ravichandran
  */
 public class Path {
     private ArrayList<Node> Nodes;
@@ -71,10 +72,16 @@ public class Path {
         return Nodes.contains(n);
     }
 
+    /**
+     * Clears the path
+     */
     public void clearPath(){
         Nodes.clear();
     }
 
+    /**
+     * Removes the first node from the path
+     */
     public void removeFirst() { Nodes.remove(0);}
 
     @Override

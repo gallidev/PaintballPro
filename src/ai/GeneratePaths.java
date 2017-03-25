@@ -7,6 +7,10 @@ import rendering.Map;
 
 import java.io.FileWriter;
 
+/**
+ * A one time use script used to generate all possible paths for a given map, and store them in a CSV file
+ * @author Sivarjuen Ravichandran
+ */
 public class GeneratePaths extends Application {
 
     @Override

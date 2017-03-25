@@ -10,6 +10,10 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The class used retrieve path information from a CSV file and store them in a hash map, where the keys are the are the start and end points of the path
+ * @author Sivarjuen Ravichandran
+ */
 public class HashMapGen {
 
     private HashMap<PointPairs, ArrayList<Point2D>> pathMap;
@@ -17,6 +21,10 @@ public class HashMapGen {
     private String line = "";
     private String csvSplitBy = ",";
 
+    /**
+     * Finds the relevant CSV file for a given map, and calls the method which generates the hash map
+     * @param map The map
+     */
     public HashMapGen(Map map){
         if(map.getGameMode() == GameMode.CAPTURE_THE_FLAG){
             csvFile = "res/maps/castle_paths.csv";
@@ -32,6 +40,10 @@ public class HashMapGen {
         }
     }
 
+    /**
+     * Generates a hash map with all possible paths from a csv file. The keys of the hash map are the start and end coordinates of the path
+     * @throws Exception
+     */
     private void generatePathMap() throws Exception{
 
         BufferedReader br = new BufferedReader(new FileReader(csvFile));
@@ -54,6 +66,10 @@ public class HashMapGen {
         }
     }
 
+    /**
+     * Returns the generated hash map
+     * @return
+     */
     public HashMap<PointPairs, ArrayList<Point2D>> getPathMap(){
         return this.pathMap;
     }

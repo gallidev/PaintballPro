@@ -8,7 +8,12 @@ import java.util.Random;
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
-
+/**
+ * Abstract class for all AI Behaviours
+ *
+ * @author Sivarjuen Ravichandran
+ *
+ */
 public abstract class Behaviour {
 
     protected AIPlayer ai;
@@ -16,6 +21,11 @@ public abstract class Behaviour {
     protected Mover mover;
     protected Random rand;
 
+    /**
+     * Initialise the Behaviour super class
+     * @param ai The ai player
+     * @param manager The ai's Behaviour manager
+     */
     public Behaviour(AIPlayer ai, BehaviourManager manager){
         this.ai = ai;
         this.manager = manager;
@@ -25,6 +35,9 @@ public abstract class Behaviour {
 
     public abstract void tick();
 
+    /**
+     * Called right at the beginning of a game to allow the AI's to spread out
+     */
     public void startAction(){
         boolean b = rand.nextBoolean();
         if(b){

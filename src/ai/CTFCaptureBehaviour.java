@@ -10,6 +10,10 @@ import java.util.Random;
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
+/**
+ * The behaviour that makes an AI player move to capture the flag, or protect a friendly flag carrier
+ * @author Sivarjuen Ravichandran
+ */
 public class CTFCaptureBehaviour extends Behaviour {
 
     private long startTimer;
@@ -17,6 +21,11 @@ public class CTFCaptureBehaviour extends Behaviour {
     private boolean started = true;
     private boolean timerStarted = false;
 
+    /**
+     * Instantiates the behaviour
+     * @param ai The AI player
+     * @param manager The AI's behaviour manager
+     */
     public CTFCaptureBehaviour(AIPlayer ai, BehaviourManager manager){
         super(ai, manager);
         startDelay = 15000;

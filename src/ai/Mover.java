@@ -10,6 +10,7 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
 /**
  * Moves an AI Player along a path
+ * @author Sivarjuen Ravichandran
  */
 public class Mover {
 
@@ -21,11 +22,19 @@ public class Mover {
     private long timer;
     private Point2D target;
 
+    /**
+     * Instatiates the mover for the given AI
+     * @param ai The ai player
+     */
     public Mover(AIPlayer ai){
         this.ai = ai;
         path = new ArrayList<>();
     }
 
+    /**
+     * Sets the path to follow
+     * @param path
+     */
     public void setPath(ArrayList<Point2D> path){
         if(path == null) {
             finished = true;
@@ -35,6 +44,9 @@ public class Mover {
         this.path = (ArrayList<Point2D>)path.clone();
     }
 
+    /**
+     * Moves the AI along the path one node at a time
+     */
     private void followPath(){
         finished = false;
 
@@ -54,6 +66,9 @@ public class Mover {
         }
     }
 
+    /**
+     * Moves the AI to the next node
+     */
     private void move(){
         target = path.get(0);
         double deltaX = (target.getX() * 64) - (ai.getLayoutX() + PLAYER_HEAD_X) + 32;
@@ -63,6 +78,9 @@ public class Mover {
         ai.setMovementAngle(movementAngle);
     }
 
+    /**
+     * Update method which checks whether a new path needs to be calculated
+     */
     public void tick(){
         followPath();
         if(ai.isEliminated() || timer < System.currentTimeMillis() - delay) {
@@ -70,9 +88,17 @@ public class Mover {
         }
     }
 
+    /**
+     * Returns the next node the AI moves towards
+     * @return
+     */
     public Point2D getTarget(){
         return this.target;
     }
 
+    /**
+     * Returns the path the AI is following
+     * @return
+     */
     public ArrayList<Point2D> getPath(){return this.path;}
 }

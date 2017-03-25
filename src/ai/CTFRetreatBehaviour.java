@@ -7,9 +7,17 @@ import players.AIPlayer;
 import static players.EssentialPlayer.PLAYER_HEAD_X;
 import static players.EssentialPlayer.PLAYER_HEAD_Y;
 
+/**
+ * The behaviour that makes an AI player move back towards its base after capturing a flag
+ * @author Sivarjuen Ravichandran
+ */
 public class CTFRetreatBehaviour extends Behaviour {
 
-
+    /**
+     * Instantiates the behaviour
+     * @param ai The AI player
+     * @param manager The AI's behaviour manager
+     */
     public CTFRetreatBehaviour(AIPlayer ai, BehaviourManager manager){
         super(ai, manager);
     }
