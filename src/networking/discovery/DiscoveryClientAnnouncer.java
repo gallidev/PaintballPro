@@ -1,4 +1,4 @@
-package networking.discoveryNew;
+package networking.discovery;
 
 /**
  * Class to broadcast a client's presence on the LAN
@@ -39,9 +39,6 @@ public class DiscoveryClientAnnouncer {
 		ret = this.findServer();
 		annoc.m_running = false;
 		client.interrupt();
-		if (ret.split(":")[1].contains("25566"))
-			return true;
-		else
-			return false;
+		return ret.split(":")[1].contains("25566");
 	}
 }

@@ -2,12 +2,12 @@ package physics;
 
 import enums.TeamEnum;
 import gui.GUIManager;
-import integration.server.GameUpdateListener;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
+import networking.game.GameUpdateListener;
 import players.EssentialPlayer;
 import rendering.Map;
 

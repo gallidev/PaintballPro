@@ -1,11 +1,10 @@
-package integration.server;
-
-import java.util.ArrayList;
+package networking.game;
 
 import logic.GameMode;
 import logic.server.Team;
-import networking.game.UDPServer;
 import players.EssentialPlayer;
+
+import java.util.ArrayList;
 
 /**
  * Class that represents a simulation of the enitre game logic, running on the

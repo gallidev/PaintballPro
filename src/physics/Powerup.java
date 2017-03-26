@@ -3,13 +3,12 @@ package physics;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import networking.game.GameUpdateListener;
 import rendering.GameObject;
 import rendering.ImageFactory;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import integration.server.GameUpdateListener;
 
 public class Powerup extends ImageView
 {

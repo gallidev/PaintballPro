@@ -2,11 +2,11 @@ package ai;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
-import integration.server.ServerGameSimulation;
 import javafx.geometry.Point2D;
 import logic.GameMode;
 import logic.server.CaptureTheFlagMode;
 import logic.server.Team;
+import networking.game.ServerGameSimulation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

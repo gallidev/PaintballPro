@@ -1,4 +1,4 @@
-package networking.discoveryNew;
+package networking.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

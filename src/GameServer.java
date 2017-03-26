@@ -3,8 +3,8 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import networking.discoveryNew.DiscoveryServerListener;
-import networking.discoveryNew.IPAddress;
+import networking.discovery.DiscoveryServerListener;
+import networking.discovery.IPAddress;
 import networking.server.Server;
 
 /**
@@ -15,6 +15,14 @@ public class GameServer extends Application {
 	private ServerGUI gui = new ServerGUI();
 	private Server server;
 	private Thread discovery;
+
+	/**
+	 * Main method for starting the server
+	 * @param args command line arguments
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 	/**
 	 * Start the application
@@ -34,7 +42,7 @@ public class GameServer extends Application {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} 
+				}
 			if (discovery != null)
 				discovery.interrupt();
 			System.exit(0);
@@ -49,13 +57,5 @@ public class GameServer extends Application {
 			gui.setServer(server, discovery);
 		})).start();
 
-	}
-
-	/**
-	 * Main method for starting the server
-	 * @param args command line arguments
-	 */
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

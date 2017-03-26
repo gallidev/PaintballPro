@@ -1,4 +1,4 @@
-package networking.discoveryNew;
+package networking.discovery;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;

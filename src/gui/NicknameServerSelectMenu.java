@@ -8,8 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import networking.discoveryNew.DiscoveryClientAnnouncer;
-import networking.discoveryNew.IPAddress;
+import networking.discovery.DiscoveryClientAnnouncer;
+import networking.discovery.IPAddress;
 
 /**
  * Class containing the nickname and server selection menu

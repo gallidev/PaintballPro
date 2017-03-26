@@ -1,8 +1,8 @@
 package networking.game;
 
-import integration.server.ServerInputReceiver;
 import networking.server.ClientTable;
 import networking.server.LobbyTable;
+import networking.server.ServerInputReceiver;
 import players.ServerBasicPlayer;
 
 import java.net.DatagramPacket;

@@ -10,8 +10,6 @@ import java.util.TimerTask;
  */
 public class RoundTimer {
 
-	private static int interval = 1;
-
 	private int timeLeft;
 	private Timer timer;
 
@@ -76,7 +74,7 @@ public class RoundTimer {
 	 * @param time
 	 *            The new time.
 	 */
-	public void setTimeLeft(int time) {
+	void setTimeLeft(int time) {
 		timeLeft = time;
 	}
 

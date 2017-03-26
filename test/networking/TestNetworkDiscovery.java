@@ -1,12 +1,11 @@
 package networking;
 
-import static org.junit.Assert.*;
-
+import networking.discovery.DiscoveryClientAnnouncer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import networking.discoveryNew.DiscoveryClientAnnouncer;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class to test Network Discovery.

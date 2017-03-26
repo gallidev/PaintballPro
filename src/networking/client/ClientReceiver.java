@@ -3,7 +3,6 @@ package networking.client;
 import enums.Menu;
 import enums.TeamEnum;
 import gui.GUIManager;
-import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
 import networking.game.UDPClient;
 import physics.CollisionsHandler;

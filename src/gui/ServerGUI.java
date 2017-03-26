@@ -10,7 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import networking.discoveryNew.IPAddress;
+import networking.discovery.IPAddress;
 import networking.server.Server;
 
 import java.util.ArrayList;

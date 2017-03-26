@@ -1,0 +1,53 @@
+Networking Protocols
+--------------------
+We work using strings between the client and the server. This document outlines the protocols for particular events that may occur during the game.
+--------------------
+
+
+-------------------------------------------	|-----------------------------------------	|-------------------------------------
+				ACTION						|				PROTOCOL					|					NOTES
+---------------------------------------	----|-----------------------------------------	|-------------------------------------
+				IN-GAME						|/////////////////////////////////////		|/////////////////////////////////////
+--------------------------------------------|----------------------------------------	|-------------------------------------
+Send scores									|"3:<redTeamScore>:<blueTeamScore>"			|
+Send bullets								|"4:<id>:<bulletX>:<bulletY>:<angle>:...	|	
+Send lost flag								|"7:<id>"									| The id represents the id of the player which has captured the flag.
+Send captured flag							|"8:<id>"									| The id represents the id of the player.
+Send flag rebased							|"!:<id>"									| The id represents the id of the player.
+Destroy bullet								|"5:<id>:<bulletId>"						|
+Get remaining time							|"6:<time>									| The time unit fis seconds.
+Power-up respawn							|"P:<location><type>						| Type: 0-shield, 1-speed
+Shield removed								|"%:<id>									| The id represents the id of the player
+Power-up being picked						|"$:<id>									|
+---------------------------------------	----|----------------------------------------	|
+				GAME STATUS					|/////////////////////////////////////		|
+-------------------------------------------	|---------------------------------------	|
+Winner										|"2:<winner>"								| Winner is either Red or Blue
+--------------------------------------------|-------------------------------------		|
+			CLIENT ACTIONS					|/////////////////////////////////////		|
+--------------------------------------------|-------------------------------------		|
+Move up/down/left/right/mouse/start shooting|"O:Up:Down:Left:Right:Mouse:Shooting:<id>"	| Not all of these have to be in the message. Only the 																							ones that are true will appear in the string
+											|
+			CLIENT REQUESTS					|/////////////////////////////////////		|
+--------------------------------------------|---------------------------------------	|
+Ping time updat								|"T:id:SentfromCLientTime:ReceivedAtServerTime"											|
+											|											|
+--------------------------------------------|---------------------------------------	|
+			SERVER ACTIONS					|/////////////////////////////////////		|
+--------------------------------------------|---------------------------------------	|
+Send clients new location					|"1:<id>:<x>:<y>:<angle>:<visibility>"
+--------------------------------------------|---------------------------------------	|--------------------------------------------
+
+
+
+Character meanings:
+
+0 - client sends input to server
+1 - server sends new location to client
+2 - server sends winner to the players
+3 - server sends scores to the client
+4 - server sends bullets to be rendered on the client
+5 - server sends client that a bullet needs to be destried.
+6 - server sends remaining time to the clients
+7 - server sends all clients when a player captured the flag
+8 - server sends players the id of the player who captured the flag

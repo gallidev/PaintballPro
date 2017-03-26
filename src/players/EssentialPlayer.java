@@ -2,7 +2,6 @@ package players;
 
 import enums.GameMode;
 import enums.TeamEnum;
-import integration.server.GameUpdateListener;
 import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
@@ -12,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import logic.server.Team;
+import networking.game.GameUpdateListener;
 import physics.CollisionsHandler;
 import physics.Pellet;
 import rendering.ImageFactory;

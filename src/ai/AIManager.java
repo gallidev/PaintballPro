@@ -1,8 +1,8 @@
 package ai;
 
 import enums.TeamEnum;
-import integration.server.ServerGameSimulation;
 import logic.server.Team;
+import networking.game.ServerGameSimulation;
 import networking.server.Lobby;
 import physics.CollisionsHandler;
 import players.AIPlayer;

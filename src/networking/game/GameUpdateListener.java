@@ -1,4 +1,4 @@
-package integration.server;
+package networking.game;
 
 import physics.PowerupType;
 

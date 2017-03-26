@@ -1,8 +1,8 @@
 package networking.game;
 
 import gui.GUIManager;
-import integration.client.ClientGameStateReceiver;
 import javafx.application.Platform;
+import networking.client.ClientGameStateReceiver;
 import networking.client.TeamTable;
 import physics.PowerupType;
 

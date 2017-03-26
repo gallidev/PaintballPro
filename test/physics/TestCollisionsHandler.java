@@ -2,11 +2,11 @@ package physics;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
-import integration.server.GameUpdateListener;
-import integration.server.ServerGameSimulation;
 import logic.GameMode;
 import logic.server.Team;
 import logic.server.TeamMatchMode;
+import networking.game.GameUpdateListener;
+import networking.game.ServerGameSimulation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -3,14 +3,10 @@ package gui;
 import helpers.JavaFXTestHelper;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import networking.discoveryNew.DiscoveryServerListener;
-import networking.discoveryNew.IPAddress;
-import networking.server.Server;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for establishing a server connection from GUI Manager
