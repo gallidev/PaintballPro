@@ -30,7 +30,7 @@ public class TestGUIManager {
 
 	/**
 	 * Test the transitionTo method
-	 * @throws Exception
+	 * @throws Exception test failed
 	 */
 	@Test
 	public void transitionTo() throws Exception {

@@ -48,7 +48,7 @@ public class TestNicknameServerSelectMenu {
 
 	/**
 	 * Test to check that the radio button set works correctly
-	 * @throws Exception
+	 * @throws Exception test failed
 	 */
 	@Test
 	public void testRadioButtons() throws Exception {
