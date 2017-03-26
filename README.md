@@ -1,4 +1,4 @@
-# Paintball Pro
+![Paintball Pro](res/assets/paintballlogo.png)
 
 Paintball Pro is a top-down cooperative shooter inspired by the real-world 
 game Paintball. There are both single player (4v4 with AI) and multiplayer 
