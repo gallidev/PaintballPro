@@ -20,26 +20,46 @@ import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
+// TODO: Auto-generated Javadoc
 /**
- * The player, represented by an ImageView that should be running
+ * The player, represented by an ImageView that should be running.
  */
 public class OfflinePlayer extends EssentialPlayer
 {
+
+	/** The my team. */
 	//game information
 	private Team myTeam;
+
+	/** The opp team. */
 	private Team oppTeam;
-	
+
+	/** The audio. */
 	private AudioManager audio;
+
+	/** The input handler. */
 	private InputHandler inputHandler;
+
+	/** The name tag. */
 	private Label nameTag;
+
+	/** The rand. */
 	private Random rand;
 
 	/**
-	 * Create a new player at the set location, and adds the rotation property to the player
+	 * Create a new player at the set location, and adds the rotation property to the player.
 	 *
+	 * @author Alexandra Paduraru
 	 * @param x             The x-coordinate of the player with respect to the map
 	 * @param y             The y-coordinate of the player with respect to the map
-	 * @author Alexandra Paduraru
+	 * @param id the id
+	 * @param map the map
+	 * @param guiManager the gui manager
+	 * @param team the team
+	 * @param collisionsHandler the collisions handler
+	 * @param inputHandler the input handler
+	 * @param mode the mode
+	 * @param currentFPS the current FPS
 	 */
 	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode, double currentFPS)
 	{
@@ -98,7 +118,7 @@ public class OfflinePlayer extends EssentialPlayer
 
 	/**
 	 * Tick is called every frame
-	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed
+	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed.
 	 */
 	@Override
 	public void tick()
@@ -146,6 +166,9 @@ public class OfflinePlayer extends EssentialPlayer
 		scoreChanged = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updatePosition()
+	 */
 	@Override
 	protected void updatePosition()
 	{
@@ -174,6 +197,9 @@ public class OfflinePlayer extends EssentialPlayer
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateShooting()
+	 */
 	protected void updateShooting(){
 		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 			shoot();
@@ -181,6 +207,9 @@ public class OfflinePlayer extends EssentialPlayer
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateAngle()
+	 */
 	//Calculates the angle the player is facing with respect to the mouse
 	@Override
 	protected void updateAngle()
@@ -195,6 +224,9 @@ public class OfflinePlayer extends EssentialPlayer
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#shoot()
+	 */
 	public void shoot()
 	{
 		double x1 = (83 * getImage().getWidth() / 120) - PLAYER_HEAD_X;
@@ -219,6 +251,9 @@ public class OfflinePlayer extends EssentialPlayer
 		firedPellets.add(pellet);
 	}
 
+	/**
+	 * Sets the player names.
+	 */
 	private void setPlayerNames(){
 		File names = new File("res/names.txt");
 		Scanner readNames;
@@ -241,30 +276,56 @@ public class OfflinePlayer extends EssentialPlayer
 
 	}
 
+	/**
+	 * Sets the mx.
+	 *
+	 * @param mx the new mx
+	 */
 	public void setMX(double mx)
 	{
 		this.mouseX = mx;
 	}
 
+	/**
+	 * Sets the my.
+	 *
+	 * @param my the new my
+	 */
 	public void setMY(double my)
 	{
 		this.mouseY = my;
 	}
 
+	/**
+	 * Gets the my team.
+	 *
+	 * @return the my team
+	 */
 	public Team getMyTeam(){
 		return this.myTeam;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setMyTeam(logic.server.Team)
+	 */
 	@Override
 	public void setMyTeam(Team team) {
 		this.myTeam = team;
 
 	}
 
+	/**
+	 * Gets the opp team.
+	 *
+	 * @return the opp team
+	 */
 	public Team getOppTeam(){
 		return this.oppTeam;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setOppTeam(logic.server.Team)
+	 */
 	@Override
 	public void setOppTeam(Team team) {
 		this.oppTeam = team;
@@ -272,6 +333,9 @@ public class OfflinePlayer extends EssentialPlayer
 	}
 
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateRotation(double)
+	 */
 	@Override
 	public void updateRotation(double angleRotation) {
 		// TODO Auto-generated method stub

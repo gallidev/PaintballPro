@@ -11,16 +11,36 @@ import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Spawn;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GhostPlayer.
+ */
 public class GhostPlayer extends EssentialPlayer {
 
+	/** The name tag. */
 	private Label nameTag;
 
+	/**
+	 * Instantiates a new ghost player.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param id the id
+	 * @param spawn the spawn
+	 * @param team the team
+	 * @param collisionsHandler the collisions handler
+	 * @param game the game
+	 * @param currentFPS the current FPS
+	 */
 	public GhostPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, GameMode game, double currentFPS) {
 		super(x, y, id, spawn, team, collisionsHandler, ImageFactory.getPlayerImage(team), game, currentFPS);
 	}
 
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#tick()
+	 */
 	@Override
 	public void tick() {
 
@@ -35,47 +55,71 @@ public class GhostPlayer extends EssentialPlayer {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updatePosition()
+	 */
 	@Override
 	protected void updatePosition() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateShooting()
+	 */
 	@Override
 	protected void updateShooting() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateAngle()
+	 */
 	@Override
 	protected void updateAngle() {
 		this.rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateScore()
+	 */
 	@Override
 	public void updateScore() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setMyTeam(logic.server.Team)
+	 */
 	@Override
 	public void setMyTeam(Team team) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setOppTeam(logic.server.Team)
+	 */
 	@Override
 	public void setOppTeam(Team team) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateRotation(double)
+	 */
 	@Override
 	public void updateRotation(double angleRotation) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#cleanBullets()
+	 */
 	void cleanBullets(){
 		if(firedPellets.size() > 0) {
 			if (!firedPellets.get(0).isActive()) {
@@ -84,16 +128,25 @@ public class GhostPlayer extends EssentialPlayer {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#relocatePlayerWithTag(double, double)
+	 */
 	public void relocatePlayerWithTag(double x, double y)
 	{
 		relocate(x, y);
 		nameTag.relocate(x - 15, y - 32);
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#getNickname()
+	 */
 	public String getNickname(){
 		return nickname;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setNickname(java.lang.String)
+	 */
 	public void setNickname(String name){
 		nickname = name;
 		nameTag = new Label(nickname);
@@ -103,11 +156,17 @@ public class GhostPlayer extends EssentialPlayer {
 		nameTag.relocate(getLayoutX() - 15, getLayoutX() - 32);
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#getNameTag()
+	 */
 	public Node getNameTag(){
 		return nameTag;
 
 	}
 
+	/**
+	 * Update game speed.
+	 */
 	public void updateGameSpeed(){
 		gameSpeed += gameSpeed * (UDPClient.PINGDELAY/100.0);
 	}

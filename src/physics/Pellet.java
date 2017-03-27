@@ -7,6 +7,8 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * A pellet is represented as a circle, that travels along a given direction
+ * 
+ * 
  */
 
 public class Pellet extends Circle

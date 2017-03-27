@@ -8,23 +8,45 @@ import javafx.scene.image.Image;
 import logic.server.Team;
 import physics.CollisionsHandler;
 import rendering.Spawn;
+// TODO: Auto-generated Javadoc
+
 /**
- *  The player, represented by an ImageView
+ *  The player, represented by an ImageView.
  */
 public class UserPlayer extends EssentialPlayer{
 
+	/** The is ticked. */
 	/* For testing purposes */
 	public static boolean isTicked = false;
-	int counterFrame;
-	private Team oppTeam;
-	private Team myTeam;
 
+	/** The counter frame. */
+	int counterFrame;
+
+	/** The opp team. */
+	private Team oppTeam;
+
+	/**
+	 * Instantiates a new user player.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param id the id
+	 * @param spawn the spawn
+	 * @param team the team
+	 * @param collisionsHandler the collisions handler
+	 * @param image the image
+	 * @param game the game
+	 * @param currentFPS the current FPS
+	 */
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS) {
 		super(x, y, id, spawn, team, collisionsHandler, image, game, currentFPS);
 		counterFrame = 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#tick()
+	 */
 	public void tick()
 	{
 		cleanBullets();
@@ -64,6 +86,9 @@ public class UserPlayer extends EssentialPlayer{
 		isTicked = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updatePosition()
+	 */
 	protected void updatePosition()
 	{
 		//System.out.println("position :" + getLayoutX() + " " + getLayoutY());
@@ -90,6 +115,9 @@ public class UserPlayer extends EssentialPlayer{
 	}
 
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateAngle()
+	 */
 	//Calculates the angle the player is facing with respect to the mouse
 	@Override
 	protected void updateAngle()
@@ -105,6 +133,9 @@ public class UserPlayer extends EssentialPlayer{
 		rotation.setAngle(degrees);
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateShooting()
+	 */
 	protected void updateShooting(){
 		if(shoot && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 			shoot();
@@ -113,6 +144,9 @@ public class UserPlayer extends EssentialPlayer{
 	}
 
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateScore()
+	 */
 	@Override
 	public void updateScore() {
 		if (gameMode == GameMode.TEAM_MATCH)
@@ -121,26 +155,41 @@ public class UserPlayer extends EssentialPlayer{
 		scoreChanged = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setMyTeam(logic.server.Team)
+	 */
 	@Override
 	public void setMyTeam(Team team) {
-		this.myTeam = team;
-
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setOppTeam(logic.server.Team)
+	 */
 	@Override
 	public void setOppTeam(Team oppTeam) {
 		this.oppTeam = oppTeam;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateRotation(double)
+	 */
 	public void updateRotation(double angle){
 		this.angle = angle;
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#getCounterFrame()
+	 */
 	public int getCounterFrame() {
 		return counterFrame;
 	}
 
+	/**
+	 * Sets the counter frame.
+	 *
+	 * @param counterFrame the new counter frame
+	 */
 	public void setCounterFrame(int counterFrame) {
 		this.counterFrame = counterFrame;
 	}

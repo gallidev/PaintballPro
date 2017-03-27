@@ -11,21 +11,47 @@ import rendering.Map;
 
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AIPlayer.
+ */
 public class AIPlayer extends EssentialPlayer{
 
+	/** The b manager. */
 	private BehaviourManager bManager;
+
+	/** The hash maps. */
 	private HashMapGen hashMaps;
+
+	/** The movement angle. */
 	private double movementAngle;
+
+	/** The opp team. */
 	private Team oppTeam;
+
+	/** The my team. */
 	private Team myTeam;
+
+	/** The moving. */
 	private boolean moving;
+
+	/** The map. */
 	private Map map;
-	//private AudioManager audio;
-	private ArrayList<EssentialPlayer> enemies;
-	private ArrayList<EssentialPlayer> teamPlayers;
-	private String nickname;
 
 
+	/**
+	 * Instantiates a new AI player.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param id the id
+	 * @param map the map
+	 * @param team the team
+	 * @param collisionsHandler the collisions handler
+	 * @param hashMaps the hash maps
+	 * @param mode the mode
+	 * @param currentFPS the current FPS
+	 */
 	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps, GameMode mode, double currentFPS){
 		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode, currentFPS);
 		this.hashMaps = hashMaps;
@@ -35,12 +61,11 @@ public class AIPlayer extends EssentialPlayer{
 		this.map = map;
 		this.moving = true;
 		bManager = new BehaviourManager(this);
-		//this.audio = audio;
 	}
 
 	/**
 	 * Tick is called every frame
-	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed
+	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed.
 	 */
 	@Override
 	public void tick() {
@@ -70,6 +95,9 @@ public class AIPlayer extends EssentialPlayer{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updatePosition()
+	 */
 	@Override
 	protected void updatePosition(){
 
@@ -95,17 +123,33 @@ public class AIPlayer extends EssentialPlayer{
 		scoreChanged = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateAngle()
+	 */
 	@Override
 	protected void updateAngle(){
 		rotation.setAngle(Math.toDegrees(angle));
 	}
 
+	/**
+	 * Gets the movement angle.
+	 *
+	 * @return the movement angle
+	 */
 	public double getMovementAngle() { return this.movementAngle;}
 
+	/**
+	 * Sets the movement angle.
+	 *
+	 * @param angle the new movement angle
+	 */
 	public void setMovementAngle(double angle){
 		this.movementAngle = angle;
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateShooting()
+	 */
 	protected void updateShooting(){
 		if(shoot && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
 			shoot();
@@ -113,55 +157,95 @@ public class AIPlayer extends EssentialPlayer{
 		}
 	}
 
-	//public Map getMap() {return this.map;}
-
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setOppTeam(logic.server.Team)
+	 */
 	public void setOppTeam(Team oppTeam){
 		this.oppTeam = oppTeam;
-		enemies = oppTeam.getMembers();
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#setMyTeam(logic.server.Team)
+	 */
 	public void setMyTeam(Team t){
 		myTeam = t;
-		teamPlayers = t.getMembers();
 	}
 
+	/**
+	 * Sets the moving.
+	 *
+	 * @param b the new moving
+	 */
 	public void setMoving(boolean b) { this.moving = b;}
 
+	/**
+	 * Gets the map.
+	 *
+	 * @return the map
+	 */
 	public Map getMap(){
 		return map;
 	}
 
+	/**
+	 * Gets the width.
+	 *
+	 * @return the width
+	 */
 	public double getWidth(){
 		return ImageFactory.getPlayerImage(TeamEnum.RED).getWidth();
 	}
 
+	/**
+	 * Gets the height.
+	 *
+	 * @return the height
+	 */
 	public double getHeight(){
 		return ImageFactory.getPlayerImage(TeamEnum.RED).getHeight();
 	}
 
 
+	/**
+	 * Gets the hash maps.
+	 *
+	 * @return the hash maps
+	 */
 	public HashMapGen getHashMaps(){
 		return this.hashMaps;
 	}
 
+	/**
+	 * Gets the enemies.
+	 *
+	 * @return the enemies
+	 */
 	public ArrayList<EssentialPlayer> getEnemies() {
 		return oppTeam.getMembers();
 	}
 
+	/**
+	 * Gets the team players.
+	 *
+	 * @return the team players
+	 */
 	public ArrayList<EssentialPlayer> getTeamPlayers() {
 		return myTeam.getMembers();
 	}
 
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#updateRotation(double)
+	 */
 	@Override
 	public void updateRotation(double angleRotation) {
-		// TODO Auto-generated method stub
 
 	}
 
-//	public CollisionsHandler getCollisionHandler(){
-//		return this.collisionsHandler;
-//	}
-
+	/**
+	 * Gets the behaviour manager.
+	 *
+	 * @return the behaviour manager
+	 */
 	public BehaviourManager getBehaviourManager(){
 		return bManager;
 	}

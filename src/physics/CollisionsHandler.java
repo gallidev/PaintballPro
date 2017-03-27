@@ -17,29 +17,55 @@ import java.util.List;
 import static gui.GUIManager.renderer;
 
 /**
+ * This class represents the  Collisions Handler is responsible of checking all the collisions of every game object
  *
- * @author gallifilippo
- *
+ * @author Filippo Galli
+ * @author Sivarjuen Ravichandran
  */
 public class CollisionsHandler
 {
+
+	/** The Constant debug flag */
 	private static final boolean debug = false;
 
+	/** Are the collisions running on local or on the server */
 	public boolean isLocal = false;
 
+	/** The rectangles of props and walls. */
 	private ArrayList<Rectangle> propsWalls;
+
+	/** The spawn area of red Team. */
 	private Rectangle spawnAreaRed;
+
+	/** The spawn area of blue Team. */
 	private Rectangle spawnAreaBlue;
+
+	/** The players of the red team. */
 	private ArrayList<EssentialPlayer> redTeam;
+
+	/** The plaeyrs of the blue team. */
 	private ArrayList<EssentialPlayer> blueTeam;
+
+	/** The flag. */
 	private Flag flag;
+
+	/** The power ups. */
 	private Powerup[] powerups;
 
+	/** The red Team. */
 	private Team red;
+
+	/** The blue Team. */
 	private Team blue;
 
+	/** The listener of game updates. */
 	private GameUpdateListener listener;
 
+	/**
+	 * Instantiates a new collisions handler with the map specified.
+	 *
+	 * @param map the map of the game
+	 */
 	public CollisionsHandler(Map map)
 	{
 		propsWalls = map.getPropCollisionBounds();
@@ -54,6 +80,11 @@ public class CollisionsHandler
 		powerups = map.getPowerups();
 	}
 
+	/**
+	 * Handle player and its bullet collisions with walls and props
+	 *
+	 * @param p The Player to check collisions with
+	 */
 	public void handlePropWallCollision(EssentialPlayer p){
 		boolean collUp = false;
 		boolean collDown = false;
@@ -80,13 +111,12 @@ public class CollisionsHandler
 			if(Math.abs(propX - p.getLayoutX()) > 72 || Math.abs(propY - p.getLayoutY()) > 72)
 				continue;
 
-			//System.out.println("collsionsss maybee");
 			//it returns a path with the collision with walls
-			//System.out.println("bound player " + p.getPlayerId() + " : " + p.getPolygonBounds().toString());
+			if(debug) System.out.println("bound player " + p.getPlayerId() + " : " + p.getPolygonBounds().toString());
 			Path tmp = (Path) Shape.intersect(p.getPolygonBounds(), propWall);
 			if(!tmp.getBoundsInLocal().isEmpty())
 			{
-				//System.out.println("Collision of :" +  propWall.toString()+  " and " + p.getPolygonBounds());
+				if(debug) System.out.println("Collision of :" +  propWall.toString()+  " and " + p.getPolygonBounds());
 				double propWidth = propWall.getWidth();
 				double propHeight = propWall.getHeight();
 
@@ -122,7 +152,7 @@ public class CollisionsHandler
 		if(!angles.isEmpty())
 		{
 			double mean = getMeanAngle(angles);
-			//System.out.println("mean: " + mean);
+			if(debug) System.out.println("mean: " + mean);
 			if(mean < 135 && mean >= 45)
 			{
 				collUp = true;
@@ -140,7 +170,7 @@ public class CollisionsHandler
 				collLeft = true;
 			}
 		}
-		//System.out.println("CollisionsHandler " + p.getPlayerId() + " collup :" + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
+		if(debug) System.out.println("CollisionsHandler " + p.getPlayerId() + " collup :" + collUp + " collDown:" + collDown + " collLeft:" + collLeft + " collRight: " + collRight );
 
 		p.setCollUp(collUp);
 		p.setCollDown(collDown);
@@ -149,6 +179,11 @@ public class CollisionsHandler
 
 	}
 
+	/**
+	 * Handle player collisions against enemies' bullets.
+	 *
+	 * @param p The Player to check collisions with
+	 */
 	public void handleBulletCollision(EssentialPlayer p)
 	{
 		switch(p.getTeam())
@@ -170,6 +205,11 @@ public class CollisionsHandler
 
 	}
 
+	/**
+	 * Handle collisions of the player specified with the flag.
+	 *
+	 * @param p The Player to check collisions with
+	 */
 	public void handleFlagCollision(EssentialPlayer p){
 		if(flag != null){
 
@@ -185,7 +225,6 @@ public class CollisionsHandler
 				p.setHasFlag(true);
 				if(renderer != null)
 					renderer.getHud().toggleFlagStatus(p.getTeam());
-
 				if(listener != null)
 					listener.onFlagCaptured(p.getPlayerId());
 
@@ -201,11 +240,6 @@ public class CollisionsHandler
 				if(listener != null)
 					listener.onFlagDropped(p.getPlayerId());
 				p.setHasFlag(false);
-
-//				if (red.containsPlayer(p))
-//					blue.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
-//				else
-//					red.incrementScore(CaptureTheFlagMode.LOST_FLAG_SCORE);
 
 			//check if the player has brought the flag back to his base
 			}if(p.hasFlag()){
@@ -238,6 +272,11 @@ public class CollisionsHandler
 		}
 	}
 
+	/**
+	 * Handle the collisions of a player with power ups.
+	 *
+	 * @param p The Player to check collisions with
+	 */
 	public void handlePowerUpCollision(EssentialPlayer p){
 
 		for(Powerup powerup : powerups)
@@ -265,6 +304,12 @@ public class CollisionsHandler
 		}
 	}
 
+	/**
+	 * Check collisions of enemies bullets with a player
+	 *
+	 * @param p The Player to check collisions with
+	 * @param opponents the enemies against the player
+	 */
 	private void checkBulletsAgainstATeam(EssentialPlayer p, ArrayList<EssentialPlayer> opponents){
 		for(EssentialPlayer enemy : opponents){
 
@@ -272,8 +317,7 @@ public class CollisionsHandler
 			{
 				if(pellet.isActive() && p.getPolygonBounds().getBoundsInParent().intersects(pellet.getBoundsInParent()) && !p.isEliminated())
 				{
-
-					//System.out.println("Been shot ");
+					if(debug) System.out.println("Been shot ");
 					pellet.disable();
 					if(listener != null){
 						listener.onBulletKills(enemy.getPlayerId(), pellet.getPelletId());
@@ -294,6 +338,12 @@ public class CollisionsHandler
 		}
 	}
 
+	/**
+	 * Calculates the mean of a list of angles in degrees.
+	 *
+	 * @param sample the List of angles
+	 * @return the mean angle
+	 */
 	// source file can be found here https://rosettacode.org/wiki/Averages/Mean_angle#Java
   private double getMeanAngle(List<Double> sample) {
 
@@ -315,16 +365,31 @@ public class CollisionsHandler
     return avg_d;
   }
 
+	/**
+	 * Sets the red team.
+	 *
+	 * @param red the new red team
+	 */
 	public void setRedTeam(Team red) {
 		this.red = red;
 		redTeam = red.getMembers();
 	}
 
+	/**
+	 * Sets the blue team.
+	 *
+	 * @param blue the new blue team
+	 */
 	public void setBlueTeam(Team blue) {
 		this.blue = blue;
 		blueTeam = blue.getMembers();
 	}
 
+	/**
+	 * Sets the players.
+	 *
+	 * @param players the new players
+	 */
 	public void setPlayers(ArrayList<EssentialPlayer> players){
 		for(EssentialPlayer p : players)
 		{
@@ -340,19 +405,39 @@ public class CollisionsHandler
 		}
 	}
 
+	/**
+	 * Sets the listener.
+	 *
+	 * @param listener the new listener
+	 */
 	public void setListener(GameUpdateListener listener)
 	{
 		this.listener = listener;
 	}
 
+	/**
+	 * Gets the flag.
+	 *
+	 * @return the flag
+	 */
 	public Flag getFlag(){
 		return flag;
 	}
 
+	/**
+	 * Gets the speed power up.
+	 *
+	 * @return the speed power up
+	 */
 	public Powerup getSpeedPowerup(){
 		return powerups[1];
 	}
 
+	/**
+	 * Gets the shield power up.
+	 *
+	 * @return the shield power up
+	 */
 	public Powerup getShieldPowerup(){
 		return powerups[0];
 	}

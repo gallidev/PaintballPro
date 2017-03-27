@@ -5,14 +5,33 @@ import javafx.scene.input.KeyEvent;
 
 import static gui.GUIManager.renderer;
 
+/**
+ *
+ *	This class handles the key press input events form the keyboard.
+ *
+ * @author Filippo Galli
+ * @author Sivarjuen Ravichandran
+ */
 public class KeyPressListener implements EventHandler<KeyEvent>
 {
+
+	/** The input handler. */
 	private InputHandler inputHandler;
 
+	/**
+	 * Instantiates a new key press listener.
+	 *
+	 * @param inputHandler the input handler
+	 */
 	public KeyPressListener(InputHandler inputHandler){
 		this.inputHandler = inputHandler;
 	}
 
+	/**
+	 * handle the keys pressed by the player and updates the inputHandler
+	 *
+	 * @param event the KeyEvent when a keyboard button is pressed
+	 */
 	@Override
 	public void handle(KeyEvent event)
 	{
