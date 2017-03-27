@@ -1,6 +1,7 @@
 package gui;
 
 import enums.Menu;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -126,7 +127,9 @@ public class SettingsMenu {
 			guiManager.width = guiManager.getStage().getWidth();
 			guiManager.getStage().setHeight(Double.parseDouble(resolution[1]));
 			guiManager.height = guiManager.getStage().getHeight();
-			guiManager.getStage().centerOnScreen();
+			Platform.runLater(() -> {
+				guiManager.getStage().centerOnScreen();
+			});
 			mainGrid.setPadding(MenuControls.scaleByResolution(25));
 			optGrid.setPadding(MenuControls.scaleByResolution(25));
 		});
