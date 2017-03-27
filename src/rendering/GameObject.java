@@ -5,25 +5,24 @@ package rendering;
  *
  * @author Artur Komoter
  */
-public class GameObject
-{
+public class GameObject {
 	private int x, y;
 
 	/**
 	 * Get the <i>x</i> grid coordinate of a game object location.
- 	 * @return <i>x</i> grid coordinate of a game object location
+	 *
+	 * @return <i>x</i> grid coordinate of a game object location
 	 */
-	public int getX()
-	{
+	public int getX() {
 		return x;
 	}
 
 	/**
 	 * Get the <i>y</i> grid coordinate of a game object location.
+	 *
 	 * @return <i>y</i> grid coordinate of a game object location
 	 */
-	public int getY()
-	{
+	public int getY() {
 		return y;
 	}
 }

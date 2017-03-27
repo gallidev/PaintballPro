@@ -32,8 +32,8 @@ class PauseSettingsMenu extends SubScene {
 		super(gridPane, guiManager.width, guiManager.height);
 		gridPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
 		gridPane.getStylesheets().add("styles/menu.css");
-        setScaleX(1024 / guiManager.width);
-        setScaleY(576 / guiManager.height);
+		setScaleX(1024 / guiManager.width);
+		setScaleY(576 / guiManager.height);
 
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.setHgap(10);
