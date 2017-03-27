@@ -1,8 +1,8 @@
 package players;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class ServerBasicPlayer.
+ * The Class represents a player with basic information on the server, for lobby and game creation porposues
  */
 public class ServerBasicPlayer {
 
@@ -18,7 +18,7 @@ public class ServerBasicPlayer {
 	/**
 	 * Instantiates a new server basic player.
 	 *
-	 * @param id the id
+	 * @param id the id of the player
 	 */
 	public ServerBasicPlayer(int id) {
 		this.ID = id;

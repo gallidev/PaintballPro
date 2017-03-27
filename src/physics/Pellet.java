@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * A pellet is represented as a circle, that travels along a given direction.
+ * it represents a pellet that every player can shoot.
  *
  * @author Filippo Galli
  * @author Sivarjuen Ravichandran

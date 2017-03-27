@@ -20,9 +20,11 @@ import rendering.Spawn;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  *  The essential player abstract class, represents player by an ImageView.
+ *
+ * @author Filippo Galli
+ * @author Sivarjuen Ravichandran
  */
 public abstract class EssentialPlayer extends ImageView {
 
@@ -95,9 +97,6 @@ public abstract class EssentialPlayer extends ImageView {
 
 	/** The current angle and the last angle. */
 	double angle, lastAngle;
-
-	/** The mouse X and y positions. */
-	double mouseX, mouseY;
 
 	/** The fired pellets. */
 	ArrayList<Pellet> firedPellets = new ArrayList<Pellet>();
@@ -178,8 +177,9 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	/**
-	 * update the player in every term, positions, shooting, angle, pellets by also checking the collisions,
-	 * it should be called every time based on the speed of the simulation
+	 * Tick is called every frame
+	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed,
+	 * it handles power ups, elimination, respawn, calls the collision methods.
 	 */
 	public abstract void tick();
 

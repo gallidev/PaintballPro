@@ -20,9 +20,12 @@ import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The player, represented by an ImageView that should be running.
+ * This class represents the player running on single player mode.
+ *
+ * @author Filippo Galli
+ * @author Sivarjuen Ravichandran
  */
 public class OfflinePlayer extends EssentialPlayer
 {
@@ -49,19 +52,19 @@ public class OfflinePlayer extends EssentialPlayer
 	/**
 	 * Create a new player at the set location, and adds the rotation property to the player.
 	 *
-	 * @author Alexandra Paduraru
-	 * @param x             The x-coordinate of the player with respect to the map
-	 * @param y             The y-coordinate of the player with respect to the map
-	 * @param id the id
-	 * @param map the map
-	 * @param guiManager the gui manager
-	 * @param team the team
-	 * @param collisionsHandler the collisions handler
+	 * @param x the x position of the player
+	 * @param y the y position of the player
+	 * @param id the id of the client player
+	 * @param map the map in which the player is playing
+	 * @param guiManager the GUI manager in which the player is running
+	 * @param team the team of the player
+	 * @param collisionsHandler the collisions handler of the game simulation
 	 * @param inputHandler the input handler
-	 * @param mode the mode
-	 * @param currentFPS the current FPS
+	 * @param mode the game mode
+	 * @param currentFPS the current FPS in which the simulation is running on.
 	 */
-	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team, CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode, double currentFPS)
+	public OfflinePlayer(double x, double y, int id, Map map, GUIManager guiManager, TeamEnum team,
+			CollisionsHandler collisionsHandler, InputHandler inputHandler, GameMode mode, double currentFPS)
 	{
 		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode, currentFPS);
 		this.audio = guiManager.getAudioManager();
@@ -116,9 +119,8 @@ public class OfflinePlayer extends EssentialPlayer
 
 	}
 
-	/**
-	 * Tick is called every frame
-	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed.
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#tick()
 	 */
 	@Override
 	public void tick()
@@ -154,10 +156,7 @@ public class OfflinePlayer extends EssentialPlayer
 		}
 	}
 
-	/**
-	 * Updates the score of the opponent team when the current player has been eliminated.
-	 * @author Alexandra Paduraru
-	 */
+
 	@Override
 	public void updateScore() {
 		if (gameMode == GameMode.TEAM_MATCH)
@@ -274,26 +273,6 @@ public class OfflinePlayer extends EssentialPlayer
 			e.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * Sets the mx.
-	 *
-	 * @param mx the new mx
-	 */
-	public void setMX(double mx)
-	{
-		this.mouseX = mx;
-	}
-
-	/**
-	 * Sets the my.
-	 *
-	 * @param my the new my
-	 */
-	public void setMY(double my)
-	{
-		this.mouseY = my;
 	}
 
 	/**

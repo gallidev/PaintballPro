@@ -11,16 +11,21 @@ import rendering.Map;
 
 import java.util.ArrayList;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class AIPlayer.
+ * This class represents an Ai player that could run on server or client simulation,
+ * depending on single player or multiplayer mode.
+ *
+ * @author Filippo Galli
+ * @author Sivarjuen Ravichandran
+ *
  */
 public class AIPlayer extends EssentialPlayer{
 
-	/** The b manager. */
+	/** The behaviour manager. */
 	private BehaviourManager bManager;
 
-	/** The hash maps. */
+	/** The hash maps for finding the shortest paths. */
 	private HashMapGen hashMaps;
 
 	/** The movement angle. */
@@ -32,7 +37,7 @@ public class AIPlayer extends EssentialPlayer{
 	/** The my team. */
 	private Team myTeam;
 
-	/** The moving. */
+	/** Is the player moving. */
 	private boolean moving;
 
 	/** The map. */
@@ -42,17 +47,18 @@ public class AIPlayer extends EssentialPlayer{
 	/**
 	 * Instantiates a new AI player.
 	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param id the id
-	 * @param map the map
-	 * @param team the team
-	 * @param collisionsHandler the collisions handler
-	 * @param hashMaps the hash maps
+	 * @param x the x position of the player
+	 * @param y the y position of the player
+	 * @param id the id of the player
+	 * @param map the map in which the player is playing
+	 * @param team the team of the player
+	 * @param collisionsHandler the collisions handler of the game simulation
+	 * @param hashMaps the hash maps with the shortest paths of the map
 	 * @param mode the mode
-	 * @param currentFPS the current FPS
+	 * @param currentFPS the current FPS in which the simulation is running on.
 	 */
-	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler, HashMapGen hashMaps, GameMode mode, double currentFPS){
+	public AIPlayer(double x, double y, int id, Map map, TeamEnum team, CollisionsHandler collisionsHandler,
+			HashMapGen hashMaps, GameMode mode, double currentFPS){
 		super(x, y, id, map.getSpawns(), team, collisionsHandler, ImageFactory.getPlayerImage(team), mode, currentFPS);
 		this.hashMaps = hashMaps;
 		angle = Math.toRadians(90);
@@ -63,9 +69,9 @@ public class AIPlayer extends EssentialPlayer{
 		bManager = new BehaviourManager(this);
 	}
 
-	/**
-	 * Tick is called every frame
-	 * It updates the player location and angle, and shoots bullets if the shoot button is pressed.
+
+	/* (non-Javadoc)
+	 * @see players.EssentialPlayer#tick()
 	 */
 	@Override
 	public void tick() {
@@ -113,7 +119,7 @@ public class AIPlayer extends EssentialPlayer{
 
 	/**
 	 * Updates the opponent team score, when the current player has been eliminated.
-	 * @author atp575
+	 *
 	 */
 	public void updateScore(){
 

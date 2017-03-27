@@ -20,7 +20,9 @@ import java.util.Random;
 
 
 /**
- * The Class represents a Client player in a multiplayer mode.
+ * This class represents the Client player in a multiplayer mode running on the Client simulation.
+ *
+ *  @author Filippo Galli
  */
 public class ClientPlayer extends EssentialPlayer {
 
@@ -85,7 +87,7 @@ public class ClientPlayer extends EssentialPlayer {
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated)
 		{
-			updatePositionClient();
+			updatePosition();
 			updateAngle();
 		}
 		updateBullets();
@@ -186,24 +188,24 @@ public class ClientPlayer extends EssentialPlayer {
 	@Override
 	protected void updatePosition() {
 
-		if(inputHandler.isUp() && !collUp){
+		if(up && !collUp){
 			setLayoutY(getLayoutY() - movementSpeed);
-		}else if(!inputHandler.isUp() && collUp){
+		}else if(!up && collUp){
 			setLayoutY(getLayoutY() + movementSpeed);
 		}
-		if(inputHandler.isDown() && !collDown){
+		if(down && !collDown){
 			setLayoutY(getLayoutY() + movementSpeed);
-		}else if(!inputHandler.isDown() && collDown){
+		}else if(!down && collDown){
 			setLayoutY(getLayoutY() - movementSpeed);
 		}
-		if(inputHandler.isLeft() && !collLeft) {
+		if(left && !collLeft) {
 			setLayoutX(getLayoutX() - movementSpeed);
-		} else if(!inputHandler.isLeft() && collLeft){
+		} else if(!left && collLeft){
 			setLayoutX(getLayoutX() + movementSpeed);
 		}
-		if(inputHandler.isRight() && !collRight){
+		if(right && !collRight){
 			setLayoutX(getLayoutX() + movementSpeed);
-		}else if (!inputHandler.isRight() && collRight){
+		}else if (!right && collRight){
 			setLayoutX(getLayoutX() - movementSpeed);
 		}
 
@@ -296,48 +298,21 @@ public class ClientPlayer extends EssentialPlayer {
 
 
 	/**
-	 * Tick position.
+	 * Tick position updates the position of the player based on the reconciliation algorithm
 	 */
 	public void tickPosition(){
 		collisionsHandler.handlePropWallCollision(this);
 		if(!eliminated)
 		{
-			updatePositionClient();
+			updatePosition();
 		}
 
 		updatePlayerBounds();
 	}
 
-	/**
-	 * Update position client.
-	 */
-	protected void updatePositionClient() {
-
-		if(up && !collUp){
-			setLayoutY(getLayoutY() - movementSpeed);
-		}else if(!up && collUp){
-			setLayoutY(getLayoutY() + movementSpeed);
-		}
-		if(down && !collDown){
-			setLayoutY(getLayoutY() + movementSpeed);
-		}else if(!down && collDown){
-			setLayoutY(getLayoutY() - movementSpeed);
-		}
-		if(left && !collLeft) {
-			setLayoutX(getLayoutX() - movementSpeed);
-		} else if(!left && collLeft){
-			setLayoutX(getLayoutX() + movementSpeed);
-		}
-		if(right && !collRight){
-			setLayoutX(getLayoutX() + movementSpeed);
-		}else if (!right && collRight){
-			setLayoutX(getLayoutX() - movementSpeed);
-		}
-
-	}
 
 	/**
-	 * Simulate update.
+	 * Simulate update based on the game state client
 	 *
 	 * @param gameStateClient the game state client
 	 */
@@ -350,11 +325,11 @@ public class ClientPlayer extends EssentialPlayer {
 	}
 
 	/**
-	 * Replay moves.
+	 * Replay moves for the client reconciliation algorithm
 	 *
-	 * @param counterFrame the counter frame
-	 * @param x the x
-	 * @param y the y
+	 * @param counterFrame the number counter frame
+	 * @param x the x position sent by the server
+	 * @param y the y position sent by the server
 	 */
 	public void replayMoves(int counterFrame, double x, double y){
 		int index = getTheRightBufferIndex(counterFrame);

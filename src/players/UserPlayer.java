@@ -8,10 +8,11 @@ import javafx.scene.image.Image;
 import logic.server.Team;
 import physics.CollisionsHandler;
 import rendering.Spawn;
-// TODO: Auto-generated Javadoc
 
 /**
- *  The player, represented by an ImageView.
+ *  The client player representation that runs on the server and gets the input updates from all the clients.
+ *
+ * @author Filippo Galli
  */
 public class UserPlayer extends EssentialPlayer{
 
@@ -25,18 +26,21 @@ public class UserPlayer extends EssentialPlayer{
 	/** The opp team. */
 	private Team oppTeam;
 
+	/** The mouse X and Y positions. */
+	double mouseX, mouseY;
+
 	/**
 	 * Instantiates a new user player.
 	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param id the id
-	 * @param spawn the spawn
-	 * @param team the team
-	 * @param collisionsHandler the collisions handler
-	 * @param image the image
-	 * @param game the game
-	 * @param currentFPS the current FPS
+	 * @param x the x position of the player
+	 * @param y the y position of the player
+	 * @param id the id of the player
+	 * @param spawn the spawn locations of the player
+	 * @param team the team of the player
+	 * @param collisionsHandler the collisions handler of the game simulation
+	 * @param image the image of the player
+	 * @param mode the mode
+	 * @param currentFPS the current FPS in which the simulation is running on.
 	 */
 	public UserPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS) {

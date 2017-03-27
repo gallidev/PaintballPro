@@ -11,26 +11,29 @@ import physics.CollisionsHandler;
 import rendering.ImageFactory;
 import rendering.Spawn;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class GhostPlayer.
+ * The Class represents every player running on the client simulation except of the Client Player.
+ *
+ * @author Filippo Galli
  */
 public class GhostPlayer extends EssentialPlayer {
 
 	/** The name tag. */
 	private Label nameTag;
 
+
 	/**
 	 * Instantiates a new ghost player.
 	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param id the id
-	 * @param spawn the spawn
-	 * @param team the team
-	 * @param collisionsHandler the collisions handler
-	 * @param game the game
-	 * @param currentFPS the current FPS
+	 * @param x the x position of the player
+	 * @param y the y position of the player
+	 * @param id the id of the client player
+	 * @param spawn the spawn locations of the player
+	 * @param team the team of the player
+	 * @param collisionsHandler the collisions handler of the client simulation
+	 * @param game the game mode
+	 * @param currentFPS the current FPS in which the simulation is running on.
 	 */
 	public GhostPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team,
 			CollisionsHandler collisionsHandler, GameMode game, double currentFPS) {
