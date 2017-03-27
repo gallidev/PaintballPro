@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Test class for a server game state sender, which transmits the game data to
  * the clients. Class Tested {@link ServerGameStateSender}
- * 
+ *
  * @author Filippo Galli
  *
  */
@@ -57,7 +57,7 @@ public class TestServerGameStateSender {
 
 	/**
 	 * Initialising all the required networking and ServerGameState Sender
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Before
@@ -141,20 +141,20 @@ public class TestServerGameStateSender {
 
 	/*
 	 * @Test public void startSendingTest() throws InterruptedException {
-	 * 
+	 *
 	 * serverGameStateSender.startSending();
-	 * 
+	 *
 	 * Thread.sleep(1000);
-	 * 
+	 *
 	 * serverGameStateSender.stopSending();
-	 * 
+	 *
 	 * }
 	 */
 
 	/**
 	 * Method to test if the server is sending moves, bullets, flag actions and
 	 * power-up stats correctly to the clients.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	@Test

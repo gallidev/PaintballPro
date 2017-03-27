@@ -25,6 +25,9 @@ import static org.junit.Assert.*;
 
 /**
  * Test the collisions handler and essential player classes
+ * Class tested - {@link CollisionsHandler.java}, {@link Flag.java},
+ * {@link powerup.java},{@link Pellet.java}, {@link EssentialPlayer.java},
+ * {@link UserPlayer.java}, {@link InputHandler.java},
  *
  * @author Filippo Galli
  */

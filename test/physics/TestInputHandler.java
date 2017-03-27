@@ -18,6 +18,9 @@ import static org.junit.Assert.*;
 /**
  * Tests the Input handler and the listeners
  *
+ * Class tested - {@link InputHandler.java}, {@link KeyPressListener.java},
+ * {@link KeyReleaseListener.java},{@link MouseListener.java}
+ *
  * @author Filippo Galli
  *
  */
