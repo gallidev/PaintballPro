@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 import testSuites.AISuite;
 import testSuites.AudioSuite;
 import testSuites.GUISuite;
-import testSuites.IntegrationSuite;
+import testSuites.NetworkingGameSuite;
 import testSuites.LogicSuite;
 import testSuites.NetworkingSuite;
 import testSuites.PhysicsSuite;
@@ -37,9 +37,9 @@ public class Runner {
 		System.out.println(">> Running all tests... this will take around 5 minutes. Please Wait. <<");
 		System.out.println("(Ignore exceptions)");
 
-		System.out.println("\nRunning Integration tests...(1/8)");
+		System.out.println("\nRunning Networking in game tests...(1/8)");
 		System.setOut(dummyStream);
-		Result integration = JUnitCore.runClasses(IntegrationSuite.class);
+		Result integration = JUnitCore.runClasses(NetworkingGameSuite.class);
 		System.setOut(originalStream);
 
 		for (Failure failure : integration.getFailures()) {

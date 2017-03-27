@@ -1,4 +1,4 @@
-package integrationServer;
+package networking.game.server;
 
 import static org.junit.Assert.*;
 

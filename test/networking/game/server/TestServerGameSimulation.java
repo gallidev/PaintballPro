@@ -1,4 +1,4 @@
-package integrationServer;
+package networking.game.server;
 
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;

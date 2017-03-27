@@ -1,4 +1,4 @@
-package integrationClient;
+package networking.game.client;
 
 import enums.GameMode;
 import enums.TeamEnum;
