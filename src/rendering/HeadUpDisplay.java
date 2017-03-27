@@ -45,7 +45,7 @@ public class HeadUpDisplay extends SubScene {
 		setScaleY(576 / guiManager.height);
 
 		Circle redTeamCircle = null, blueTeamCircle = null;
-		if (gameMode == GameMode.TEAM_MATCH) {
+		if(gameMode == GameMode.TEAM_MATCH) {
 			redTeamCircle = new Circle(VIEW.getWidth() / 64, Color.RED);
 			blueTeamCircle = new Circle(VIEW.getWidth() / 64, Color.BLUE);
 
@@ -69,12 +69,12 @@ public class HeadUpDisplay extends SubScene {
 		blueScore.setStyle(textStyle);
 
 		HBox statusBar;
-		if (playerTeam == TeamEnum.RED) {
-			if (gameMode == GameMode.TEAM_MATCH)
+		if(playerTeam == TeamEnum.RED) {
+			if(gameMode == GameMode.TEAM_MATCH)
 				statusBar = new HBox(VIEW.getWidth() / 32, redScore, redTeamCircle, timer, blueTeamCircle, blueScore);
 			else
 				statusBar = new HBox(VIEW.getWidth() / 32, redScore, redTeamFlag, timer, blueTeamFlag, blueScore);
-		} else if (gameMode == GameMode.TEAM_MATCH)
+		} else if(gameMode == GameMode.TEAM_MATCH)
 			statusBar = new HBox(VIEW.getWidth() / 32, blueScore, blueTeamCircle, timer, redTeamCircle, redScore);
 		else
 			statusBar = new HBox(VIEW.getWidth() / 32, blueScore, blueTeamFlag, timer, redTeamFlag, redScore);
@@ -92,7 +92,7 @@ public class HeadUpDisplay extends SubScene {
 	 * @param blueScore New score of the blue team
 	 */
 	void setScore(int redScore, int blueScore) {
-		if (Integer.parseInt(this.redScore.getText()) < redScore || Integer.parseInt(this.blueScore.getText()) < blueScore)
+		if(Integer.parseInt(this.redScore.getText()) < redScore || Integer.parseInt(this.blueScore.getText()) < blueScore)
 			guiManager.getAudioManager().playSFX(guiManager.getAudioManager().sfx.splat, (float) 0.6);
 
 		this.redScore.setText(String.valueOf(redScore));
@@ -115,7 +115,7 @@ public class HeadUpDisplay extends SubScene {
 	 * @param time New game time in seconds
 	 */
 	public void tick(int time) {
-		if (time < 0)
+		if(time < 0)
 			return;
 		int minutes = (time % 3600) / 60, seconds = time % 60;
 		timer.setText(String.format("%02d:%02d", minutes, seconds));

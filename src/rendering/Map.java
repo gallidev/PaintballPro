@@ -56,20 +56,20 @@ public class Map {
 			map = (new Gson()).fromJson(new FileReader("res/maps/" + mapName + ".json"), Map.class);
 
 			int width = 0, height = 0;
-			for (Floor floor : map.floors) {
-				if (floor.x + floor.width > width)
+			for(Floor floor : map.floors) {
+				if(floor.x + floor.width > width)
 					width = floor.x + floor.width;
-				if (floor.y + floor.height > height)
+				if(floor.y + floor.height > height)
 					height = floor.y + floor.height;
 			}
 
 			WritableImage tiles = new WritableImage(width * 64, height * 64);
 
 			//load the ground
-			for (Floor floor : map.floors) {
+			for(Floor floor : map.floors) {
 				Image tile = ImageFactory.getMaterialImage(floor.material);
-				for (int i = 0; i < floor.width; i++)
-					for (int j = 0; j < floor.height; j++)
+				for(int i = 0; i < floor.width; i++)
+					for(int j = 0; j < floor.height; j++)
 						tiles.getPixelWriter().setPixels((floor.x + i) * 64, (floor.y + j) * 64, 64, 64, tile.getPixelReader(), 0, 0);
 			}
 			ImageView floorGroup = new ImageView(tiles);
@@ -77,8 +77,8 @@ public class Map {
 			//load spawns
 			WritableImage redSpawn = new WritableImage(128, 128), blueSpawn = new WritableImage(128, 128);
 
-			for (int i = 0; i < 2; i++) {
-				for (int j = 0; j < 2; j++) {
+			for(int i = 0; i < 2; i++) {
+				for(int j = 0; j < 2; j++) {
 					redSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getMaterialImage(map.floors[0].material).getPixelReader(), 0, 0);
 					blueSpawn.getPixelWriter().setPixels(i * 64, j * 64, 64, 64, ImageFactory.getMaterialImage(map.floors[1].material).getPixelReader(), 0, 0);
 				}
@@ -122,9 +122,9 @@ public class Map {
 			map.wallShadow.setInput(map.wallLighting);
 
 			//turn on shading if the user has it enabled
-			if (GUIManager.getUserSettings().getShading())
+			if(GUIManager.getUserSettings().getShading())
 				map.toggleShading();
-		} catch (FileNotFoundException e) {
+		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return map;
@@ -143,7 +143,7 @@ public class Map {
 			map.loadProps();
 			map.loadWalls();
 
-			if (map.gameMode == GameMode.CAPTURE_THE_FLAG)
+			if(map.gameMode == GameMode.CAPTURE_THE_FLAG)
 				map.flag = new Flag(map.flagLocations);
 
 			map.powerups = new Powerup[]{new Powerup(PowerupType.SHIELD, map.powerupLocations), new Powerup(PowerupType.SPEED, map.powerupLocations)
@@ -151,7 +151,7 @@ public class Map {
 			map.powerups[0].addAlternatePowerup(map.powerups[1]);
 			map.powerups[1].addAlternatePowerup(map.powerups[0]);
 
-		} catch (FileNotFoundException e) {
+		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return map;
@@ -161,7 +161,7 @@ public class Map {
 	 * Display all props on the map.
 	 */
 	private void loadProps() {
-		for (Prop prop : props) {
+		for(Prop prop : props) {
 			ImageView image = new ImageView(ImageFactory.getMaterialImage(prop.material));
 			image.relocate(prop.x * 64, prop.y * 64);
 			propGroup.getChildren().add(image);
@@ -172,8 +172,8 @@ public class Map {
 	 * Display all walls on the map.
 	 */
 	private void loadWalls() {
-		for (Wall wall : walls) {
-			for (int i = 0; i < wall.length; i++) {
+		for(Wall wall : walls) {
+			for(int i = 0; i < wall.length; i++) {
 				ImageView block = new ImageView(ImageFactory.getMaterialImage(wall.material));
 				block.relocate(wall.orientation ? (i + wall.x) * 64 : wall.x * 64, wall.orientation ? wall.y * 64 : (i + wall.y) * 64);
 				wallGroup.getChildren().add(block);
@@ -220,7 +220,7 @@ public class Map {
 	 * @return A collision bound for a given team spawn area
 	 */
 	public Rectangle getSpawnCollisionBound(TeamEnum team) {
-		if (team == TeamEnum.RED)
+		if(team == TeamEnum.RED)
 			return new Rectangle(spawns[0].x * 64, spawns[0].y * 64, 128, 128);
 		else
 			return new Rectangle(spawns[4].x * 64, spawns[4].y * 64, 128, 128);
@@ -311,7 +311,7 @@ public class Map {
 	 * Toggle the shading of map assets. When toggled off, increases performance on older computers and at higher resolutions.
 	 */
 	void toggleShading() {
-		if (propGroup.getEffect() == null) {
+		if(propGroup.getEffect() == null) {
 			propGroup.setEffect(propShadow);
 			wallGroup.setEffect(wallShadow);
 		} else {

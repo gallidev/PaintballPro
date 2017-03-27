@@ -67,7 +67,7 @@ public class ImageFactory {
 	 * @return A game objective image
 	 */
 	public static Image getObjectiveImage(ObjectType objective) {
-		switch (objective) {
+		switch(objective) {
 			case FLAG:
 				return FLAG;
 			default:
@@ -82,7 +82,7 @@ public class ImageFactory {
 	 * @return A powerup image
 	 */
 	public static Image getPowerupImage(PowerupType powerup) {
-		switch (powerup) {
+		switch(powerup) {
 			case SHIELD:
 				return POWERUP_SHIELD;
 			case SPEED:

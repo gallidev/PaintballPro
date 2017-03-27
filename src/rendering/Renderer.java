@@ -75,7 +75,7 @@ public class Renderer extends Scene {
 		init(mapName);
 		singlePlayer = true;
 
-		if (map.gameMode == enums.GameMode.CAPTURE_THE_FLAG) {
+		if(map.gameMode == enums.GameMode.CAPTURE_THE_FLAG) {
 			map.flag = new Flag(map.flagLocations);
 			VIEW.getChildren().add(map.flag);
 		}
@@ -118,13 +118,13 @@ public class Renderer extends Scene {
 		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				for (EssentialPlayer player : players) {
-					for (Pellet pellet : player.getBullets()) {
-						if (pellet.isActive()) {
-							if (!VIEW.getChildren().contains(pellet))
+				for(EssentialPlayer player : players) {
+					for(Pellet pellet : player.getBullets()) {
+						if(pellet.isActive()) {
+							if(!VIEW.getChildren().contains(pellet))
 								VIEW.getChildren().add(VIEW.getChildren().size() - 2, pellet);
-						} else if (VIEW.getChildren().contains(pellet)) {
-							if (pellet.getCollision() != null)
+						} else if(VIEW.getChildren().contains(pellet)) {
+							if(pellet.getCollision() != null)
 								generateSpray(pellet);
 							VIEW.getChildren().remove(pellet);
 						}
@@ -133,7 +133,7 @@ public class Renderer extends Scene {
 				}
 				hud.tick(gameLoop.getRemainingTime());
 
-				if (gameLoop.getRemainingTime() == 0)
+				if(gameLoop.getRemainingTime() == 0)
 					guiManager.transitionTo(Menu.END_GAME, gameLoop.getRedTeam().getScore() + "," + gameLoop.getBlueTeam().getScore(), player.getTeam());
 
 				hud.setScore(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
@@ -177,7 +177,7 @@ public class Renderer extends Scene {
 
 		onlinePlayer.setInputHandler(inputHandler);
 
-		if (map.getGameMode() == enums.GameMode.CAPTURE_THE_FLAG)
+		if(map.getGameMode() == enums.GameMode.CAPTURE_THE_FLAG)
 			VIEW.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
 
 		VIEW.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
@@ -193,13 +193,13 @@ public class Renderer extends Scene {
 		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				for (EssentialPlayer player : players) {
-					for (Pellet pellet : player.getBullets()) {
-						if (pellet.isActive()) {
-							if (!VIEW.getChildren().contains(pellet))
+				for(EssentialPlayer player : players) {
+					for(Pellet pellet : player.getBullets()) {
+						if(pellet.isActive()) {
+							if(!VIEW.getChildren().contains(pellet))
 								VIEW.getChildren().add(VIEW.getChildren().size() - 2, pellet);
-						} else if (VIEW.getChildren().contains(pellet)) {
-							if (pellet.getCollision() != null)
+						} else if(VIEW.getChildren().contains(pellet)) {
+							if(pellet.getCollision() != null)
 								generateSpray(pellet);
 							VIEW.getChildren().remove(pellet);
 						}
@@ -232,7 +232,7 @@ public class Renderer extends Scene {
 	 */
 	private GameMode initGame() {
 		Team red = player.getMyTeam(), blue = player.getOppTeam();
-		switch (map.getGameMode()) {
+		switch(map.getGameMode()) {
 			case TEAM_MATCH:
 				return new TeamMatchMode(red, blue);
 			case CAPTURE_THE_FLAG:
@@ -246,7 +246,7 @@ public class Renderer extends Scene {
 	 * Toggles the pause menu whilst in-game
 	 */
 	public void togglePauseMenu() {
-		if (!pauseMenu.opened)
+		if(!pauseMenu.opened)
 			VIEW.getChildren().add(pauseMenu);
 		else
 			VIEW.getChildren().remove(pauseMenu);
@@ -257,7 +257,7 @@ public class Renderer extends Scene {
 	 * Toggles the settings scene from the pause menu whilst in-game
 	 */
 	public void toggleSettingsMenu() {
-		if (!settingsMenu.opened) {
+		if(!settingsMenu.opened) {
 			VIEW.getChildren().remove(pauseMenu);
 			VIEW.getChildren().add(settingsMenu);
 		} else {
@@ -325,9 +325,9 @@ public class Renderer extends Scene {
 		PixelWriter pixelWriter = paint.getPixelWriter();
 		Random random = new Random();
 		double probability = 0.1;
-		for (int i = 1; i < 63; i++) {
-			for (int j = 1; j < 63; j++)
-				if (random.nextDouble() < probability)
+		for(int i = 1; i < 63; i++) {
+			for(int j = 1; j < 63; j++)
+				if(random.nextDouble() < probability)
 					pixelWriter.setArgb(i, j, (pellet.getColour() == TeamEnum.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
 		}
 		ImageView imageView = new ImageView(paint);
@@ -368,9 +368,9 @@ public class Renderer extends Scene {
 		VIEW.relocate(viewPositionX, viewPositionY);
 		hud.relocate(subScenePositionX, subScenePositionY);
 
-		if (VIEW.getChildren().contains(pauseMenu))
+		if(VIEW.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(subScenePositionX, subScenePositionY);
-		if (VIEW.getChildren().contains(settingsMenu))
+		if(VIEW.getChildren().contains(settingsMenu))
 			settingsMenu.relocate(subScenePositionX, subScenePositionY);
 	}
 
