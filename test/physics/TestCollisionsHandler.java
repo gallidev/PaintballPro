@@ -23,20 +23,49 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test the collisions handler and essential player classes
+ * Class tested - {@link CollisionsHandler.java}, {@link Flag.java},
+ * {@link powerup.java},{@link Pellet.java}, {@link EssentialPlayer.java},
+ * {@link UserPlayer.java}, {@link InputHandler.java},
+ *
+ * @author Filippo Galli
+ */
 public class TestCollisionsHandler {
 
+	/** The collisions handler. */
 	private CollisionsHandler collisionsHandler;
+
+	/** The map. */
 	private Map map;
+
+	/** The user player 1. */
 	private UserPlayer player1;
+
+	/** The user player 2. */
 	private UserPlayer player2;
+
+	/** The user player 3. */
 	private UserPlayer player3;
+
+	/** The user player 4. */
 	private UserPlayer player4;
 
+	/** The red team. */
 	private Team red;
+
+	/** The blue team. */
 	private Team blue;
+
+	/** The game mode. */
 	private GameMode game;
+
+	/** The server game simulation. */
 	private ServerGameSimulation gameSimulation;
 
+	/**
+	 * Set up all the objects and the environment
+	 */
 	@Before
 	public void setUp()
 	{
@@ -116,6 +145,9 @@ public class TestCollisionsHandler {
 
 	}
 
+	/**
+	 * Tear down the created objects
+	 */
 	@After
 	public void tearDown()
 	{
@@ -132,6 +164,9 @@ public class TestCollisionsHandler {
 		gameSimulation = null;
 	}
 
+	/**
+	 * Test the prop wall collisions.
+	 */
 	@Test
 	public void testPropWallCollisions()
 	{
@@ -209,6 +244,9 @@ public class TestCollisionsHandler {
 		gameSimulation.stopGameLoop();
 	}
 
+	/**
+	 * Test the bullet collisions with players.
+	 */
 	@Test
 	public void testHandleBulletCollisions()
 	{
@@ -241,6 +279,9 @@ public class TestCollisionsHandler {
 		gameSimulation.stopGameLoop();
 	}
 
+	/**
+	 * Test the player collisions with flag .
+	 */
 	@Test
 	public void testhandleFlagCollision()
 	{
@@ -293,6 +334,9 @@ public class TestCollisionsHandler {
 		gameSimulation.stopGameLoop();
 	}
 
+	/**
+	 * Test the player collisions with a flag but with a players of different teams
+	 */
 	@Test
 	public void testhandleFlagCollisionInverse()
 	{
@@ -356,6 +400,9 @@ public class TestCollisionsHandler {
 		gameSimulation.stopGameLoop();
 	}
 
+	/**
+	 * Test the collisions between a player and a power up
+	 */
 	@Test
 	public void testHandlePowerUpCollision()
 	{
@@ -410,6 +457,9 @@ public class TestCollisionsHandler {
 	}
 
 
+	/**
+	 * Test the get Mean angle method
+	 */
 	@Test
 	public void testGetMeanAngle()
 	{

@@ -18,7 +18,7 @@ import java.util.List;
 import static gui.GUIManager.renderer;
 
 /**
- * This class represents the  Collisions Handler is responsible of checking all the collisions of every game object
+ * This class represents the Collisions Handler responsible of checking all the collisions of every game object
  *
  * @author Filippo Galli
  * @author Sivarjuen Ravichandran
@@ -26,7 +26,7 @@ import static gui.GUIManager.renderer;
 public class CollisionsHandler
 {
 
-	/** The Constant debug flag */
+	/** The constant debug flag */
 	private static final boolean debug = false;
 
 	/** Are the collisions running on local or on the server */

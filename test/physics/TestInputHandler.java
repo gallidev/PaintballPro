@@ -14,14 +14,36 @@ import rendering.Renderer;
 import static gui.GUIManager.renderer;
 import static org.junit.Assert.*;
 
+
+/**
+ * Tests the Input handler and the listeners
+ *
+ * Class tested - {@link InputHandler.java}, {@link KeyPressListener.java},
+ * {@link KeyReleaseListener.java},{@link MouseListener.java}
+ *
+ * @author Filippo Galli
+ *
+ */
 public class TestInputHandler {
 
+	/** The input handler. */
 	private InputHandler inputHandler;
+
+	/** The mouse listener. */
 	private MouseListener mouseListener;
+
+	/** The key release listener. */
 	private KeyReleaseListener keyReleaseListener;
+
+	/** The key press listener. */
 	private KeyPressListener keyPressListener;
+
+	/** The gui manager. */
 	private GUIManager guiManager;
 
+	/**
+	 * Set up all the objects and the environment
+	 */
 	@Before
 	public void setUp()
 	{
@@ -37,6 +59,9 @@ public class TestInputHandler {
 
 	}
 
+	/**
+	 * Tear down the created objects
+	 */
 	@After
 	public void tearDown()
 	{
@@ -49,6 +74,9 @@ public class TestInputHandler {
 		guiManager = null;
 	}
 
+	/**
+	 * Test the mouse listener with mouse positions and clicks.
+	 */
 	@Test
 	public void testMouse()
 	{
@@ -66,6 +94,9 @@ public class TestInputHandler {
 
 	}
 
+	/**
+	 * Test key board listeners with key pressed and released for movement and shooting.
+	 */
 	@Test
 	public void testKeyBoard()
 	{
