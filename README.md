@@ -16,7 +16,7 @@ The game can also be run from an IDE, however this requires adding the JAR files
 Currently this can either be run in an IDE, or in the command line
 
 Command Line:
-1. `rm -rf tmp_out && mkdir tmp_out && mkdir tmp_out/res && cp -R res tmp_out/`
+1. `rm -rf tmp_out && mkdir tmp_out && mkdir tmp_out/res && cp -R res/ tmp_out/ && cp -R res tmp_out/`
 2. `javac -d tmp_out -cp "lib/junit-4.12.jar:lib/hamcrest-core-1.3.jar:lib/gson-2.8.0.jar:." src/**/*.java test/**/*.java`
 3. `(cd tmp_out && java -ea -cp ../lib/junit-4.12.jar:../lib/hamcrest-core-1.3.jar:../lib/gson-2.8.0.jar:. testRunner.Runner)`
 
