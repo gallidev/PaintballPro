@@ -36,10 +36,10 @@ import static players.EssentialPlayer.PLAYER_HEAD_Y;
 /**
  * A class that extends <code>Scene</code> to implement the displaying of a game instance. All assets are drawn on a <code>Pane</code>. There are two instances of <code>SubScene</code> for the pause menu and the settings menu, and a <code>SubScene</code> for the in-game head up display.<br><br>
  * Two constructors exist, depending on whether a singleplayer or multiplayer game is launched.
+ *
  * @author Artur Komoter
  */
-public class Renderer extends Scene
-{
+public class Renderer extends Scene {
 	public static final double TARGET_FPS = 60.0;
 
 	static Pane VIEW = new Pane();
@@ -69,15 +69,13 @@ public class Renderer extends Scene
 	 * @param mapName    Name of the selected map
 	 * @param guiManager GUI manager that creates this object
 	 */
-	public Renderer(String mapName, GUIManager guiManager)
-	{
+	public Renderer(String mapName, GUIManager guiManager) {
 		super(VIEW, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
 		singlePlayer = true;
 
-		if(map.gameMode == enums.GameMode.CAPTURE_THE_FLAG)
-		{
+		if (map.gameMode == enums.GameMode.CAPTURE_THE_FLAG) {
 			map.flag = new Flag(map.flagLocations);
 			VIEW.getChildren().add(map.flag);
 		}
@@ -117,23 +115,16 @@ public class Renderer extends Scene
 		GameMode gameLoop = initGame();
 		gameLoop.start();
 
-		timer = new AnimationTimer()
-		{
+		timer = new AnimationTimer() {
 			@Override
-			public void handle(long now)
-			{
-				for(EssentialPlayer player : players)
-				{
-					for(Pellet pellet : player.getBullets())
-					{
-						if(pellet.isActive())
-						{
-							if(!VIEW.getChildren().contains(pellet))
+			public void handle(long now) {
+				for (EssentialPlayer player : players) {
+					for (Pellet pellet : player.getBullets()) {
+						if (pellet.isActive()) {
+							if (!VIEW.getChildren().contains(pellet))
 								VIEW.getChildren().add(VIEW.getChildren().size() - 2, pellet);
-						}
-						else if(VIEW.getChildren().contains(pellet))
-						{
-							if(pellet.getCollision() != null)
+						} else if (VIEW.getChildren().contains(pellet)) {
+							if (pellet.getCollision() != null)
 								generateSpray(pellet);
 							VIEW.getChildren().remove(pellet);
 						}
@@ -142,7 +133,7 @@ public class Renderer extends Scene
 				}
 				hud.tick(gameLoop.getRemainingTime());
 
-				if(gameLoop.getRemainingTime() == 0)
+				if (gameLoop.getRemainingTime() == 0)
 					guiManager.transitionTo(Menu.END_GAME, gameLoop.getRedTeam().getScore() + "," + gameLoop.getBlueTeam().getScore(), player.getTeam());
 
 				hud.setScore(gameLoop.getRedTeam().getScore(), gameLoop.getBlueTeam().getScore());
@@ -160,8 +151,7 @@ public class Renderer extends Scene
 	 * @param receiver   Client receiver for communication with the game server
 	 * @param guiManager GUI manager that creates this object
 	 */
-	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager)
-	{
+	public Renderer(String mapName, ClientReceiver receiver, GUIManager guiManager) {
 		super(VIEW, guiManager.width, guiManager.height);
 		this.guiManager = guiManager;
 		init(mapName);
@@ -187,7 +177,7 @@ public class Renderer extends Scene
 
 		onlinePlayer.setInputHandler(inputHandler);
 
-		if(map.getGameMode() == enums.GameMode.CAPTURE_THE_FLAG)
+		if (map.getGameMode() == enums.GameMode.CAPTURE_THE_FLAG)
 			VIEW.getChildren().add(receiver.getClientGameStateReceiver().getFlag());
 
 		VIEW.getChildren().addAll(receiver.getClientGameStateReceiver().getPowerups());
@@ -200,23 +190,16 @@ public class Renderer extends Scene
 		ClientInputSender inputSender = new ClientInputSender(receiver.getUdpClient(), inputHandler, onlinePlayer);
 		inputSender.startSending();
 
-		timer = new AnimationTimer()
-		{
+		timer = new AnimationTimer() {
 			@Override
-			public void handle(long now)
-			{
-				for(EssentialPlayer player : players)
-				{
-					for(Pellet pellet : player.getBullets())
-					{
-						if(pellet.isActive())
-						{
-							if(!VIEW.getChildren().contains(pellet))
+			public void handle(long now) {
+				for (EssentialPlayer player : players) {
+					for (Pellet pellet : player.getBullets()) {
+						if (pellet.isActive()) {
+							if (!VIEW.getChildren().contains(pellet))
 								VIEW.getChildren().add(VIEW.getChildren().size() - 2, pellet);
-						}
-						else if(VIEW.getChildren().contains(pellet))
-						{
-							if(pellet.getCollision() != null)
+						} else if (VIEW.getChildren().contains(pellet)) {
+							if (pellet.getCollision() != null)
 								generateSpray(pellet);
 							VIEW.getChildren().remove(pellet);
 						}
@@ -234,23 +217,22 @@ public class Renderer extends Scene
 
 	/**
 	 * End the game by transitioning to the end game screen.
-	 * @param red Final score of the red team
+	 *
+	 * @param red  Final score of the red team
 	 * @param blue Final score of the blue team
 	 */
-	public void endGame(String red, String blue)
-	{
+	public void endGame(String red, String blue) {
 		guiManager.transitionTo(Menu.END_GAME, red + "," + blue, (renderer.onlinePlayer == null ? renderer.player.getTeam() : renderer.onlinePlayer.getTeam()));
 	}
 
 	/**
 	 * Determine which game logic to use before starting the game loop.
+	 *
 	 * @return Game logic to be used for the game loop
 	 */
-	private GameMode initGame()
-	{
+	private GameMode initGame() {
 		Team red = player.getMyTeam(), blue = player.getOppTeam();
-		switch(map.getGameMode())
-		{
+		switch (map.getGameMode()) {
 			case TEAM_MATCH:
 				return new TeamMatchMode(red, blue);
 			case CAPTURE_THE_FLAG:
@@ -263,9 +245,8 @@ public class Renderer extends Scene
 	/**
 	 * Toggles the pause menu whilst in-game
 	 */
-	public void togglePauseMenu()
-	{
-		if(!pauseMenu.opened)
+	public void togglePauseMenu() {
+		if (!pauseMenu.opened)
 			VIEW.getChildren().add(pauseMenu);
 		else
 			VIEW.getChildren().remove(pauseMenu);
@@ -275,15 +256,11 @@ public class Renderer extends Scene
 	/**
 	 * Toggles the settings scene from the pause menu whilst in-game
 	 */
-	public void toggleSettingsMenu()
-	{
-		if(!settingsMenu.opened)
-		{
+	public void toggleSettingsMenu() {
+		if (!settingsMenu.opened) {
 			VIEW.getChildren().remove(pauseMenu);
 			VIEW.getChildren().add(settingsMenu);
-		}
-		else
-		{
+		} else {
 			VIEW.getChildren().remove(settingsMenu);
 			VIEW.getChildren().add(pauseMenu);
 		}
@@ -295,8 +272,7 @@ public class Renderer extends Scene
 	 *
 	 * @return <code>true</code> if the pause menu is active, <code>false</code> otherwise
 	 */
-	public boolean getPauseMenuState()
-	{
+	public boolean getPauseMenuState() {
 		return pauseMenu.opened;
 	}
 
@@ -305,26 +281,25 @@ public class Renderer extends Scene
 	 *
 	 * @return <code>true</code> if the settings scene is active, <code>false</code> otherwise
 	 */
-	public boolean getSettingsMenuState()
-	{
+	public boolean getSettingsMenuState() {
 		return settingsMenu.opened;
 	}
 
 	/**
 	 * Get the current map that is loaded.
+	 *
 	 * @return Map that the game instance is using
 	 */
-	public Map getMap()
-	{
+	public Map getMap() {
 		return map;
 	}
 
 	/**
 	 * Get the head up display that is displayed in-game.
+	 *
 	 * @return A head up display object
 	 */
-	public HeadUpDisplay getHud()
-	{
+	public HeadUpDisplay getHud() {
 		return hud;
 	}
 
@@ -332,8 +307,7 @@ public class Renderer extends Scene
 	 * Stop the <code>AnimationTimer</code> and reset all static attributes used by <code>Renderer</code> before killing the game renderer.<br><br>
 	 * <b>NOTE</b>: Has to be called <u>before</u> setting <code>Renderer</code> object to <code>null</code>!
 	 */
-	public void destroy()
-	{
+	public void destroy() {
 		timer.stop();
 		VIEW = new Pane();
 		PauseMenu.gridPane = new GridPane();
@@ -343,18 +317,17 @@ public class Renderer extends Scene
 
 	/**
 	 * Generate random paint spray pattern on a map asset.
+	 *
 	 * @param pellet The <code>Pellet</code> that has collided with a map asset
 	 */
-	private void generateSpray(Pellet pellet)
-	{
+	private void generateSpray(Pellet pellet) {
 		WritableImage paint = new WritableImage(64, 64);
 		PixelWriter pixelWriter = paint.getPixelWriter();
 		Random random = new Random();
 		double probability = 0.1;
-		for(int i = 1; i < 63; i++)
-		{
-			for(int j = 1; j < 63; j++)
-				if(random.nextDouble() < probability)
+		for (int i = 1; i < 63; i++) {
+			for (int j = 1; j < 63; j++)
+				if (random.nextDouble() < probability)
 					pixelWriter.setArgb(i, j, (pellet.getColour() == TeamEnum.RED ? java.awt.Color.RED : java.awt.Color.BLUE).getRGB());
 		}
 		ImageView imageView = new ImageView(paint);
@@ -365,10 +338,10 @@ public class Renderer extends Scene
 
 	/**
 	 * Common code to initialise the <code>Renderer</code>.
+	 *
 	 * @param mapName Name of the map file to load
 	 */
-	private void init(String mapName)
-	{
+	private void init(String mapName) {
 		setFill(Color.BLACK);
 		setCursor(Cursor.CROSSHAIR);
 		VIEW.setStyle("-fx-background-color: black;");
@@ -384,8 +357,7 @@ public class Renderer extends Scene
 	/**
 	 * Update the camera view to be centered on the player.
 	 */
-	private void updateView()
-	{
+	private void updateView() {
 		double playerLayoutX = (singlePlayer ? player : onlinePlayer).getLayoutX(), playerLayoutY = (singlePlayer ? player : onlinePlayer).getLayoutY();
 
 		double viewPositionX = (getWidth() / 2 - playerLayoutX - PLAYER_HEAD_X) * VIEW.getScaleX(),
@@ -396,36 +368,36 @@ public class Renderer extends Scene
 		VIEW.relocate(viewPositionX, viewPositionY);
 		hud.relocate(subScenePositionX, subScenePositionY);
 
-		if(VIEW.getChildren().contains(pauseMenu))
+		if (VIEW.getChildren().contains(pauseMenu))
 			pauseMenu.relocate(subScenePositionX, subScenePositionY);
-		if(VIEW.getChildren().contains(settingsMenu))
+		if (VIEW.getChildren().contains(settingsMenu))
 			settingsMenu.relocate(subScenePositionX, subScenePositionY);
 	}
 
 	/**
 	 * Set the score of the blue team.
+	 *
 	 * @param blueScore New score of the blue team
 	 */
-	public void setBlueScore(int blueScore)
-	{
+	public void setBlueScore(int blueScore) {
 		this.blueScore = blueScore;
 	}
 
 	/**
 	 * Set the score of the red team.
+	 *
 	 * @param redScore New score of the red team
 	 */
-	public void setRedScore(int redScore)
-	{
+	public void setRedScore(int redScore) {
 		this.redScore = redScore;
 	}
 
 	/**
 	 * Update the game timer.
+	 *
 	 * @param time Game time remaining in seconds
 	 */
-	public void setTimeRemaining(int time)
-	{
+	public void setTimeRemaining(int time) {
 		timeRemaining = time;
 	}
 
