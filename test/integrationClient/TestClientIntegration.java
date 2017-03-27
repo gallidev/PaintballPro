@@ -54,8 +54,12 @@ public class TestClientIntegration {
 		LobbyTable lobby;
 
 		clientTable= new ClientTable();
-		gui = new GUIManager();
 		lobby = new LobbyTable();
+
+		JavaFXTestHelper.setupApplication();
+
+		gui = new GUIManager();
+		GUIManager.renderer = new Renderer("castle", gui);
 
 		server = new UDPServer(clientTable, lobby, 19897);
 		server.start();
@@ -63,13 +67,13 @@ public class TestClientIntegration {
 		client = new UDPClient(1, "127.0.0.1", 19897, null, null, 25567, "test");
 		client.start();
 
-		JavaFXTestHelper.setupApplication();
-		map = Map.loadRaw("desert");
+
+		map = Map.loadRaw("castle");
 		ch = new CollisionsHandler(map);
-		player = new GhostPlayer(0, 0, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.TEAM_MATCH, Renderer.TARGET_FPS);
+		player = new GhostPlayer(2*64, 3*64, 1, map.getSpawns(), TeamEnum.RED, ch, GameMode.CAPTURE_THE_FLAG, Renderer.TARGET_FPS);
 
 		cPlayer = new ClientPlayer(0, 0, 2, map.getSpawns(), TeamEnum.BLUE, gui, ch, null,
-				ImageFactory.getPlayerImage(TeamEnum.BLUE), null, Renderer.TARGET_FPS);
+				ImageFactory.getPlayerImage(TeamEnum.BLUE), GameMode.CAPTURE_THE_FLAG, Renderer.TARGET_FPS);
 
 		ArrayList<EssentialPlayer> players;
 		players = new ArrayList<>();
@@ -123,7 +127,7 @@ public class TestClientIntegration {
 	 */
 	public void updatePlayerTest() throws InterruptedException {
 		String input;
-		input = "1:1:2:3:30:true:false";
+		input = "1:1:100:2:3:30:true:false";
 		client.updatePlayerAction(input);
 
 		assertNotNull(gameStateReceiver);
@@ -132,12 +136,12 @@ public class TestClientIntegration {
 		assertEquals(player.getLayoutY(), 3.0, 0.5);
 		assertTrue(player.isVisible());
 
-		input = "1:1:2:3:30:false:true";
+		input = "1:1:100:2:3:30:false:true";
 		client.updatePlayerAction(input);
 		Thread.sleep(1000);
 		assertFalse(player.isVisible());
 
-		input = "1:2:220:300:30:false:false";
+		input = "1:2:100:220:300:30:false:false";
 		client.updatePlayerAction(input);
 		Thread.sleep(1000);
 		assertFalse(cPlayer.isVisible());
@@ -226,12 +230,13 @@ public class TestClientIntegration {
 		input = "9:1";
 
 		client.lostFlagAction(input);
-		Thread.sleep(100);
+		Thread.sleep(200);
+
 
 		assertFalse(player.hasFlag());
 		assertTrue(gameStateReceiver.getFlag().isVisible());
-		assertTrue(gameStateReceiver.getFlag().getLayoutX() == player.getLayoutX());
-		assertTrue(gameStateReceiver.getFlag().getLayoutY() == player.getLayoutY());
+		assertEquals(gameStateReceiver.getFlag().getLayoutX(), player.getLayoutX(), 0.5);
+		assertEquals(gameStateReceiver.getFlag().getLayoutY(), player.getLayoutY(), 0.5);
 	}
 
 	/**
@@ -254,10 +259,12 @@ public class TestClientIntegration {
 	 *
 	 * @throws InterruptedException
 	 */
-	public void powerUpTest() {
+	public void powerUpTest() throws InterruptedException {
 		String input;
 		input= "$:0:1";
 		client.powerUpAction(input);
+
+		Thread.sleep(200);
 
 		assertFalse(gameStateReceiver.getPowerups()[0].isVisible());
 		assertTrue(player.getShieldActive());
@@ -265,17 +272,18 @@ public class TestClientIntegration {
 		input = "$:1:1";
 		client.powerUpAction(input);
 
+		Thread.sleep(200);
 		assertFalse(gameStateReceiver.getPowerups()[1].isVisible());
 		assertTrue(player.isSpeedActive());
 
 		input = "P:0:1";
 		client.powerUpRespawn(input);
-
+		Thread.sleep(200);
 		assertTrue(ch.getShieldPowerup().isVisible());
 
 		input = "P:1:0";
 		client.powerUpRespawn(input);
-
+		Thread.sleep(200);
 		assertTrue(ch.getSpeedPowerup().isVisible());
 
 	}
@@ -286,10 +294,11 @@ public class TestClientIntegration {
 	 *
 	 * @throws InterruptedException
 	 */
-	public void shieldRemovedTest() {
+	public void shieldRemovedTest() throws InterruptedException {
 		String input;
 		input = "%:1";
 		client.shieldRemovedAction(input);
+		Thread.sleep(200);
 		assertTrue(player.getShieldPopped());
 	}
 

@@ -23,9 +23,9 @@ import static org.junit.Assert.*;
 
 /**
  * Test class to tests the server-sided integration: messages received by the
- * clients. 
+ * clients.
  * Classes tested {@link UDPServer}
- * 
+ *
  * @author Alexandra Paduraru
  *
  */
@@ -71,7 +71,7 @@ public class TestServerIntegration {
 	 */
 	@Test
 	public void playerInputChangedTest() {
-		String input = "0:1:Up:Left:Shoot:Angle:30";
+		String input = "0:1:10:Up:Left:Shoot:Angle:30";
 
 		assertNotNull(server);
 		server.playerInputChanged(input);
@@ -83,7 +83,7 @@ public class TestServerIntegration {
 		assertTrue(player.isShooting());
 		assertTrue(player.getAngle() == 30.0);
 
-		input = "0:1:Right:Down";
+		input = "0:1:11:Right:Down";
 		server.playerInputChanged(input);
 
 		assertTrue(player.getRight());

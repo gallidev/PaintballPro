@@ -160,7 +160,7 @@ public class UDPServer extends Thread {
 		} finally {
 			if (debug)
 				System.out.println("Closing Server");
-			serverSocket.close();
+			if(serverSocket != null ) serverSocket.close();
 		}
 	}
 

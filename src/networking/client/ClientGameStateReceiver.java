@@ -191,14 +191,17 @@ public class ClientGameStateReceiver {
 	 */
 	public void destroyBullet(int playerId, int bulletId) {
 		EssentialPlayer p = getPlayerWithId(playerId);
-		Pellet b = getBulletWithId(p, bulletId);
+		if(p != null){
+			Pellet b = getBulletWithId(p, bulletId);
 
-		if(b != null)
-			Platform.runLater(() -> {
-				if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
-				b.setVisible(false);
-				b.setActive(false);
-			});
+			if(b != null)
+				Platform.runLater(() -> {
+					if(debug) System.out.println("destroyed bullet : " + playerId + " bulletid: " + bulletId);
+					b.setVisible(false);
+					b.setActive(false);
+				});
+		}
+
 	}
 
 	/**
@@ -224,10 +227,12 @@ public class ClientGameStateReceiver {
 	 */
 	public void lostFlag(int id) {
 		EssentialPlayer player = getPlayerWithId(id);
+
 		Platform.runLater(() -> {
 			player.setHasFlag(false);
 			renderer.getHud().toggleFlagStatus(player.getTeam());
 			flag.setVisible(true);
+			//System.out.println(player.getPlayerId() + "  x:" + player.getLayoutX() + "   y:" + player.getLayoutY());
 			flag.relocate(player.getLayoutX(), player.getLayoutY());
 		});
 

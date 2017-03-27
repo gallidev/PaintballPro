@@ -105,8 +105,6 @@ public class TestCollisionsHandler {
 
 			@Override
 			public void onBulletKills(int playerId, int bulletId) {
-				// TODO Auto-generated method stub
-
 			}
 
 		};

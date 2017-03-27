@@ -288,7 +288,7 @@ public class UDPClient extends Thread {
 	 * @author Filippo Galli
 	 */
 	public void updatePlayerAction(String text) {
-		// Protocol: "1:<id>:<x>:<y>:<angle>:<visiblity>"
+		// Protocol: "1:<id>:<counterFrame>:<x>:<y>:<angle>:<visiblity>:<eliminated>"
 		if (debug)
 			System.out.println(text);
 
