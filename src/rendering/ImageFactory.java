@@ -1,8 +1,8 @@
 package rendering;
 
+import enums.PowerupType;
 import enums.TeamEnum;
 import javafx.scene.image.Image;
-import physics.PowerupType;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;

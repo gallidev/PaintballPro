@@ -4,11 +4,12 @@ import gui.GUIManager;
 import javafx.application.Platform;
 import networking.client.ClientGameStateReceiver;
 import networking.client.TeamTable;
-import physics.PowerupType;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
+import enums.PowerupType;
 
 import static gui.GUIManager.renderer;
 

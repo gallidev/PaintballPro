@@ -1,5 +1,6 @@
 package physics;
 
+import enums.PowerupType;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.scene.shape.Path;

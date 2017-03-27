@@ -1,6 +1,6 @@
 package networking.game;
 
-import physics.PowerupType;
+import enums.PowerupType;
 
 /**
  * Listener class to game updates, in order to make the ServerGameStateSender Event based and avoiding continuously sending packets

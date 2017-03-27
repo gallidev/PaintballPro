@@ -7,7 +7,7 @@ import static gui.GUIManager.renderer;
 
 /**
  *
- *	This class handles the key press input events form the keyboard.
+ *	This class handles the key press input events from the keyboard.
  *
  * @author Filippo Galli
  * @author Sivarjuen Ravichandran

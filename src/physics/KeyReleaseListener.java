@@ -4,21 +4,16 @@ import gui.GUIManager;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
-// TODO: Auto-generated Javadoc
 /**
- * The listener interface for receiving keyRelease events.
- * The class that is interested in processing a keyRelease
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addKeyReleaseListener<code> method. When
- * the keyRelease event occurs, that object's appropriate
- * method is invoked.
- *
- * @see KeyReleaseEvent
- */
+*
+*	This class handles the key release input events from the keyboard.
+*
+* @author Filippo Galli
+* @author Sivarjuen Ravichandran
+*/
 public class KeyReleaseListener implements EventHandler<KeyEvent>
 {
-	
+
 	/** The input handler. */
 	private InputHandler inputHandler;
 
@@ -31,8 +26,10 @@ public class KeyReleaseListener implements EventHandler<KeyEvent>
 		this.inputHandler = inputHandler;
 	}
 
-	/* (non-Javadoc)
-	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+	/**
+	 * handle the keys released by the player and updates the inputHandler
+	 *
+	 * @param event the KeyEvent when a keyboard button is released
 	 */
 	@Override
 	public void handle(KeyEvent event)

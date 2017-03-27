@@ -1,6 +1,7 @@
 package networking.client;
 
 import enums.Menu;
+import enums.PowerupType;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.application.Platform;
@@ -8,7 +9,6 @@ import networking.game.UDPClient;
 import physics.CollisionsHandler;
 import physics.Flag;
 import physics.Powerup;
-import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;

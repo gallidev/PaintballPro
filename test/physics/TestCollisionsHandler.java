@@ -1,5 +1,6 @@
 package physics;
 
+import enums.PowerupType;
 import enums.TeamEnum;
 import helpers.JavaFXTestHelper;
 import logic.GameMode;

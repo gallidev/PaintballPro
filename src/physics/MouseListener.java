@@ -4,18 +4,15 @@ import gui.GUIManager;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The listener interface for receiving mouse events.
- * The class that is interested in processing a mouse
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addMouseListener<code> method. When
- * the mouse event occurs, that object's appropriate
- * method is invoked.
- *
- * @see MouseEvent
- */
+*
+*	This class handles the positions and click events from the mouse.
+*
+* @author Filippo Galli
+* @author Sivarjuen Ravichandran
+*
+*/
 public class MouseListener implements EventHandler<MouseEvent>{
 
 	/** The input handler. */
@@ -30,8 +27,10 @@ public class MouseListener implements EventHandler<MouseEvent>{
 		this.inputHandler = inputHandler;
 	}
 
-	/* (non-Javadoc)
-	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+	/**
+	 * handle the mouse positions & click and updates the inputHandler
+	 *
+	 * @param event the KeyEvent when a keyboard button is pressed
 	 */
 	@Override
     public void handle(MouseEvent event) {

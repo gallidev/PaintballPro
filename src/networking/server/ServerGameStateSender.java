@@ -1,11 +1,11 @@
 package networking.server;
 
+import enums.PowerupType;
 import enums.TeamEnum;
 import logic.server.Team;
 import networking.game.GameUpdateListener;
 import networking.game.ServerGameSimulation;
 import networking.game.UDPServer;
-import physics.PowerupType;
 import players.EssentialPlayer;
 
 import java.util.ArrayList;

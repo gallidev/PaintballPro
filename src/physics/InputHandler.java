@@ -1,14 +1,13 @@
 package physics;
 
+import players.EssentialPlayer;
+
 /**
  * This Class controls and handles the inputs from keyboard and mouse.
  *
  * @author Filippo Galli
  */
 public class InputHandler {
-
-	/** The player head Y and X used to calculate the exact angle of the player. */
-	private double playerHeadX = 12.5, playerHeadY = 47.5;
 
 	/** The keyboard input for up,down,left and right. */
 	boolean up, down, left, right;
@@ -165,8 +164,8 @@ public class InputHandler {
 	 */
 	public double getAngle(){
 
-		double deltax = mouseX - (1.65 * playerHeadX);
-		double deltay = playerHeadY - mouseY;
+		double deltax = mouseX - (1.65 * EssentialPlayer.PLAYER_HEAD_X);
+		double deltay = EssentialPlayer.PLAYER_HEAD_Y - mouseY;
 		double angle = Math.atan2(deltax, deltay);
 		return angle;
 	}

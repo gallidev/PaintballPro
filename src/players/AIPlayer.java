@@ -151,7 +151,7 @@ public class AIPlayer extends EssentialPlayer{
 	 * @see players.EssentialPlayer#updateShooting()
 	 */
 	protected void updateShooting(){
-		if(shoot && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
+		if(shoot && shootTimer < System.currentTimeMillis() - shootDelay){
 			shoot();
 			shootTimer = System.currentTimeMillis();
 		}

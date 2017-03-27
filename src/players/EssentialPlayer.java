@@ -20,27 +20,28 @@ import rendering.Spawn;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
- *  The player, represented by an ImageView.
+ *  The essential player abstract class, represents player by an ImageView.
  */
 public abstract class EssentialPlayer extends ImageView {
 
-	/** The Constant PLAYER_HEAD_Y. */
+	/** The player head Y and X used to calculate the exact angle of the player. */
 	public static final double PLAYER_HEAD_X = 12.5, PLAYER_HEAD_Y = 47.5;
 
 	/** The Constant targetFPS. */
 	private static final double targetFPS = 60.0;
 
 	/** The shoot delay. */
-	protected long SHOOT_DELAY = 450;
+	protected long shootDelay = 450;
 
-	/** The spawn delay. */
-	protected long SPAWN_DELAY = 2000;
+	/** The re spawn delay. */
+	protected long spawnDelay = 2000;
 
 	/** The bound rotation. */
 	protected Rotate rotation, boundRotation;
 
-	/** The id. */
+	/** The id of the player. */
 	protected int id;
 
 	/** The team. */
@@ -58,20 +59,19 @@ public abstract class EssentialPlayer extends ImageView {
 	/** The game speed. */
 	protected double gameSpeed;
 
-	/** The speed active. */
-
+	/** The speed power up active. */
 	protected boolean speedActive = false;
 
-	/** The speed timer. */
+	/** The speed power up timer. */
 	protected long speedTimer;
 
-	/** The speed duration. */
+	/** The speed power up duration. */
 	protected long speedDuration = 10000;
 
-	/** The speed timer active. */
+	/** The speed power up timer active. */
 	protected boolean speedTimerActive = false;
 
-	/** The shield active. */
+	/** The shield power up active. */
 	//If shield is true, player is able to take an extra shot
 	protected boolean shieldActive = false;
 
@@ -81,64 +81,66 @@ public abstract class EssentialPlayer extends ImageView {
 	/** The score changed. */
 	protected boolean scoreChanged = false;
 
-	/** The invincible. */
-	boolean up, down, left, right, shoot, eliminated, invincible;
+	/** Input decisions of the players. */
+	boolean up, down, left, right, shoot;
+
+	/** Is the player eliminated and is the player invincible */
+	boolean eliminated, invincible;
 
 	/** The coll right. */
 	boolean collUp, collDown, collLeft, collRight;
 
-	/** The has shot. */
+	/** The player has shot. */
 	boolean hasShot;
 
-	/** The last angle. */
+	/** The current angle and the last angle. */
 	double angle, lastAngle;
 
-	/** The mouse Y. */
+	/** The mouse X and y positions. */
 	double mouseX, mouseY;
 
 	/** The fired pellets. */
 	ArrayList<Pellet> firedPellets = new ArrayList<Pellet>();
 
-	/** The spawn timer. */
+	/** The shoot and spawn timer. */
 	long shootTimer, spawnTimer;
 
-	/** The last Y. */
+	/** The last X and Y. */
 	double lastX, lastY;
 
 	/** The bullet counter. */
 	int bulletCounter;
 
-	/** The spawn. */
+	/** The spawn locations. */
 	private Spawn[] spawn;
 
-	/** The bounds. */
+	/** The bounds for collisions . */
 	private Polygon bounds = new Polygon();
 
-	/** The has flag. */
+	/** The player has flag. */
 	private boolean hasFlag;
 
 	/** The shadow. */
 	private DropShadow shadow = new DropShadow(16, 0, 0, Color.BLACK);
 
-	/** The shield popped. */
+	/** The shield effect popped. */
 	private boolean shieldPopped = false;
 
-	/** The listener. */
+	/** The listener for sending game state. */
 	private GameUpdateListener listener;
 
 	/**
-	 * Create a new player at the set location, and adds the rotation property to the player,
-	 * this a General class for the Client Side which needs to store the Image.
+	 * Create a new player at the set location, and adds the rotation property to the player.
 	 *
 	 * @param x The x-coordinate of the player with respect to the map
 	 * @param y The y-coordinate of the player with respect to the map
 	 * @param id The id of the player
-	 * @param spawn the spawn
-	 * @param team the team
+	 * @param spawn the spawn locations
+	 * @param team the team of the player
 	 * @param collisionsHandler the collisions handler
-	 * @param image the image
-	 * @param game the game
-	 * @param currentFPS the current FPS
+	 * @param image the image of the player
+	 * @param game the game mode the player is playing
+	 * @param currentFPS the current FPS speed of the simulation on which the player is updating
 	 */
 	public EssentialPlayer(double x, double y, int id,Spawn[] spawn, TeamEnum team, CollisionsHandler collisionsHandler, Image image, GameMode game, double currentFPS){
 		super(image);
@@ -169,24 +171,30 @@ public abstract class EssentialPlayer extends ImageView {
 		bulletCounter = 1;
 		this.gameSpeed = targetFPS/currentFPS;
 		this.movementSpeed = this.movementSpeed * gameSpeed;
-		this.SPAWN_DELAY = this.SPAWN_DELAY * (long) gameSpeed;
-		this.SHOOT_DELAY = this.SHOOT_DELAY * (long) gameSpeed;
+		this.spawnDelay = this.spawnDelay * (long) gameSpeed;
+		this.shootDelay = this.shootDelay * (long) gameSpeed;
 		gameMode = game;
 
 	}
 
 	/**
-	 * Update position.
+	 * update the player in every term, positions, shooting, angle, pellets by also checking the collisions,
+	 * it should be called every time based on the speed of the simulation
+	 */
+	public abstract void tick();
+
+	/**
+	 * Update position of the player.
 	 */
 	protected abstract void updatePosition();
 
 	/**
-	 * Update shooting.
+	 * Update shooting of the player.
 	 */
 	protected abstract void updateShooting();
 
 	/**
-	 * Update bullets.
+	 * Update bullets locations move them in direction.
 	 */
 	//Updates the location of the bullets
 	void updateBullets(){
@@ -195,7 +203,7 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	/**
-	 * Clean bullets.
+	 * Clean bullets that are not active.
 	 */
 	void cleanBullets(){
 		if(firedPellets.size() > 0) {
@@ -206,7 +214,7 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	/**
-	 * Update angle.
+	 * Update angle of the player.
 	 */
 	//Calculates the angle the player is facing with respect to the mouse
 	protected abstract void updateAngle();
@@ -223,10 +231,10 @@ public abstract class EssentialPlayer extends ImageView {
 	public abstract void updateScore();
 
 	/**
-	 * Check spawn.
+	 * Check when the right time has passed and re spawn the player in the right location.
 	 */
 	protected void checkSpawn() {
-		if(spawnTimer + SPAWN_DELAY <= System.currentTimeMillis()){
+		if(spawnTimer + spawnDelay <= System.currentTimeMillis()){
 			int i = 0;
 
 			if(team == TeamEnum.BLUE) i = 4;
@@ -241,25 +249,25 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	/**
-	 * Check invincibility.
+	 * Check if the player is invicinble and apply an image effect.
 	 */
 	protected void checkInvincibility() {
 		boolean visible = true;
 		//Invincible animation
-		if(spawnTimer + SPAWN_DELAY > System.currentTimeMillis()){
-			if(System.currentTimeMillis() >= spawnTimer + SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 2 * SPAWN_DELAY /8)
+		if(spawnTimer + spawnDelay > System.currentTimeMillis()){
+			if(System.currentTimeMillis() >= spawnTimer + spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 2 * spawnDelay /8)
 				visible = false;
-			if(System.currentTimeMillis() >= spawnTimer + 2* SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 3* SPAWN_DELAY /8)
+			if(System.currentTimeMillis() >= spawnTimer + 2* spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 3* spawnDelay /8)
 				visible = true;
-			if(System.currentTimeMillis() >= spawnTimer + 3* SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 4* SPAWN_DELAY /8)
+			if(System.currentTimeMillis() >= spawnTimer + 3* spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 4* spawnDelay /8)
 				visible = false;
-			if(System.currentTimeMillis() >= spawnTimer + 4* SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 5* SPAWN_DELAY /8)
+			if(System.currentTimeMillis() >= spawnTimer + 4* spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 5* spawnDelay /8)
 				visible = true;
-			if(System.currentTimeMillis() >= spawnTimer + 5* SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 6* SPAWN_DELAY /8)
+			if(System.currentTimeMillis() >= spawnTimer + 5* spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 6* spawnDelay /8)
 				visible = false;
-			if(System.currentTimeMillis() >= spawnTimer + 6* SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 7* SPAWN_DELAY /8)
+			if(System.currentTimeMillis() >= spawnTimer + 6* spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 7* spawnDelay /8)
 				visible = true;
-			if(System.currentTimeMillis() >= spawnTimer + 7* SPAWN_DELAY /8 && System.currentTimeMillis() < spawnTimer + 8* SPAWN_DELAY /8)
+			if(System.currentTimeMillis() >= spawnTimer + 7* spawnDelay /8 && System.currentTimeMillis() < spawnTimer + 8* spawnDelay /8)
 				visible = false;
 
 		} else {
@@ -269,11 +277,10 @@ public abstract class EssentialPlayer extends ImageView {
 		setVisible(visible);
 	}
 
-	//Consists of 5 points around player
 	/**
-	 * Creates the player bounds.
+	 * Creates the player bounds for collisions, it consists of 5 points around player.
 	 */
-	//Point1
+
 	public void createPlayerBounds(){
 			double x1 = (83 * getImage().getWidth()/120) - PLAYER_HEAD_X;
 			double y1 = (5 * getImage().getHeight()/255) - PLAYER_HEAD_Y;
@@ -318,7 +325,7 @@ public abstract class EssentialPlayer extends ImageView {
 		}
 
 		/**
-		 * Update player bounds.
+		 * Update player bounds based on the rotation.
 		 */
 		public void updatePlayerBounds(){
 			bounds.setLayoutX(getLayoutX());
@@ -353,9 +360,9 @@ public abstract class EssentialPlayer extends ImageView {
 	 * Generate bullet.
 	 *
 	 * @param bulletId the bullet id
-	 * @param x the x
-	 * @param y the y
-	 * @param angle the angle
+	 * @param x the x origin of the bullet
+	 * @param y the y origin of the bullet
+	 * @param angle the angle of the player was aiming
 	 */
 	public void generateBullet(int bulletId, double x, double y, double angle){
 		Pellet pellet = new Pellet(bulletId, x, y, angle, team, gameSpeed);
@@ -368,7 +375,8 @@ public abstract class EssentialPlayer extends ImageView {
 	}
 
 	/**
-	 * Been shot.
+	 * The player has been shot, so make the player invisible and in eliminated state.
+	 * Update also the score and the spawn timer.
 	 */
 	public void beenShot() {
 		spawnTimer = System.currentTimeMillis();
@@ -388,6 +396,20 @@ public abstract class EssentialPlayer extends ImageView {
 
 	}
 
+	/**
+	 * Handle power ups.
+	 */
+	void handlePowerUp() {
+		if (speedActive && !speedTimerActive) {
+			speedTimerActive = true;
+			speedTimer = System.currentTimeMillis();
+		} else if (speedActive) {
+			if (speedTimer < System.currentTimeMillis() - speedDuration || eliminated) {
+				setSpeed(false);
+				speedTimerActive = false;
+			}
+		}
+	}
 
 
 	//Getters and setters below this point
@@ -492,21 +514,6 @@ public abstract class EssentialPlayer extends ImageView {
 		{
 			shadow.setColor(Color.BLACK);
 			setImage(ImageFactory.getPlayerImage(team));
-		}
-	}
-
-	/**
-	 * Handle power up.
-	 */
-	void handlePowerUp() {
-		if (speedActive && !speedTimerActive) {
-			speedTimerActive = true;
-			speedTimer = System.currentTimeMillis();
-		} else if (speedActive) {
-			if (speedTimer < System.currentTimeMillis() - speedDuration || eliminated) {
-				setSpeed(false);
-				speedTimerActive = false;
-			}
 		}
 	}
 
@@ -632,10 +639,6 @@ public abstract class EssentialPlayer extends ImageView {
 	 */
 	public abstract void setOppTeam(Team team);
 
-	/**
-	 * Tick.
-	 */
-	public abstract void tick();
 
 	/**
 	 * Gets the nickname.

@@ -2,6 +2,7 @@ package networking.game.client;
 
 import audio.AudioManager;
 import enums.GameMode;
+import enums.PowerupType;
 import enums.TeamEnum;
 import gui.GUIManager;
 import helpers.JavaFXTestHelper;
@@ -17,7 +18,6 @@ import org.junit.Test;
 import physics.CollisionsHandler;
 import physics.Flag;
 import physics.Powerup;
-import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;

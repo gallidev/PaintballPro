@@ -1,6 +1,7 @@
 package networking.game.server;
 
 import enums.GameMode;
+import enums.PowerupType;
 import enums.TeamEnum;
 import gui.GUIManager;
 import helpers.JavaFXTestHelper;
@@ -18,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import physics.CollisionsHandler;
 import physics.InputHandler;
-import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 import players.GhostPlayer;

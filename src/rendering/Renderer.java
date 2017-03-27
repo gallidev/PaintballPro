@@ -1,6 +1,7 @@
 package rendering;
 
 import enums.Menu;
+import enums.PowerupType;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.animation.AnimationTimer;

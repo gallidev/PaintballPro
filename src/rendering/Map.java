@@ -2,6 +2,7 @@ package rendering;
 
 import com.google.gson.Gson;
 import enums.GameMode;
+import enums.PowerupType;
 import enums.TeamEnum;
 import gui.GUIManager;
 import javafx.scene.Group;
@@ -15,7 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import physics.Flag;
 import physics.Powerup;
-import physics.PowerupType;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

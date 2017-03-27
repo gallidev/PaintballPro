@@ -18,30 +18,24 @@ import rendering.Spawn;
 import java.util.ArrayList;
 import java.util.Random;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class ClientPlayer.
+ * The Class represents a Client player in a multiplayer mode.
  */
 public class ClientPlayer extends EssentialPlayer {
 
 
-	/** The angle radians. */
+	/** The angle in radians. */
 	double angleRadians;
 
-	/** The buffer reconciliation. */
+	/** The buffer for reconciliation. */
 	ArrayList<GameStateClient> bufferReconciliation;
 
-	/** The limit difference position. */
+	/** The limit of difference in position. */
 	private double limitDifferencePosition = 60;
 
 	/** The input handler. */
 	private InputHandler inputHandler;
-
-	/** The audio. */
-	private AudioManager audio;
-
-	/** The rand. */
-	private Random rand;
 
 	/** The name tag. */
 	private Label nameTag;
@@ -52,26 +46,23 @@ public class ClientPlayer extends EssentialPlayer {
 	/**
 	 * Instantiates a new client player.
 	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param id the id
-	 * @param spawn the spawn
-	 * @param team the team
-	 * @param guiManager the gui manager
-	 * @param collisionsHandler the collisions handler
+	 * @param x the x position of the client player
+	 * @param y the y position of the client player
+	 * @param id the id of the client player
+	 * @param spawn the spawn locations of the client player
+	 * @param team the team of the client player
+	 * @param guiManager the gui manager in which the client player is running
+	 * @param collisionsHandler the collisions handler of the client simulation
 	 * @param inputHandler the input handler
-	 * @param image the image
-	 * @param game the game
-	 * @param currentFPS the current FPS
+	 * @param image the image of the client player
+	 * @param game the game mode
+	 * @param currentFPS the current FPS in which the simulation is running on.
 	 */
 	public ClientPlayer(double x, double y, int id, Spawn[] spawn, TeamEnum team, GUIManager guiManager,
 			CollisionsHandler collisionsHandler, InputHandler inputHandler, Image image, GameMode game, double currentFPS) {
 		super(x, y, id, spawn, team, collisionsHandler, image, game, currentFPS);
 		this.inputHandler = inputHandler;
-		this.audio = guiManager.getAudioManager();
 		this.team = team;
-
-		rand = new Random();
 
 		nameTag = new Label("Player");
 		nameTag.setStyle("-fx-background-color: rgba(64, 64, 64, 0.75);" +
@@ -127,14 +118,14 @@ public class ClientPlayer extends EssentialPlayer {
 	 * @see players.EssentialPlayer#updateShooting()
 	 */
 	protected void updateShooting(){
-		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
+		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - shootDelay){
 			shoot();
 			shootTimer = System.currentTimeMillis();
 		}
 	}
 
 	/**
-	 * Gets the angle radians.
+	 * Gets the angle in radians.
 	 *
 	 * @return the angle radians
 	 */
@@ -143,7 +134,7 @@ public class ClientPlayer extends EssentialPlayer {
 	}
 
 	/**
-	 * Sets the angle radians.
+	 * Sets the angle in radians.
 	 *
 	 * @param angleRadians the new angle radians
 	 */
@@ -152,7 +143,7 @@ public class ClientPlayer extends EssentialPlayer {
 	}
 
 	/**
-	 * Gets the angle degrees.
+	 * Gets the angle in degrees.
 	 *
 	 * @return the angle degrees
 	 */
@@ -170,10 +161,11 @@ public class ClientPlayer extends EssentialPlayer {
 	}
 
 	/**
-	 * Should I update position.
+	 * Compare the current client position with the one sent by the server,
+	 * if the difference is less than limitDifference position then it returns false otherwise true
 	 *
-	 * @param x the x
-	 * @param y the y
+	 * @param x the x of the last correct position given by the server
+	 * @param y the y of the last correct position given by the server
 	 * @return true, if successful
 	 */
 	public boolean shouldIUpdatePosition(double x, double y){

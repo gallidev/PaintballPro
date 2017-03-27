@@ -1,11 +1,11 @@
 package networking.client;
 
 import audio.AudioManager;
+import enums.PowerupType;
 import javafx.application.Platform;
 import physics.Flag;
 import physics.Pellet;
 import physics.Powerup;
-import physics.PowerupType;
 import players.ClientPlayer;
 import players.EssentialPlayer;
 

@@ -201,7 +201,7 @@ public class OfflinePlayer extends EssentialPlayer
 	 * @see players.EssentialPlayer#updateShooting()
 	 */
 	protected void updateShooting(){
-		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - SHOOT_DELAY){
+		if(inputHandler.isShooting() && shootTimer < System.currentTimeMillis() - shootDelay){
 			shoot();
 			shootTimer = System.currentTimeMillis();
 		}
