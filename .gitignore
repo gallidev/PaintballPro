@@ -85,3 +85,5 @@ preferences.json
 res/assets/player.pxm
 res/maps/ctf.ai
 res/maps/elimination.ai
+
+/tmp_out/
