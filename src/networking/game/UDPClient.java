@@ -196,11 +196,6 @@ public class UDPClient extends Thread {
 				case 'T':
 					pingTimeUpdate(receivedPacket);
 					break;
-				// case '@': hitWallAction(receivedPacket);
-				// break;
-//				case '#':
-//					eliminatedPlayerAction(receivedPacket);
-//					break;
 				case '$':
 					powerUpAction(receivedPacket);
 					break;

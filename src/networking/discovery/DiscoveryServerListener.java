@@ -60,7 +60,7 @@ public class DiscoveryServerListener extends Thread {
 			}
 			socket.close();
 		} catch (IOException ex) {
-			//
+			// if anything goes wrong, we stop listening.
 		}
 		return;
 	}
