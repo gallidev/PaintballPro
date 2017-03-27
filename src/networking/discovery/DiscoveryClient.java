@@ -39,6 +39,7 @@ public class DiscoveryClient extends Thread {
 						InetAddress.getByName("255.255.255.255"), 25561);
 				clientSocket.send(sendPacket);
 			} catch (Exception e) {
+				// if we can't send, we should try other interfaces.
 			}
 
 			// Broadcast the message over all the network interfaces
@@ -62,6 +63,7 @@ public class DiscoveryClient extends Thread {
 						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 25561);
 						clientSocket.send(sendPacket);
 					} catch (Exception e) {
+						// if we can't send on an interface should keep trying the others.
 					}
 				}
 			}
@@ -73,6 +75,7 @@ public class DiscoveryClient extends Thread {
 				if(debug)
 					System.out.println("::: " + InetAddress.getByName("127.0.0.1").toString());
 			} catch (Exception e) {
+				// if we can't send on an interface should keep trying the others.
 			}
 
 			// Wait for a response from the Server.
@@ -97,7 +100,7 @@ public class DiscoveryClient extends Thread {
 
 			// Close the port!
 		} catch (IOException ex) {
-			//
+			// If something goes wrong we just return no ip.
 		}
 		return "";
 	}
